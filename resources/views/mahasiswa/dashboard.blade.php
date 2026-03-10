@@ -1,4 +1,4 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 
 @section('title', 'Dashboard Mahasiswa')
 
@@ -20,127 +20,90 @@
 @endsection
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <!-- Status Magang -->
-    <div class="card bg-white shadow-sm border border-base-200">
-        <div class="card-body p-5">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-gray-500">Status Magang</span>
-                <div class="p-2 rounded-lg bg-blue-50 text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-            </div>
-            <div class="text-xl font-bold text-gray-800">Tahap Pendaftaran</div>
-            <p class="text-xs text-blue-600 mt-1 font-medium">Sedang diproses</p>
-        </div>
-    </div>
-
-    <!-- Progress -->
-    <div class="card bg-white shadow-sm border border-base-200">
-        <div class="card-body p-5">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-gray-500">Progress Tahapan</span>
-                <div class="p-2 rounded-lg bg-orange-50 text-orange-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                </div>
-            </div>
-            <div class="text-xl font-bold text-gray-800">15%</div>
-            <progress class="progress progress-warning w-full mt-2" value="15" max="100"></progress>
-        </div>
-    </div>
-
-    <!-- Notifikasi -->
-    <div class="card bg-white shadow-sm border border-base-200">
-        <div class="card-body p-5">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-gray-500">Notifikasi</span>
-                <div class="p-2 rounded-lg bg-purple-50 text-purple-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                </div>
-            </div>
-            <div class="text-xl font-bold text-gray-800">3 Pesan Baru</div>
-            <p class="text-xs text-purple-600 mt-1 font-medium italic">Klik untuk melihat detail</p>
-        </div>
-    </div>
-
-    <!-- Deadline -->
-    <div class="card bg-white shadow-sm border border-base-200">
-        <div class="card-body p-5">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-gray-500">Deadline Terdekat</span>
-                <div class="p-2 rounded-lg bg-red-50 text-red-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-            </div>
-            <div class="text-xl font-bold text-gray-800">20 Maret 2026</div>
-            <p class="text-xs text-red-600 mt-1 font-medium">Upload Laporan Awal</p>
-        </div>
-    </div>
-</div>
-
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Alur Kerja -->
-    <div class="lg:col-span-2">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left Column: Alur & Info -->
+    <div class="lg:col-span-2 space-y-8">
+        <!-- 1. Alur Kerja Magang -->
         <div class="card bg-white shadow-sm border border-base-200">
-            <div class="card-body">
-                <h3 class="font-bold text-lg text-gray-800 mb-4 border-b pb-2 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+            <div class="card-body p-8">
+                <h3 class="font-black text-gray-800 text-xl mb-8 flex items-center gap-3">
+                    <span class="w-2 h-6 bg-[#6B21A8] rounded-full"></span>
                     Alur Kerja Magang
                 </h3>
                 
-                <div class="overflow-x-auto py-4">
-                    <ul class="steps steps-vertical lg:steps-horizontal w-full font-medium text-sm">
-                        <li class="step step-primary">Pendaftaran</li>
-                        <li class="step step-primary">ID Magang</li>
-                        <li class="step">Dosen Wali</li>
-                        <li class="step">Logbook</li>
-                        <li class="step">Laporan</li>
-                        <li class="step">Presentasi</li>
+                <div class="overflow-x-auto py-6">
+                    <ul class="steps steps-vertical lg:steps-horizontal w-full font-bold text-xs uppercase tracking-widest">
+                        <li class="step step-primary" data-content="✓">Pendaftaran</li>
+                        <li class="step step-primary" data-content="2">ID Magang</li>
+                        <li class="step" data-content="3">Dosen Wali</li>
+                        <li class="step" data-content="4">Logbook</li>
+                        <li class="step" data-content="5">Laporan</li>
+                        <li class="step" data-content="6">Presentasi</li>
                     </ul>
                 </div>
 
-                <div class="mt-6 bg-[#6B21A8]/5 p-6 rounded-2xl border border-[#6B21A8]/10">
-                    <h4 class="font-bold text-[#6B21A8] mb-2 flex items-center gap-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                         Informasi Penting
-                    </h4>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        Pastikan Anda telah mengisi <strong>Semua Data Perusahaan</strong> pada menu Pengajuan ID Magang sebelum melanjutkan ke tahap Konsultasi Dosen Wali. Selalu periksa notifikasi untuk pembaruan status pengajuan Anda.
-                    </p>
+                <!-- 4. Informasi Penting -->
+                <div class="mt-8 p-6 bg-purple-50 rounded-3xl border border-purple-100 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-white border border-purple-100 flex items-center justify-center text-[#6B21A8] shadow-sm shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-[#6B21A8] text-sm uppercase tracking-wider mb-2">Informasi Penting 💡</h4>
+                        <p class="text-xs text-purple-900/70 font-medium leading-relaxed">
+                            Pastikan Anda telah mengisi <strong>Semua Data Perusahaan</strong> pada menu Pengajuan ID Magang sebelum melanjutkan ke tahap Konsultasi Dosen Wali. Selalu periksa notifikasi untuk pembaruan status pengajuan Anda.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Info Dosen & Quick Links -->
+    <!-- Right Column: Status & CTA -->
     <div class="space-y-6">
-        <div class="card bg-white shadow-sm border border-base-200">
-            <div class="card-body p-6">
-                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    Dosen Wali
-                </h3>
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="avatar placeholder">
-                        <div class="bg-primary text-white rounded-full w-12 flex items-center justify-center font-bold">DW</div>
-                    </div>
-                    <div>
-                        <div class="font-bold text-sm text-gray-800">Drs. Ahmad Yani, M.T.</div>
-                        <div class="text-xs text-gray-500">NIP. 197503122003121002</div>
+        <!-- 2. Status Magang (Ringkasan Informasi) -->
+        <div class="card bg-white shadow-sm border border-base-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-base-100 bg-gray-50/50">
+                <h3 class="font-bold text-gray-800 text-sm uppercase tracking-widest">Status Magang</h3>
+            </div>
+            <div class="card-body p-6 space-y-6">
+                <div>
+                    <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.2em] mb-2">Perusahaan Magang</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                        </div>
+                        <span class="font-bold text-gray-800">PT Teknologi Nusantara</span>
                     </div>
                 </div>
-                <button class="btn btn-sm btn-outline btn-primary w-full">Hubungi Dosen Wali</button>
+
+                <div>
+                    <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.2em] mb-2">Dosen Pembimbing</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-[#6B21A8]">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        </div>
+                        <span class="font-bold text-gray-800 text-sm">Dr. Ahmad Rizki</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.2em]">Status</span>
+                        <span class="badge badge-success text-white font-black text-[10px] uppercase tracking-widest py-3 px-4">Disetujui</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="card bg-gradient-to-br from-[#6B21A8] to-[#9333EA] text-white shadow-lg shadow-purple-200">
-            <div class="card-body p-6 relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 opacity-20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+        <!-- 3. Card CTA: Panduan Magang -->
+        <div class="card bg-gradient-to-br from-[#6B21A8] to-[#9333EA] text-white shadow-xl shadow-purple-100 overflow-hidden">
+            <div class="card-body p-8 relative">
+                <div class="absolute -right-8 -bottom-8 opacity-20 transform -rotate-12">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-40 w-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
                 </div>
-                <h3 class="font-bold text-lg mb-1">Panduan Magang</h3>
-                <p class="text-white/80 text-xs mb-4">Pelajari aturan dan tata cara pelaksanaan pendaftaran magang terbaru.</p>
-                <button class="btn btn-sm bg-[#F49E0A] hover:bg-orange-500 text-white border-none px-6">Buka Panduan</button>
+                <h3 class="text-2xl font-black mb-2 text-white">Panduan Magang</h3>
+                <p class="text-white/80 text-xs leading-relaxed font-bold mb-8">Pelajari aturan dan tata cara pelaksanaan pendaftaran magang terbaru.</p>
+                <a href="https://drive.google.com/file/d/1RCtyvmpQUfoEAXO7eCargK5EU4uPYG0r/view?usp=sharing" target="_blank" class="btn bg-[#F49E0A] hover:bg-orange-600 text-white border-none shadow-sm px-8 font-black uppercase tracking-widest text-[10px] h-11 min-h-0 inline-flex items-center justify-center">Buka Panduan</a>
             </div>
         </div>
     </div>
