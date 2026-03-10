@@ -16,112 +16,224 @@
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
     <!-- Student List Sidebar -->
-    <div class="lg:col-span-1 space-y-4">
-        <h3 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2 px-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-            Mahasiswa
-        </h3>
-        
-        <div class="space-y-2">
-            <!-- Active Student -->
-            <div class="p-4 rounded-2xl bg-white border-2 border-[#6B21A8] shadow-sm cursor-pointer group transition-all">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-[#6B21A8] text-white flex items-center justify-center font-bold shadow-lg shadow-purple-100">AS</div>
-                    <div>
-                        <div class="text-sm font-bold text-gray-800">Andi Saputra</div>
-                        <div class="text-[10px] font-bold text-[#6B21A8] uppercase tracking-wider">Aktif</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Inactive Students -->
-            <div class="p-4 rounded-2xl bg-white border border-transparent hover:border-gray-200 hover:bg-gray-50 cursor-pointer transition-all">
-                <div class="flex items-center gap-3 opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-gray-200 text-gray-500 flex items-center justify-center font-bold">BR</div>
-                    <div>
-                        <div class="text-sm font-bold text-gray-800">Budi Ramadhan</div>
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Aktif</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-white border border-transparent hover:border-gray-200 hover:bg-gray-50 cursor-pointer transition-all">
-                <div class="flex items-center gap-3 opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-gray-200 text-gray-500 flex items-center justify-center font-bold">SM</div>
-                    <div>
-                        <div class="text-sm font-bold text-gray-800">Siti Maryam</div>
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Aktif</div>
-                    </div>
-                </div>
+    <div class="lg:col-span-1 space-y-6">
+        <div class="bg-white p-6 rounded-[2rem] border border-base-200 shadow-sm">
+            <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2 italic">
+                <div class="w-1.5 h-1.5 rounded-full bg-[#6B21A8]"></div>
+                Mahasiswa Bimbingan
+            </h3>
+            
+            <div id="studentSelector" class="space-y-3">
+                <!-- Students will be rendered by JS -->
             </div>
         </div>
     </div>
 
-    <!-- Logbook Timeline -->
+    <!-- Logbook Main Section -->
     <div class="lg:col-span-3 space-y-6">
-        <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-bold text-gray-800">Logbook: Andi Saputra</h3>
-            <div class="join shadow-sm border border-base-200">
-                <button class="btn btn-sm join-item bg-white border-none text-[#6B21A8] font-bold">Minggu Ini</button>
-                <button class="btn btn-sm join-item bg-gray-50 border-none text-gray-400 font-bold">Semua</button>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-[2rem] border border-base-200 shadow-sm">
+            <div>
+                <h3 id="activeStudentName" class="text-xl font-black text-gray-800 italic uppercase tracking-tighter">Memuat...</h3>
+                <p id="activeStudentNim" class="text-[10px] text-[#6B21A8] font-black uppercase tracking-widest mt-1">NIM: --</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="setView('weekly')" id="btnWeekly" class="btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg transition-all">Mingguan</button>
+                <button onclick="setView('all')" id="btnAll" class="btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg transition-all">Lihat Semua</button>
             </div>
         </div>
 
-        <!-- Entry 1 -->
-        <div class="card bg-white shadow-sm border border-base-200 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-1.5 h-full bg-[#6B21A8]"></div>
-            <div class="card-body p-6 md:p-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                    <div>
-                         <span class="text-[10px] font-extrabold text-[#6B21A8] uppercase tracking-[0.2em] bg-purple-50 px-3 py-1 rounded-full border border-purple-100">09 Maret 2026</span>
-                         <h4 class="text-xl font-extrabold text-gray-800 mt-3 tracking-tight">Pengembangan Fitur Dashboad Admin</h4>
-                    </div>
-                    <div class="flex items-center gap-2 bg-green-50 text-green-600 px-4 py-2 rounded-xl border border-green-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-[10px] font-bold tracking-widest uppercase">Terselesaikan</span>
-                    </div>
-                </div>
+        <!-- Weekly View -->
+        <div id="weeklyContainer" class="space-y-4">
+            <!-- Weekly items will be rendered by JS -->
+        </div>
 
-                <div class="space-y-6">
-                    <div>
-                        <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#6B21A8]"></span> Aktivitas
-                        </p>
-                        <p class="text-gray-700 leading-relaxed text-sm">Melanjutkan pengerjaan modul dashboard admin menggunakan Laravel dan Tailwind CSS. Fokus pada integrasi Chart.js untuk menampilkan data statistik magang secara real-time.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-4 bg-orange-50 border border-orange-100 rounded-2xl">
-                             <p class="text-[10px] font-extrabold text-orange-600 uppercase tracking-widest mb-1 flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                                Kendala
-                             </p>
-                             <p class="text-xs text-orange-800 font-medium italic">Responsivitas grafik pada layar perangkat mobile (layar di bawah 640px).</p>
-                        </div>
-                        <div class="p-4 bg-blue-50 border border-blue-100 rounded-2xl">
-                             <p class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest mb-1 flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                                Pekerjaan
-                             </p>
-                             <p class="text-xs text-blue-800 font-medium">Coding Frontend, API Integration.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col md:flex-row gap-6">
-                    <div class="flex-1">
-                        <label class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-[#6B21A8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
-                             Beri Komentar / Arahan
-                        </label>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="Tulis masukan Anda di sini..." class="input input-bordered flex-1 bg-white text-gray-800 text-sm focus:border-[#6B21A8]" />
-                            <button class="btn bg-[#6B21A8] hover:bg-purple-800 text-white border-none shadow-sm px-6">Kirim</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- All Logs List View (Minimalist) -->
+        <div id="allLogsContainer" class="hidden space-y-3">
+             <div class="bg-white p-2 rounded-[2rem] overflow-hidden border border-base-200 shadow-sm">
+                <table class="table w-full">
+                    <thead>
+                        <tr class="text-[9px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-50">
+                            <th class="py-4">Tanggal</th>
+                            <th>Aktivitas</th>
+                            <th class="text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allLogsTableBody">
+                        <!-- All logs will be rendered here -->
+                    </tbody>
+                </table>
+             </div>
         </div>
     </div>
 </div>
+
+<!-- Log Detail Modal -->
+<dialog id="log_detail_modal" class="modal">
+    <div class="modal-box p-0 overflow-hidden bg-white max-w-xl rounded-[2.5rem] shadow-2xl">
+        <div class="bg-[#6B21A8] p-10 pb-14 relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full"></div>
+            <button onclick="document.getElementById('log_detail_modal').close()" class="btn btn-sm btn-circle btn-ghost absolute right-6 top-6 text-white hover:bg-white/10">✕</button>
+            <div class="relative z-10">
+                <span id="detailDate" class="text-[9px] font-black text-purple-200 uppercase tracking-[0.3em] bg-white/10 px-4 py-2 rounded-full border border-white/20 italic">09 MARET 2026</span>
+                <h3 id="detailTitle" class="text-2xl font-black text-white italic uppercase tracking-tighter mt-6 pr-12 leading-tight">Pengembangan Fitur Dashboad Admin</h3>
+            </div>
+        </div>
+        <div class="p-10 -mt-8 bg-white rounded-[3rem] relative z-20 space-y-8">
+            <div>
+                <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Deskripsi Aktivitas</p>
+                <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 shadow-inner">
+                    <p id="detailDesc" class="text-sm font-bold text-gray-700 leading-relaxed italic">Melanjutkan pengerjaan modul dashboard admin menggunakan Laravel dan Tailwind CSS.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-5 bg-orange-50/50 rounded-2xl border border-orange-100">
+                    <p class="text-[8px] font-black text-orange-600 uppercase tracking-widest mb-2 italic">Kendala</p>
+                    <p id="detailObstacle" class="text-[11px] font-black text-orange-800 italic uppercase">Responsivitas Grafik Mobile</p>
+                </div>
+                <div class="p-5 bg-blue-50/50 rounded-2xl border border-blue-100">
+                    <p class="text-[8px] font-black text-blue-600 uppercase tracking-widest mb-2 italic">Pekerjaan</p>
+                    <p id="detailWork" class="text-[11px] font-black text-blue-800 italic uppercase">Frontend, API Integration</p>
+                </div>
+            </div>
+
+            <button onclick="document.getElementById('log_detail_modal').close()" class="btn btn-ghost w-full h-14 min-h-0 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl">Tutup</button>
+        </div>
+    </div>
+</dialog>
+
+<script>
+const students = [
+    { id: 1, name: 'Andi Saputra', nim: '210401001', color: 'purple' },
+    { id: 2, name: 'Budi Ramadhan', nim: '210401045', color: 'orange' },
+    { id: 3, name: 'Siti Maryam', nim: '210401089', color: 'blue' },
+    { id: 4, name: 'Rahmat Hidayat', nim: '210401022', color: 'green' },
+    { id: 5, name: 'Dewi Lestari', nim: '210401011', color: 'pink' },
+    { id: 6, name: 'Fajar Nugraha', nim: '210401077', color: 'indigo' }
+];
+
+const mockLogs = {
+    1: [
+        { date: '09 Mar 2026', title: 'Integrasi API Chart', desc: 'Menghubungkan frontend ke backend untuk data grafik.', obstacle: 'Delay data fetching', work: 'API, JavaScript', week: 4 },
+        { date: '08 Mar 2026', title: 'Slicing UI Dashboard', desc: 'Melakukan slicing desain figma ke HTML.', obstacle: 'None', work: 'HTML, CSS', week: 4 },
+        { date: '01 Mar 2026', title: 'Setup Database', desc: 'Membuat migrasi dan seeder awal.', obstacle: 'DB Connection', work: 'Database', week: 3 }
+    ],
+    2: [
+        { date: '10 Mar 2026', title: 'Audit Keamanan', desc: 'Mengecek celah keamanan pada form login.', obstacle: 'None', work: 'Security', week: 4 }
+    ]
+};
+
+let currentView = 'weekly';
+let currentStudentId = 1;
+
+function renderStudents() {
+    const container = document.getElementById('studentSelector');
+    container.innerHTML = '';
+    students.forEach(s => {
+        const isActive = s.id === currentStudentId;
+        container.innerHTML += `
+            <div onclick="selectStudent(${s.id})" class="p-4 rounded-2xl flex items-center gap-3 cursor-pointer transition-all border-2 ${isActive ? 'bg-[#6B21A8]/5 border-[#6B21A8]' : 'bg-white border-transparent hover:border-gray-100 hover:bg-gray-50 group'}">
+                <div class="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center font-black text-xs shadow-lg group-hover:rotate-6 transition-all">${s.name.split(' ').map(n=>n[0]).join('')}</div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-black text-gray-800 truncate italic ${isActive ? 'text-[#6B21A8]' : ''}">${s.name}</p>
+                    <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mt-0.5">${s.nim}</p>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function selectStudent(id) {
+    currentStudentId = id;
+    const student = students.find(s => s.id === id);
+    document.getElementById('activeStudentName').innerText = student.name;
+    document.getElementById('activeStudentNim').innerText = 'NIM: ' + student.nim;
+    renderStudents();
+    renderLogs();
+}
+
+function setView(view) {
+    currentView = view;
+    document.getElementById('btnWeekly').className = view === 'weekly' ? 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-[#6B21A8] text-white shadow-purple-100' : 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-white text-gray-400 hover:bg-gray-50';
+    document.getElementById('btnAll').className = view === 'all' ? 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-[#6B21A8] text-white shadow-purple-100' : 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-white text-gray-400 hover:bg-gray-50';
+    
+    document.getElementById('weeklyContainer').classList.toggle('hidden', view !== 'weekly');
+    document.getElementById('allLogsContainer').classList.toggle('hidden', view !== 'all');
+    renderLogs();
+}
+
+function renderLogs() {
+    const logs = mockLogs[currentStudentId] || [];
+    
+    if (currentView === 'weekly') {
+        const weeklyContainer = document.getElementById('weeklyContainer');
+        weeklyContainer.innerHTML = '';
+        
+        // Group by week
+        const weeks = [...new Set(logs.map(l => l.week))].sort((a,b) => b-a);
+        
+        if(weeks.length === 0) {
+            weeklyContainer.innerHTML = '<div class="p-12 text-center bg-white rounded-[2rem] border border-gray-100"><p class="text-[10px] font-black text-gray-300 uppercase italic">Belum ada logbook minggu ini</p></div>';
+            return;
+        }
+
+        weeks.forEach(w => {
+            const weekLogs = logs.filter(l => l.week === w);
+            weeklyContainer.innerHTML += `
+                <div class="bg-white p-8 rounded-[2rem] border border-base-200 shadow-sm group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <span class="text-[10px] font-black text-[#6B21A8] uppercase tracking-[0.3em] bg-[#6B21A8]/5 px-5 py-2 rounded-xl italic">Minggu ke-${w}</span>
+                            <span class="text-[10px] font-black text-gray-300 uppercase italic">${weekLogs.length} Aktivitas</span>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        ${weekLogs.map((l, idx) => `
+                            <div onclick="showDetail(${currentStudentId}, ${logs.indexOf(l)})" class="flex items-center justify-between p-4 bg-gray-50/50 rounded-2xl border border-gray-100 hover:bg-white hover:border-[#6B21A8] hover:shadow-xl hover:shadow-purple-100/30 transition-all cursor-pointer group/item">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-2 h-2 rounded-full bg-purple-200 group-hover/item:bg-[#6B21A8] transition-colors"></div>
+                                    <p class="text-xs font-bold text-gray-700 italic uppercase tracking-tight">${l.title}</p>
+                                </div>
+                                <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">${l.date}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        });
+    } else {
+        const allLogsTableBody = document.getElementById('allLogsTableBody');
+        allLogsTableBody.innerHTML = '';
+        if(logs.length === 0) {
+            allLogsTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-12 text-[10px] font-black text-gray-300 uppercase italic">Belum ada aktivitas</td></tr>';
+            return;
+        }
+        logs.forEach((l, idx) => {
+            allLogsTableBody.innerHTML += `
+                <tr class="hover:bg-gray-50/50 transition-all group">
+                    <td class="font-black text-[9px] text-gray-400 uppercase tracking-widest py-4 border-b border-gray-50">${l.date}</td>
+                    <td class="font-bold text-xs text-gray-700 italic border-b border-gray-50">${l.title}</td>
+                    <td class="text-right border-b border-gray-50">
+                        <button onclick="showDetail(${currentStudentId}, ${idx})" class="btn btn-ghost btn-xs text-[#6B21A8] font-black uppercase text-[8px] tracking-widest">Detail</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+}
+
+function showDetail(studentId, logIndex) {
+    const log = mockLogs[studentId][logIndex];
+    document.getElementById('detailDate').innerText = log.date.toUpperCase();
+    document.getElementById('detailTitle').innerText = log.title;
+    document.getElementById('detailDesc').innerText = log.desc;
+    document.getElementById('detailObstacle').innerText = log.obstacle;
+    document.getElementById('detailWork').innerText = log.work;
+    document.getElementById('log_detail_modal').showModal();
+}
+
+// Init
+selectStudent(1);
+setView('weekly');
+</script>
 @endsection

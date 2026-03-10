@@ -12,11 +12,11 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-base-100 font-sans antialiased text-base-content">
+<body class="bg-[#F9FAFB] font-sans antialiased text-base-content">
     <div class="drawer lg:drawer-open">
         <input id="main-drawer" type="checkbox" class="drawer-toggle" />
         
-        <div class="drawer-content flex flex-col min-h-screen bg-base-100">
+        <div class="drawer-content flex flex-col min-h-screen bg-[#F9FAFB]">
             <!-- Navbar -->
             @include('components.navbar')
             
