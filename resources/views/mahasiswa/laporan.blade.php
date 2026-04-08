@@ -1,15 +1,35 @@
 @extends('layouts.app')
 
-@section('title', 'Upload Laporan Magang')
+@section('title', 'Unggah Laporan Akhir')
 
 @section('header')
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#6B21A8] p-6 rounded-2xl shadow-lg mt-2">
+<div class="bg-white border border-gray-100 p-6 md:p-8 rounded-[2rem] shadow-sm mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-        <h2 class="text-2xl font-bold text-white">
-            Upload Laporan Magang 📂
+        <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-1">
+            Unggah Laporan 📂
         </h2>
-        <p class="text-white/80 mt-1 text-sm md:text-base">Upload laporan akhir dan laporan yang sudah ditandatangani.</p>
+        <p class="text-gray-500 font-medium text-sm">Upload laporan akhir dan lembar pengesahan yang sudah ditandatangani.</p>
     </div>
+    <div class="flex gap-2">
+        <a href="#" class="bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-100 transition-colors py-3 px-5 rounded-2xl flex items-center gap-3 shadow-sm group">
+            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            </div>
+            <div>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400 block mb-0.5">Template</span>
+                <span class="font-black text-sm">Download Format</span>
+            </div>
+        </a>
+    </div>
+</div>
+@endsection
+
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/dashboard" class="hover:text-primary transition-colors">Dashboard</a></li> 
+    <li>Laporan</li>
+  </ul>
 </div>
 @endsection
 
@@ -23,19 +43,22 @@
             </div>
             
             <h3 class="font-black text-xl text-gray-800 mb-2">Laporan Akhir</h3>
-            <p class="text-xs text-gray-400 font-bold mb-8 leading-relaxed">File laporan lengkap hasil magang Anda dalam format PDF.</p>
+            <p class="text-[11px] text-gray-400 font-bold mb-8 leading-relaxed">File laporan lengkap hasil magang Anda dalam format PDF.</p>
             
-            <form onsubmit="handleReportUpload(event, 'Laporan Akhir')" class="space-y-6">
+            <form onsubmit="handleReportUpload(event, 'laporan_akhir', 'Laporan Akhir')" class="space-y-6">
                 <div class="form-control">
-                    <label class="label"><span class="label-text font-black text-gray-600 text-[10px] uppercase tracking-widest pl-1">Pilih File PDF</span></label>
-                    <input type="file" accept=".pdf" class="file-input file-input-bordered w-full bg-gray-50 border-gray-200 text-gray-800 font-bold focus:border-[#6B21A8] transition-all" required />
-                    <div class="mt-2 flex items-center justify-between px-1">
-                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">PDF (Maks 20MB)</span>
-                    </div>
+                    <label class="block text-[10px] font-black text-gray-900 uppercase tracking-widest mb-3 pl-1">Unggah Dokumen (PDF)</label>
+                    <label for="file-laporan" id="dropzone-laporan" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer bg-gray-50 hover:bg-purple-50 hover:border-[#6B21A8] transition-all group/drop px-4 text-center">
+                        <div class="flex flex-col items-center justify-center gap-2 text-gray-400 group-hover/drop:text-[#6B21A8]" id="content-laporan">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Klik atau Seret PDF</span>
+                        </div>
+                        <input id="file-laporan" type="file" accept=".pdf" class="hidden" onchange="handleFileSelect(this, 'laporan')" required />
+                    </label>
                 </div>
-                <button type="submit" class="btn bg-[#F49E0A] hover:bg-orange-600 border-none text-white w-full h-12 min-h-0 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-orange-100 group">
-                    Upload Laporan
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 group-hover:translate-y-[-2px] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <button type="submit" id="btn-laporan" class="btn bg-[#F49E0A] hover:bg-orange-600 border-none text-white w-full h-12 min-h-0 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-orange-100 group flex items-center justify-center gap-2">
+                    <span class="btn-label">Upload Laporan</span>
+                    <span class="loading loading-spinner loading-xs hidden"></span>
                 </button>
             </form>
         </div>
@@ -49,19 +72,22 @@
             </div>
             
             <h3 class="font-black text-xl text-gray-800 mb-2">Laporan Ditandatangani</h3>
-            <p class="text-xs text-gray-400 font-bold mb-8 leading-relaxed">Lembar pengesahan yang sudah ditandatangani basah/digital.</p>
+            <p class="text-[11px] text-gray-400 font-bold mb-8 leading-relaxed">Lembar pengesahan yang sudah ditandatangani basah/digital.</p>
             
-            <form onsubmit="handleReportUpload(event, 'Laporan Pengesahan')" class="space-y-6">
+            <form onsubmit="handleReportUpload(event, 'laporan_pengesahan', 'Laporan Pengesahan')" class="space-y-6">
                 <div class="form-control">
-                    <label class="label"><span class="label-text font-black text-gray-600 text-[10px] uppercase tracking-widest pl-1">Pilih File PDF</span></label>
-                    <input type="file" accept=".pdf" class="file-input file-input-bordered w-full bg-gray-50 border-gray-200 text-gray-800 font-bold focus:border-[#6B21A8] transition-all" required />
-                    <div class="mt-2 flex items-center justify-between px-1">
-                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">PDF (Maks 20MB)</span>
-                    </div>
+                    <label class="block text-[10px] font-black text-gray-900 uppercase tracking-widest mb-3 pl-1">Unggah Pengesahan (PDF)</label>
+                    <label for="file-pengesahan" id="dropzone-pengesahan" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer bg-gray-50 hover:bg-green-50 hover:border-green-500 transition-all group/drop px-4 text-center">
+                        <div class="flex flex-col items-center justify-center gap-2 text-gray-400 group-hover/drop:text-green-600" id="content-pengesahan">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Klik atau Seret PDF</span>
+                        </div>
+                        <input id="file-pengesahan" type="file" accept=".pdf" class="hidden" onchange="handleFileSelect(this, 'pengesahan')" required />
+                    </label>
                 </div>
-                <button type="submit" class="btn bg-[#F49E0A] hover:bg-orange-600 border-none text-white w-full h-12 min-h-0 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-orange-100 group">
-                    Upload Dokumen
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 group-hover:translate-y-[-2px] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <button type="submit" id="btn-pengesahan" class="btn bg-[#F49E0A] hover:bg-orange-600 border-none text-white w-full h-12 min-h-0 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-orange-100 group flex items-center justify-center gap-2">
+                    <span class="btn-label">Upload Dokumen</span>
+                    <span class="loading loading-spinner loading-xs hidden"></span>
                 </button>
             </form>
         </div>
@@ -69,13 +95,13 @@
 </div>
 
 <!-- Info Alert -->
-<div class="mt-12 bg-purple-50 p-6 rounded-[2rem] border border-purple-100 flex items-start gap-5 max-w-4xl mx-auto shadow-sm">
+<div class="mt-12 bg-purple-50 p-6 rounded-[2rem] border border-purple-100 flex items-start gap-5 max-w-4xl mx-auto shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div class="w-12 h-12 rounded-2xl bg-white border border-purple-100 flex items-center justify-center text-[#6B21A8] shadow-sm shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
     </div>
     <div>
-        <h4 class="font-extrabold text-[#6B21A8] text-sm uppercase tracking-wider mb-2">Informasi Penting 💡</h4>
-        <p class="text-[11px] text-purple-900/70 font-bold leading-relaxed">
+        <h4 class="font-extrabold text-[#6B21A8] text-sm uppercase tracking-wider mb-1 px-1">Informasi Penting 💡</h4>
+        <p class="text-[11px] text-purple-900/70 font-bold leading-relaxed px-1">
             Harap periksa kembali isi laporan sebelum mengunggah. Laporan yang sudah diunggah akan masuk ke tahap review Dosen Pembimbing untuk mendapatkan persetujuan akhir. Pastikan kualitas scan pada lembar pengesahan terlihat jelas.
         </p>
     </div>
@@ -111,29 +137,81 @@
 </div>
 
 <script>
-function handleReportUpload(event, title) {
+function handleFileSelect(input, type) {
+    const dropzone = document.getElementById('dropzone-' + type);
+    const content = document.getElementById('content-' + type);
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        
+        // Show selected file state
+        dropzone.classList.add(type === 'laporan' ? 'border-[#6B21A8]' : 'border-green-500');
+        dropzone.classList.add(type === 'laporan' ? 'bg-purple-50' : 'bg-green-50');
+        
+        content.innerHTML = `
+            <svg class="w-6 h-6 ${type === 'laporan' ? 'text-[#6B21A8]' : 'text-green-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <div class="flex flex-col items-center">
+                <span class="text-[10px] font-bold text-gray-800 truncate max-w-[200px]">${file.name}</span>
+                <span class="text-[8px] font-black ${type === 'laporan' ? 'text-purple-600' : 'text-green-600'} uppercase">Terpilih</span>
+            </div>
+        `;
+    }
+}
+
+function handleReportUpload(event, key, title) {
     event.preventDefault();
-    const fileInput = event.target.querySelector('input[type="file"]');
+    const form = event.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const label = btn.querySelector('.btn-label');
+    const loader = btn.querySelector('.loading');
+    const fileInput = form.querySelector('input[type="file"]');
     const file = fileInput.files[0];
     
     if (file) {
-        // Validasi Ukuran (20MB = 20 * 1024 * 1024 bytes)
+        // Validasi
         const maxSize = 20 * 1024 * 1024;
-        
         if (file.size > maxSize) {
             showNotif('error', 'Ukuran file melebihi 20MB.');
             return;
         }
-
-        // Validasi Format (PDF)
         if (file.type !== 'application/pdf') {
             showNotif('error', 'Format file harus berupa PDF.');
             return;
         }
 
-        showNotif('success', title + ' berhasil diunggah ke sistem.');
-        event.target.reset(); // Reset form
+        // Start Loading Logic
+        btn.disabled = true;
+        label.innerText = 'Mengunggah...';
+        loader.classList.remove('hidden');
+
+        setTimeout(() => {
+            // Success Logic
+            showNotif('success', title + ' berhasil diunggah.');
+            
+            // Save status to LocalStorage
+            let reportsStatus = JSON.parse(localStorage.getItem('sidul_reports')) || {};
+            reportsStatus[key] = true;
+            localStorage.setItem('sidul_reports', JSON.stringify(reportsStatus));
+
+            // End Loading
+            btn.disabled = false;
+            label.innerText = key === 'laporan_akhir' ? 'Upload Laporan' : 'Upload Dokumen';
+            loader.classList.add('hidden');
+            
+            form.reset();
+            resetDropzone(key === 'laporan_akhir' ? 'laporan' : 'pengesahan');
+        }, 800);
     }
+}
+
+function resetDropzone(type) {
+    const dropzone = document.getElementById('dropzone-' + type);
+    const content = document.getElementById('content-' + type);
+    dropzone.className = `flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer bg-gray-50 hover:bg-${type === 'laporan' ? 'purple' : 'green'}-50 hover:border-${type === 'laporan' ? '[#6B21A8]' : 'green-500'} transition-all group/drop px-4 text-center`;
+    content.innerHTML = `
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Klik atau Seret PDF</span>
+    `;
 }
 
 function showNotif(type, message = '') {

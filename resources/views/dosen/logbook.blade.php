@@ -131,12 +131,21 @@ function renderStudents() {
     container.innerHTML = '';
     students.forEach(s => {
         const isActive = s.id === currentStudentId;
+        const colors = [
+            'bg-purple-100 text-[#6B21A8]',
+            'bg-orange-100 text-[#F49E0A]',
+            'bg-blue-100 text-blue-600',
+            'bg-green-100 text-green-600',
+            'bg-pink-100 text-pink-600'
+        ];
+        const avatarStyle = colors[s.id % colors.length];
+
         container.innerHTML += `
-            <div onclick="selectStudent(${s.id})" class="p-4 rounded-2xl flex items-center gap-3 cursor-pointer transition-all border-2 ${isActive ? 'bg-[#6B21A8]/5 border-[#6B21A8]' : 'bg-white border-transparent hover:border-gray-100 hover:bg-gray-50 group'}">
-                <div class="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center font-black text-xs shadow-lg group-hover:rotate-6 transition-all">${s.name.split(' ').map(n=>n[0]).join('')}</div>
+            <div onclick="selectStudent(${s.id})" class="p-5 rounded-[2rem] flex items-center gap-4 cursor-pointer transition-all border-2 ${isActive ? 'bg-purple-50 border-primary shadow-lg shadow-purple-100' : 'bg-white border-transparent hover:border-gray-100 hover:bg-gray-50 group'}">
+                <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xs group-hover:rotate-6 transition-all shrink-0">${s.name.split(' ').map(n=>n[0]).join('')}</div>
                 <div class="overflow-hidden">
-                    <p class="text-xs font-black text-gray-800 truncate italic ${isActive ? 'text-[#6B21A8]' : ''}">${s.name}</p>
-                    <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mt-0.5">${s.nim}</p>
+                    <p class="text-sm font-bold text-gray-900 truncate tracking-tight ${isActive ? 'text-primary' : ''}">${s.name}</p>
+                    <p class="text-[9px] font-medium text-gray-400 tracking-wide mt-1 uppercase">${s.nim}</p>
                 </div>
             </div>
         `;
@@ -189,12 +198,15 @@ function renderLogs() {
                     </div>
                     <div class="space-y-3">
                         ${weekLogs.map((l, idx) => `
-                            <div onclick="showDetail(${currentStudentId}, ${logs.indexOf(l)})" class="flex items-center justify-between p-4 bg-gray-50/50 rounded-2xl border border-gray-100 hover:bg-white hover:border-[#6B21A8] hover:shadow-xl hover:shadow-purple-100/30 transition-all cursor-pointer group/item">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-2 h-2 rounded-full bg-purple-200 group-hover/item:bg-[#6B21A8] transition-colors"></div>
-                                    <p class="text-xs font-bold text-gray-700 italic uppercase tracking-tight">${l.title}</p>
+                            <div onclick="showDetail(${currentStudentId}, ${logs.indexOf(l)})" class="flex items-center justify-between p-6 bg-gray-50/50 rounded-3xl border border-gray-100 hover:bg-white hover:border-primary hover:shadow-2xl hover:shadow-purple-100 transition-all cursor-pointer group/item">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-purple-200 group-hover/item:bg-primary group-hover/item:scale-150 transition-all duration-300 shadow-[0_0_10px_rgba(107,33,168,0.2)]"></div>
+                                    <div>
+                                        <p class="text-sm font-black text-gray-800 italic uppercase tracking-tighter group-hover/item:text-primary transition-colors">${l.title}</p>
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 italic">Review Required</p>
+                                    </div>
                                 </div>
-                                <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">${l.date}</span>
+                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic group-hover/item:text-gray-800 transition-colors">${l.date}</span>
                             </div>
                         `).join('')}
                     </div>

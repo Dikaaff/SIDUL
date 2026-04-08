@@ -79,78 +79,86 @@
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <!-- Section: Daftar Mahasiswa Bimbingan -->
-    <div class="card bg-white shadow-sm border border-base-200 overflow-hidden">
-        <div class="px-6 py-5 border-b border-base-100 flex items-center justify-between bg-gray-50/50">
-            <h3 class="font-bold text-gray-800 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#6B21A8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                Mahasiswa Bimbingan Terbaru
-            </h3>
-            <a href="/dosen/monitoring" class="text-xs font-bold text-[#6B21A8] hover:underline">Lihat Semua</a>
+<div class="space-y-6">
+    <!-- Header Bimbingan -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-[2rem] border border-base-200 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-[#6B21A8] shadow-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            </div>
+            <h3 class="text-xl font-extrabold text-gray-900 tracking-tight">Daftar Mahasiswa Bimbingan</h3>
         </div>
-        <div class="overflow-x-auto">
-            <table class="table table-zebra">
-                <thead>
-                    <tr class="text-gray-400 uppercase text-[10px] tracking-wider">
-                        <th>Mahasiswa</th>
-                        <th>Perusahaan</th>
-                        <th>Progress</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="flex items-center gap-3">
-                                <div class="avatar placeholder">
-                                    <div class="bg-gray-100 text-gray-500 rounded-lg w-10">AS</div>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-sm">Andi Saputra</div>
-                                    <div class="text-[10px] text-gray-400">210401001</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="text-sm font-medium text-gray-600">PT. Tech Solutions</td>
-                        <td>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-bold">75%</span>
-                                <progress class="progress progress-success w-16 h-1.5" value="75" max="100"></progress>
-                            </div>
-                        </td>
-                        <td>
-                            <button onclick="showStudentDetail('Andi Saputra', '210401001', 'PT. Tech Solutions', 75, 'Software Development', 'Aktif Magang')" class="btn btn-ghost btn-xs text-[#6B21A8] font-bold">Detail</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="flex items-center gap-3">
-                                <div class="avatar placeholder">
-                                    <div class="bg-gray-100 text-gray-500 rounded-lg w-10">BR</div>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-sm">Budi Ramadhan</div>
-                                    <div class="text-[10px] text-gray-400">210401045</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="text-sm font-medium text-gray-600">Bank Mandiri</td>
-                        <td>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-bold">30%</span>
-                                <progress class="progress progress-warning w-16 h-1.5" value="30" max="100"></progress>
-                            </div>
-                        </td>
-                        <td>
-                            <button onclick="showStudentDetail('Budi Ramadhan', '210401045', 'Bank Mandiri', 30, 'Financial Technology', 'Pendaftaran')" class="btn btn-ghost btn-xs text-[#6B21A8] font-bold">Detail</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="flex items-center gap-3">
+            <div class="join shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
+                <input class="input input-bordered join-item bg-gray-50 border-none text-xs font-semibold w-48 lg:w-64 focus:bg-white transition-all" placeholder="Cari nama atau NIM..." />
+                <button class="btn join-item bg-white border-none hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </button>
+            </div>
+            <select class="select select-bordered rounded-2xl bg-white border-gray-100 text-xs font-bold uppercase tracking-wider">
+                <option disabled selected>Semua Status</option>
+                <option>Aktif Magang</option>
+                <option>Tahap Pendaftaran</option>
+                <option>Selesai</option>
+            </select>
         </div>
     </div>
 
+    <!-- Minimalistic List Header -->
+    <div class="px-8 grid grid-cols-12 gap-4 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+        <div class="col-span-4 lg:col-span-4">Mahasiswa</div>
+        <div class="col-span-4 lg:col-span-4">Instansi Magang</div>
+        <div class="col-span-3 lg:col-span-3">Status & Progress</div>
+        <div class="col-span-1 lg:col-span-1 text-right">Detail</div>
+    </div>
+
+    <!-- Student List -->
+    <div class="space-y-4">
+        @php
+            $students = [
+                ['name' => 'Andi Saputra', 'nim' => '210401001', 'sub' => 'Teknik Informatika', 'company' => 'PT. Teknologi Maju Persada', 'field' => 'Software Development', 'status' => 'AKTIF MAGANG', 'progress' => 85, 'initial' => 'AS', 'status_color' => 'success'],
+                ['name' => 'Budi Ramadhan', 'nim' => '210401045', 'sub' => 'Teknik Informatika', 'company' => 'Bank Nasional Nusantara', 'field' => 'Financial Technology', 'status' => 'TAHAP PENDAFTARAN', 'progress' => 15, 'initial' => 'BR', 'status_color' => 'warning'],
+                ['name' => 'Siti Aminah', 'nim' => '210401089', 'sub' => 'Teknik Informatika', 'company' => 'Telkom Indonesia', 'field' => 'Network Engineering', 'status' => 'AKTIF MAGANG', 'progress' => 45, 'initial' => 'SA', 'status_color' => 'success'],
+                ['name' => 'Rahmat Hidayat', 'nim' => '210401090', 'sub' => 'Teknik Informatika', 'company' => 'Gojek Tech', 'field' => 'Data Science', 'status' => 'SELESAI', 'progress' => 100, 'initial' => 'RH', 'status_color' => 'info'],
+            ];
+        @endphp
+
+        @foreach($students as $student)
+        <div class="bg-white hover:bg-gray-50/50 border border-base-200 rounded-[2rem] p-6 transition-all group shadow-sm grid grid-cols-12 gap-4 items-center">
+            <div class="col-span-4 flex items-center gap-5">
+                <div class="w-14 h-14 rounded-2xl {{ $student['status_color'] === 'success' ? 'bg-purple-50 text-primary' : ($student['status_color'] === 'warning' ? 'bg-orange-50 text-secondary' : 'bg-green-50 text-green-600') }} flex items-center justify-center font-black text-lg group-hover:rotate-3 transition-transform">
+                    {{ $student['initial'] }}
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-lg leading-tight tracking-tight">{{ $student['name'] }}</h4>
+                    <p class="text-[11px] text-gray-400 font-medium tracking-wide mt-1">{{ $student['nim'] }} • {{ $student['sub'] }}</p>
+                </div>
+            </div>
+            
+            <div class="col-span-4">
+                <h5 class="font-bold text-gray-800 text-sm tracking-tight">{{ $student['company'] }}</h5>
+                <p class="text-[10px] text-gray-400 font-medium tracking-wide mt-1">{{ $student['field'] }}</p>
+            </div>
+
+            <div class="col-span-3">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="badge {{ $student['status_color'] === 'success' ? 'bg-purple-50 text-primary border-purple-100' : ($student['status_color'] === 'warning' ? 'bg-orange-50 text-secondary border-orange-100' : 'bg-green-50 text-green-600 border-green-100') }} font-black text-[8px] px-3 py-3 uppercase tracking-widest rounded-lg italic border-2">
+                        {{ $student['status'] }}
+                    </div>
+                    <span class="text-xs font-black italic text-gray-800">{{ $student['progress'] }}%</span>
+                </div>
+                <progress class="progress progress-primary w-full h-[0.4rem] bg-gray-100 [&::-webkit-progress-value]:transition-all [&::-webkit-progress-value]:duration-500 rounded-full" value="{{ $student['progress'] }}" max="100"></progress>
+            </div>
+
+            <div class="col-span-1 flex justify-end">
+                <button onclick="showStudentDetail('{{ $student['name'] }}', '{{ $student['nim'] }}', '{{ $student['company'] }}', {{ $student['progress'] }}, '{{ $student['field'] }}', '{{ $student['status'] }}')" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:text-primary hover:bg-primary/10 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </button>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
     <!-- Section: Notifikasi Pengajuan -->
     <div class="card bg-white shadow-sm border border-base-200">
         <div class="px-6 py-5 border-b border-base-100 bg-gray-50/50">

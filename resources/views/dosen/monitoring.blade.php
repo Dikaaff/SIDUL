@@ -175,36 +175,46 @@ function renderTable() {
         document.getElementById('emptyState').classList.add('hidden');
         document.getElementById('monitoringTable').classList.remove('hidden');
         
-        paginatedItems.forEach(student => {
-            const avatarColor = student.status === 'Aktif Magang' ? 'bg-purple-100 text-[#6B21A8]' : 
-                               (student.status === 'Selesai' ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-[#F49E0A]');
+        paginatedItems.forEach((student, index) => {
+            // Color palette for avatars
+            const colors = [
+                'bg-purple-100 text-[#6B21A8]',
+                'bg-orange-100 text-[#F49E0A]',
+                'bg-blue-100 text-blue-600',
+                'bg-green-100 text-green-600',
+                'bg-pink-100 text-pink-600'
+            ];
+            
+            // Use index + current page to keep colors consistent
+            const colorIndex = ( (currentPage - 1) * itemsPerPage + index ) % colors.length;
+            const avatarColor = colors[colorIndex];
             
             const badgeClass = student.status === 'Aktif Magang' ? 'badge-success' : 
                                (student.status === 'Selesai' ? 'badge-info' : 'badge-warning');
                                
             const row = `
-                <tr class="hover:bg-gray-50/50 transition-colors border-b border-base-100 group">
+                <tr class="hover:bg-gray-50/50 transition-all border-b border-base-100 group">
                     <td class="py-6">
-                        <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-5">
                             <div class="avatar">
-                                <div class="w-12 h-12 rounded-xl ${avatarColor} flex items-center justify-center font-bold text-lg shadow-inner">${student.name.split(' ').map(n => n[0]).join('')}</div>
+                                <div class="w-14 h-14 rounded-2xl ${avatarColor} flex items-center justify-center font-black text-lg group-hover:rotate-3 transition-transform">${student.name.split(' ').map(n => n[0]).join('')}</div>
                             </div>
                             <div>
-                                <div class="font-extrabold text-gray-800 text-base group-hover:text-[#6B21A8] transition-colors italic">${student.name}</div>
-                                <div class="text-[10px] font-bold text-gray-400 tracking-widest mt-0.5">${student.nim} • Teknik Informatika</div>
+                                <div class="font-bold text-gray-900 text-lg group-hover:text-[#6B21A8] transition-colors tracking-tight leading-tight">${student.name}</div>
+                                <div class="text-[11px] font-medium text-gray-400 tracking-wide mt-1 uppercase">${student.nim} • Teknik Informatika</div>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="flex flex-col">
-                            <span class="font-black text-gray-700 text-xs italic uppercase tracking-tighter">${student.company}</span>
-                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">${student.field}</span>
+                            <span class="font-bold text-gray-800 text-sm tracking-tight">${student.company}</span>
+                            <span class="text-[10px] font-medium text-gray-400 tracking-wide mt-1">${student.field}</span>
                         </div>
                     </td>
                     <td>
-                        <div class="w-full max-w-[180px] space-y-2">
+                        <div class="w-full max-w-[200px] space-y-3">
                             <div class="flex items-center justify-between">
-                                <span class="badge ${badgeClass} badge-outline font-black text-[8px] py-1.5 px-3 uppercase tracking-widest border-2 rounded-lg italic">${student.status}</span>
+                                <span class="badge ${badgeClass} badge-outline font-black text-[9px] py-3 px-4 uppercase tracking-widest border-2 rounded-xl italic">${student.status}</span>
                                 <span class="text-xs font-black text-gray-800 italic">${student.progress}%</span>
                             </div>
                             <div class="relative h-2 w-full bg-gray-100 rounded-full overflow-hidden shadow-inner">
@@ -214,7 +224,7 @@ function renderTable() {
                     </td>
                     <td>
                         <button onclick="showStudentDetail('${student.name}', '${student.nim}', '${student.company}', ${student.progress}, '${student.field}', '${student.status}')" class="btn btn-circle btn-ghost hover:bg-[#6B21A8]/10 text-gray-300 hover:text-[#6B21A8] transition-all">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         </button>
                     </td>
                 </tr>

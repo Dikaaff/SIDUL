@@ -1,209 +1,284 @@
 @extends('layouts.app')
 
-@section('title', 'Bimbingan Magang')
+@section('title', 'Bimbingan Akademik')
 
 @section('header')
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="bg-white border border-gray-100 p-6 md:p-8 rounded-[2rem] shadow-sm mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-        <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-            Bimbingan Magang
+        <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-1">
+            Bimbingan Dosen 🎓
         </h2>
-        <p class="text-base-content/60 mt-1">Diskusikan progres magang dan upload dokumen revisi kepada dosen pembimbing.</p>
+        <p class="text-gray-700 font-medium text-sm">Ajukan jadwal pertemuan dan unggah file revisi laporan Anda kepada Dosen Pembimbing.</p>
     </div>
     <div class="flex gap-2">
-        <div class="badge badge-lg bg-base-100 shadow-sm border-base-200 py-3 px-4 flex gap-2">
-            <div class="avatar placeholder">
-                <div class="bg-primary/20 text-primary rounded-full w-6">
-                    <span class="text-xs font-bold">DS</span>
-                </div>
+        <div class="bg-purple-50 text-[#6B21A8] py-3 px-5 rounded-2xl flex items-center gap-3 border border-purple-100 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm">
+                <span class="text-xs font-black">BS</span>
             </div>
-            <span class="font-medium text-sm">Dr. Budi Santoso</span>
+            <div>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-purple-400 block mb-0.5">Dosen Wali</span>
+                <span class="font-black text-sm">Dr. Budi Santoso</span>
+            </div>
         </div>
     </div>
 </div>
 @endsection
 
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/dashboard" class="hover:text-primary transition-colors">Dashboard</a></li> 
+    <li>Bimbingan</li>
+  </ul>
+</div>
+@endsection
+
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-12rem)] min-h-[600px]">
-    <!-- List Bimbingan (Sidebar Area in Page) -->
-    <div class="card bg-base-100 shadow-sm border border-base-200 h-full flex flex-col">
-        <div class="p-4 border-b border-base-200 flex justify-between items-center bg-base-100 lg:rounded-t-2xl z-10 sticky top-0">
-            <h3 class="font-semibold">Riwayat Bimbingan</h3>
-            <button class="btn btn-sm btn-ghost btn-circle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
+<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+    
+    <!-- Left Column: Form Pengajuan Jadwal -->
+    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 md:p-8 flex flex-col h-fit">
+        <h3 class="font-black text-gray-800 text-lg flex items-center gap-2 border-b border-gray-100 pb-4 mb-6">
+            <span class="w-1.5 h-6 bg-[#F49E0A] rounded-full inline-block"></span>
+            Ajukan Jadwal Pertemuan
+        </h3>
+
+        <form action="#" method="POST" class="space-y-6" onsubmit="submitJadwal(event)">
+            <div>
+                <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Topik Bimbingan <span class="text-red-500">*</span></label>
+                <input type="text" id="topik" placeholder="Contoh: Revisi Bab 1 & 2" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm font-medium text-gray-800 focus:bg-white focus:ring-2 focus:ring-[#F49E0A] outline-none transition-all" required />
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Tanggal Pengajuan <span class="text-red-500">*</span></label>
+                <input type="date" id="tanggal" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm font-medium text-gray-800 focus:bg-white focus:ring-2 focus:ring-[#F49E0A] outline-none transition-all" required />
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Waktu (Jam) <span class="text-red-500">*</span></label>
+                <input type="time" id="waktu" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm font-medium text-gray-800 focus:bg-white focus:ring-2 focus:ring-[#F49E0A] outline-none transition-all" required />
+            </div>
+
+            <div class="pt-2">
+                <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">File Laporan (Opsional)</label>
+                <div class="flex items-center justify-center w-full">
+                    <label for="bimbingan-file" id="dropzone-label" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-orange-50 hover:border-[#F49E0A] transition-colors group px-4 text-center">
+                        <div class="flex items-center justify-center text-gray-600 group-hover:text-[#F49E0A] gap-2" id="dropzone-content">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                            <span class="text-xs font-bold uppercase tracking-widest">Upload PDF</span>
+                        </div>
+                        <input id="bimbingan-file" type="file" class="hidden" accept=".pdf" onchange="handleFileSelect(this)" />
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" id="btnSubmitBimbingan" class="w-full bg-[#F49E0A] hover:bg-orange-600 text-white rounded-xl py-3.5 px-8 font-black text-xs uppercase tracking-widest shadow-xl shadow-orange-900/20 hover:scale-[1.02] active:scale-95 transition-all mt-4 disabled:bg-orange-300 flex items-center justify-center gap-2">
+                <span id="labelBtn">Kirim Pengajuan</span>
+                <span id="loaderBtn" class="loading loading-spinner loading-xs hidden"></span>
             </button>
-        </div>
-        
-        <div class="flex-1 overflow-y-auto p-2 space-y-1">
-            <!-- Active Item -->
-            <a href="#" class="flex flex-col p-3 rounded-xl bg-primary/10 border border-primary/20 transition-all">
-                <div class="flex justify-between items-start mb-1">
-                    <span class="font-semibold text-sm text-primary">Revisi Bab 3</span>
-                    <span class="text-[10px] text-base-content/50">Hari ini, 10:45</span>
-                </div>
-                <p class="text-xs text-base-content/70 line-clamp-2">Perbaikan metodologi dan penambahan referensi jurnal tahun 2023 sesuai arahan.</p>
-                <div class="mt-2 flex items-center justify-between">
-                    <div class="badge badge-warning badge-sm text-[10px]">Revision</div>
-                    <div class="flex items-center gap-1 text-[10px] text-primary font-medium">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                        1 File
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Item -->
-            <a href="#" class="flex flex-col p-3 rounded-xl hover:bg-base-200/50 border border-transparent transition-all opacity-70">
-                <div class="flex justify-between items-start mb-1">
-                    <span class="font-semibold text-sm">Bimbingan Bab 2</span>
-                    <span class="text-[10px] text-base-content/50">12 Mar 2026</span>
-                </div>
-                <p class="text-xs text-base-content/70 line-clamp-2">Kajian pustaka dan landasan teori sudah selesai disusun.</p>
-                <div class="mt-2 flex items-center justify-between">
-                    <div class="badge badge-success badge-sm text-[10px]">Approved</div>
-                    <div class="flex items-center gap-1 text-[10px] text-base-content/60">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                        1 File
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Item -->
-            <a href="#" class="flex flex-col p-3 rounded-xl hover:bg-base-200/50 border border-transparent transition-all opacity-70">
-                <div class="flex justify-between items-start mb-1">
-                    <span class="font-semibold text-sm">Bimbingan Bab 1</span>
-                    <span class="text-[10px] text-base-content/50">05 Mar 2026</span>
-                </div>
-                <p class="text-xs text-base-content/70 line-clamp-2">Latar belakang masalah dan rumusan masalah.</p>
-                <div class="mt-2 flex items-center justify-between">
-                    <div class="badge badge-success badge-sm text-[10px]">Approved</div>
-                    <div class="flex items-center gap-1 text-[10px] text-base-content/60">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                        2 Files
-                    </div>
-                </div>
-            </a>
-        </div>
-        
-        <div class="p-4 border-t border-base-200">
-            <button class="btn btn-primary btn-block rounded-xl shadow-lg shadow-primary/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                Bimbingan Baru
-            </button>
-        </div>
+        </form>
     </div>
 
-    <!-- Chat / Detail Area -->
-    <div class="lg:col-span-2 card bg-base-100 shadow-sm border border-base-200 h-full flex flex-col">
-        <!-- Chat Header -->
-        <div class="p-4 border-b border-base-200 flex justify-between items-center bg-base-100 lg:rounded-t-2xl z-10 sticky top-0">
+    <!-- Right Column: Riwayat Bimbingan -->
+    <div class="lg:col-span-2 bg-white rounded-[2rem] shadow-sm border border-gray-100 p-0 overflow-hidden flex flex-col">
+        <div class="p-6 md:p-8 border-b border-gray-100 bg-gray-50/50">
+            <h3 class="font-black text-gray-800 text-lg flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-[#6B21A8] rounded-full inline-block"></span>
+                Riwayat & Jadwal Pertemuan
+            </h3>
+        </div>
+
+        <div class="flex-1 overflow-x-auto p-6 md:p-8">
+            <table class="w-full text-left border-collapse min-w-[500px]">
+                <thead>
+                    <tr>
+                        <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-gray-600 border-b border-gray-100">Topik</th>
+                        <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-gray-600 border-b border-gray-100">Jadwal</th>
+                        <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-gray-600 border-b border-gray-100">Status</th>
+                        <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-gray-600 border-b border-gray-100 text-right">Lampiran</th>
+                    </tr>
+                </thead>
+                <tbody id="bimbinganList">
+                    <tr id="emptyBimbingan" class="group">
+                        <td colspan="4" class="py-16 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <div class="w-20 h-20 rounded-[1.5rem] bg-orange-50 flex items-center justify-center text-[#F49E0A] mx-auto mb-6 border border-orange-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            </div>
+                            
+                            <h3 class="text-xl font-black text-gray-800 mb-2">Belum Ada Jadwal</h3>
+                            <p class="text-gray-500 font-bold text-sm max-w-sm mx-auto mb-4">Silakan ajukan jadwal pertemuan dengan Dosen Wali melalui form di sebelah kiri.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Toast -->
+<div id="notifContainer" class="fixed top-8 right-8 z-[9999] space-y-4">
+    <!-- Success Notif -->
+    <div id="successNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 transition-all">
+        <div class="flex items-center gap-4 bg-gray-900 text-white p-5 rounded-[2rem] shadow-2xl border border-white/10 min-w-[340px]">
+            <div class="w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+            </div>
             <div>
-                <h3 class="font-bold text-lg">Revisi Bab 3</h3>
-                <p class="text-xs text-base-content/60">Topik bimbingan saat ini</p>
-            </div>
-            <div class="badge badge-warning">Status: Revision</div>
-        </div>
-
-        <!-- Chat Messages (Scrollable) -->
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-base-200/20">
-            <!-- Dosen Message -->
-            <div class="chat chat-start">
-                <div class="chat-image avatar">
-                    <div class="w-10 rounded-full border border-base-200">
-                        <img alt="Dosen" src="https://ui-avatars.com/api/?name=Budi+Santoso&background=random" />
-                    </div>
-                </div>
-                <div class="chat-header text-xs opacity-70 mb-1 ml-1">
-                    Dr. Budi Santoso
-                    <time class="ml-1 text-[10px]">10:45</time>
-                </div>
-                <div class="chat-bubble bg-base-100 text-base-content shadow-sm border border-base-200">
-                    <p class="text-sm">Halo, untuk Bab 3 metode penelitiannya masih kurang tajam. Tolong tambahkan perbandingan dengan 2 jurnal terbaru (2023 ke atas).</p>
-                    
-                    <div class="mt-3 p-3 bg-base-200 rounded-xl flex items-center justify-between border border-base-300">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded bg-error/10 text-error flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                            </div>
-                            <div>
-                                <p class="text-xs font-semibold leading-tight">Laporan_Bab3_Final(1).pdf</p>
-                                <p class="text-[10px] text-base-content/50">Diberi catatan pada halaman 12</p>
-                            </div>
-                        </div>
-                        <button class="btn btn-xs btn-ghost btn-circle">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-0.5 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="divider text-xs text-base-content/40 my-2">Hari Ini</div>
-
-            <!-- Mahasiswa Message -->
-            <div class="chat chat-end">
-                <div class="chat-image avatar">
-                    <div class="w-10 rounded-full border border-primary/20">
-                        <img alt="Mahasiswa" src="https://ui-avatars.com/api/?name=User+Name&background=6B21A8&color=fff" />
-                    </div>
-                </div>
-                <div class="chat-header text-xs opacity-70 mb-1 mr-1">
-                    Anda
-                    <time class="ml-1 text-[10px]">14:20</time>
-                </div>
-                <div class="chat-bubble bg-primary text-primary-content shadow-sm shadow-primary/20">
-                    <p class="text-sm">Baik Pak Budi, saya sudah merevisi Bab 3 dan menambahkan referensi jurnal sesuai arahan Bapak di halaman 14. Mohon arahannya kembali.</p>
-                </div>
-                <div class="chat-footer opacity-50 text-[10px] mt-1 flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                    Terkirim
-                </div>
-            </div>
-
-            <div class="chat chat-end">
-                 <div class="chat-bubble bg-base-100 text-base-content shadow-sm border border-base-200">
-                    <div class="p-1 flex items-center justify-between gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded bg-error/10 text-error flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                            </div>
-                            <div>
-                                <p class="text-xs font-semibold leading-tight flex items-center gap-1">
-                                    Revisi_Bab3_V2.pdf
-                                    <span class="badge badge-xs badge-success text-[8px] px-1">NEW</span>
-                                </p>
-                                <p class="text-[10px] text-base-content/50">1.2 MB</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Input Area -->
-        <div class="p-3 border-t border-base-200 bg-base-100 lg:rounded-b-2xl z-10 mt-auto">
-            <!-- Active upload preview area -->
-            <div class="mb-2 hidden">
-                <div class="badge badge-accent badge-outline gap-2 py-3 px-3 shadow-sm rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                    <span class="text-xs">Document_Revisi_Final.pdf</span>
-                    <button class="btn btn-xs btn-ghost btn-circle text-base-content/50 hover:text-error ml-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="flex items-end gap-2 bg-base-200/50 p-1 md:p-2 rounded-2xl border border-base-200 focus-within:border-primary/50 focus-within:bg-base-100 transition-colors">
-                <button class="btn btn-circle btn-ghost text-base-content/50 hover:text-secondary hover:bg-secondary/10 shrink-0 mb-0.5">
-                    <label class="cursor-pointer flex items-center justify-center w-full h-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                        <input type="file" class="hidden" accept=".pdf" />
-                    </label>
-                </button>
-                <textarea class="textarea w-full bg-transparent border-0 focus:outline-none focus:ring-0 resize-none min-h-[44px] h-[44px] py-3 text-sm" placeholder="Tulis catatan bimbingan Anda..."></textarea>
-                <button class="btn btn-circle btn-primary shadow-lg shadow-primary/30 shrink-0 mb-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 translate-x-[-1px] translate-y-[1px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-                </button>
+                <p class="font-black text-sm uppercase tracking-widest">Berhasil!</p>
+                <p class="text-xs text-gray-400 font-bold mt-0.5">Pengajuan bimbingan telah dikirim.</p>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Inisialisasi data dari Local Storage
+    let bimbingans = JSON.parse(localStorage.getItem('sidul_bimbingans')) || [];
+
+    function renderBimbinganTable() {
+        const tbody = document.getElementById('bimbinganList');
+        tbody.innerHTML = '';
+        
+        if (bimbingans.length === 0) {
+            tbody.innerHTML = `
+                <tr id="emptyBimbingan" class="group">
+                    <td colspan="4" class="py-16 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-orange-50 flex items-center justify-center text-[#F49E0A] mx-auto mb-6 border border-orange-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        </div>
+                        <h3 class="text-xl font-black text-gray-800 mb-2">Belum Ada Jadwal</h3>
+                        <p class="text-gray-500 font-bold text-sm max-w-sm mx-auto mb-4">Silakan ajukan jadwal pertemuan dengan Dosen Wali melalui form di sebelah kiri.</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        // Urutkan dari yang terbaru
+        [...bimbingans].reverse().forEach(item => {
+            const tr = document.createElement('tr');
+            tr.className = "group hover:bg-gray-50 transition-colors animate-in fade-in slide-in-from-left-4";
+            tr.innerHTML = `
+                <td class="py-5 border-b border-gray-50 px-4">
+                    <p class="font-bold text-gray-800 text-sm">${item.topik}</p>
+                    <p class="text-[10px] text-gray-500 font-medium italic">${item.createdAt}</p>
+                </td>
+                <td class="py-5 border-b border-gray-50">
+                    <div class="flex items-center gap-2 text-sm font-bold text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#6B21A8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        ${formatDateDisplay(item.tanggal)}, ${item.waktu}
+                    </div>
+                </td>
+                <td class="py-5 border-b border-gray-50">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-yellow-50 text-yellow-600 border border-yellow-200">
+                        ${item.status}
+                    </span>
+                </td>
+                <td class="py-5 border-b border-gray-50 text-right px-4">
+                    ${item.fileName ? `
+                        <button onclick="viewFile('${item.fileName}', '${item.fileSize}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-purple-50 text-[#6B21A8] border border-purple-100 hover:bg-[#6B21A8] hover:text-white transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            Lihat PDF
+                        </button>
+                    ` : '<span class="text-[10px] text-gray-400 font-bold">TIDAK ADA FILE</span>'}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function formatDateDisplay(dateStr) {
+        const dateObj = new Date(dateStr);
+        return dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function submitJadwal(event) {
+        event.preventDefault();
+        
+        const btn = document.getElementById('btnSubmitBimbingan');
+        const label = document.getElementById('labelBtn');
+        const loader = document.getElementById('loaderBtn');
+        const notif = document.getElementById('successNotif');
+
+        // Start Loading
+        btn.disabled = true;
+        label.innerText = "Mengirim...";
+        loader.classList.remove('hidden');
+
+        const topik = document.getElementById('topik').value;
+        const tanggal = document.getElementById('tanggal').value;
+        const waktu = document.getElementById('waktu').value;
+        const fileInput = document.getElementById('bimbingan-file');
+        
+        let fileName = null;
+        let fileSize = null;
+        if (fileInput.files.length > 0) {
+            fileName = fileInput.files[0].name;
+            fileSize = (fileInput.files[0].size / 1024 / 1024).toFixed(2) + ' MB';
+        }
+
+        setTimeout(() => {
+            const newBimbingan = {
+                id: Date.now(),
+                topik,
+                tanggal,
+                waktu,
+                fileName,
+                fileSize,
+                status: 'Menunggu ACC',
+                createdAt: 'Baru Saja'
+            };
+
+            bimbingans.push(newBimbingan);
+            localStorage.setItem('sidul_bimbingans', JSON.stringify(bimbingans));
+            
+            renderBimbinganTable();
+            
+            // End Loading
+            btn.disabled = false;
+            label.innerText = "Kirim Pengajuan";
+            loader.classList.add('hidden');
+
+            notif.classList.remove('hidden');
+            setTimeout(() => notif.classList.add('hidden'), 3000);
+
+            event.target.reset();
+            resetFile();
+        }, 800);
+    }
+
+    function viewFile(name, size) {
+        alert(`📂 Simulasi Membuka File:\nNama: ${name}\nUkuran: ${size}\n\n(File akan benar-benar bisa dibuka setelah ditarik dari Cloud Storage Backend)`);
+    }
+
+    function handleFileSelect(input) {
+        const dropzone = document.getElementById('dropzone-label');
+        const content = document.getElementById('dropzone-content');
+        
+        if (input.files && input.files[0]) {
+            const fileName = input.files[0].name;
+            dropzone.classList.add('border-[#F49E0A]', 'bg-orange-50');
+            content.innerHTML = `
+                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <div class="flex flex-col text-left">
+                    <span class="text-[10px] font-bold text-gray-800 truncate max-w-[150px]">${fileName}</span>
+                    <span class="text-[8px] font-black text-green-600 uppercase tracking-widest">Attached</span>
+                </div>
+            `;
+        }
+    }
+
+    function resetFile() {
+        const dropzone = document.getElementById('dropzone-label');
+        const content = document.getElementById('dropzone-content');
+        dropzone.classList.remove('border-[#F49E0A]', 'bg-orange-50');
+        content.innerHTML = `
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <span class="text-xs font-bold uppercase tracking-widest">Upload PDF</span>
+        `;
+    }
+
+    // Initial Render
+    renderBimbinganTable();
+</script>
 @endsection

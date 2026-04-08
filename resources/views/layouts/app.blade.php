@@ -12,30 +12,39 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#F9FAFB] font-sans antialiased text-base-content">
+<body class="bg-[#F9FAFB] font-sans antialiased text-base-content overflow-x-hidden min-h-screen">
     <div class="drawer lg:drawer-open">
         <input id="main-drawer" type="checkbox" class="drawer-toggle" />
         
-        <div class="drawer-content flex flex-col min-h-screen bg-[#F9FAFB]">
+        <!-- Main Content Area -->
+        <div class="drawer-content flex flex-col min-h-screen">
             <!-- Navbar -->
             @include('components.navbar')
             
-            <!-- Main Content -->
-            <main class="flex-1 p-4 lg:p-8 space-y-6">
+            <!-- Content -->
+            <main class="p-4 lg:p-8 flex-1">
                 @hasSection('header')
-                    <header class="mb-8">
+                    <header class="mb-6 px-4 lg:px-0">
                         @yield('header')
                     </header>
                 @endif
                 
-                @yield('content')
+                <div class="px-4 lg:px-0 mb-6">
+                    @yield('breadcrumbs')
+                </div>
+                
+                <div class="px-4 lg:px-0">
+                    @yield('content')
+                </div>
             </main>
         </div>
-        
-        <!-- Sidebar -->
-        <div class="drawer-side z-50 shadow-xl">
+
+        <!-- Sidebar Panel -->
+        <div class="drawer-side z-[100]">
             <label for="main-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-            @include('components.sidebar')
+            <div class="w-80 min-h-screen bg-white border-r border-gray-100">
+                @include('components.sidebar')
+            </div>
         </div>
     </div>
 </body>

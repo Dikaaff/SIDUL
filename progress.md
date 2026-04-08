@@ -1,0 +1,65 @@
+# Progress Perombakan Frontend (Khusus Mahasiswa)
+
+File ini digunakan untuk melacak tahapan perombakan UI/UX secara bertahap hanya pada role **Mahasiswa** sesuai dengan instruksi yang diberikan.
+
+- [x] **Tahap 1: Login & Register**
+  - [x] Halaman Login Mahasiswa (Estetika premium).
+  - [x] Halaman Register Mahasiswa (Estetika premium).
+- [x] **Tahap 2: Dashboard Mahasiswa**
+  - [x] Layout khusus Mahasiswa dengan ringkasan statistik/notifikasi.
+  - [x] *Copywriting* yang sesuai untuk memandu mahasiswa.
+- [x] **Tahap 3: Pendaftaran Magang**
+  - [x] Halaman opsi (Individu / Kelompok).
+  - [x] Skrip form dinamis (max 3 orang tambahan jika kelompok).
+  - [x] Form Input Data Utama (Nama, NIM, Perusahaan, Alamat, Periode, Upload Proposal).
+  - [x] Tombol CTA (Kirim & Reset).
+- [x] **Tahap 4: Progress Magang**
+  - [x] *State* belum magang (Terkunci / *Locked*).
+  - [x] Tracker Timeline perjalanan magang jika sudah aktif.
+  - [x] Visualisasi tahapan dari Pendaftaran -> ACC Dosen -> Cetak Surat -> dst.
+- [x] **Tahap 5: Logbook Magang**
+  - [x] Refaktor tampilan logbook agak konsisten dengan desain sistem terbaru.
+- [x] **Tahap 6: Bimbingan Akademik (Sistem Jadwal)**
+  - [x] Mengubah alur dari chat menjadi input form Jadwal Bimbingan.
+  - [x] State: Menunggu ACC, Disetujui, Ditolak.
+- [x] **Tahap 7: Laporan Akhir**
+  - [x] Halaman untuk unggah file Laporan Akhir (PDF).
+  - [x] Menyediakan template download jika ada.
+- [x] **Pemberian Menu ke Sidebar (`sidebar.blade.php`)**
+  - [x] Memastikan menu-menu baru ini terhubung di *sidebar* khusus mahasiswa dan menghapus yang lama.
+- [x] **Tahap 8: Profil & Pengaturan**
+  - [x] Halaman profil mahasiswa (Data diri, IPK, Semester).
+  - [x] Halaman pengaturan (Ubah Password & Notifikasi).
+- [x] **Tahap 9: Sistem Logout**
+  - [x] Integrasi tombol logout ke sidebar dan fungsionalitas redirect ke Login.
+- [x] **Tahap 10: Final UI Polish**
+  - [x] Implementasi Empty States Sederhana & Fungsional (Anti-bug).
+  - [x] Konsistensi Tipografi (Review warna teks sekunder).
+  - [x] Staggered Micro-Animations di Dashboard, Logbook, Bimbingan.
+- [x] **Tahap 11: Sinkronisasi & Interaktivitas Data**
+  - [x] Dashboard Dinamis (Sync dengan Local Storage).
+  - [x] Laporan Akhir Premium (Dropzone & Loading).
+  - [x] Integrasi State Antar Halaman (Progress Timeline Logic).
+- [x] **Tahap 13: Migrasi Backend & Supabase**
+  - [x] Inisialisasi Proyek Supabase Cloud: SIDUL.
+  - [x] Konfigurasi `.env` (PostgreSQL native driver).
+  - [x] Perbaikan Driver PHP (`php.ini`) untuk mendukung `pgsql`.
+  - [x] Implementasi `MahasiswaController` (Logic pendaftaran riil).
+- [x] **Tahap 14: Reorganisasi Arsitektur Database (Schemas)**
+  - [x] Pemisahan Role: Tabel `mahasiswas`, `dosens`, `operators`.
+  - [x] Implementasi PostgreSQL Schemas: `mahasiswa`, `dosen`, `operator`, `public`.
+  - [x] Konfigurasi `search_path` di `config/database.php`.
+  - [x] Pengaturan Izin Akses (Permissions/Grants) Database Role `laravel`.
+- [x] **Tahap 15: Row Level Security (RLS)**
+  - [x] Aktivasi RLS di Tabel Utama.
+  - [x] Implementasi Policy "User hanya lihat data sendiri" (Casting UUID to BigInt).
+- [/] **Tahap 16: Autentikasi Riil (Login/Logout)**
+  - [ ] Implementasi `AuthController` (Support Email & NIM).
+  - [ ] Proteksi Middleware `auth` pada Route Dashboard.
+  - [ ] Personalisasi Sapaan User di Dashboard Sidebar & Header.
+- [x] **Tahap 13: Integrasi Database & Fungsionalitas Pendaftaran**
+  - [x] Implementasi Controller `MahasiswaController`.
+  - [x] Integrasi Database (Model `PendaftaranMagang`).
+  - [x] Logika Simpan Data (Individu & Kelompok).
+  - [x] Logika Upload File Proposal (Storage & Validation).
+  - [x] Penanganan Error & Success State (Toast Notification).  

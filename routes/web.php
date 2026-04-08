@@ -1,120 +1,44 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\AuthController;
+
+// Public Routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 Route::get('/', function () {
-    return redirect('/dashboard');
+    return redirect()->route('mahasiswa.dashboard');
 });
 
-// Mahasiswa Routes
-Route::get('/login/mahasiswa', function () {
-    return view('auth.login');
+// Protected Routes (Must be Logged In)
+Route::middleware(['auth'])->group(function () {
+    
+    // Mahasiswa Roll
+    Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
+    Route::get('/mahasiswa/pendaftaran', [MahasiswaController::class, 'pendaftaran'])->name('mahasiswa.pendaftaran');
+    Route::post('/mahasiswa/pendaftaran', [MahasiswaController::class, 'storePendaftaran'])->name('mahasiswa.pendaftaran.store');
+    Route::get('/mahasiswa/progress', [MahasiswaController::class, 'progress'])->name('mahasiswa.progress');
+    Route::get('/mahasiswa/logbook', function () { return view('mahasiswa.logbook'); })->name('mahasiswa.logbook');
+    Route::get('/mahasiswa/bimbingan', function () { return view('mahasiswa.bimbingan'); })->name('mahasiswa.bimbingan');
+    Route::get('/mahasiswa/laporan', function () { return view('mahasiswa.laporan'); })->name('mahasiswa.laporan');
+    Route::get('/mahasiswa/profile', function () { return view('mahasiswa.profile'); })->name('mahasiswa.profile');
+    Route::get('/mahasiswa/settings', function () { return view('mahasiswa.settings'); })->name('mahasiswa.settings');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::get('/dashboard', function () {
-    return view('mahasiswa.dashboard');
-});
+// Legacy/Compatibility Redirects
+Route::get('/logout', [AuthController::class, 'logout']); 
 
-Route::get('/konsultasi', function () {
-    return view('mahasiswa.konsultasi');
-});
+// Dosen Routes (Future)
+Route::get('/login/dosen', function () { return view('auth.login_dosen'); });
+Route::get('/dashboard/dosen', function () { return view('dosen.dashboard'); });
 
-Route::get('/id-magang', function () {
-    return view('mahasiswa.id_magang');
-});
-
-Route::get('/surat-pengantar', function () {
-    return view('mahasiswa.surat_pengantar');
-});
-
-Route::get('/dosen-pembimbing', function () {
-    return view('mahasiswa.dosen_pembimbing');
-});
-
-Route::get('/logbook', function () {
-    return view('mahasiswa.logbook');
-});
-
-Route::get('/laporan', function () {
-    return view('mahasiswa.laporan');
-});
-
-Route::get('/presentasi', function () {
-    return view('mahasiswa.presentasi');
-});
-
-
-// Dosen Routes
-Route::get('/login/dosen', function () {
-    return view('auth.login_dosen');
-});
-
-Route::get('/dashboard/dosen', function () {
-    return view('dosen.dashboard');
-});
-
-Route::get('/dosen/rekomendasi', function () {
-    return view('dosen.rekomendasi');
-});
-
-Route::get('/dosen/monitoring', function () {
-    return view('dosen.monitoring');
-});
-
-Route::get('/dosen/logbook', function () {
-    return view('dosen.logbook');
-});
-
-Route::get('/dosen/bimbingan', function () {
-    return view('dosen.bimbingan');
-});
-
-Route::get('/dosen/penilaian', function () {
-    return view('dosen.penilaian');
-});
-
-// Operator Routes
-Route::get('/login/operator', function () {
-    return view('auth.login_operator');
-});
-
-Route::get('/dashboard/operator', function () {
-    return view('operator.dashboard');
-});
-
-Route::get('/operator/verifikasi', function () {
-    return view('operator.verifikasi');
-});
-
-Route::get('/operator/id-magang', function () {
-    return view('operator.id_magang');
-});
-
-Route::get('/operator/surat-pengantar', function () {
-    return view('operator.surat_pengantar');
-});
-
-Route::get('/operator/dosen-pembimbing', function () {
-    return view('operator.dosen_pembimbing');
-});
-
-Route::get('/operator/monitoring', function () {
-    return view('operator.monitoring');
-});
-
-Route::get('/operator/laporan', function () {
-    return view('operator.laporan');
-});
-
-Route::get('/operator/arsip', function () {
-    return view('operator.arsip');
-});
-
-Route::get('/login', function () {
-    return view('auth.login');
-});
-
-Route::get('/register', function () {
-    return view('auth.register');
-});
+// Operator Routes (Future)
+Route::get('/login/operator', function () { return view('auth.login_operator'); });
+Route::get('/dashboard/operator', function () { return view('operator.dashboard'); });
 
