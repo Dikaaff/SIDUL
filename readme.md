@@ -1,3 +1,121 @@
+# SIDUL — Sistem Informasi Dual Learning
+
+Sistem Informasi Magang untuk Mahasiswa, Dosen Pembimbing, dan Operator.
+
+---
+
+## 🚀 Cara Menjalankan Lokal
+
+```bash
+# 1. Install dependencies
+composer install
+
+# 2. Copy environment file
+cp .env.example .env
+
+# 3. Generate app key
+php artisan key:generate
+
+# 4. Buat tabel database SQLite
+php artisan migrate:fresh --seeder=SidulSeeder
+
+# 5. Jalankan server
+php artisan serve
+```
+
+Buka browser: **http://localhost:8000**
+
+---
+
+## 🔑 Akun Test (Development)
+
+> Semua akun menggunakan password yang sama: `password123`
+
+### 👩‍🎓 Mahasiswa
+
+| Field    | Value                    |
+|----------|--------------------------|
+| Email    | `mahasiswa@sidul.com`    |
+| Password | `password123`            |
+| NIM      | `20210001`               |
+| URL      | http://localhost:8000/login |
+
+### 👨‍🏫 Dosen
+
+| Field    | Value                    |
+|----------|--------------------------|
+| Email    | `dosen@sidul.com`        |
+| Password | `password123`            |
+| URL      | http://localhost:8000/login |
+| Dashboard | http://localhost:8000/dashboard/dosen |
+
+### 🧑‍💼 Operator
+
+| Field    | Value                    |
+|----------|--------------------------|
+| Email    | `operator@sidul.com`     |
+| Password | `password123`            |
+| URL      | http://localhost:8000/login |
+| Dashboard | http://localhost:8000/dashboard/operator |
+
+---
+
+## 🗺️ Navigasi URL
+
+### Mahasiswa
+| Halaman       | URL                              |
+|---------------|----------------------------------|
+| Dashboard     | `/dashboard`                     |
+| Pendaftaran   | `/mahasiswa/pendaftaran`         |
+| Progress      | `/mahasiswa/progress`            |
+| Logbook       | `/mahasiswa/logbook`             |
+| Bimbingan     | `/mahasiswa/bimbingan`           |
+| Laporan       | `/mahasiswa/laporan`             |
+| Profile       | `/mahasiswa/profile`             |
+| Settings      | `/mahasiswa/settings`            |
+
+### Dosen
+| Halaman       | URL                              |
+|---------------|----------------------------------|
+| Dashboard     | `/dashboard/dosen`               |
+| Monitoring    | `/dosen/monitoring`              |
+| Bimbingan     | `/dosen/bimbingan`               |
+| Logbook       | `/dosen/logbook`                 |
+| Laporan       | `/dosen/laporan`                 |
+| Rekomendasi   | `/dosen/rekomendasi`             |
+
+### Operator
+| Halaman       | URL                              |
+|---------------|----------------------------------|
+| Dashboard     | `/dashboard/operator`            |
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend**: Laravel 12 (PHP 8.3)
+- **Database**: SQLite (dev) / Supabase PostgreSQL (prod)
+- **Frontend**: TailwindCSS + DaisyUI + Blade Templates
+
+---
+
+## ⚙️ Koneksi Database Supabase (Production)
+
+Untuk mengaktifkan koneksi ke Supabase, edit `.env` dan uncomment baris berikut:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=aws-0-ap-southeast-1.pooler.supabase.com
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres.wyzyybpnubnxzifeayhf
+DB_PASSWORD=<password_supabase>
+```
+
+
+
+
+
 # PRODUCT REQUIREMENTS DOCUMENT (PRD)
 
 # Sistem Informasi Management Magang (SIDUL)

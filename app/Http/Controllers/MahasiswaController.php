@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Models\Pendaftaran;
 use App\Models\Logbook;
 use App\Models\Bimbingan;
@@ -14,12 +15,12 @@ class MahasiswaController extends Controller
     {
         $userId = Auth::id();
         $user = Auth::user();
-        
+
         $pendaftaran = Pendaftaran::where('user_id', $userId)->first();
         $logbookCount = Logbook::where('user_id', $userId)->count();
         $bimbinganCount = Bimbingan::where('user_id', $userId)->count();
         $laporan = Laporan::where('user_id', $userId)->first();
-        
+
         return view('mahasiswa.dashboard', compact('user', 'pendaftaran', 'logbookCount', 'bimbinganCount', 'laporan'));
     }
 
@@ -36,12 +37,6 @@ class MahasiswaController extends Controller
 
     public function pendaftaran()
     {
-        $pendaftaran = Pendaftaran::where('user_id', Auth::id())->first();
-        
-        if ($pendaftaran) {
-            return redirect()->route('mahasiswa.progress')->with('info', 'Anda sudah terdaftar!');
-        }
-
         return view('mahasiswa.pendaftaran');
     }
 
@@ -49,7 +44,7 @@ class MahasiswaController extends Controller
     {
         // Validasi Sederhana
         $request->validate([
-            'tipe' => 'required',
+            'tipe_magang' => 'required',
             'perusahaan' => 'required',
             'alamat' => 'required',
             'tanggal_mulai' => 'required|date',
@@ -64,7 +59,7 @@ class MahasiswaController extends Controller
 
         Pendaftaran::create([
             'user_id' => Auth::id(),
-            'tipe' => $request->tipe,
+            'tipe' => $request->tipe_magang,
             'perusahaan' => $request->perusahaan,
             'alamat' => $request->alamat,
             'tanggal_mulai' => $request->tanggal_mulai,

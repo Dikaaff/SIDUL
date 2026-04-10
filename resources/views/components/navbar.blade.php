@@ -19,7 +19,8 @@
             <ul tabindex="0" class="mt-3 z-[1] p-3 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-64 border border-base-200 gap-1 animate-in fade-in slide-in-from-top-2 duration-200">
                 <li class="menu-title px-2 pb-2">
                     <span class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Signed in as</span>
-                    <span class="block text-sm font-black text-gray-800 truncate">{{ Auth::user()->email }}</span>
+                    <span class="block text-sm font-black text-gray-800 truncate">{{ Auth::user()?->name ?? 'Guest' }}</span>
+                    <span class="block text-[10px] font-bold text-gray-400 truncate">{{ Auth::user()?->email }}</span>
                 </li>
                 <div class="divider my-0 opacity-50"></div>
                 <li>

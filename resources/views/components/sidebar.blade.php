@@ -14,7 +14,9 @@
                 MAIN NAVIGATION
             </li>
             
-            @if(request()->is('dashboard/dosen', 'dosen/*'))
+            @php $userRole = Auth::user()?->role ?? 'mahasiswa'; @endphp
+
+            @if($userRole === 'dosen')
                 <!-- DOSEN MENU -->
                 <li>
                     <a href="/dashboard/dosen" class="{{ request()->is('dashboard/dosen') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
@@ -48,7 +50,7 @@
                         <span class="badge badge-sm badge-warning ml-auto text-xs">5</span>
                     </a>
                 </li>
-            @elseif(request()->is('dashboard/operator', 'operator/*'))
+            @elseif($userRole === 'operator')
                 <!-- OPERATOR MENU -->
                 <li>
                     <a href="/dashboard/operator" class="{{ request()->is('dashboard/operator') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
@@ -150,26 +152,18 @@
             <div tabindex="0" role="button" class="flex items-center gap-4 p-3 rounded-2xl bg-white border border-gray-100 hover:bg-gray-50 transition-all cursor-pointer group shadow-sm w-full">
                 <div class="avatar online">
                     <div class="w-11 rounded-xl ring ring-primary/10 ring-offset-base-100 ring-offset-2">
-                        <img id="sidebar-avatar" src="https://ui-avatars.com/api/?name={{ request()->is('dashboard/dosen', 'dosen/*') ? 'Dr.+Budi' : (request()->is('operator*') ? 'Operator' : urlencode(Auth::user()->name)) }}&background=6B21A8&color=fff&rounded=true&bold=true" alt="User" />
+                        <img id="sidebar-avatar" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'User') }}&background={{ Auth::user()?->role === 'dosen' ? 'F49E0A' : (Auth::user()?->role === 'operator' ? '2563EB' : '6B21A8') }}&color=fff&rounded=true&bold=true" alt="User" />
                     </div>
                 </div>
                 <div class="flex flex-col flex-1 min-w-0">
                     <span class="text-sm font-bold text-gray-800 truncate group-hover:text-primary transition-colors text-left">
-                        @if(request()->is('dashboard/dosen', 'dosen/*'))
-                            Dr. Budi Santoso
-                        @elseif(request()->is('operator*'))
-                            Operator Sistem
-                        @else
-                            {{ Auth::user()->name }}
-                        @endif
+                        {{ Auth::user()?->name ?? 'User' }}
                     </span>
                     <span class="text-[10px] font-medium text-gray-500 uppercase tracking-wider text-left">
-                        @if(request()->is('dashboard/dosen', 'dosen/*'))
-                            Dosen Pembimbing
-                        @elseif(request()->is('operator*'))
-                            Administrator
-                        @else
-                            Mahasiswa
+                        @php $role = Auth::user()?->role ?? 'mahasiswa'; @endphp
+                        @if($role === 'dosen') Dosen Pembimbing
+                        @elseif($role === 'operator') Administrator
+                        @else Mahasiswa
                         @endif
                     </span>
                 </div>

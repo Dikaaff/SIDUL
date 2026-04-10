@@ -34,7 +34,7 @@ class AuthController extends Controller
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
             if (Auth::attempt(['email' => $login, 'password' => $password], $request->filled('remember'))) {
                 $request->session()->regenerate();
-                return redirect()->intended('/dashboard')->with('success', 'Selamat datang kembali!');
+                return redirect()->to($this->redirectBasedOnRole(Auth::user()->role))->with('success', 'Selamat datang kembali!');
             }
         } 
         
@@ -45,7 +45,7 @@ class AuthController extends Controller
             if ($user && Hash::check($password, $user->password)) {
                 Auth::login($user, $request->filled('remember'));
                 $request->session()->regenerate();
-                return redirect()->intended('/dashboard')->with('success', 'Selamat datang kembali!');
+                return redirect()->to($this->redirectBasedOnRole($user->role))->with('success', 'Selamat datang kembali!');
             }
         }
 
@@ -82,7 +82,7 @@ class AuthController extends Controller
 
             Auth::login($user);
 
-            return redirect()->route('mahasiswa.dashboard')->with('success', 'Akun berhasil dibuat! Selamat datang di SIDUL.');
+            return redirect()->to($this->redirectBasedOnRole('mahasiswa'))->with('success', 'Akun berhasil dibuat! Selamat datang di SIDUL.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal mendaftarkan akun. Silakan coba lagi.'])->withInput();
         }
@@ -94,5 +94,17 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');
+    }
+
+    /**
+     * Redirect to the correct dashboard based on role.
+     */
+    private function redirectBasedOnRole(string $role): string
+    {
+        return match($role) {
+            'dosen'    => '/dashboard/dosen',
+            'operator' => '/dashboard/operator',
+            default    => '/dashboard',
+        };
     }
 }
