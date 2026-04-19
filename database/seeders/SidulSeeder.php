@@ -10,56 +10,84 @@ class SidulSeeder extends Seeder
 {
     public function run(): void
     {
-        // Akun Mahasiswa Test
-        $mahasiswaUserId = DB::table('users')->insertGetId([
-            'name'       => 'Mahasiswa Test',
-            'email'      => 'mahasiswa@sidul.com',
-            'password'   => Hash::make('password123'),
-            'role'       => 'mahasiswa',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        DB::table('mahasiswas')->insert([
-            'user_id'    => $mahasiswaUserId,
-            'nim'        => '20210001',
-            'prodi'      => 'Teknik Informatika',
-            'semester'   => 7,
-            'ipk'        => 3.75,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // Akun Dosen Test
+        // 1. Akun Dosen Test
         $dosenUserId = DB::table('users')->insertGetId([
             'name'       => 'Dosen Test',
-            'email'      => 'dosen@sidul.com',
+            'username'   => '19876001', // NIK
             'password'   => Hash::make('password123'),
             'role'       => 'dosen',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('dosens')->insert([
+        $dosenId = DB::table('dosens')->insertGetId([
             'user_id'    => $dosenUserId,
-            'nidn'       => '0012345678',
-            'prodi'      => 'Teknik Informatika',
+            'nik'        => '19876001',
+            'nama'       => 'Dosen Test',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // Akun Operator Test
-        $operatorUserId = DB::table('users')->insertGetId([
-            'name'       => 'Operator Test',
-            'email'      => 'operator@sidul.com',
+        // 2. Akun Mahasiswa Test
+        $mahasiswaUserId = DB::table('users')->insertGetId([
+            'name'       => 'Mahasiswa Test',
+            'username'   => '20210001', // NIM
             'password'   => Hash::make('password123'),
-            'role'       => 'operator',
+            'role'       => 'mahasiswa',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('operators')->insert([
-            'user_id'    => $operatorUserId,
-            'nip'        => '199001012020011001',
+        $mahasiswaId = DB::table('mahasiswas')->insertGetId([
+            'user_id'       => $mahasiswaUserId,
+            'nim'           => '20210001',
+            'nama'          => 'Mahasiswa Test',
+            'dosen_wali_id' => $dosenId,
+            'status_magang' => 'Pending',
+            'created_at'    => now(),
+            'updated_at'    => now(),
+        ]);
+
+        // 4. Data Magang Test (Mahasiswa ini sudah mendaftar)
+        $magangId = DB::table('magangs')->insertGetId([
+            'kode_magang' => 'MGN-20210001-A1B2C',
+            'nim' => '20210001',
+            'perusahaan' => 'PT. Teknologi Masa Depan',
+            'alamat' => 'Jl. Digital No. 101, Jakarta',
+            'tanggal_mulai' => '2026-04-01',
+            'tanggal_selesai' => '2026-07-01',
+            'konsentrasi' => 'Web Development',
+            'tipe_magang' => 'individu',
+            'link_bukti_magang' => 'https://drive.google.com/test-bukti',
+            'link_survey_perusahaan' => 'https://forms.gle/test-survey',
+            'status_magang' => 'Approve',
+            'dosen_pembimbing_id' => $dosenId,
             'created_at' => now(),
             'updated_at' => now(),
+        ]);
+
+        DB::table('peserta_magangs')->insert([
+            'id_mahasiswa' => $mahasiswaId,
+            'id_magang' => $magangId,
+            'nim' => '20210001',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // 5. Data Logbook Test
+        DB::table('logbooks')->insert([
+            [
+                'id_magang' => $magangId,
+                'logbook' => 'Hari pertama: Setup environment Laravel dan mempelajari struktur database.',
+                'catatan_dosen' => 'Bagus, lanjutkan.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_magang' => $magangId,
+                'logbook' => 'Hari kedua: Membuat layout dashboard menggunakan TailwindCSS.',
+                'catatan_dosen' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 }

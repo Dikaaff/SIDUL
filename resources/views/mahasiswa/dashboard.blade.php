@@ -57,23 +57,32 @@
                 <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-[#F49E0A] mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" /><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" /></svg>
                 </div>
-                <span id="stat-logbooks" class="text-2xl font-black text-gray-800">0</span>
+                <span class="text-2xl font-black text-gray-800">{{ $logbookCount ?? 0 }}</span>
                 <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1">Logbook</span>
             </div>
 
             <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
                 <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" /><path fill-rule="evenodd" d="M4 5h12v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" /></svg>
                 </div>
-                <span id="stat-bimbingans" class="text-2xl font-black text-gray-800">0</span>
-                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1">Bimbingan</span>
+                <span class="text-[10px] font-black {{ $laporan ? 'text-blue-600 bg-blue-50' : 'text-gray-400 bg-gray-50' }} px-2 py-0.5 rounded-md mb-1 uppercase tracking-widest">
+                    {{ $laporan ? 'Sudah Unggah' : 'Belum Unggah' }}
+                </span>
+                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Laporan Akhir</span>
             </div>
-
             <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
                 <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600 mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
                 </div>
-                <span id="stat-progress" class="text-2xl font-black text-gray-800">0%</span>
+                <span class="text-2xl font-black text-gray-800" id="display-progress">
+                        @php
+                            $progress = 0;
+                            if($pendaftaran) $progress += 30;
+                            if($logbookCount > 0) $progress += 30; // Increased from 20 to 30
+                            if($laporan) $progress += 40;
+                        @endphp
+                    {{ $progress }}%
+                </span>
                 <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1">Progress</span>
             </div>
         </div>
@@ -86,24 +95,29 @@
             </h3>
             
             <div class="overflow-x-auto pb-4">
-                <ul class="steps steps-vertical md:steps-horizontal w-full font-bold text-xs" id="workflow-steps">
-                    <li class="step" id="step-1">Pendaftaran</li>
-                    <li class="step" id="step-2">Dosen Wali</li>
-                    <li class="step" id="step-3">Logbook</li>
-                    <li class="step" id="step-4">Bimbingan</li>
-                    <li class="step" id="step-5">Laporan</li>
+                <ul class="steps steps-vertical md:steps-horizontal w-full font-bold text-xs">
+                    <li class="step {{ $pendaftaran ? 'step-primary' : '' }}" data-content="{{ $pendaftaran ? '✓' : '1' }}">Pendaftaran</li>
+                    <li class="step {{ $pendaftaran && $pendaftaran->status_magang == 'Approve' ? 'step-primary' : '' }}" data-content="{{ $pendaftaran && $pendaftaran->status_magang == 'Approve' ? '✓' : '2' }}">Plotting</li>
+                    <li class="step {{ ($logbookCount ?? 0) > 0 ? 'step-primary' : '' }}" data-content="{{ ($logbookCount ?? 0) > 0 ? '✓' : '3' }}">Logbook</li>
+                    <li class="step {{ $laporan ? 'step-primary' : '' }}" data-content="{{ $laporan ? '✓' : '4' }}">Laporan</li>
                 </ul>
             </div>
 
-            <!-- Informasi Penting (Orange Style) -->
-            <div class="mt-8 p-6 bg-orange-50 rounded-3xl border border-orange-100 flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6 relative overflow-hidden">
+            <!-- Informasi Penting -->
+            <div class="mt-8 p-6 bg-orange-50 rounded-3xl border border-orange-100 flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6 relative overflow-hidden text-black">
                 <div class="w-12 h-12 rounded-2xl bg-white border border-orange-200 flex items-center justify-center text-[#F49E0A] shadow-sm shrink-0 z-10">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div class="relative z-10">
-                    <h4 class="font-bold text-[#F49E0A] text-sm mb-1 px-1">Informasi Penting & Quick Action</h4>
-                    <p id="dashboard-info" class="text-[11px] text-gray-700 font-bold leading-relaxed px-1">
-                        Selamat datang! Silakan lengkapi profil Anda dan mulailah dengan mengisi form <a href="{{ route('mahasiswa.pendaftaran') }}" class="text-[#6B21A8] underline font-black">Pendaftaran Magang</a> untuk memulai perjalanan magangmu.
+                    <h4 class="font-bold text-[#F49E0A] text-sm mb-1 px-1 italic">Informasi Penting & Quick Action 💡</h4>
+                    <p class="text-[11px] font-bold leading-relaxed px-1">
+                        @if(!$pendaftaran)
+                            Halo! Kamu belum mendaftarkan perusahaan. Silakan ajukan <a href="{{ route('mahasiswa.pendaftaran') }}" class="text-[#6B21A8] underline font-black">Pendaftaran Magang</a> segera.
+                        @elseif($pendaftaran->status_magang == 'Pending')
+                            Pendaftaran di <strong>{{ $pendaftaran->perusahaan }}</strong> sedang menunggu verifikasi Operator.
+                        @else
+                            Kamu sedang magang di <strong>{{ $pendaftaran->perusahaan }}</strong>. Jangan lupa isi <a href="{{ route('mahasiswa.logbook') }}" class="text-[#6B21A8] underline font-black">Logbook</a> harianmu.
+                        @endif
                     </p>
                 </div>
             </div>
@@ -119,28 +133,50 @@
             </div>
             <div class="p-6 md:p-8 space-y-6">
                 <div>
-                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Instansi/Perusahaan</p>
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Instansi & Konsentrasi</p>
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-500 border border-gray-100">
                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                         </div>
-                        <span id="display-company" class="font-bold text-gray-800 text-sm italic text-gray-400 font-medium">Belum Mendaftar</span>
+                        <div>
+                            <span class="font-bold text-gray-800 text-sm block {{ !$pendaftaran ? 'italic text-gray-400' : '' }}">
+                                {{ $pendaftaran->perusahaan ?? 'Belum Mendaftar' }}
+                            </span>
+                            @if($pendaftaran)
+                                <span class="text-[10px] font-bold text-[#6B21A8] bg-purple-50 px-2 py-0.5 rounded-md mt-1 inline-block">{{ $pendaftaran->konsentrasi }}</span>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
                 <div>
                     <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Dosen Pembimbing</p>
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-[#6B21A8] border border-purple-100">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100">
                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                         </div>
-                        <span class="font-bold text-gray-800 text-sm">Dr. Ahmad Rizki, S.Kom., M.T.</span>
+                        <span class="font-bold text-gray-800 text-sm italic text-gray-400">
+                            {{ $pendaftaran->pembimbing->nama ?? 'Menunggu Plotting' }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="pt-5 border-t border-gray-100 flex items-center justify-between">
                     <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Status</span>
-                    <div id="status-badge" class="px-3 py-1.5 bg-gray-100 text-gray-500 rounded-lg text-[10px] font-black tracking-widest uppercase border border-gray-200">Draft</div>
+                    @if(!$pendaftaran)
+                        <div class="px-3 py-1.5 bg-gray-100 text-gray-500 rounded-lg text-[10px] font-black tracking-widest uppercase border border-gray-200 italic">No Data</div>
+                    @else
+                        @php
+                            $statusColor = [
+                                'Pending' => 'bg-orange-50 text-orange-600 border-orange-100',
+                                'Approve' => 'bg-green-50 text-green-600 border-green-100',
+                                'Rejected' => 'bg-red-50 text-red-600 border-red-100'
+                            ][$pendaftaran->status_magang] ?? 'bg-gray-50 text-gray-600 border-gray-100';
+                        @endphp
+                        <div class="px-3 py-1.5 {{ $statusColor }} rounded-lg text-[10px] font-black tracking-widest uppercase border">
+                            {{ $pendaftaran->status_magang }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -151,75 +187,20 @@
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-40 w-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
             </div>
             <div class="relative z-10">
-                <h3 class="text-xl font-bold mb-2">Buku Panduan Magang</h3>
-                <p class="text-white/90 text-[11px] leading-relaxed font-bold mb-6">Pelajari prosedur pelaksanaan magang terbaru serta format laporan akhir.</p>
-                <a href="#" class="inline-block w-full text-center bg-white hover:bg-gray-50 text-[#F49E0A] py-3.5 rounded-xl font-black uppercase tracking-widest transition-colors text-[10px] shadow-sm">
-                    Unduh PDF
+                <h3 class="text-xl font-bold mb-2 italic uppercase tracking-tighter">Buku Panduan Magang 📖</h3>
+                <p class="text-white/90 text-[11px] leading-relaxed font-bold mb-6 italic opacity-80">Pelajari prosedur pelaksanaan magang terbaru serta format laporan akhir.</p>
+                <a href="#" class="inline-block w-full text-center bg-white hover:bg-gray-50 text-[#F49E0A] py-3.5 rounded-xl font-black uppercase tracking-widest transition-colors text-[10px] shadow-sm italic">
+                    Unduh PDF (v1.2)
                 </a>
             </div>
         </div>
     </div>
 </div>
+@endsection
 
+@section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Read data from Local Storage
-        const logbooks = JSON.parse(localStorage.getItem('sidul_logbooks')) || [];
-        const bimbingans = JSON.parse(localStorage.getItem('sidul_bimbingans')) || [];
-        const reports = JSON.parse(localStorage.getItem('sidul_reports')) || {};
-        const pendaftaran = JSON.parse(localStorage.getItem('sidul_pendaftaran')) || null;
-
-        // Update Stats
-        document.getElementById('stat-logbooks').innerText = logbooks.length;
-        document.getElementById('stat-bimbingans').innerText = bimbingans.length;
-
-        // Progress Calculation
-        let progressSteps = 0;
-        if (pendaftaran) {
-            progressSteps += 20; 
-            document.getElementById('display-company').innerText = pendaftaran.perusahaan;
-            document.getElementById('display-company').classList.remove('italic', 'text-gray-400');
-            document.getElementById('status-badge').className = "px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-[10px] font-black tracking-widest uppercase border border-green-200";
-            document.getElementById('status-badge').innerText = "Sedang Berjalan";
-            
-            document.getElementById('step-1').classList.add('step-primary');
-            document.getElementById('step-1').setAttribute('data-content', '✓');
-            document.getElementById('step-2').classList.add('step-primary');
-            document.getElementById('step-2').setAttribute('data-content', '✓');
-        }
-
-        if (logbooks.length > 0) {
-            progressSteps += 20;
-            document.getElementById('step-3').classList.add('step-primary');
-            document.getElementById('step-3').setAttribute('data-content', '✓');
-        }
-
-        if (bimbingans.length > 0) {
-            progressSteps += 20;
-            document.getElementById('step-4').classList.add('step-primary');
-            document.getElementById('step-4').setAttribute('data-content', '✓');
-        }
-
-        if (reports.laporan_akhir) {
-            progressSteps += 20;
-            document.getElementById('step-5').classList.add('step-primary');
-            document.getElementById('step-5').setAttribute('data-content', '✓');
-        }
-        
-        if (reports.laporan_pengesahan) progressSteps += 20;
-
-        document.getElementById('stat-progress').innerText = Math.min(progressSteps, 100) + '%';
-        
-        // Update Info Text based on progress
-        const infoText = document.getElementById('dashboard-info');
-        if (!pendaftaran) {
-            infoText.innerHTML = `Selamat datang! Silakan lengkapi profil Anda dan mulailah dengan mengisi form <a href="{{ route('mahasiswa.pendaftaran') }}" class="text-[#6B21A8] underline font-black">Pendaftaran Magang</a> untuk memulai perjalanan magangmu.`;
-        } else if (!reports.laporan_akhir) {
-            infoText.innerHTML = `Anda sedang dalam tahap <strong>Pelaksanaan Magang</strong> di ${pendaftaran.perusahaan}. Pastikan mengisi <a href="{{ route('mahasiswa.logbook') }}" class="text-[#6B21A8] underline font-black">Logbook</a> harian dan melakukan bimbingan secara rutin.`;
-        } else {
-            infoText.innerHTML = `Laporan Anda telah diunggah! Tunggu konfirmasi dari Dosen Pembimbing untuk tahap penilaian akhir. Tetap semangat!`;
-        }
-    });
-
+    // Frontend dynamic components if needed
 </script>
 @endsection
+

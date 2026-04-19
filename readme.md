@@ -35,16 +35,15 @@ Buka browser: **http://localhost:8000**
 
 | Field    | Value                    |
 |----------|--------------------------|
-| Email    | `mahasiswa@sidul.com`    |
+| Username (NIM) | `20210001`           |
 | Password | `password123`            |
-| NIM      | `20210001`               |
 | URL      | http://localhost:8000/login |
 
 ### 👨‍🏫 Dosen
 
 | Field    | Value                    |
 |----------|--------------------------|
-| Email    | `dosen@sidul.com`        |
+| Username (NIK) | `19876001`           |
 | Password | `password123`            |
 | URL      | http://localhost:8000/login |
 | Dashboard | http://localhost:8000/dashboard/dosen |
@@ -53,7 +52,7 @@ Buka browser: **http://localhost:8000**
 
 | Field    | Value                    |
 |----------|--------------------------|
-| Email    | `operator@sidul.com`     |
+| Username | `operator`               |
 | Password | `password123`            |
 | URL      | http://localhost:8000/login |
 | Dashboard | http://localhost:8000/dashboard/operator |

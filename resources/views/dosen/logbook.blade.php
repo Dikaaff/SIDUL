@@ -3,12 +3,20 @@
 @section('title', 'Review Logbook Mahasiswa')
 
 @section('header')
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#6B21A8] p-6 rounded-2xl shadow-lg mt-2">
-    <div>
-        <h2 class="text-2xl font-bold text-white">
-            Review Logbook 📖
-        </h2>
-        <p class="text-white/80 mt-1 text-sm md:text-base">Baca aktivitas harian mahasiswa bimbingan dan berikan komentar atau arahan.</p>
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+        <div>
+            <h2 class="text-2xl md:text-3xl font-black mb-2">Review Logbook 📖</h2>
+            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Baca aktivitas harian mahasiswa bimbingan dan berikan komentar atau arahan.</p>
+        </div>
+        <div class="flex gap-3 self-start md:self-center shrink-0">
+            <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-xl">
+                <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
+                <span class="text-xs font-bold uppercase tracking-wider">Dosen Pembimbing</span>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

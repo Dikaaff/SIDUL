@@ -62,27 +62,29 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Membaca data riil dari backend, bukan Local Storage lagi
+        // Membaca data riil dari backend
         const hasPendaftaran = @json($pendaftaran ? true : false);
+        const pendaftaranData = @json($pendaftaran);
         const logbooksCount = @json($logbooks->count());
-        const bimbingansCount = @json($bimbingans->count());
         const hasLaporanAkhir = @json($laporan && $laporan->laporan_akhir_path ? true : false);
         const hasPengesahan = @json($laporan && $laporan->pengesahan_path ? true : false);
 
         // Determine Current Step
         let currentStep = 1;
-        if (hasPendaftaran) currentStep = 3; 
-        if (logbooksCount > 0) currentStep = 4;
-        if (bimbingansCount > 0 && logbooksCount > 5) currentStep = 4; 
-        if (hasLaporanAkhir) currentStep = 5;
-        if (hasLaporanAkhir && hasPengesahan) currentStep = 6;
+        if (hasPendaftaran) {
+            currentStep = 2; // Menunggu Verifikasi
+            if (pendaftaranData && pendaftaranData.status_magang === 'Approve') {
+                currentStep = 3; // Pelaksanaan
+            }
+        }
+        if (logbooksCount > 0) currentStep = 3;
+        if (hasLaporanAkhir) currentStep = 4;
 
         const steps = [
             { id: 1, title: 'Pendaftaran Magang', desc: 'Lengkapi biodata dan pilih instansi tujuan magang Anda.' },
             { id: 2, title: 'Verifikasi & Plotting', desc: 'Menunggu persetujuan Operator dan ploting Dosen Pembimbing.' },
             { id: 3, title: 'Pelaksanaan & Logbook', desc: 'Bekerja di instansi dan mencatat aktivitas harian di logbook.' },
-            { id: 4, title: 'Bimbingan Rutin', desc: 'Konsultasi progress dengan Dosen Pembimbing secara berkala.' },
-            { id: 5, title: 'Submit Laporan Akhir', desc: 'Unggah laporan final dan lembar pengesahan yang sudah ditanda tangani.' }
+            { id: 4, title: 'Submit Laporan Akhir', desc: 'Unggah laporan final dan lembar pengesahan yang sudah ditanda tangani.' }
         ];
 
         const container = document.getElementById('timeline-container');
@@ -92,6 +94,24 @@
             const isDone = currentStep > step.id;
             const isActive = currentStep === step.id;
             const isLocked = currentStep < step.id;
+
+            let extraContent = '';
+            
+            // Custom content for Step 1 (Pendaftaran) when done
+            if (step.id === 1 && hasPendaftaran) {
+                extraContent = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <a href="${pendaftaranData.link_bukti_magang}" target="_blank" class="bg-white border border-purple-100 text-[#6B21A8] px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-purple-50 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                            Bukti Magang
+                        </a>
+                        <a href="${pendaftaranData.link_survey_perusahaan}" target="_blank" class="bg-white border border-purple-100 text-[#6B21A8] px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-purple-50 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+                            Survey Form
+                        </a>
+                    </div>
+                `;
+            }
 
             const stepHtml = `
                 <div class="flex gap-4 md:gap-6 mb-8 relative group ${isLocked ? 'opacity-50' : ''}">
@@ -128,18 +148,20 @@
                         ${isActive ? `
                             <div class="bg-purple-50 p-5 rounded-2xl border border-purple-100 w-full space-y-4">
                                 <p class="text-xs sm:text-sm text-purple-900/80 font-bold leading-relaxed">${step.desc}</p>
+                                ${extraContent}
                                 <div class="bg-white p-4 rounded-xl border border-purple-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div>
-                                        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Status Keaktifan</p>
-                                        <p class="text-xs font-black text-gray-800">Cek dashboard untuk detail hari magang.</p>
+                                        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Status Tahapan</p>
+                                        <p class="text-xs font-black text-gray-800 italic uppercase tracking-tighter">Dalam Progress...</p>
                                     </div>
-                                    <a href="/dashboard" class="px-5 py-2.5 bg-[#6B21A8] text-white hover:bg-purple-800 transition-all rounded-xl text-xs font-black uppercase tracking-widest text-center block w-full md:w-auto shadow-lg shadow-purple-900/20">Buka Dashboard</a>
+                                    <a href="/dashboard" class="px-5 py-2.5 bg-[#6B21A8] text-white hover:bg-purple-800 transition-all rounded-xl text-xs font-black uppercase tracking-widest text-center block w-full md:w-auto shadow-lg shadow-purple-900/20">Dashboard Utama</a>
                                 </div>
                             </div>
                         ` : `
-                            <p class="text-xs ${isLocked ? 'text-gray-400' : 'text-gray-500'} font-bold bg-gray-50 p-4 rounded-xl border border-gray-100 inline-block w-full">
-                                ${step.desc}
-                            </p>
+                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 w-full">
+                                <p class="text-xs ${isLocked ? 'text-gray-400' : 'text-gray-500'} font-bold leading-relaxed">${step.desc}</p>
+                                ${extraContent}
+                            </div>
                         `}
                     </div>
                 </div>
@@ -148,4 +170,5 @@
         });
     });
 </script>
+
 @endsection

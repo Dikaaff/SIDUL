@@ -107,34 +107,8 @@
     </div>
 </div>
 
-<!-- Notification Toast -->
-<div id="notifContainer" class="fixed top-8 right-8 z-[9999] space-y-4">
-    <!-- Success Notif -->
-    <div id="successNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300">
-        <div class="flex items-center gap-4 bg-gray-900 text-white p-5 rounded-[2rem] shadow-2xl border border-white/10 min-w-[340px]">
-            <div class="w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-            </div>
-            <div>
-                <p class="font-black text-sm uppercase tracking-widest text-white">Berhasil!</p>
-                <p id="successMessage" class="text-xs text-gray-400 font-bold mt-0.5">Laporan berhasil diunggah.</p>
-            </div>
-        </div>
-    </div>
+<!-- Notification Toast removed (Now handled globally in layout) -->
 
-    <!-- Error Notif -->
-    <div id="errorNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300">
-        <div class="flex items-center gap-4 bg-gray-900 text-white p-5 rounded-[2rem] shadow-2xl border border-white/10 min-w-[340px]">
-            <div class="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center shadow-lg shadow-red-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-10a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-            </div>
-            <div>
-                <p class="font-black text-sm uppercase tracking-widest text-white">Gagal!</p>
-                <p id="errorMessage" class="text-xs text-gray-400 font-bold mt-0.5">Terjadi kesalahan pada file.</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
 function handleFileSelect(input, type) {
@@ -215,18 +189,8 @@ function resetDropzone(type) {
 }
 
 function showNotif(type, message = '') {
-    const success = document.getElementById('successNotif');
-    const error = document.getElementById('errorNotif');
-    
-    if (type === 'success') {
-        document.getElementById('successMessage').innerText = message;
-        success.classList.remove('hidden');
-        setTimeout(() => success.classList.add('hidden'), 2000);
-    } else {
-        document.getElementById('errorMessage').innerText = message;
-        error.classList.remove('hidden');
-        setTimeout(() => error.classList.add('hidden'), 2000);
-    }
+    showToast(type, message);
 }
+
 </script>
 @endsection

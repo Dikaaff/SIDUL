@@ -108,24 +108,9 @@
     </div>
 </div>
 
-<!-- Notification Toast -->
-<div id="notifContainer" class="fixed top-8 right-8 z-[9999] space-y-4">
-    <div id="successNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300">
-        <div class="flex items-center gap-4 bg-gray-900 text-white p-5 rounded-[2rem] shadow-2xl border border-white/10 min-w-[340px]">
-            <div class="w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-            </div>
-            <div>
-                <p class="font-black text-sm uppercase tracking-widest">Berhasil!</p>
-                <p id="notif-msg" class="text-xs text-gray-400 font-bold mt-0.5">Perubahan telah disimpan.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const pendaftaran = JSON.parse(localStorage.getItem('sidul_pendaftaran'));
+        const pendaftaran = @json($pendaftaran);
         if (pendaftaran) {
             document.getElementById('company-name').innerText = pendaftaran.perusahaan;
             document.getElementById('company-name').classList.remove('italic', 'text-gray-400');
@@ -135,12 +120,6 @@
             badge.classList.remove('bg-gray-300');
             badge.classList.add('bg-[#6B21A8]');
         }
-
-        // Load saved avatar if exists
-        const savedAvatar = localStorage.getItem('sidul_avatar');
-        if (savedAvatar) {
-            document.getElementById('avatar-preview').src = savedAvatar;
-        }
     });
 
     function previewAvatar(input) {
@@ -148,7 +127,6 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('avatar-preview').src = e.target.result;
-                localStorage.setItem('sidul_avatar', e.target.result);
                 showNotif("Foto profil diperbarui!");
             }
             reader.readAsDataURL(input.files[0]);
@@ -160,10 +138,8 @@
     }
 
     function showNotif(msg) {
-        const notif = document.getElementById('successNotif');
-        document.getElementById('notif-msg').innerText = msg;
-        notif.classList.remove('hidden');
-        setTimeout(() => notif.classList.add('hidden'), 3000);
+        showToast('success', msg);
     }
 </script>
+
 @endsection

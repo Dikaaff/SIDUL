@@ -12,9 +12,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $primaryKey = 'id_user';
+
     protected $fillable = [
         'name',
-        'email',
+        'username',
         'password',
         'role',
     ];
@@ -24,17 +26,12 @@ class User extends Authenticatable
      */
     public function mahasiswa()
     {
-        return $this->hasOne(Mahasiswa::class);
+        return $this->hasOne(Mahasiswa::class, 'user_id', 'id_user');
     }
 
     public function dosen()
     {
-        return $this->hasOne(Dosen::class);
-    }
-
-    public function operator()
-    {
-        return $this->hasOne(Operator::class);
+        return $this->hasOne(Dosen::class, 'user_id', 'id_user');
     }
 
     /**
@@ -53,7 +50,6 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

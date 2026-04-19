@@ -3,18 +3,36 @@
 @section('title', 'Dashboard Dosen')
 
 @section('header')
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#6B21A8] p-6 rounded-2xl shadow-lg mt-2">
-    <div>
-        <h2 class="text-2xl font-bold text-white">
-            Dashboard Dosen 👋
-        </h2>
-        <p class="text-white/80 mt-1 text-sm md:text-base">Halo, Bapak/Ibu Dosen. Pantau progres magang mahasiswa Anda hari ini.</p>
-    </div>
-    <div class="flex gap-3">
-        <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/20 text-white flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span class="text-xs font-medium">{{ now()->format('d M Y') }}</span>
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
+    <!-- Decorative elements -->
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10 hidden sm:flex lg:flex">
+        <div>
+            <h2 class="text-2xl md:text-3xl font-black mb-2">
+                Halo, Bapak/Ibu {{ explode(' ', Auth::user()->name)[0] }} 👋
+            </h2>
+            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Selamat datang di SIDUL. Pantau progres magang dan pengajuan mahasiswa perwalian Anda hari ini.</p>
         </div>
+        <div class="flex gap-3 self-start md:self-center">
+            <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-xl">
+                <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
+                <span class="text-xs font-bold uppercase tracking-wider">{{ now()->format('d M Y') }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Header -->
+    <div class="flex flex-col justify-between gap-4 relative z-10 sm:hidden">
+        <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-black">Halo, {{ explode(' ', Auth::user()->name)[0] }} 👋</h2>
+            <div class="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-white flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Aktif</span>
+            </div>
+        </div>
+        <p class="text-white/90 font-medium text-sm leading-relaxed">Pantau progres magang mahasiswa.</p>
     </div>
 </div>
 @endsection
@@ -26,16 +44,12 @@
         <div class="card-body p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Mahasiswa Bimbingan</p>
-                    <h3 class="text-3xl font-extrabold text-gray-800">24</h3>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Total Anak Wali</p>
+                    <h3 class="text-4xl font-black text-[#6B21A8]">{{ $mhsWaliCount }}</h3>
                 </div>
                 <div class="p-3 rounded-2xl bg-purple-50 text-[#6B21A8]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 </div>
-            </div>
-            <div class="mt-4 flex items-center gap-2 text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-lg w-fit">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
-                <span>3 Mahasiswa baru</span>
             </div>
         </div>
     </div>
@@ -45,16 +59,12 @@
         <div class="card-body p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Pengajuan Pending</p>
-                    <h3 class="text-3xl font-extrabold text-gray-800">8</h3>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Pengajuan Wali Pending</p>
+                    <h3 class="text-4xl font-black text-[#F49E0A]">{{ $pendingRekomendasiCount }}</h3>
                 </div>
                 <div class="p-3 rounded-2xl bg-orange-50 text-[#F49E0A]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
-            </div>
-            <div class="mt-4 flex items-center gap-2 text-xs font-medium text-[#F49E0A] bg-orange-50 px-2 py-1 rounded-lg w-fit">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <span>Butuh review segera</span>
             </div>
         </div>
     </div>
@@ -64,16 +74,12 @@
         <div class="card-body p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Total Lulus Magang</p>
-                    <h3 class="text-3xl font-extrabold text-gray-800">12</h3>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Anak Bimbingan Selesai</p>
+                    <h3 class="text-4xl font-black text-green-600">{{ $lulusCount }} / {{ $mhsBimbinganCount }}</h3>
                 </div>
                 <div class="p-3 rounded-2xl bg-green-50 text-green-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                 </div>
-            </div>
-            <div class="mt-4">
-                <progress class="progress progress-primary w-full h-2" value="65" max="100"></progress>
-                <p class="text-[10px] text-gray-400 mt-1 font-medium">65% Target Semester Ini Terpenuhi</p>
             </div>
         </div>
     </div>
@@ -86,7 +92,7 @@
             <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-[#6B21A8] shadow-inner">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
             </div>
-            <h3 class="text-xl font-extrabold text-gray-900 tracking-tight">Daftar Mahasiswa Bimbingan</h3>
+            <h3 class="text-xl font-black text-gray-900 tracking-tight">Daftar Mahasiswa Magang</h3>
         </div>
         <div class="flex items-center gap-3">
             <div class="join shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
@@ -114,49 +120,45 @@
 
     <!-- Student List -->
     <div class="space-y-4">
-        @php
-            $students = [
-                ['name' => 'Andi Saputra', 'nim' => '210401001', 'sub' => 'Teknik Informatika', 'company' => 'PT. Teknologi Maju Persada', 'field' => 'Software Development', 'status' => 'AKTIF MAGANG', 'progress' => 85, 'initial' => 'AS', 'status_color' => 'success'],
-                ['name' => 'Budi Ramadhan', 'nim' => '210401045', 'sub' => 'Teknik Informatika', 'company' => 'Bank Nasional Nusantara', 'field' => 'Financial Technology', 'status' => 'TAHAP PENDAFTARAN', 'progress' => 15, 'initial' => 'BR', 'status_color' => 'warning'],
-                ['name' => 'Siti Aminah', 'nim' => '210401089', 'sub' => 'Teknik Informatika', 'company' => 'Telkom Indonesia', 'field' => 'Network Engineering', 'status' => 'AKTIF MAGANG', 'progress' => 45, 'initial' => 'SA', 'status_color' => 'success'],
-                ['name' => 'Rahmat Hidayat', 'nim' => '210401090', 'sub' => 'Teknik Informatika', 'company' => 'Gojek Tech', 'field' => 'Data Science', 'status' => 'SELESAI', 'progress' => 100, 'initial' => 'RH', 'status_color' => 'info'],
-            ];
-        @endphp
-
-        @foreach($students as $student)
+        @forelse($mhsBimbinganList as $magang)
         <div class="bg-white hover:bg-gray-50/50 border border-base-200 rounded-[2rem] p-6 transition-all group shadow-sm grid grid-cols-12 gap-4 items-center">
             <div class="col-span-4 flex items-center gap-5">
-                <div class="w-14 h-14 rounded-2xl {{ $student['status_color'] === 'success' ? 'bg-purple-50 text-primary' : ($student['status_color'] === 'warning' ? 'bg-orange-50 text-secondary' : 'bg-green-50 text-green-600') }} flex items-center justify-center font-black text-lg group-hover:rotate-3 transition-transform">
-                    {{ $student['initial'] }}
+                <div class="w-14 h-14 rounded-2xl bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-lg group-hover:rotate-3 transition-transform">
+                    {{ substr($magang->peserta->first()->mahasiswa->nama ?? 'M', 0, 2) }}
                 </div>
                 <div>
-                    <h4 class="font-bold text-gray-900 text-lg leading-tight tracking-tight">{{ $student['name'] }}</h4>
-                    <p class="text-[11px] text-gray-400 font-medium tracking-wide mt-1">{{ $student['nim'] }} • {{ $student['sub'] }}</p>
+                    <h4 class="font-black text-gray-900 text-lg leading-tight tracking-tight">{{ $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa' }}</h4>
+                    <p class="text-[11px] text-gray-400 font-bold tracking-wide mt-1">{{ $magang->nim }} • {{ $magang->konsentrasi }}</p>
                 </div>
             </div>
             
             <div class="col-span-4">
-                <h5 class="font-bold text-gray-800 text-sm tracking-tight">{{ $student['company'] }}</h5>
-                <p class="text-[10px] text-gray-400 font-medium tracking-wide mt-1">{{ $student['field'] }}</p>
+                <h5 class="font-black text-gray-800 text-sm tracking-tight">{{ $magang->perusahaan }}</h5>
+                <p class="text-[10px] text-gray-400 font-bold tracking-wide mt-1">{{ $magang->tipe_magang }}</p>
             </div>
 
             <div class="col-span-3">
                 <div class="flex items-center justify-between mb-2">
-                    <div class="badge {{ $student['status_color'] === 'success' ? 'bg-purple-50 text-primary border-purple-100' : ($student['status_color'] === 'warning' ? 'bg-orange-50 text-secondary border-orange-100' : 'bg-green-50 text-green-600 border-green-100') }} font-black text-[8px] px-3 py-3 uppercase tracking-widest rounded-lg italic border-2">
-                        {{ $student['status'] }}
+                    <div class="badge {{ $magang->status_magang === 'Selesai' ? 'bg-purple-50 text-[#6B21A8] border-purple-100' : ($magang->status_magang === 'Pending' ? 'bg-orange-50 text-[#F49E0A] border-orange-100' : 'bg-green-50 text-green-600 border-green-100') }} font-black text-[8px] px-3 py-3 uppercase tracking-widest rounded-lg italic border-2">
+                        {{ strtoupper($magang->status_magang) }}
                     </div>
-                    <span class="text-xs font-black italic text-gray-800">{{ $student['progress'] }}%</span>
+                    <span class="text-xs font-black italic text-gray-800">100%</span>
                 </div>
-                <progress class="progress progress-primary w-full h-[0.4rem] bg-gray-100 [&::-webkit-progress-value]:transition-all [&::-webkit-progress-value]:duration-500 rounded-full" value="{{ $student['progress'] }}" max="100"></progress>
+                <progress class="progress [&::-webkit-progress-value]:bg-[#6B21A8] w-full h-[0.4rem] bg-gray-100 [&::-webkit-progress-value]:transition-all [&::-webkit-progress-value]:duration-500 rounded-full" value="100" max="100"></progress>
             </div>
 
             <div class="col-span-1 flex justify-end">
-                <button onclick="showStudentDetail('{{ $student['name'] }}', '{{ $student['nim'] }}', '{{ $student['company'] }}', {{ $student['progress'] }}, '{{ $student['field'] }}', '{{ $student['status'] }}')" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:text-primary hover:bg-primary/10 transition-all">
+                <button onclick="showStudentDetail('{{ $magang->peserta->first()->mahasiswa->nama ?? '' }}', '{{ $magang->nim }}', '{{ $magang->perusahaan }}', 100, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-purple-50 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </button>
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="bg-gray-50 rounded-[2rem] p-8 text-center text-gray-400 border border-gray-100 border-dashed">
+            <h4 class="font-black text-lg">Belum Ada Mahasiswa Bimbingan</h4>
+            <p class="text-sm mt-1">Saat ini Anda tidak membimbing mahasiswa magang satupun.</p>
+        </div>
+        @endforelse
     </div>
 </div>
     <!-- Section: Notifikasi Pengajuan -->
@@ -254,7 +256,6 @@
             </div>
 
             <div class="mt-8 pt-8 border-t border-gray-100 flex gap-3">
-                <button onclick="window.location.href='/dosen/monitoring'" class="btn bg-[#6B21A8] hover:bg-purple-700 border-none text-white flex-1 h-12 min-h-0 font-black uppercase tracking-widest text-[10px] rounded-2xl shadow-lg shadow-purple-100">Monitoring Progress</button>
                 <button onclick="document.getElementById('student_detail_modal').close()" class="btn btn-ghost flex-1 h-12 min-h-0 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl">Tutup</button>
             </div>
         </div>
@@ -264,63 +265,12 @@
 <script>
 function showStudentDetail(name, nim, company, progress, field, status) {
     document.getElementById('modal_name').innerText = name;
-    document.getElementById('modal_nim').innerText = nim + ' • TEKNIK INFORMATIKA';
     document.getElementById('modal_company').innerText = company;
-    document.getElementById('modal_field').innerText = field;
     document.getElementById('modal_progress_text').innerText = progress + '%';
     document.getElementById('modal_progress_bar').value = progress;
     document.getElementById('modal_avatar').innerText = name.split(' ').map(n => n[0]).join('').toUpperCase();
-    
-    const statusBadge = document.getElementById('modal_status');
-    statusBadge.innerText = status;
-    if (status.toLowerCase().includes('aktif')) {
-        statusBadge.className = 'badge badge-success badge-outline font-black text-[9px] uppercase tracking-widest px-3 py-3 border-2';
-    } else {
-        statusBadge.className = 'badge badge-warning badge-outline font-black text-[9px] uppercase tracking-widest px-3 py-3 border-2 text-orange-600 border-orange-200';
-    }
 
     document.getElementById('student_detail_modal').showModal();
-}
-
-function deleteNotif(id) {
-    const notif = document.getElementById(id);
-    if (notif) {
-        notif.classList.add('scale-95', 'opacity-0');
-        setTimeout(() => {
-            notif.remove();
-            checkEmptyNotif();
-        }, 300);
-    }
-}
-
-function clearAllNotif() {
-    if (confirm('Bersihkan semua notifikasi?')) {
-        const list = document.getElementById('notificationList');
-        list.innerHTML = `
-            <div class="py-12 flex flex-col items-center justify-center text-center">
-                <div class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg>
-                </div>
-                <p class="text-gray-400 font-bold text-xs uppercase tracking-widest">Tidak ada notifikasi baru</p>
-            </div>
-        `;
-        document.getElementById('clearNotifAction').classList.add('hidden');
-    }
-}
-
-function checkEmptyNotif() {
-    const list = document.getElementById('notificationList');
-    if (list.children.length === 0) {
-        list.innerHTML = `
-            <div class="py-12 flex flex-col items-center justify-center text-center">
-                <div class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg>
-                </div>
-                <p class="text-gray-400 font-bold text-xs uppercase tracking-widest">Tidak ada notifikasi baru</p>
-            </div>
-        `;
-        document.getElementById('clearNotifAction').classList.add('hidden');
-    }
 }
 </script>
 @endsection

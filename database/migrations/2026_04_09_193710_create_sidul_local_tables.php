@@ -8,88 +8,91 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Tabel Mahasiswa Profile
+        // Tabel Users sudah ada (dari default Laravel), tetapi kita akan modifikasi fieldnya nanti atau asumsikan file migrasi default menyesuaikan.
+        // Di sini saya tambahkan tabel-tabel spesifik SIDUL.
+        // Asumsi tabel users sudah di-create di migrasi 0001_01_01_000000_create_users_table.php,
+        // tapi kita perlu pastikan `username` dan `role` ada di sana. Karena ini custom tables, kita buat custom tables saja.
+        
+        // Tabel Mahasiswas
         Schema::create('mahasiswas', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->id('id_mahasiswa');
+            $table->foreignId('user_id')->nullable()->constrained('users', 'id_user')->onDelete('cascade');
             $table->string('nim')->unique();
-            $table->string('prodi')->nullable();
-            $table->integer('semester')->nullable();
-            $table->decimal('ipk', 3, 2)->nullable();
+            $table->string('nama');
+            $table->foreignId('dosen_wali_id')->nullable(); // akan di-reference nanti
+            $table->enum('status_magang', ['Pending', 'Approve'])->default('Pending');
             $table->timestamps();
         });
 
-        // Tabel Dosen Profile
+        // Tabel Dosens
         Schema::create('dosens', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('nidn')->nullable()->unique();
-            $table->string('prodi')->nullable();
+            $table->id('id_dosen');
+            $table->foreignId('user_id')->nullable()->constrained('users', 'id_user')->onDelete('cascade');
+            $table->string('nik')->unique();
+            $table->string('nama');
             $table->timestamps();
         });
 
-        // Tabel Operator Profile
-        Schema::create('operators', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('nip')->nullable()->unique();
+        // Tambah foreign key untuk dosen_wali_id di mahasiswas
+        Schema::table('mahasiswas', function (Blueprint $table) {
+            $table->foreign('dosen_wali_id')->references('id_dosen')->on('dosens')->onDelete('set null');
+        });
+
+        // Tabel Magangs
+        Schema::create('magangs', function (Blueprint $table) {
+            $table->id('id_magang');
+            $table->string('kode_magang')->unique();
+            $table->string('nim'); // NIM ketua pendaftar
+            $table->string('perusahaan')->nullable();
+            $table->text('alamat')->nullable();
+            $table->date('tanggal_mulai')->nullable();
+            $table->date('tanggal_selesai')->nullable();
+            $table->string('konsentrasi')->nullable();
+            $table->string('tipe_magang')->default('individu');
+            $table->text('link_bukti_magang')->nullable();
+            $table->text('link_survey_perusahaan')->nullable();
+            $table->foreignId('dosen_pembimbing_id')->nullable()->constrained('dosens', 'id_dosen')->onDelete('set null');
+            $table->string('status_magang')->default('Pending');
             $table->timestamps();
         });
 
-        // Tabel Pendaftaran Magang
-        Schema::create('pendaftarans', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('tipe');
-            $table->string('perusahaan');
-            $table->text('alamat');
-            $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
-            $table->string('proposal_path')->nullable();
-            $table->string('status')->default('Menunggu ACC');
+        // Tabel Peserta Magang
+        Schema::create('peserta_magangs', function (Blueprint $table) {
+            $table->id('id_peserta_magang');
+            $table->foreignId('id_mahasiswa')->constrained('mahasiswas', 'id_mahasiswa')->onDelete('cascade');
+            $table->foreignId('id_magang')->constrained('magangs', 'id_magang')->onDelete('cascade');
+            $table->string('nim');
             $table->timestamps();
         });
 
         // Tabel Logbook
         Schema::create('logbooks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->date('tanggal');
-            $table->text('kegiatan');
-            $table->string('status')->default('Belum Diverifikasi');
-            $table->timestamps();
-        });
-
-        // Tabel Bimbingan
-        Schema::create('bimbingans', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('dosen_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->dateTime('jadwal_bimbingan')->nullable();
-            $table->text('catatan')->nullable();
-            $table->string('status')->default('Menunggu');
+            $table->id('id_logbook');
+            $table->foreignId('id_magang')->constrained('magangs', 'id_magang')->onDelete('cascade');
+            $table->text('logbook');
+            $table->text('catatan_dosen')->nullable();
             $table->timestamps();
         });
 
         // Tabel Laporan
         Schema::create('laporans', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('judul')->nullable();
-            $table->string('file_path')->nullable();
-            $table->string('status')->default('Belum Dikumpulkan');
-            $table->text('catatan_dosen')->nullable();
+            $table->id('id_laporan');
+            $table->foreignId('id_magang')->constrained('magangs', 'id_magang')->onDelete('cascade');
+            $table->text('laporan');
+            $table->enum('status_laporan', ['Pending', 'Revisi', 'Approve'])->default('Pending');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
+        Schema::table('mahasiswas', function (Blueprint $table) {
+            $table->dropForeign(['dosen_wali_id']);
+        });
         Schema::dropIfExists('laporans');
-        Schema::dropIfExists('bimbingans');
         Schema::dropIfExists('logbooks');
-        Schema::dropIfExists('pendaftarans');
-        Schema::dropIfExists('operators');
+        Schema::dropIfExists('peserta_magangs');
+        Schema::dropIfExists('magangs');
         Schema::dropIfExists('dosens');
         Schema::dropIfExists('mahasiswas');
     }

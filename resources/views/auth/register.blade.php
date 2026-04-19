@@ -78,13 +78,7 @@
                 <!-- NIM -->
                 <div>
                     <label class="block text-[10px] font-black uppercase tracking-widest text-gray-600 mb-1.5 ml-1">NIM (Nomor Induk Mahasiswa)</label>
-                    <input type="text" name="nim" placeholder="Contoh: 2105..." class="w-full bg-gray-50 border-none rounded-2xl py-3.5 px-6 text-sm font-bold text-gray-800 focus:bg-white focus:ring-4 focus:ring-orange-50 transition-all outline-none" required />
-                </div>
-
-                <!-- Email -->
-                <div>
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-600 mb-1.5 ml-1">Alamat Email</label>
-                    <input type="email" name="email" placeholder="mahasiswa@example.com" class="w-full bg-gray-50 border-none rounded-2xl py-3.5 px-6 text-sm font-bold text-gray-800 focus:bg-white focus:ring-4 focus:ring-orange-50 transition-all outline-none" required />
+                    <input type="text" name="username" placeholder="Contoh: 2105..." class="w-full bg-gray-50 border-none rounded-2xl py-3.5 px-6 text-sm font-bold text-gray-800 focus:bg-white focus:ring-4 focus:ring-orange-50 transition-all outline-none" required />
                 </div>
                 
                 <!-- Password -->

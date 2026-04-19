@@ -78,6 +78,25 @@
                     </div>
                 </div>
 
+                <!-- 3. Konsentrasi -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2 border-b border-gray-100 pb-2">
+                        <span class="w-1.5 h-5 bg-indigo-500 rounded-full inline-block"></span>
+                        Konsentrasi
+                    </h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2">Bidang Konsentrasi <span class="text-red-500">*</span></label>
+                            <select name="konsentrasi" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm font-bold text-gray-800 focus:bg-white focus:ring-2 focus:ring-[#6B21A8] outline-none transition-all cursor-pointer" required>
+                                <option value="" disabled selected>-- Pilih Konsentrasi Anda --</option>
+                                <option value="Web Development">1. Web Development</option>
+                                <option value="Networking">2. Networking</option>
+                                <option value="2D Animation">3. 2D Animation</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 3. Form Dynamic Group -->
                 <div id="kelompokContainer" class="space-y-4 hidden animate-in fade-in slide-in-from-top-4 duration-300">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-2">
@@ -146,24 +165,32 @@
                     </div>
                 </div>
 
-                <!-- 5. Upload Berkas -->
+                <!-- 6. Tautan Dokumen Berkas -->
                 <div class="space-y-4">
                     <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2 border-b border-gray-100 pb-2">
                         <span class="w-1.5 h-5 bg-green-500 rounded-full inline-block"></span>
-                        Lampiran Proposal <span class="text-red-500">*</span>
+                        Tautan Dokumen Berkas <span class="text-red-500">*</span>
                     </h3>
                     
-                    <div class="w-full">
-                        <label for="proposal-upload" id="dropzone-label" class="flex flex-col items-center justify-center w-full min-h-[12rem] border-2 border-gray-300 border-dashed rounded-3xl cursor-pointer bg-gray-50 hover:bg-purple-50 hover:border-[#6B21A8] transition-colors group p-4 sm:p-6 text-center">
-                            <div class="flex flex-col items-center justify-center" id="dropzone-content">
-                                <div class="w-12 h-12 md:w-14 md:h-14 bg-white shadow-sm rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                    <svg class="w-5 h-5 md:w-6 md:h-6 text-gray-600 group-hover:text-[#6B21A8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2">Link Bukti Keterima Magang <span class="text-red-500">*</span></label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#6B21A8] transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.172 13.828a4 4 0 015.656 0l4-4a4 4 0 11-5.656 5.656l-1.102 1.101" /></svg>
                                 </div>
-                                <p class="mb-2 text-xs md:text-sm text-gray-700 max-w-xs md:max-w-none"><span class="font-bold text-[#6B21A8]">Klik untuk mengunggah</span> atau seret dokumen ke sini</p>
-                                <p class="text-[10px] md:text-xs font-bold text-gray-600 uppercase tracking-widest">Hanya PDF (Maks. 5MB)</p>
+                                <input type="url" name="link_bukti_magang" placeholder="https://drive.google.com/..." class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-medium text-gray-800 focus:bg-white focus:ring-2 focus:ring-[#6B21A8] outline-none transition-all" required />
                             </div>
-                            <input id="proposal-upload" name="proposal" type="file" class="hidden" accept=".pdf" required onchange="handleFileSelect(this)" />
-                        </label>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2">Link Form Survey Perusahaan <span class="text-red-500">*</span></label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#6B21A8] transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                </div>
+                                <input type="url" name="link_survey_perusahaan" placeholder="https://forms.gle/..." class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-medium text-gray-800 focus:bg-white focus:ring-2 focus:ring-[#6B21A8] outline-none transition-all" required />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -183,34 +210,8 @@
     </div>
 </div>
 
-<!-- Notification Toast -->
-<div id="notifContainer" class="fixed top-8 right-8 z-[9999] space-y-4">
-    <!-- Success Notif -->
-    <div id="successNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 transition-all">
-        <div class="flex items-center gap-4 bg-gray-900 text-white p-5 rounded-[2rem] shadow-2xl border border-white/10 min-w-[340px]">
-            <div class="w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-            </div>
-            <div>
-                <p class="font-black text-sm uppercase tracking-widest text-white">Berhasil!</p>
-                <p class="text-xs text-gray-400 font-bold mt-0.5">Pendaftaran telah dikirim ke sistem.</p>
-            </div>
-        </div>
-    </div>
+<!-- Notification Toast removed (Now handled globally in layout) -->
 
-    <!-- Error Notif -->
-    <div id="errorNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 transition-all">
-        <div class="flex items-center gap-4 bg-red-50 text-red-800 p-5 rounded-[2rem] shadow-2xl border border-red-100 min-w-[340px]">
-            <div class="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center shadow-lg shadow-red-500/20 text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-            </div>
-            <div>
-                <p class="font-black text-sm uppercase tracking-widest leading-tight">Peringatan!</p>
-                <p class="text-xs font-bold mt-0.5" id="errorMsg">Lampiran Proposal wajib diunggah.</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     function toggleKelompok(isKelompok) {
@@ -222,39 +223,7 @@
         }
     }
 
-    function handleFileSelect(input) {
-        const dropzone = document.getElementById('dropzone-label');
-        const content = document.getElementById('dropzone-content');
-        
-        if (input.files && input.files[0]) {
-            const fileName = input.files[0].name;
-            dropzone.classList.add('border-[#6B21A8]', 'bg-purple-50');
-            content.innerHTML = `
-                <div class="w-12 h-12 md:w-14 md:h-14 bg-white shadow-sm rounded-full flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 md:w-6 md:h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <p class="mb-1 text-xs md:text-sm text-gray-800 font-bold max-w-xs md:max-w-none">${fileName}</p>
-                <p class="text-[10px] md:text-xs font-bold text-green-600 uppercase tracking-widest">File Berhasil Terunggah</p>
-                <button type="button" onclick="resetFile()" class="mt-4 text-[10px] font-black text-red-500 uppercase hover:underline">Hapus File</button>
-            `;
-        }
-    }
-
-    function resetFile() {
-        const input = document.getElementById('proposal-upload');
-        const dropzone = document.getElementById('dropzone-label');
-        const content = document.getElementById('dropzone-content');
-        
-        input.value = '';
-        dropzone.classList.remove('border-[#6B21A8]', 'bg-purple-50');
-        content.innerHTML = `
-            <div class="w-12 h-12 md:w-14 md:h-14 bg-white shadow-sm rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <svg class="w-5 h-5 md:w-6 md:h-6 text-gray-600 group-hover:text-[#6B21A8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-            </div>
-            <p class="mb-2 text-xs md:text-sm text-gray-700 max-w-xs md:max-w-none"><span class="font-bold text-[#6B21A8]">Klik untuk mengunggah</span> atau seret dokumen ke sini</p>
-            <p class="text-[10px] md:text-xs font-bold text-gray-600 uppercase tracking-widest">Hanya PDF (Maks. 5MB)</p>
-        `;
-    }
+    // File handling functions removed as per UI revision (Link based now)
 
     const form = document.getElementById('formPendaftaran');
     const btnSubmit = document.getElementById('btnSubmit');
@@ -262,11 +231,7 @@
     const btnText = document.getElementById('btnText');
     const btnIcon = document.getElementById('btnIcon');
     const btnLoading = document.getElementById('btnLoading');
-    const successNotif = document.getElementById('successNotif');
-    const errorNotif = document.getElementById('errorNotif');
-    const errorMsg = document.getElementById('errorMsg');
-    const fileInput = document.getElementById('proposal-upload');
-    const dropzone = document.getElementById('dropzone-label');
+
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -296,37 +261,24 @@
                 namaAnggota1.classList.add('border-red-500', 'bg-red-50');
                 isFormValid = false;
                 
-                errorMsg.innerText = "Data Anggota Kelompok 1 wajib diisi!";
-                errorNotif.classList.remove('hidden');
+                showToast('error', "Data Anggota Kelompok 1 wajib diisi!");
             } else {
                 nimAnggota1.classList.remove('border-red-500', 'bg-red-50');
                 namaAnggota1.classList.remove('border-red-500', 'bg-red-50');
             }
         }
 
-        // 3. Validasi File Proposal
-        if (!fileInput.files || fileInput.files.length === 0) {
-            dropzone.classList.add('border-red-500', 'bg-red-50', 'animate-shake');
-            isFormValid = false;
-            
-            errorMsg.innerText = "Lampiran Proposal wajib diunggah!";
-            errorNotif.classList.remove('hidden');
-        }
 
         if (!isFormValid) {
-            setTimeout(() => {
-                errorNotif.classList.add('hidden');
-                dropzone.classList.remove('animate-shake');
-            }, 3000);
             return;
         }
+
         
         // Start Loading State (Semua Valid)
         btnSubmit.disabled = true;
         btnText.innerText = "Mengirim...";
         btnIcon.classList.add('hidden');
         btnLoading.classList.remove('hidden');
-        errorNotif.classList.add('hidden'); 
 
         // Submit real data to Laravel backend
         setTimeout(() => {
@@ -336,9 +288,7 @@
 
     form.addEventListener('reset', function() {
         toggleKelompok(false);
-        resetFile(); // Custom reset to clear the visual dropzone
-        successNotif.classList.add('hidden');
-        errorNotif.classList.add('hidden');
     });
+
 </script>
 @endsection

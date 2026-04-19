@@ -58,7 +58,7 @@
                     <div>
                         <p class="text-[11px] font-black uppercase tracking-widest text-red-600 mb-1">Gagal Masuk</p>
                         <p class="text-[10px] font-bold text-red-500/80 leading-relaxed">
-                            {{ $errors->first('login') ?: session('error') ?: 'Kredensial tidak valid. Silakan cek kembali data Anda.' }}
+                            {{ $errors->first('username') ?: session('error') ?: 'Kredensial tidak valid. Silakan cek kembali data Anda.' }}
                         </p>
                     </div>
                 </div>
@@ -80,16 +80,16 @@
             
             <form action="{{ route('login') }}" method="POST" class="space-y-6">
                 @csrf
-                <!-- Username/Email Field -->
+                <!-- Username/NIM/NIK Field -->
                 <div>
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-600 mb-2">Email / NIM</label>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-600 mb-2">Username (NIM / NIK)</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#6B21A8] transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                         </div>
-                        <input type="text" name="login" value="{{ old('login') }}" placeholder="Masukkan NIM atau Email" class="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-gray-800 focus:bg-white focus:ring-4 focus:ring-purple-100 transition-all outline-none placeholder:text-gray-300" required />
+                        <input type="text" name="username" value="{{ old('username') }}" placeholder="Masukkan NIM atau NIK" class="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-gray-800 focus:bg-white focus:ring-4 focus:ring-purple-100 transition-all outline-none placeholder:text-gray-300" required />
                     </div>
-                    @error('login')
+                    @error('username')
                         <p class="text-[10px] font-bold text-red-500 mt-1">{{ $message }}</p>
                     @enderror
                 </div>

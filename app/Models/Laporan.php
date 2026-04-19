@@ -9,10 +9,16 @@ class Laporan extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_laporan';
+
     protected $fillable = [
-        'user_id',
-        'laporan_akhir_path',
-        'pengesahan_path',
-        'status'
+        'id_magang',
+        'laporan',
+        'status_laporan',
     ];
+
+    public function magang()
+    {
+        return $this->belongsTo(Magang::class, 'id_magang', 'id_magang');
+    }
 }

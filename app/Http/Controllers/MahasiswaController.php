@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Pendaftaran;
+use App\Models\Mahasiswa;
+use App\Models\Magang;
+use App\Models\PesertaMagang;
 use App\Models\Logbook;
-use App\Models\Bimbingan;
 use App\Models\Laporan;
 
 class MahasiswaController extends Controller
@@ -15,24 +16,39 @@ class MahasiswaController extends Controller
     {
         $userId = Auth::id();
         $user = Auth::user();
+        
+        // Get Mahasiswa Profile
+        $mahasiswa = $user->mahasiswa;
+        
+        // Get Current Internship (via PesertaMagang)
+        $peserta = $mahasiswa ? $mahasiswa->pesertaMagang : null;
+        $magang = $peserta ? $peserta->magang : null;
 
-        $pendaftaran = Pendaftaran::where('user_id', $userId)->first();
-        $logbookCount = Logbook::where('user_id', $userId)->count();
-        $bimbinganCount = Bimbingan::where('user_id', $userId)->count();
-        $laporan = Laporan::where('user_id', $userId)->first();
+        // Statistics based on Magang ID
+        $logbookCount = $magang ? Logbook::where('id_magang', $magang->id_magang)->count() : 0;
+        $laporan = $magang ? Laporan::where('id_magang', $magang->id_magang)->first() : null;
+        
+        // Map 'magang' to 'pendaftaran' variable name for Blade compatibility
+        $pendaftaran = $magang;
 
-        return view('mahasiswa.dashboard', compact('user', 'pendaftaran', 'logbookCount', 'bimbinganCount', 'laporan'));
+
+        return view('mahasiswa.dashboard', compact('user', 'pendaftaran', 'logbookCount', 'laporan'));
     }
 
     public function progress()
     {
-        $userId = Auth::id();
-        $pendaftaran = Pendaftaran::where('user_id', $userId)->first();
-        $logbooks = Logbook::where('user_id', $userId)->get();
-        $bimbingans = Bimbingan::where('user_id', $userId)->get();
-        $laporan = Laporan::where('user_id', $userId)->first();
+        $mahasiswa = Auth::user()->mahasiswa;
+        $peserta = $mahasiswa ? $mahasiswa->pesertaMagang : null;
+        $magang = $peserta ? $peserta->magang : null;
 
-        return view('mahasiswa.progress', compact('pendaftaran', 'logbooks', 'bimbingans', 'laporan'));
+        $logbooks = $magang ? Logbook::where('id_magang', $magang->id_magang)->get() : collect();
+        $laporan = $magang ? Laporan::where('id_magang', $magang->id_magang)->first() : null;
+        
+        // Map to blade variables
+        $pendaftaran = $magang;
+
+
+        return view('mahasiswa.progress', compact('pendaftaran', 'logbooks', 'laporan'));
     }
 
     public function pendaftaran()
@@ -42,32 +58,44 @@ class MahasiswaController extends Controller
 
     public function storePendaftaran(Request $request)
     {
-        // Validasi Sederhana
         $request->validate([
             'tipe_magang' => 'required',
             'perusahaan' => 'required',
             'alamat' => 'required',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
+            'konsentrasi' => 'required',
+            'link_bukti_magang' => 'required|url',
+            'link_survey_perusahaan' => 'required|url',
         ]);
 
-        // Simpan File Proposal (Simulasi)
-        $path = null;
-        if ($request->hasFile('proposal')) {
-            $path = $request->file('proposal')->getClientOriginalName();
-        }
+        $mahasiswa = Auth::user()->mahasiswa;
 
-        Pendaftaran::create([
-            'user_id' => Auth::id(),
-            'tipe' => $request->tipe_magang,
+        // Auto generate kode_magang: MGN-[NIM]-[RANDOM]
+        $kodeMagang = 'MGN-' . $mahasiswa->nim . '-' . strtoupper(substr(md5(time()), 0, 5));
+
+        // 1. Create Magang
+        $magang = Magang::create([
+            'kode_magang' => $kodeMagang,
+            'nim' => $mahasiswa->nim, // Ketua
             'perusahaan' => $request->perusahaan,
             'alamat' => $request->alamat,
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,
-            'proposal_path' => $path,
-            'status' => 'Menunggu ACC'
+            'konsentrasi' => $request->konsentrasi,
+            'tipe_magang' => $request->tipe_magang,
+            'link_bukti_magang' => $request->link_bukti_magang,
+            'link_survey_perusahaan' => $request->link_survey_perusahaan,
+            'status_magang' => 'Pending',
         ]);
 
-        return redirect()->route('mahasiswa.progress')->with('success', 'Pendaftaran berhasil dikirim. Menunggu verifikasi.');
+        // 2. Add as Peserta
+        PesertaMagang::create([
+            'id_mahasiswa' => $mahasiswa->id_mahasiswa,
+            'id_magang' => $magang->id_magang,
+            'nim' => $mahasiswa->nim,
+        ]);
+
+        return redirect()->route('mahasiswa.progress')->with('success', 'Pendaftaran berhasil dikirim.');
     }
 }
