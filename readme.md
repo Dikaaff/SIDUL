@@ -10,7 +10,7 @@ Sistem Informasi Magang untuk Mahasiswa, Dosen Pembimbing, dan Operator.
 # 1. Install dependencies
 composer install
 
-# 2. Copy environment file
+# 2. Setup environment file
 cp .env.example .env
 
 # 3. Generate app key
@@ -19,7 +19,14 @@ php artisan key:generate
 # 4. Buat tabel database SQLite
 php artisan migrate:fresh --seeder=SidulSeeder
 
-# 5. Jalankan server
+# 5. Install frontend dependencies
+npm install
+
+npm run build
+
+npm run dev
+
+# 6. Jalankan server
 php artisan serve
 ```
 

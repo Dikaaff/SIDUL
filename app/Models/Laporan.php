@@ -2,17 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Laporan extends Model
 {
-    use HasFactory;
+    protected $table = 'laporan';
+    protected $primaryKey = 'id_laporan';
 
     protected $fillable = [
-        'user_id',
-        'laporan_akhir_path',
-        'pengesahan_path',
-        'status'
+        'id_magang',
+        'judul',
+        'bab1',
+        'bab2',
+        'bab3',
+        'bab4',
+        'status',
+        'catatan_dosen'
     ];
+
+    public function magang()
+    {
+        return $this->belongsTo(Magang::class, 'id_magang');
+    }
+
+    public function komentar()
+    {
+        return $this->hasMany(KomentarLaporan::class, 'id_laporan');
+    }
+
+    public function revisi()
+    {
+        return $this->hasMany(RevisiLaporan::class, 'id_laporan');
+    }
 }
