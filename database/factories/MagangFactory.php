@@ -18,7 +18,7 @@ class MagangFactory extends Factory
     {
         return [
             'kode_magang' => fake()->unique()->bothify('MAG-###'),
-            'id_dosen_pembimbing' => \App\Models\Dosen::inRandomOrder()->first()->id_dosen ?? \App\Models\Dosen::factory(),
+            'dosen_pembimbing_id' => \App\Models\Dosen::inRandomOrder()->first()->id ?? \App\Models\Dosen::factory(),
             'status_magang' => 'berjalan'
         ];
     }

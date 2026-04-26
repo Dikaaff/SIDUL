@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RevisiLaporan extends Model
 {
-    protected $table = 'revisi_laporan';
-    protected $primaryKey = 'id_revisi';
+    use HasFactory;
 
     public $timestamps = false;
 
     protected $fillable = [
-        'id_laporan',
+        'laporan_id',
         'bab_yang_diubah',
         'konten_lama',
         'konten_baru',
@@ -21,7 +21,7 @@ class RevisiLaporan extends Model
 
     public function laporan()
     {
-        return $this->belongsTo(Laporan::class, 'id_laporan');
+        return $this->belongsTo(Laporan::class);
     }
 
     public function user()

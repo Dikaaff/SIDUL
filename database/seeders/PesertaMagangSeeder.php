@@ -20,8 +20,8 @@ class PesertaMagangSeeder extends Seeder
 
             foreach ($anggota as $i => $mhs) {
                 \App\Models\PesertaMagang::create([
-                    'id_magang' => $magang->id_magang,
-                    'id_mahasiswa' => $mhs->id_mahasiswa,
+                    'magang_id' => $magang->id,
+                    'mahasiswa_id' => $mhs->id,
                     'is_ketua' => $i === 0
                 ]);
             }

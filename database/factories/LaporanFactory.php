@@ -17,7 +17,7 @@ class LaporanFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_magang' => \App\Models\Magang::inRandomOrder()->first()->id_magang,
+            'magang_id' => \App\Models\Magang::inRandomOrder()->first()->id ?? \App\Models\Magang::factory(),
             'judul' => 'Laporan Magang',
             'bab1' => fake()->paragraph(),
             'bab2' => fake()->paragraph(),

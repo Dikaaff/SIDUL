@@ -3,20 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;  
 
 class PesertaMagang extends Model
 {
-    protected $table = 'peserta_magang';
-
-    protected $fillable = ['id_magang', 'id_mahasiswa', 'is_ketua'];
+    use HasFactory;
+    protected $fillable = ['magang_id', 'mahasiswa_id', 'is_ketua'];
 
     public function magang()
     {
-        return $this->belongsTo(Magang::class, 'id_magang');
+        return $this->belongsTo(Magang::class);
     }
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa');
+        return $this->belongsTo(Mahasiswa::class);
     }
 }

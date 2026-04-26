@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('laporan', function (Blueprint $table) {
-            $table->id('id_laporan');
-            $table->foreignId('id_magang')
-                ->constrained('magang', 'id_magang')
+        Schema::create('laporans', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('magang_id')
+                ->constrained('magangs')
                 ->cascadeOnDelete();
             $table->string('judul');
             $table->longText('bab1')->nullable();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('laporan');
+        Schema::dropIfExists('laporans');
     }
 };

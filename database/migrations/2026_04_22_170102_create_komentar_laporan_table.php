@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('komentar_laporan', function (Blueprint $table) {
-            $table->id('id_komentar');
-            $table->foreignId('id_laporan')
-                ->constrained('laporan', 'id_laporan')
+        Schema::create('komentar_laporans', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('laporan_id')
+                ->constrained('laporans')
                 ->cascadeOnDelete();
-            $table->foreignId('id_user')
+            $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->integer('bab_ke')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('komentar_laporan');
+        Schema::dropIfExists('komentar_laporans');
     }
 };

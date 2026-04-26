@@ -17,8 +17,8 @@ class PesertaMagangFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_magang' => \App\Models\Magang::inRandomOrder()->first()->id_magang,
-            'id_mahasiswa' => \App\Models\Mahasiswa::inRandomOrder()->first()->id_mahasiswa,
+            'magang_id' => \App\Models\Magang::inRandomOrder()->first()->id ?? \App\Models\Magang::factory(),
+            'mahasiswa_id' => \App\Models\Mahasiswa::inRandomOrder()->first()->id ?? \App\Models\Mahasiswa::factory(),
             'is_ketua' => false
         ];
     }

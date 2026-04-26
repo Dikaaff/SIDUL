@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Magang;
+
 class Dosen extends Model
 {
-    protected $table = 'dosen';
-    protected $primaryKey = 'id_dosen';
+    use HasFactory;
 
     protected $fillable = ['user_id','nik','nama'];
 
@@ -18,6 +19,6 @@ class Dosen extends Model
 
     public function magang()
     {
-        return $this->hasMany(Magang::class, 'id_dosen_pembimbing');
+        return $this->hasMany(Magang::class, 'dosen_pembimbing_id');
     }
 }

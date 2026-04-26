@@ -3,21 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class KomentarLaporan extends Model
 {
-    protected $table = 'komentar_laporan';
-    protected $primaryKey = 'id_komentar';
+    use HasFactory;
 
-    protected $fillable = ['id_laporan', 'id_user', 'bab_ke', 'komentar'];
+    protected $fillable = ['laporan_id', 'user_id', 'bab_ke', 'komentar'];
 
     public function laporan()
     {
-        return $this->belongsTo(Laporan::class, 'id_laporan');
+        return $this->belongsTo(Laporan::class);
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class);
     }
 }

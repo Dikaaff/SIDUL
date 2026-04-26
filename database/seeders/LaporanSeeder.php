@@ -16,7 +16,7 @@ class LaporanSeeder extends Seeder
 
         foreach ($magangs as $magang) {
             \App\Models\Laporan::create([
-                'id_magang' => $magang->id_magang,
+                'magang_id' => $magang->id,
                 'judul' => 'Laporan ' . $magang->kode_magang,
                 'bab1' => 'Bab 1',
                 'bab2' => 'Bab 2',

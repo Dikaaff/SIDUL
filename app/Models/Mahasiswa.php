@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Mahasiswa extends Model
 {
-    protected $table = 'mahasiswa';
-    protected $primaryKey = 'id_mahasiswa';
-
+    use HasFactory;
     protected $fillable = ['user_id', 'nim', 'nama', 'prodi'];
 
     public function user()
@@ -18,6 +16,6 @@ class Mahasiswa extends Model
 
     public function pesertaMagang()
     {
-        return $this->hasMany(PesertaMagang::class, 'id_mahasiswa');
+        return $this->hasMany(PesertaMagang::class);
     }
 }

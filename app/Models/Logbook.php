@@ -3,18 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Logbook extends Model
 {
-    protected $table = 'logbook';
-    protected $primaryKey = 'id_logbook';
+    use HasFactory;
 
     protected $fillable = [
-        'id_magang','tanggal','kegiatan','catatan_dosen'
+        'magang_id','tanggal','kegiatan','catatan_dosen'
     ];
 
     public function magang()
     {
-        return $this->belongsTo(Magang::class, 'id_magang');
+        return $this->belongsTo(Magang::class);
     }
 }

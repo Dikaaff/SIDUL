@@ -3,7 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Dosen>
  */
@@ -16,12 +17,16 @@ class DosenFactory extends Factory
      */
     public function definition(): array
 {
+    $nik = fake()->unique()->numerify('19########');
     return [
-        'user_id' => \App\Models\User::factory()->create([
+        'user_id' => User::factory()->create([
+            'username' => $nik,
+            // 'password' => 'password123',
+            'password' => Hash::make('password123'),
             'role' => 'dosen'
         ])->id,
 
-        'nik' => fake()->unique()->numerify('19########'),
+        'nik' => $nik,
         'nama' => fake()->name()
     ];
 }

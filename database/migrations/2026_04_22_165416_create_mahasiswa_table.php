@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->id('id_mahasiswa');
+        Schema::create('mahasiswas', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nim')->unique();
             $table->string('nama');
@@ -20,8 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('dosen_wali_id')->nullable();
             $table->timestamps();
             $table->foreign('dosen_wali_id')
-                ->references('id_dosen')
-                ->on('dosen')
+                ->references('id')
+                ->on('dosens')
                 ->nullOnDelete();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mahasiswa');
+        Schema::dropIfExists('mahasiswas');
     }
 };

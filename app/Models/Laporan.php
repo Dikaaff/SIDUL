@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Laporan extends Model
 {
-    protected $table = 'laporan';
-    protected $primaryKey = 'id_laporan';
-
+    use HasFactory;
     protected $fillable = [
-        'id_magang',
+        'magang_id',
         'judul',
         'bab1',
         'bab2',
@@ -22,16 +21,16 @@ class Laporan extends Model
 
     public function magang()
     {
-        return $this->belongsTo(Magang::class, 'id_magang');
+        return $this->belongsTo(Magang::class);
     }
 
     public function komentar()
     {
-        return $this->hasMany(KomentarLaporan::class, 'id_laporan');
+        return $this->hasMany(KomentarLaporan::class);
     }
 
     public function revisi()
     {
-        return $this->hasMany(RevisiLaporan::class, 'id_laporan');
+        return $this->hasMany(RevisiLaporan::class);
     }
 }

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('revisi_laporan', function (Blueprint $table) {
-                $table->id('id_revisi');
-                $table->foreignId('id_laporan')
-                    ->constrained('laporan', 'id_laporan')
+        Schema::create('revisi_laporans', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('laporan_id')
+                    ->constrained('laporans')
                     ->cascadeOnDelete();
                 $table->integer('bab_yang_diubah')->nullable();
                 $table->longText('konten_lama');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('revisi_laporan');
+        Schema::dropIfExists('revisi_laporans');
     }
 };

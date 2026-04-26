@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peserta_magang', function (Blueprint $table) {
+        Schema::create('peserta_magangs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_magang')
-                ->constrained('magang', 'id_magang')
+            $table->foreignId('magang_id')
+                ->constrained('magangs')
                 ->cascadeOnDelete();
-            $table->foreignId('id_mahasiswa')
-                ->constrained('mahasiswa', 'id_mahasiswa')
+            $table->foreignId('mahasiswa_id')
+                ->constrained('mahasiswas')
                 ->cascadeOnDelete();
             $table->boolean('is_ketua')->default(false);
             $table->timestamps();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peserta_magang');
+        Schema::dropIfExists('peserta_magangs');
     }
 };
