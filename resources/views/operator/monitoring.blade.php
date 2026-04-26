@@ -1,110 +1,145 @@
 @extends('layouts.app')
 
-@section('title', 'Monitoring Seluruh Mahasiswa Magang')
+@section('title', 'Monitoring Global Magang')
 
 @section('header')
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#6B21A8] p-6 rounded-2xl shadow-lg mt-2">
-    <div>
-        <h2 class="text-2xl font-bold text-white">
-            Monitoring Global 🌍
-        </h2>
-        <p class="text-white/80 mt-1 text-sm md:text-base">Pantau seluruh mahasiswa magang di berbagai instansi dan berbagai tahap proses.</p>
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="flex items-center justify-between relative z-10">
+        <div>
+            <h2 class="text-2xl md:text-3xl font-black mb-2">Monitoring Global Magang 📊</h2>
+            <p class="text-white/90 font-medium text-sm">Pantau perkembangan seluruh mahasiswa magang, penugasan dosen, dan status akhir proses di seluruh fakultas.</p>
+        </div>
     </div>
 </div>
 @endsection
 
 @section('content')
-<div class="card bg-white shadow-sm border border-base-200 overflow-hidden">
-    <div class="p-8 border-b border-base-100 bg-gray-50/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-6">
-             <div class="bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
-                  <h3 class="text-2xl font-black text-gray-800 tracking-tight">128</h3>
-                  <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-0.5">Total Mahasiswa</p>
-             </div>
-             <div class="h-10 w-[1px] bg-gray-200 hidden md:block"></div>
-             <div class="flex gap-4">
-                 <div class="flex flex-col">
-                      <span class="text-[10px] font-black text-green-600 uppercase tracking-widest mb-1">Aktif Magang</span>
-                      <span class="text-lg font-black text-gray-800">84</span>
-                 </div>
-                 <div class="flex flex-col">
-                      <span class="text-[10px] font-black text-orange-500 uppercase tracking-widest mb-1">Pendaftaran</span>
-                      <span class="text-lg font-black text-gray-800">44</span>
-                 </div>
-             </div>
-        </div>
-        <div class="join shadow-sm border border-base-200">
-             <input class="input input-sm join-item bg-white text-gray-800 focus:outline-none w-64 lg:w-80" placeholder="Cari Nama, NIM, atau Perusahaan..." />
-             <button class="btn btn-sm join-item bg-white border-l-base-200 text-[#6B21A8] hover:bg-gray-100">Cari</button>
-        </div>
-    </div>
+<div class="space-y-6 font-sans">
     
-    <div class="overflow-x-auto">
-        <table class="table table-lg w-full">
-            <thead>
-                <tr class="text-gray-400 font-extrabold text-[10px] uppercase tracking-[0.2em] bg-gray-50/30">
-                    <th class="py-6">Mahasiswa & NIM</th>
-                    <th>Instansi Tujuan</th>
-                    <th>Status Saat Ini</th>
-                    <th>Pembimbing</th>
-                    <th>Progres</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Row 1 -->
-                <tr class="hover:bg-gray-50/50 border-b border-base-100 transition-colors">
-                    <td class="py-8">
-                         <div class="font-black text-gray-800">Andi Saputra</div>
-                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">210401001</div>
-                    </td>
-                    <td>
-                         <div class="font-bold text-gray-700 text-sm">PT. Teknologi Maju Persada</div>
-                         <span class="text-[9px] text-gray-400 uppercase font-black tracking-widest">Jakarta Pusat</span>
-                    </td>
-                    <td>
-                         <div class="flex items-center gap-2">
-                             <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                             <span class="text-[10px] font-black text-green-600 uppercase tracking-widest">Aktif Magang</span>
-                         </div>
-                    </td>
-                    <td class="text-xs font-bold text-gray-500">Dr. Budi Santoso</td>
-                    <td>
-                         <div class="flex items-center gap-3">
-                             <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden w-24">
-                                 <div class="h-full bg-[#6B21A8] w-[75%] rounded-full shadow-[0_0_8px_rgba(107,33,168,0.3)]"></div>
-                             </div>
-                             <span class="text-xs font-black text-gray-800">75%</span>
-                         </div>
-                    </td>
-                </tr>
-                <!-- Row 2 -->
-                <tr class="hover:bg-gray-50/50 border-b border-base-100 transition-colors">
-                    <td class="py-8">
-                         <div class="font-black text-gray-800">Budi Ramadhan</div>
-                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">210401045</div>
-                    </td>
-                    <td>
-                         <div class="font-bold text-gray-700 text-sm">Bank Nasional Nusantara</div>
-                         <span class="text-[9px] text-gray-400 uppercase font-black tracking-widest">Medan</span>
-                    </td>
-                    <td>
-                         <div class="flex items-center gap-2">
-                             <div class="w-2 h-2 rounded-full bg-orange-500"></div>
-                             <span class="text-[10px] font-black text-orange-600 uppercase tracking-widest">Verifikasi Pra Survey</span>
-                         </div>
-                    </td>
-                    <td class="text-xs font-bold text-gray-300 italic">Belum Ditugaskan</td>
-                    <td>
-                         <div class="flex items-center gap-3">
-                             <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden w-24">
-                                 <div class="h-full bg-orange-400 w-[15%] rounded-full shadow-[0_0_8px_rgba(244,158,10,0.3)]"></div>
-                             </div>
-                             <span class="text-xs font-black text-gray-800">15%</span>
-                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    {{-- Filter & Tools --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+        <div class="flex flex-wrap gap-3">
+            <select class="select select-sm select-bordered rounded-xl bg-white text-gray-700 font-bold border-gray-200 focus:border-[#6B21A8]">
+                <option selected>Semua Angkatan</option>
+                <option>2021</option>
+                <option>2022</option>
+            </select>
+            <select class="select select-sm select-bordered rounded-xl bg-white text-gray-700 font-bold border-gray-200 focus:border-[#6B21A8]">
+                <option selected>Semua Konsentrasi</option>
+                <option>Software Engineering</option>
+                <option>Data Science</option>
+                <option>Cyber Security</option>
+            </select>
+            <select class="select select-sm select-bordered rounded-xl bg-white text-gray-700 font-bold border-gray-200 focus:border-[#6B21A8]">
+                <option selected>Semua Status</option>
+                <option>Pending</option>
+                <option>Aktif</option>
+                <option>Selesai</option>
+            </select>
+        </div>
+        <div class="flex gap-2">
+             <button class="btn btn-sm min-h-0 h-10 px-4 rounded-xl border border-gray-200 bg-white text-gray-600 font-black text-[10px] uppercase tracking-widest hover:bg-gray-50 transition-all">Export Excel</button>
+        </div>
     </div>
+
+    {{-- Tabel Monitoring Global --}}
+    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+                <thead>
+                    <tr class="text-gray-900 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/30 border-b border-gray-100">
+                        <th class="pl-8 py-5 w-12">No</th>
+                        <th>Mahasiswa & NIM</th>
+                        <th>Perusahaan & Tipe</th>
+                        <th>Dosen Pembimbing</th>
+                        <th>ID Magang</th>
+                        <th>Status</th>
+                        <th class="pr-8 text-right">Progress</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach($magangs as $index => $magang)
+                    @php $mhs = $magang->peserta->first()->mahasiswa; @endphp
+                    <tr class="hover:bg-gray-50 transition-all">
+                        <td class="pl-8 py-6 text-[10px] font-black text-gray-600 italic">
+                            {{ $index + 1 }}
+                        </td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-xs">
+                                    {{ strtoupper(substr($mhs->nama ?? 'MH', 0, 2)) }}
+                                </div>
+                                <div>
+                                    <div class="font-black text-gray-800 text-sm tracking-tight">{{ $mhs->nama ?? '-' }}</div>
+                                    <div class="text-[10px] font-bold text-gray-900 mt-0.5 tracking-widest uppercase">{{ $magang->nim }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="font-bold text-gray-700 text-xs">{{ $magang->perusahaan }}</div>
+                            <div class="badge badge-outline border-gray-200 text-[8px] font-black uppercase tracking-widest px-2 py-2 mt-1">{{ $magang->tipe_magang }}</div>
+                        </td>
+                        <td>
+                            @if($magang->pembimbing)
+                                <div class="font-bold text-sm text-[#6B21A8]">{{ $magang->pembimbing->nama }}</div>
+                                <div class="text-[9px] font-black text-gray-900 uppercase tracking-widest">{{ $magang->pembimbing->nik ?? '-' }}</div>
+                            @else
+                                <span class="text-[10px] font-black text-red-400 uppercase tracking-widest italic">Belum Diatur</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($magang->kode_magang)
+                                <div class="px-3 py-1 bg-gray-900 text-white rounded-lg text-[9px] font-black tracking-widest inline-block border border-gray-800 shadow-sm">
+                                    {{ $magang->kode_magang }}
+                                </div>
+                            @else
+                                <span class="text-[10px] font-black text-black font-black font-bold italic uppercase tracking-widest italic">—</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($magang->status_magang === 'Aktif')
+                                <span class="px-2.5 py-1.5 rounded-lg bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-200">Aktif</span>
+                            @elseif($magang->status_magang === 'Pending')
+                                <span class="px-2.5 py-1.5 rounded-lg bg-orange-50 text-[#F49E0A] text-[9px] font-black uppercase tracking-wider border border-orange-200">Pending</span>
+                            @elseif($magang->status_magang === 'Terverifikasi')
+                                <span class="px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-600 text-[9px] font-black uppercase tracking-wider border border-blue-200">Verifikasi</span>
+                            @elseif($magang->status_magang === 'Selesai')
+                                <span class="px-2.5 py-1.5 rounded-lg bg-purple-50 text-[#6B21A8] text-[9px] font-black uppercase tracking-wider border border-purple-200">Selesai</span>
+                            @elseif($magang->status_magang === 'Ditolak')
+                                <span class="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-600 text-[9px] font-black uppercase tracking-wider border border-red-200">Ditolak</span>
+                            @else
+                                <span class="px-2.5 py-1.5 rounded-lg bg-gray-50 text-gray-500 text-[9px] font-black uppercase tracking-wider border border-gray-200">{{ $magang->status_magang }}</span>
+                            @endif
+                        </td>
+                        <td class="pr-8 text-right">
+                             <div class="flex flex-col items-end gap-1.5">
+                                 <div class="flex items-center justify-between w-24">
+                                     <span class="text-[9px] font-black text-gray-900 uppercase tracking-widest">Progress</span>
+                                     <span class="text-[10px] font-black text-gray-700">
+                                         @if($magang->status_magang === 'Selesai') 100%
+                                         @elseif($magang->status_magang === 'Aktif') 65%
+                                         @elseif($magang->status_magang === 'Terverifikasi') 25%
+                                         @else 5% @endif
+                                     </span>
+                                 </div>
+                                 <div class="w-24 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                                     <div class="h-full @if($magang->status_magang === 'Selesai') bg-[#6B21A8] @elseif($magang->status_magang === 'Aktif') bg-green-500 @else bg-orange-400 @endif rounded-full" 
+                                          style="width: @if($magang->status_magang === 'Selesai') 100% @elseif($magang->status_magang === 'Aktif') 65% @elseif($magang->status_magang === 'Terverifikasi') 25% @else 5% @endif"></div>
+                                 </div>
+                             </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="px-8 py-5 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between">
+            <p class="text-[10px] font-black text-gray-900 uppercase tracking-[0.15em]">Menampilkan {{ $magangs->count() }} entri pendaftaran magang</p>
+        </div>
+    </div>
+
 </div>
 @endsection

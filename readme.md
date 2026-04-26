@@ -57,6 +57,15 @@ Buka browser: **http://localhost:8000**
 | URL      | http://localhost:8000/login |
 | Dashboard | http://localhost:8000/dashboard/operator |
 
+### 🛡️ Super Admin
+
+| Field    | Value                    |
+|----------|--------------------------|
+| Username | `admin`                  |
+| Password | `password123`            |
+| URL      | http://localhost:8000/login |
+| Dashboard | http://localhost:8000/dashboard/admin |
+
 ---
 
 ## 🗺️ Navigasi URL
@@ -87,6 +96,12 @@ Buka browser: **http://localhost:8000**
 | Halaman       | URL                              |
 |---------------|----------------------------------|
 | Dashboard     | `/dashboard/operator`            |
+
+### Super Admin
+| Halaman       | URL                              |
+|---------------|----------------------------------|
+| Dashboard     | `/dashboard/admin`               |
+| Kelola Staf   | `/admin/users`                   |
 
 ---
 

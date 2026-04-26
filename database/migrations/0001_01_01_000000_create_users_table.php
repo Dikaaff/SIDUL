@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique(); // Untuk NIM/NIK
             $table->string('password');
-            $table->enum('role', ['mahasiswa', 'dosen', 'operator'])->default('mahasiswa');
+            $table->enum('role', ['mahasiswa', 'dosen', 'operator', 'admin'])->default('mahasiswa');
             $table->rememberToken();
             $table->timestamps();
         });

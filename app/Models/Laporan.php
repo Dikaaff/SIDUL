@@ -13,8 +13,12 @@ class Laporan extends Model
 
     protected $fillable = [
         'id_magang',
+        'judul',
+        'konten',
+        'is_draft',
         'laporan',
         'status_laporan',
+        'feedback_dosen',
     ];
 
     public function magang()

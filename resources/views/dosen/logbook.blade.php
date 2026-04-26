@@ -111,28 +111,31 @@
 </dialog>
 
 <script>
-const students = [
-    { id: 1, name: 'Andi Saputra', nim: '210401001', color: 'purple' },
-    { id: 2, name: 'Budi Ramadhan', nim: '210401045', color: 'orange' },
-    { id: 3, name: 'Siti Maryam', nim: '210401089', color: 'blue' },
-    { id: 4, name: 'Rahmat Hidayat', nim: '210401022', color: 'green' },
-    { id: 5, name: 'Dewi Lestari', nim: '210401011', color: 'pink' },
-    { id: 6, name: 'Fajar Nugraha', nim: '210401077', color: 'indigo' }
-];
+const students = @json($mhsBimbingan->map(function($magang) {
+    return [
+        'id' => $magang->id_magang,
+        'name' => $magang->peserta->mahasiswa->nama,
+        'nim' => $magang->peserta->mahasiswa->nim
+    ];
+}));
 
-const mockLogs = {
-    1: [
-        { date: '09 Mar 2026', title: 'Integrasi API Chart', desc: 'Menghubungkan frontend ke backend untuk data grafik.', obstacle: 'Delay data fetching', work: 'API, JavaScript', week: 4 },
-        { date: '08 Mar 2026', title: 'Slicing UI Dashboard', desc: 'Melakukan slicing desain figma ke HTML.', obstacle: 'None', work: 'HTML, CSS', week: 4 },
-        { date: '01 Mar 2026', title: 'Setup Database', desc: 'Membuat migrasi dan seeder awal.', obstacle: 'DB Connection', work: 'Database', week: 3 }
-    ],
-    2: [
-        { date: '10 Mar 2026', title: 'Audit Keamanan', desc: 'Mengecek celah keamanan pada form login.', obstacle: 'None', work: 'Security', week: 4 }
-    ]
-};
+const mockLogs = @json($mhsBimbingan->mapWithKeys(function($magang) {
+    return [
+        $magang->id_magang => $magang->logbooks->map(function($log) {
+            return [
+                'date' => $log->created_at->format('d M Y'),
+                'title' => $log->judul,
+                'desc' => $log->deskripsi,
+                'obstacle' => $log->kendala ?? 'Tidak ada kendala',
+                'work' => $log->kategori ?? 'Umum',
+                'week' => $log->minggu_ke ?? 1
+            ];
+        })
+    ];
+}));
 
 let currentView = 'weekly';
-let currentStudentId = 1;
+let currentStudentId = students.length > 0 ? students[0].id : null;
 
 function renderStudents() {
     const container = document.getElementById('studentSelector');

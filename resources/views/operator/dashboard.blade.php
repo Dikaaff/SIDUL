@@ -11,12 +11,6 @@
             <h2 class="text-2xl md:text-3xl font-black mb-2">Dashboard Operator 🚀</h2>
             <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Selamat datang. Berikut ringkasan sistem magang yang perlu Anda tindaklanjuti hari ini.</p>
         </div>
-        <div class="flex gap-3 self-start md:self-center shrink-0">
-            <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-xl">
-                <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
-                <span class="text-xs font-bold uppercase tracking-wider">{{ now()->format('d F Y') }}</span>
-            </div>
-        </div>
     </div>
 </div>
 @endsection
@@ -25,51 +19,51 @@
 {{-- Stats Grid --}}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 font-sans">
 
-    {{-- Stat 1: Menunggu Verifikasi --}}
-    <a href="{{ route('operator.verifikasi') }}" class="card bg-white shadow-sm border border-base-200 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
+    {{-- Stat 1: Tunggu Plotting --}}
+    <a href="{{ route('operator.dosen_pembimbing') }}" class="card bg-white shadow-sm border border-base-200 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
         <div class="card-body p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Menunggu Verifikasi</p>
-                    <h3 class="text-4xl font-black text-[#F49E0A]">{{ $pendingCount }}</h3>
+                    <p class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-1">Perlu Plotting</p>
+                    <h3 class="text-4xl font-black text-[#F49E0A]">{{ $pendingPlottingCount }}</h3>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-orange-50 text-[#F49E0A] flex items-center justify-center group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
             </div>
-            <p class="text-[10px] font-bold text-orange-500 mt-3 uppercase tracking-wider">→ Periksa sekarang</p>
+            <p class="text-[10px] font-bold text-orange-500 mt-3 uppercase tracking-wider">→ Plotting Dosen</p>
         </div>
     </a>
 
-    {{-- Stat 2: Belum Dapat Dosen --}}
-    <a href="{{ route('operator.dosen_pembimbing') }}" class="card bg-white shadow-sm border border-base-200 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
+    {{-- Stat 2: Ready to Register (Approved Wali) --}}
+    <div class="card bg-white shadow-sm border border-base-200">
         <div class="card-body p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Belum Ada Dosen</p>
-                    <h3 class="text-4xl font-black text-blue-600">{{ $belumDosenCount }}</h3>
+                    <p class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-1">Disetujui Wali</p>
+                    <h3 class="text-4xl font-black text-blue-600">{{ $pendingPendaftaranCount }}</h3>
                 </div>
-                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 </div>
             </div>
-            <p class="text-[10px] font-bold text-blue-500 mt-3 uppercase tracking-wider">→ Assign dosen</p>
+            <p class="text-[10px] font-bold text-blue-500 mt-3 uppercase tracking-wider">Siap Mendaftar</p>
         </div>
-    </a>
+    </div>
 
     {{-- Stat 3: Aktif Magang --}}
     <div class="card bg-white shadow-sm border border-base-200">
         <div class="card-body p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Aktif Magang</p>
+                    <p class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-1">Aktif Magang</p>
                     <h3 class="text-4xl font-black text-green-600">{{ $aktifCount }}</h3>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                 </div>
             </div>
-            <p class="text-[10px] font-bold text-gray-400 mt-3 uppercase tracking-wider">Sedang berjalan</p>
+            <p class="text-[10px] font-bold text-gray-900 mt-3 uppercase tracking-wider">Sedang berjalan</p>
         </div>
     </div>
 
@@ -94,36 +88,117 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 font-sans">
 
     {{-- Antrean Terbaru --}}
-    <div class="lg:col-span-2">
-        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+    <div class="lg:col-span-2 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-400 fill-mode-both">
+        
+        @if(!\App\Models\Setting::isReady())
+            <div class="bg-red-50 border-2 border-red-200 p-6 rounded-[2rem] flex items-center gap-6 animate-pulse">
+                <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </div>
+                <div>
+                    <h5 class="text-red-900 font-black uppercase tracking-tight text-sm">Database Belum Siap!</h5>
+                    <p class="text-red-700 text-xs font-medium">Fitur Buka/Tutup tidak akan berfungsi. Harap jalankan <strong>php artisan migrate</strong> di terminal anda segera.</p>
+                </div>
+            </div>
+        @endif
+        {{-- PREMIUM CONTROL CENTER --}}
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r {{ $isPeriodeOpen ? 'from-green-500 to-emerald-600' : 'from-amber-400 to-orange-500' }} rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+            <div class="relative bg-white rounded-[2.3rem] p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border border-gray-50">
+                
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    {{-- Animated Status Icon --}}
+                    <div class="relative">
+                        <div class="absolute inset-0 {{ $isPeriodeOpen ? 'bg-green-400' : 'bg-amber-400' }} rounded-3xl blur-xl opacity-20 animate-pulse"></div>
+                        <div class="w-20 h-20 rounded-3xl {{ $isPeriodeOpen ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600' }} flex items-center justify-center shadow-inner relative z-10 border border-white/50">
+                            @if($isPeriodeOpen)
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="text-center md:text-left">
+                        <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+                            <span class="w-2 h-2 rounded-full {{ $isPeriodeOpen ? 'bg-green-500 animate-ping' : 'bg-amber-500' }}"></span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Main System Status</span>
+                        </div>
+                        <h4 class="text-2xl font-black text-gray-900 tracking-tight leading-tight">
+                            Pendaftaran Mahasiswa: 
+                            <span class="{{ $isPeriodeOpen ? 'text-green-600' : 'text-amber-600' }} uppercase underline decoration-4 underline-offset-4">
+                                {{ $isPeriodeOpen ? 'DIBUKA' : 'DITUTUP' }}
+                            </span>
+                        </h4>
+                        <p class="text-sm font-medium text-gray-500 mt-2 max-w-sm">
+                            {{ $isPeriodeOpen ? 'Sistem saat ini menerima berkas pendaftaran. Pantau antrean secara berkala.' : 'Akses pendaftaran dikunci. Mahasiswa hanya dapat melihat dashboard tanpa mendaftar.' }}
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col gap-3 min-w-[240px]">
+                    <form id="toggle-period-form" action="{{ route('operator.periode.toggle') }}" method="POST">
+                        @csrf
+                        <button type="button" 
+                                onclick="confirmTogglePeriod('{{ $isPeriodeOpen ? 'TUTUP' : 'BUKA' }}')"
+                                class="w-full group relative px-8 py-5 rounded-2xl {{ $isPeriodeOpen ? 'bg-gray-900 shadow-gray-900/10' : 'bg-amber-500 shadow-amber-500/20' }} text-white font-black overflow-hidden transition-all hover:scale-[1.02] active:scale-95 border-none shadow-2xl">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <span class="relative flex items-center justify-center gap-3 text-xs uppercase tracking-[0.2em]">
+                                @if($isPeriodeOpen)
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                    Tutup Pendaftaran
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 11V7a5 5 0 0110 0v4M8 11v-4a4 4 0 0110 0" /></svg>
+                                    Buka Pendaftaran
+                                @endif
+                            </span>
+                        </button>
+                    </form>
+                    <p class="text-[9px] font-bold text-center text-gray-400 uppercase tracking-widest italic">Otoritas akses penuh Operator SIDUL</p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function confirmTogglePeriod(action) {
+                const message = action === 'TUTUP' 
+                    ? "⚠️ PERHATIAN: Apakah Anda yakin ingin MENUTUP periode pendaftaran?\n\nMahasiswa tidak akan bisa mengirim berkas baru sampai Anda membukanya kembali."
+                    : "🚀 KONFIRMASI: Apakah Anda ingin MEMBUKA periode pendaftaran?\n\nMahasiswa akan dapat mulai mengisi form pendaftaran magang.";
+                
+                if (confirm(message)) {
+                    document.getElementById('toggle-period-form').submit();
+                }
+            }
+        </script>
+
+        <div class="bg-white rounded-[2rem] border border-base-200 shadow-sm overflow-hidden">
             <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-2 h-8 bg-[#F49E0A] rounded-full"></div>
-                    <h3 class="font-black text-gray-800 text-lg tracking-tight">Pendaftaran Terbaru (Pending)</h3>
+                    <h3 class="font-black text-gray-800 text-lg tracking-tight">Antrean Plotting (Baru Daftar)</h3>
                 </div>
-                <a href="{{ route('operator.verifikasi') }}" class="text-[10px] font-black text-[#6B21A8] hover:underline uppercase tracking-widest">Lihat Semua →</a>
+                <a href="{{ route('operator.dosen_pembimbing') }}" class="text-[10px] font-black text-[#6B21A8] hover:underline uppercase tracking-widest">Lihat Semua →</a>
             </div>
 
             <div class="divide-y divide-gray-100">
-                @forelse($recentPending as $magang)
-                <div class="px-8 py-5 flex items-center justify-between hover:bg-gray-50/50 transition-all group">
+                @forelse($recentPending as $index => $magang)
+                @php $mhs = $magang->peserta->first()->mahasiswa; @endphp
+                <div class="flex items-center justify-between p-6 hover:bg-gray-50/50 transition-all">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-sm group-hover:bg-[#6B21A8] group-hover:text-white transition-colors">
-                            {{ strtoupper(substr($magang->peserta->first()->mahasiswa->nama ?? 'MH', 0, 2)) }}
+                        <span class="text-[10px] font-black text-black font-black w-4">{{ $index + 1 }}</span>
+                        <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-500 font-bold flex items-center justify-center">
+                            {{ strtoupper(substr($mhs->nama, 0, 1)) }}
                         </div>
                         <div>
-                            <h4 class="font-black text-gray-800 text-sm">{{ $magang->peserta->first()->mahasiswa->nama ?? '-' }}</h4>
-                            <p class="text-[11px] font-bold text-gray-400 mt-0.5 uppercase tracking-wider">{{ $magang->nim }} • {{ $magang->perusahaan }}</p>
+                            <p class="font-bold text-gray-800 text-sm">{{ $mhs->nama }}</p>
+                            <p class="text-[10px] text-gray-900 font-medium uppercase tracking-wider">{{ $magang->perusahaan }}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-[10px] font-bold text-gray-400">{{ $magang->created_at->diffForHumans() }}</span>
-                        <a href="{{ route('operator.verifikasi') }}" class="btn btn-sm rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider">Periksa</a>
-                    </div>
+                    <a href="{{ route('operator.dosen_pembimbing') }}" class="btn btn-ghost btn-sm rounded-lg text-[9px] font-black text-[#6B21A8] uppercase tracking-widest hover:bg-purple-50 shrink-0">Plotting →</a>
                 </div>
                 @empty
-                <div class="px-8 py-12 text-center">
-                    <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Tidak ada pendaftaran pending</p>
+                <div class="p-12 text-center">
+                    <p class="text-[10px] font-black text-black font-black uppercase tracking-widest italic">Tidak ada antrean pendaftaran saat ini</p>
                 </div>
                 @endforelse
             </div>
@@ -133,17 +208,7 @@
     {{-- Panel Aksi Cepat --}}
     <div class="space-y-4">
         <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-6 space-y-4">
-            <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Aksi Cepat</h4>
-
-            <a href="{{ route('operator.verifikasi') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-orange-50 hover:bg-orange-100 transition-all group">
-                <div class="w-10 h-10 rounded-xl bg-[#F49E0A]/10 text-[#F49E0A] flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <div>
-                    <p class="font-black text-gray-800 text-sm">Verifikasi Dokumen</p>
-                    <p class="text-[10px] font-bold text-gray-400">{{ $pendingCount }} menunggu</p>
-                </div>
-            </a>
+            <h4 class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-2">Aksi Cepat</h4>
 
             <a href="{{ route('operator.dosen_pembimbing') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 transition-all group">
                 <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
@@ -151,17 +216,7 @@
                 </div>
                 <div>
                     <p class="font-black text-gray-800 text-sm">Plotting Dosen</p>
-                    <p class="text-[10px] font-bold text-gray-400">{{ $belumDosenCount }} belum di-assign</p>
-                </div>
-            </a>
-
-            <a href="{{ route('operator.id_magang') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-purple-50 hover:bg-purple-100 transition-all group">
-                <div class="w-10 h-10 rounded-xl bg-purple-100 text-[#6B21A8] flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                </div>
-                <div>
-                    <p class="font-black text-gray-800 text-sm">Generate ID Magang</p>
-                    <p class="text-[10px] font-bold text-gray-400">Buat kode unik magang</p>
+                    <p class="text-[10px] font-bold text-gray-900">{{ $pendingPlottingCount }} menunggu</p>
                 </div>
             </a>
 
@@ -171,22 +226,11 @@
                 </div>
                 <div>
                     <p class="font-black text-gray-800 text-sm">Monitoring</p>
-                    <p class="text-[10px] font-bold text-gray-400">{{ $aktifCount }} aktif magang</p>
+                    <p class="text-[10px] font-bold text-gray-900">{{ $aktifCount }} aktif magang</p>
                 </div>
             </a>
         </div>
     </div>
 </div>
 
-@if(session('success'))
-<div id="notifContainer" class="fixed top-8 right-8 z-[9999]">
-    <div class="flex items-center gap-5 bg-gray-900 text-white p-6 rounded-[2.5rem] shadow-2xl border border-white/10 min-w-[350px] font-sans">
-        <div class="w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/40">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-        </div>
-        <p class="font-black text-xs uppercase tracking-widest">{{ session('success') }}</p>
-    </div>
-</div>
-<script>setTimeout(() => document.getElementById('notifContainer').style.display = 'none', 3500);</script>
-@endif
 @endsection

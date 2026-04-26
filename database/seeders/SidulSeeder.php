@@ -10,84 +10,126 @@ class SidulSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Akun Dosen Test
-        $dosenUserId = DB::table('users')->insertGetId([
-            'name'       => 'Dosen Test',
-            'username'   => '19876001', // NIK
-            'password'   => Hash::make('password123'),
-            'role'       => 'dosen',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        $dosenId = DB::table('dosens')->insertGetId([
-            'user_id'    => $dosenUserId,
-            'nik'        => '19876001',
-            'nama'       => 'Dosen Test',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // 2. Akun Mahasiswa Test
-        $mahasiswaUserId = DB::table('users')->insertGetId([
-            'name'       => 'Mahasiswa Test',
-            'username'   => '20210001', // NIM
-            'password'   => Hash::make('password123'),
-            'role'       => 'mahasiswa',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        $mahasiswaId = DB::table('mahasiswas')->insertGetId([
-            'user_id'       => $mahasiswaUserId,
-            'nim'           => '20210001',
-            'nama'          => 'Mahasiswa Test',
-            'dosen_wali_id' => $dosenId,
-            'status_magang' => 'Pending',
-            'created_at'    => now(),
-            'updated_at'    => now(),
-        ]);
-
-        // 4. Data Magang Test (Mahasiswa ini sudah mendaftar)
-        $magangId = DB::table('magangs')->insertGetId([
-            'kode_magang' => 'MGN-20210001-A1B2C',
-            'nim' => '20210001',
-            'perusahaan' => 'PT. Teknologi Masa Depan',
-            'alamat' => 'Jl. Digital No. 101, Jakarta',
-            'tanggal_mulai' => '2026-04-01',
-            'tanggal_selesai' => '2026-07-01',
-            'konsentrasi' => 'Web Development',
-            'tipe_magang' => 'individu',
-            'link_bukti_magang' => 'https://drive.google.com/test-bukti',
-            'link_survey_perusahaan' => 'https://forms.gle/test-survey',
-            'status_magang' => 'Approve',
-            'dosen_pembimbing_id' => $dosenId,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        DB::table('peserta_magangs')->insert([
-            'id_mahasiswa' => $mahasiswaId,
-            'id_magang' => $magangId,
-            'nim' => '20210001',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // 5. Data Logbook Test
-        DB::table('logbooks')->insert([
+        // --- 0. ADMIN (Username: admin) ---
+        DB::table('users')->updateOrInsert(
+            ['username' => 'admin'],
             [
-                'id_magang' => $magangId,
-                'logbook' => 'Hari pertama: Setup environment Laravel dan mempelajari struktur database.',
-                'catatan_dosen' => 'Bagus, lanjutkan.',
+                'name' => 'Super Administrator',
+                'password' => Hash::make('password123'),
+                'role' => 'admin',
                 'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_magang' => $magangId,
-                'logbook' => 'Hari kedua: Membuat layout dashboard menggunakan TailwindCSS.',
-                'catatan_dosen' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]
-        ]);
+        );
+
+        // --- 1. DOSENS ---
+        $dosens = [
+            ['nik' => '19876001', 'nama' => 'Dr. Aris Sudaryanto, M.T.'],
+            ['nik' => '19876002', 'nama' => 'Siti Aminah, S.Kom., M.Cs.'],
+        ];
+        
+        $dosenIds = [];
+        foreach ($dosens as $d) {
+            // Update or Insert User
+            DB::table('users')->updateOrInsert(
+                ['username' => $d['nik']],
+                [
+                    'name' => $d['nama'],
+                    'password' => Hash::make('password123'),
+                    'role' => 'dosen',
+                    'created_at' => now(),
+                ]
+            );
+            
+            $uId = DB::table('users')->where('username', $d['nik'])->first()->id_user;
+            
+            // Update or Insert Dosen Profile
+            DB::table('dosens')->updateOrInsert(
+                ['nik' => $d['nik']],
+                [
+                    'user_id' => $uId,
+                    'nama' => $d['nama'],
+                    'created_at' => now(),
+                ]
+            );
+            
+            $dosenIds[] = DB::table('dosens')->where('nik', $d['nik'])->first()->id_dosen;
+        }
+
+        // --- 2. OPERATOR (Username: operator) ---
+        DB::table('users')->updateOrInsert(
+            ['username' => 'operator'],
+            [
+                'name' => 'Admin Operator',
+                'password' => Hash::make('password123'),
+                'role' => 'operator',
+                'created_at' => now(),
+            ]
+        );
+
+        // --- 3. MAHASISWAS ---
+        
+        // AKUN TESTING UTAMA (Username: 3311)
+        DB::table('users')->updateOrInsert(
+            ['username' => '3311'],
+            [
+                'name' => 'Mahasiswa Test 3311',
+                'password' => Hash::make('akuakuaku'),
+                'role' => 'mahasiswa',
+                'created_at' => now(),
+            ]
+        );
+        $m3311u = DB::table('users')->where('username', '3311')->first()->id_user;
+        
+        DB::table('mahasiswas')->updateOrInsert(
+            ['nim' => '3311'],
+            [
+                'user_id' => $m3311u,
+                'nama' => 'Mahasiswa Test 3311',
+                'dosen_wali_id' => $dosenIds[0],
+                'status_magang' => 'Approve',
+                'created_at' => now(),
+            ]
+        );
+
+        // MHS 1 (Username: 20210001)
+        DB::table('users')->updateOrInsert(
+            ['username' => '20210001'],
+            [
+                'name' => 'Ahmad Fauzi',
+                'password' => Hash::make('password123'),
+                'role' => 'mahasiswa',
+                'created_at' => now(),
+            ]
+        );
+        $m1u = DB::table('users')->where('username', '20210001')->first()->id_user;
+        
+        DB::table('mahasiswas')->updateOrInsert(
+            ['nim' => '20210001'],
+            [
+                'user_id' => $m1u,
+                'nama' => 'Ahmad Fauzi',
+                'dosen_wali_id' => $dosenIds[0],
+                'status_magang' => 'Approve',
+                'created_at' => now(),
+            ]
+        );
+
+        // Tambahkan Magang Data untuk MHS 1
+        $m1Id = DB::table('mahasiswas')->where('nim', '20210001')->first()->id_mahasiswa;
+        DB::table('magangs')->updateOrInsert(
+            ['kode_magang' => 'MGN-20210001-PEND'],
+            [
+                'nim' => '20210001',
+                'perusahaan' => 'PT. Gojek Indonesia',
+                'status_magang' => 'Pending',
+                'created_at' => now(),
+            ]
+        );
+        $magang1 = DB::table('magangs')->where('kode_magang', 'MGN-20210001-PEND')->first()->id_magang;
+        
+        DB::table('peserta_magangs')->updateOrInsert(
+            ['id_mahasiswa' => $m1Id, 'id_magang' => $magang1],
+            ['nim' => '20210001', 'created_at' => now()]
+        );
     }
 }

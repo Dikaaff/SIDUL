@@ -140,29 +140,20 @@
 </dialog>
 
 <script>
-// Mock Data Mahasiswa
-const students = [
-    { name: 'Andi Saputra', nim: '210401001', company: 'PT. Teknologi Maju Persada', field: 'Software Development', status: 'Aktif Magang', progress: 85, color: 'purple' },
-    { name: 'Budi Ramadhan', nim: '210401045', company: 'Bank Nasional Nusantara', field: 'Financial Technology', status: 'Tahap Pendaftaran', progress: 15, color: '#F49E0A' },
-    { name: 'Siti Aminah', nim: '210401089', company: 'Telkom Indonesia', field: 'Network Engineering', status: 'Aktif Magang', progress: 45, color: 'blue' },
-    { name: 'Rahmat Hidayat', nim: '210401090', company: 'Gojek Tech', field: 'Data Science', status: 'Selesai', progress: 100, color: 'green' },
-    { name: 'Dewi Lestari', nim: '210401012', company: 'Shopee Indonesia', field: 'Product Management', status: 'Aktif Magang', progress: 60, color: 'purple' },
-    { name: 'Fajar Nugraha', nim: '210401033', company: 'Traveloka', field: 'Backend Developer', status: 'Tahap Pendaftaran', progress: 10, color: '#F49E0A' },
-    { name: 'Lia Kusuma', nim: '210401056', company: 'Bukalapak', field: 'UX Research', status: 'Selesai', progress: 100, color: 'green' }
-];
-
-// Replicate to 24 items as requested
-for(let i = 1; i <= 17; i++) {
-    students.push({
-        name: 'Mahasiswa ' + (7 + i),
-        nim: '210401' + (100 + i),
-        company: 'Perusahaan ' + i,
-        field: 'Bidang ' + i,
-        status: i % 3 === 0 ? 'Selesai' : (i % 2 === 0 ? 'Aktif Magang' : 'Tahap Pendaftaran'),
-        progress: (i * 15) % 100,
-        color: 'gray'
-    });
-}
+// Data Mahasiswa dari Database
+const students = @json($mhsBimbingan->map(function($magang) {
+    return [
+        'name' => $magang->peserta->mahasiswa->nama,
+        'nim' => $magang->peserta->mahasiswa->nim,
+        'company' => $magang->perusahaan,
+        'field' => $magang->konsentrasi ?? 'Bidang Belum Diisi',
+        'status' => $magang->status_magang,
+        'progress' => ($magang->status_magang === 'Selesai') ? 100 : 
+                      (($magang->status_magang === 'Terverifikasi') ? 20 : 60),
+        'color' => ($magang->status_magang === 'Selesai') ? 'green' : 
+                   (($magang->status_magang === 'Pending') ? 'orange' : 'purple')
+    ];
+}));
 
 let currentPage = 1;
 const itemsPerPage = 5;

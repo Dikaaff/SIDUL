@@ -19,8 +19,21 @@
                 $userRole = $user ? strtolower(trim($user->role)) : null; 
             @endphp
 
-
-            @if($userRole === 'dosen')
+            @if($userRole === 'admin')
+                <!-- ADMIN MENU -->
+                <li>
+                    <a href="/dashboard/admin" class="{{ request()->is('dashboard/admin') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        Dashboard Admin
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/users" class="{{ request()->is('admin/users') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        Kelola Staf
+                    </a>
+                </li>
+            @elseif($userRole === 'dosen')
                 <!-- DOSEN MENU -->
                 <li>
                     <a href="/dashboard/dosen" class="{{ request()->is('dashboard/dosen') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
@@ -65,52 +78,27 @@
             @elseif($userRole === 'operator')
                 <!-- OPERATOR MENU -->
                 <li>
-                    <a href="/dashboard/operator" class="{{ request()->is('dashboard/operator') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
+                    <a href="/dashboard/operator" class="{{ request()->is('dashboard/operator') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                         Dashboard Operator
                     </a>
                 </li>
                 <li>
-                    <a href="/operator/verifikasi" class="{{ request()->is('operator/verifikasi') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Verifikasi Dokumen
-                        <span class="badge badge-sm badge-secondary ml-auto text-xs">12</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/operator/id-magang" class="{{ request()->is('operator/id-magang') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                        Kelola ID Magang
-                    </a>
-                </li>
-                <li>
-                    <a href="/operator/surat-pengantar" class="{{ request()->is('operator/surat-pengantar') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        Surat Pengantar Magang
-                    </a>
-                </li>
-                <li>
-                    <a href="/operator/dosen-pembimbing" class="{{ request()->is('operator/dosen-pembimbing') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
+                    <a href="/operator/dosen-pembimbing" class="{{ request()->is('operator/dosen-pembimbing') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                        Dosen Pembimbing
+                        Plotting Pembimbing
                     </a>
                 </li>
                 <li>
-                    <a href="/operator/monitoring" class="{{ request()->is('operator/monitoring') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
+                    <a href="/operator/monitoring" class="{{ request()->is('operator/monitoring') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         Monitoring Mahasiswa
                     </a>
                 </li>
                 <li>
-                    <a href="/operator/laporan" class="{{ request()->is('operator/laporan') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
+                    <a href="/operator/laporan" class="{{ request()->is('operator/laporan') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                         Laporan Magang
-                    </a>
-                </li>
-                <li>
-                    <a href="/operator/arsip" class="{{ request()->is('operator/arsip') ? 'active bg-primary text-white rounded-xl py-3 px-4' : 'hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl py-3 px-4' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-                        Arsip Magang
                     </a>
                 </li>
             @elseif($userRole === 'mahasiswa')
@@ -119,7 +107,7 @@
                 <li>
                     <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        Dashboard
+                        Dashboard Utama
                     </a>
                 </li>
                 <li>
@@ -129,18 +117,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/mahasiswa/progress" class="{{ request()->is('mahasiswa/progress') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                        Progress Magang
-                    </a>
-                </li>
-                <li>
                     <a href="/mahasiswa/logbook" class="{{ request()->is('mahasiswa/logbook') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                         Logbook Harian
                     </a>
                 </li>
-
                 <li>
                     <a href="/mahasiswa/laporan" class="{{ request()->is('mahasiswa/laporan') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
@@ -160,7 +141,7 @@
             <div tabindex="0" role="button" class="flex items-center gap-4 p-3 rounded-2xl bg-white border border-gray-100 hover:bg-gray-50 transition-all cursor-pointer group shadow-sm w-full">
                 <div class="avatar online">
                     <div class="w-11 rounded-xl ring ring-primary/10 ring-offset-base-100 ring-offset-2">
-                        <img id="sidebar-avatar" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'User') }}&background={{ Auth::user()?->role === 'dosen' ? 'F49E0A' : (Auth::user()?->role === 'operator' ? '2563EB' : '6B21A8') }}&color=fff&rounded=true&bold=true" alt="User" />
+                        <img id="sidebar-avatar" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'User') }}&background={{ Auth::user()?->role === 'dosen' ? 'F49E0A' : (Auth::user()?->role === 'operator' ? '6B21A8' : '6B21A8') }}&color=fff&rounded=true&bold=true" alt="User" />
                     </div>
                 </div>
                 <div class="flex flex-col flex-1 min-w-0">
@@ -184,6 +165,24 @@
                 <li class="menu-title px-4 py-2 border-b border-gray-50 mb-1">
                     <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Manage Account</span>
                 </li>
+                @if(Auth::user()->role === 'mahasiswa')
+                <li>
+                    <a href="{{ route('mahasiswa.profile') }}" class="flex items-center gap-3 py-3 px-4 hover:bg-purple-50 text-gray-700 rounded-xl transition-all group/item">
+                        <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center group-hover/item:bg-white shadow-sm transition-colors text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        </div>
+                        <span class="font-black uppercase tracking-widest text-[10px]">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('mahasiswa.settings') }}" class="flex items-center gap-3 py-3 px-4 hover:bg-purple-50 text-gray-700 rounded-xl transition-all group/item">
+                        <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover/item:bg-white shadow-sm transition-colors text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        </div>
+                        <span class="font-black uppercase tracking-widest text-[10px]">Settings</span>
+                    </a>
+                </li>
+                @endif
                 <li>
                     <a href="/logout" class="flex items-center gap-3 py-3 px-4 hover:bg-red-50 text-red-500 rounded-xl transition-all group/item">
                         <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center group-hover/item:bg-white shadow-sm transition-colors text-red-400">

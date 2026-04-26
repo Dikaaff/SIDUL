@@ -86,6 +86,7 @@ class AuthController extends Controller
     private function redirectBasedOnRole(string $role): string
     {
         return match($role) {
+            'admin'    => '/dashboard/admin',
             'dosen'    => '/dashboard/dosen',
             'operator' => '/dashboard/operator',
             default    => '/dashboard',

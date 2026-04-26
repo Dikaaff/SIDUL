@@ -170,44 +170,49 @@
             </h3>
         </div>
         <div id="notificationList" class="p-4 space-y-4">
-            <!-- Notif 1 -->
-            <div id="notif-1" class="relative group flex gap-4 p-4 rounded-2xl bg-purple-50/50 border border-purple-100 hover:shadow-md transition-all cursor-pointer">
-                <div onclick="window.location.href='/dosen/rekomendasi'" class="w-10 h-10 rounded-xl bg-white border border-purple-100 flex items-center justify-center text-[#6B21A8] shadow-sm shrink-0">
+            {{-- Notifikasi Rekomendasi pending --}}
+            @if($pendingRekomendasiCount > 0)
+            <div id="notif-1" class="relative group flex gap-4 p-4 rounded-2xl bg-orange-50/50 border border-orange-100 hover:shadow-md transition-all cursor-pointer" onclick="window.location.href='{{ route('dosen.rekomendasi') }}'">
+                <div class="w-10 h-10 rounded-xl bg-white border border-orange-100 flex items-center justify-center text-[#F49E0A] shadow-sm shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
-                <div onclick="window.location.href='/dosen/rekomendasi'" class="flex-1">
+                <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-xs font-extrabold text-[#6B21A8] uppercase tracking-wider">Rekomendasi</span>
-                        <span class="text-[10px] text-gray-400">10 Menit lalu</span>
+                        <span class="text-xs font-extrabold text-[#F49E0A] uppercase tracking-wider">Perlu Rekomendasi</span>
+                        <span class="text-[10px] text-gray-400">Baru</span>
                     </div>
-                    <p class="text-sm font-bold text-gray-800 group-hover:text-[#6B21A8] transition-colors">Siti Aminah mengajukan Rekomendasi Magang</p>
-                    <p class="text-xs text-gray-500 mt-1">NIM: 210401089 • Dosen Wali</p>
+                    <p class="text-sm font-bold text-gray-800 group-hover:text-[#F49E0A] transition-colors">Terdapat {{ $pendingRekomendasiCount }} mahasiswa menunggu rekomendasi Wali.</p>
                 </div>
-                <button onclick="deleteNotif('notif-1')" class="btn btn-circle btn-xs btn-ghost text-gray-400 hover:text-red-500 hover:bg-red-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
             </div>
+            @endif
 
-            <!-- Notif 2 -->
-            <div id="notif-2" class="relative group flex gap-4 p-4 rounded-2xl bg-orange-50/50 border border-orange-100 hover:shadow-md transition-all cursor-pointer">
-                <div onclick="window.location.href='/dosen/monitoring'" class="w-10 h-10 rounded-xl bg-white border border-orange-100 flex items-center justify-center text-[#F49E0A] shadow-sm shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            {{-- Notifikasi Laporan pending review --}}
+            @php 
+                $pendingLaporanCount = $mhsBimbinganList->filter(fn($m) => $m->laporan && $m->laporan->status_laporan === 'Pending')->count();
+            @endphp
+            @if($pendingLaporanCount > 0)
+            <div id="notif-2" class="relative group flex gap-4 p-4 rounded-2xl bg-purple-50/50 border border-purple-100 hover:shadow-md transition-all cursor-pointer" onclick="window.location.href='{{ route('dosen.laporan') }}'">
+                <div class="w-10 h-10 rounded-xl bg-white border border-purple-100 flex items-center justify-center text-[#6B21A8] shadow-sm shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                 </div>
-                <div onclick="window.location.href='/dosen/monitoring'" class="flex-1">
+                <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-xs font-extrabold text-[#F49E0A] uppercase tracking-wider">Laporan</span>
-                        <span class="text-[10px] text-gray-400">2 Jam lalu</span>
+                        <span class="text-xs font-extrabold text-[#6B21A8] uppercase tracking-wider">Review Laporan</span>
+                        <span class="text-[10px] text-gray-400">Penting</span>
                     </div>
-                    <p class="text-sm font-bold text-gray-800 group-hover:text-[#F49E0A] transition-colors">Andi Saputra mengunggah Draft Laporan</p>
-                    <p class="text-xs text-gray-500 mt-1">NIM: 210401001 • Pembimbing</p>
+                    <p class="text-sm font-bold text-gray-800 group-hover:text-[#6B21A8] transition-colors">{{ $pendingLaporanCount }} laporan mahasiswa bimbingan menunggu review.</p>
                 </div>
-                <button onclick="deleteNotif('notif-2')" class="btn btn-circle btn-xs btn-ghost text-gray-400 hover:text-red-500 hover:bg-red-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
             </div>
+            @endif
+
+            @if($pendingRekomendasiCount == 0 && $pendingLaporanCount == 0)
+            <div class="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Semua pekerjaan sudah selesai ✨</p>
+            </div>
+            @endif
         </div>
         <div id="clearNotifAction" class="p-4 border-t border-base-100 bg-gray-50/30 text-center">
-            <button onclick="clearAllNotif()" class="btn btn-sm btn-ghost text-gray-400 font-bold uppercase text-[10px] tracking-[0.1em]">Bersihkan Semua</button>
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest italic">Terakhir diperbarui: {{ now()->format('H:i') }} WIB</p>
         </div>
     </div>
 </div>

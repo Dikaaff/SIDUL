@@ -13,9 +13,15 @@ class OperatorController extends Controller
      */
     public function dashboard()
     {
-        $pendingCount    = Magang::where('status_magang', 'Pending')->count();
-        $belumDosenCount = Magang::where('status_magang', 'Terverifikasi')
-                            ->whereNull('dosen_pembimbing_id')->count();
+        $isPeriodeOpen   = \App\Models\Setting::get('is_periode_open', '1') == '1';
+        
+        // Mahasiswa yang sudah di-approve dosen wali tapi BELUM daftar magang
+        $pendingPendaftaranCount = \App\Models\Mahasiswa::where('status_magang', 'Approve')
+                                    ->whereDoesntHave('pesertaMagang')->count();
+        
+        // Mahasiswa yang SUDAH daftar tapi BELUM di-plot dosen & belum aktif
+        $pendingPlottingCount = Magang::where('status_magang', 'Pending')->count();
+        
         $aktifCount      = Magang::where('status_magang', 'Aktif')->count();
         $selesaiCount    = Magang::where('status_magang', 'Selesai')->count();
 
@@ -26,8 +32,23 @@ class OperatorController extends Controller
             ->get();
 
         return view('operator.dashboard', compact(
-            'pendingCount', 'belumDosenCount', 'aktifCount', 'selesaiCount', 'recentPending'
+            'pendingPendaftaranCount', 'pendingPlottingCount', 'aktifCount', 'selesaiCount', 'recentPending', 'isPeriodeOpen'
         ));
+    }
+
+    public function togglePeriode()
+    {
+        try {
+            $current = \App\Models\Setting::get('is_periode_open', '1');
+            $newStatus = ($current == '1' || $current === 1) ? '0' : '1';
+            
+            \App\Models\Setting::set('is_periode_open', $newStatus);
+
+            $msg = $newStatus == '1' ? '🚀 Berhasil! Periode pendaftaran magang kini TELAH DIBUKA.' : '🔒 Berhasil! Periode pendaftaran magang kini TELAH DITUTUP.';
+            return back()->with('success', $msg);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal mengubah status periode. Pastikan database sudah ter-update (Run: php artisan migrate). Error: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -74,13 +95,13 @@ class OperatorController extends Controller
      */
     public function dosenPembimbing()
     {
+        // Tampilkan mahasiswa yang statusnya Pending (Baru daftar)
         $belumAssign = Magang::with(['peserta.mahasiswa'])
-            ->where('status_magang', 'Terverifikasi')
-            ->whereNull('dosen_pembimbing_id')
+            ->where('status_magang', 'Pending')
             ->get();
 
         $sudahAssign = Magang::with(['peserta.mahasiswa', 'pembimbing'])
-            ->whereNotNull('dosen_pembimbing_id')
+            ->where('status_magang', 'Aktif')
             ->latest()
             ->get();
 
@@ -98,12 +119,26 @@ class OperatorController extends Controller
             'dosen_id' => 'required|exists:dosens,id_dosen',
         ]);
 
+        // Auto Generate ID Magang (Prefix SIDUL-YYYY-XXX)
+        $tahun     = now()->year;
+        $prefix    = "SIDUL-{$tahun}-";
+        $lastCount = Magang::where('kode_magang', 'LIKE', "{$prefix}%")
+            ->count();
+        $kode = $prefix . str_pad($lastCount + 1, 3, '0', STR_PAD_LEFT);
+
+        // Safety check: jika kode menabrak (jarang terjadi tapi bisa di lingkungan dev), increment terus
+        while (Magang::where('kode_magang', $kode)->exists()) {
+            $lastCount++;
+            $kode = $prefix . str_pad($lastCount + 1, 3, '0', STR_PAD_LEFT);
+        }
+
         $magang->update([
             'dosen_pembimbing_id' => $request->dosen_id,
+            'kode_magang'         => $kode,
             'status_magang'       => 'Aktif',
         ]);
 
-        return back()->with('success', 'Dosen Pembimbing berhasil di-assign. Status magang kini Aktif.');
+        return back()->with('success', "Mahasiswa disetujui! ID Magang {$kode} diterbitkan dan Dosen Pembimbing telah ditetapkan.");
     }
 
     /**
@@ -163,5 +198,14 @@ class OperatorController extends Controller
             ->get();
 
         return view('operator.laporan', compact('magangs'));
+    }
+
+    /**
+     * Hapus data magang (untuk data testing atau salah input).
+     */
+    public function destroy(Magang $magang)
+    {
+        $magang->delete();
+        return back()->with('success', 'Data magang berhasil dihapus dari sistem.');
     }
 }

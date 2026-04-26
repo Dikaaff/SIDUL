@@ -58,14 +58,44 @@ class DosenController extends Controller
     public function logbook()
     {
         $dosen = Auth::user()->dosen;
-        $mhsBimbingan = $dosen ? $dosen->bimbinganMagang()->with('peserta.mahasiswa')->get() : collect();
+        $mhsBimbingan = $dosen ? $dosen->bimbinganMagang()
+            ->with(['peserta.mahasiswa', 'logbooks'])
+            ->get() : collect();
+            
         return view('dosen.logbook', compact('mhsBimbingan'));
     }
 
     public function laporan()
     {
         $dosen = Auth::user()->dosen;
-        $mhsBimbingan = $dosen ? $dosen->bimbinganMagang()->with('peserta.mahasiswa')->get() : collect();
+        $mhsBimbingan = $dosen ? $dosen->bimbinganMagang()
+            ->with(['peserta.mahasiswa', 'laporan'])
+            ->get() : collect();
+
         return view('dosen.laporan', compact('mhsBimbingan'));
+    }
+
+    public function approveLaporan(Request $request, Magang $magang)
+    {
+        $request->validate([
+            'status' => 'required|in:Revisi,Approve',
+            'feedback' => 'required|string',
+        ]);
+
+        $laporan = $magang->laporan;
+        if ($laporan) {
+            $laporan->update([
+                'status_laporan' => $request->status,
+                'feedback_dosen' => $request->feedback,
+                'is_draft' => ($request->status === 'Revisi'), // Jika revisi, kembalikan ke draf agar mahasiswa bisa edit
+            ]);
+
+            // Jika Approve, tandai magang sebagai Selesai
+            if ($request->status === 'Approve') {
+                $magang->update(['status_magang' => 'Selesai']);
+            }
+        }
+
+        return back()->with('success', 'Review laporan berhasil disimpan.');
     }
 }

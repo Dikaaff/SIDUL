@@ -1,96 +1,160 @@
 @extends('layouts.app')
 
-@section('title', 'Penentuan Dosen Pembimbing')
+@section('title', 'Plotting Dosen Pembimbing')
 
 @section('header')
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#6B21A8] p-6 rounded-2xl shadow-lg mt-2">
-    <div>
-        <h2 class="text-2xl font-bold text-white">
-            Penugasan Pembimbing 🧑‍🏫
-        </h2>
-        <p class="text-white/80 mt-1 text-sm md:text-base">Tetapkan dosen pembimbing magang bagi mahasiswa yang telah divalidasi berkas pendaftarannya.</p>
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="flex items-center justify-between relative z-10">
+        <div>
+            <h2 class="text-2xl md:text-3xl font-black mb-2">Plotting Dosen Pembimbing 🤝</h2>
+            <p class="text-white/90 font-medium text-sm">Tetapkan Dosen Pembimbing untuk mahasiswa yang telah divalidasi dokumen pendaftarannya.</p>
+        </div>
     </div>
 </div>
 @endsection
 
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- List Mahasiswa Belum Berpembimbing -->
-    <div class="lg:col-span-2 space-y-6">
-        <div class="flex items-center justify-between px-2">
-             <h3 class="text-lg font-black text-gray-800 tracking-tight flex items-center gap-2">
-                 <span class="w-2 h-6 bg-[#F49E0A] rounded-full"></span>
-                 Mahasiswa Menunggu Pembimbing
-             </h3>
+<div class="grid grid-cols-1 gap-8 font-sans">
+    
+    {{-- Bagian: Perlu Penugasan --}}
+    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-8 bg-[#6B21A8] rounded-full"></div>
+                <h3 class="font-black text-gray-800 text-lg tracking-tight">Perlu Penugasan Dosen</h3>
+            </div>
+            <span class="px-3 py-1 bg-purple-50 text-[#6B21A8] text-[10px] font-black rounded-lg border border-purple-100 uppercase tracking-widest">{{ $belumAssign->count() }} Mahasiswa</span>
         </div>
 
-        <!-- Student Assignment Item -->
-        <div class="card bg-white shadow-sm border border-base-200">
-            <div class="card-body p-6">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center font-black text-xl text-gray-300">AS</div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-lg tracking-tight">Andi Saputra</h4>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">210401001 • Teknik Informatika</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2 w-full md:w-64">
-                         <label class="text-[9px] font-black uppercase text-gray-400 tracking-widest px-1">Pilih Dosen</label>
-                         <select class="select select-bordered select-sm w-full bg-white text-gray-700 font-bold focus:border-[#6B21A8]">
-                             <option disabled selected>-- Pilih Dosen --</option>
-                             <option>Dr. Budi Santoso, M.Kom</option>
-                             <option>Anita Wijaya, Ph.D</option>
-                             <option>Siti Aminah, M.T</option>
-                         </select>
-                    </div>
-                    <button class="btn bg-[#6B21A8] hover:bg-purple-800 text-white border-none px-8 font-black uppercase tracking-widest text-[10px] h-11 min-h-0">Tetapkan</button>
-                </div>
-                
-                <div class="mt-6 pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-4">
-                     <div class="bg-gray-50 p-4 rounded-2xl flex items-center gap-3">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
-                         <div>
-                             <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Perusahaan Magang</p>
-                             <p class="text-xs font-bold text-gray-800">PT. Teknologi Maju Persada</p>
-                         </div>
-                     </div>
-                     <div class="bg-gray-50 p-4 rounded-2xl flex items-center gap-3">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                         <div>
-                             <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Dosen Wali</p>
-                             <p class="text-xs font-bold text-gray-800">Drs. M. Ali, M.Si</p>
-                         </div>
-                     </div>
-                </div>
-            </div>
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+                <thead>
+                    <tr class="text-gray-900 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/10">
+                        <th class="pl-8 py-4 w-12">No</th>
+                        <th>Mahasiswa & NIM</th>
+                        <th>Perusahaan</th>
+                        <th>Plotting Dosen</th>
+                        <th class="pr-8 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @forelse($belumAssign as $index => $magang)
+                    @php $mhs = $magang->peserta->first()->mahasiswa; @endphp
+                    <tr class="hover:bg-gray-50 transition-all group">
+                        <td class="pl-8 py-6 text-[10px] font-black text-gray-600 italic">
+                            {{ $index + 1 }}
+                        </td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-xs">
+                                    {{ strtoupper(substr($mhs->nama ?? 'M', 0, 2)) }}
+                                </div>
+                                <div>
+                                    <div class="font-black text-gray-800 text-sm tracking-tight">{{ $mhs->nama ?? '-' }}</div>
+                                    <div class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $magang->nim }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-xs font-bold text-gray-600">{{ $magang->perusahaan }}</td>
+                        <td>
+                            <form id="assign-form-{{ $magang->id_magang }}" action="{{ route('operator.assign_dosen', $magang->id_magang) }}" method="POST">
+                                @csrf
+                                <select name="dosen_id" class="select select-sm select-bordered w-full max-w-xs rounded-xl bg-white border-gray-200 text-gray-700 font-bold focus:border-[#6B21A8]" required>
+                                    <option value="" disabled selected>Pilih Dosen Pembimbing...</option>
+                                    @foreach($dosens as $dosen)
+                                        <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </td>
+                        <td class="pr-8 text-right">
+                            <button form="assign-form-{{ $magang->id_magang }}" type="submit" class="btn btn-sm min-h-0 h-9 rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider px-6 shadow-sm shadow-purple-200 transition-all active:scale-95">Simpan Plotting</button>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="py-16 text-center">
+                            <div class="flex flex-col items-center gap-4">
+                                <p class="text-[10px] font-black text-gray-600 uppercase tracking-widest italic font-bold">Semua mahasiswa yang terverifikasi sudah memiliki pembimbing</p>
+                                <a href="/seed-dummy" class="btn btn-sm bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-widest px-8 rounded-xl shadow-lg ring-4 ring-purple-100">
+                                    ✨ Buat Data Dummy Penugasan
+                                </a>
+                                <p class="text-[9px] text-gray-400 font-bold italic">Klik tombol di atas untuk mengisi data percobaan secara otomatis.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Sidebar Info Box -->
-    <div class="space-y-6">
-        <div class="card bg-white shadow-sm border border-base-200">
-            <div class="card-body p-6">
-                <h4 class="font-black text-gray-400 text-[10px] uppercase tracking-[0.2em] mb-4">Statistik Beban Dosen</h4>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between group cursor-pointer p-2 hover:bg-gray-50 rounded-xl transition-all">
-                        <span class="text-xs font-bold text-gray-600">Dr. Budi Santoso</span>
-                        <span class="badge badge-error text-white font-black text-[10px]">12/12</span>
-                    </div>
-                    <div class="flex items-center justify-between group cursor-pointer p-2 hover:bg-gray-50 rounded-xl transition-all">
-                        <span class="text-xs font-bold text-gray-600">Anita Wijaya, Ph.D</span>
-                        <span class="badge badge-success text-white font-black text-[10px]">5/12</span>
-                    </div>
-                    <div class="flex items-center justify-between group cursor-pointer p-2 hover:bg-gray-50 rounded-xl transition-all">
-                         <span class="text-xs font-bold text-gray-600">Siti Aminah, M.T</span>
-                         <span class="badge badge-warning text-white font-black text-[10px]">8/12</span>
-                    </div>
-                </div>
-                <div class="mt-6 p-4 bg-orange-50 border border-orange-100 rounded-2xl">
-                     <p class="text-[10px] text-orange-800 leading-relaxed font-bold italic">"Patuhi kuota maksimal bimbingan (12 mahasiswa) sesuai SK Dekan."</p>
-                </div>
-            </div>
+    {{-- Bagian: Riwayat Plotting Terbaru --}}
+    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50">
+            <h3 class="font-black text-gray-800 text-lg tracking-tight flex items-center gap-3">
+                <span class="w-2 h-8 bg-green-500 rounded-full"></span>
+                Sudah Terplotting
+            </h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+                <thead>
+                    <tr class="text-gray-900 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/10">
+                        <th class="pl-8 py-4 w-12">No</th>
+                        <th>ID Magang</th>
+                        <th>Mahasiswa</th>
+                        <th>Perusahaan</th>
+                        <th>Dosen Pembimbing</th>
+                        <th>Status</th>
+                        <th class="pr-8 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-sm">
+                    @forelse($sudahAssign as $index => $magang)
+                    @php $mhs = $magang->peserta->first()->mahasiswa; @endphp
+                    <tr class="hover:bg-gray-50 transition-all">
+                        <td class="pl-8 py-4 text-[10px] font-black text-gray-600 italic">
+                            {{ $index + 1 }}
+                        </td>
+                        <td>
+                            <span class="px-2 py-1 rounded-md bg-gray-900 text-white font-black text-[9px] border border-gray-800 shadow-sm tracking-widest">{{ $magang->kode_magang }}</span>
+                        </td>
+                        <td>
+                            <div class="font-black text-gray-800 text-sm tracking-tight">{{ $mhs->nama ?? '-' }}</div>
+                            <div class="text-[10px] font-bold text-gray-900 tracking-widest">{{ $magang->nim }}</div>
+                        </td>
+                        <td class="text-xs font-medium text-black">{{ $magang->perusahaan }}</td>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-black text-[#6B21A8]">{{ $magang->pembimbing->nama ?? '-' }}</span>
+                            </div>
+                        </td>
+                        <td class="pr-8 text-right flex items-center justify-end gap-2">
+                             <span class="px-3 py-1.5 rounded-lg bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">Plotting Aktif</span>
+                             <form action="{{ route('operator.magang.destroy', $magang->id_magang) }}" method="POST" onsubmit="return confirm('Hapus data magang ini?')">
+                                 @csrf
+                                 @method('DELETE')
+                                 <button type="submit" class="btn btn-ghost btn-xs text-red-500 hover:bg-red-50 rounded-lg p-1">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                 </button>
+                             </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="py-12 text-center">
+                            <p class="text-[10px] font-black text-gray-600 uppercase tracking-widest">Belum ada riwayat plotting</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
+
 </div>
+
 @endsection
