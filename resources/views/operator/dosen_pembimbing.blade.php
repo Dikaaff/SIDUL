@@ -59,18 +59,18 @@
                         </td>
                         <td class="text-xs font-bold text-gray-600">{{ $magang->perusahaan }}</td>
                         <td>
-                            <form id="assign-form-{{ $magang->id_magang }}" action="{{ route('operator.assign_dosen', $magang->id_magang) }}" method="POST">
+                            <form id="assign-form-{{ $magang->id }}" action="{{ route('operator.assign_dosen', $magang->id) }}" method="POST">
                                 @csrf
                                 <select name="dosen_id" class="select select-sm select-bordered w-full max-w-xs rounded-xl bg-white border-gray-200 text-gray-700 font-bold focus:border-[#6B21A8]" required>
                                     <option value="" disabled selected>Pilih Dosen Pembimbing...</option>
                                     @foreach($dosens as $dosen)
-                                        <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama }}</option>
+                                        <option value="{{ $dosen->id }}">{{ $dosen->nama }}</option>
                                     @endforeach
                                 </select>
                             </form>
                         </td>
                         <td class="pr-8 text-right">
-                            <button form="assign-form-{{ $magang->id_magang }}" type="submit" class="btn btn-sm min-h-0 h-9 rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider px-6 shadow-sm shadow-purple-200 transition-all active:scale-95">Simpan Plotting</button>
+                            <button form="assign-form-{{ $magang->id }}" type="submit" class="btn btn-sm min-h-0 h-9 rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider px-6 shadow-sm shadow-purple-200 transition-all active:scale-95">Simpan Plotting</button>
                         </td>
                     </tr>
                     @empty
@@ -134,7 +134,7 @@
                         </td>
                         <td class="pr-8 text-right flex items-center justify-end gap-2">
                              <span class="px-3 py-1.5 rounded-lg bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">Plotting Aktif</span>
-                             <form action="{{ route('operator.magang.destroy', $magang->id_magang) }}" method="POST" onsubmit="return confirm('Hapus data magang ini?')">
+                             <form action="{{ route('operator.magang.destroy', $magang->id) }}" method="POST" onsubmit="return confirm('Hapus data magang ini?')">
                                  @csrf
                                  @method('DELETE')
                                  <button type="submit" class="btn btn-ghost btn-xs text-red-500 hover:bg-red-50 rounded-lg p-1">

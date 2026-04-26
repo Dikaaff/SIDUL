@@ -10,7 +10,7 @@ class SidulSeeder extends Seeder
 {
     public function run(): void
     {
-        // --- 0. ADMIN (Username: admin) ---
+        // --- 0. ADMIN ---
         DB::table('users')->updateOrInsert(
             ['username' => 'admin'],
             [
@@ -29,7 +29,6 @@ class SidulSeeder extends Seeder
         
         $dosenIds = [];
         foreach ($dosens as $d) {
-            // Update or Insert User
             DB::table('users')->updateOrInsert(
                 ['username' => $d['nik']],
                 [
@@ -40,9 +39,8 @@ class SidulSeeder extends Seeder
                 ]
             );
             
-            $uId = DB::table('users')->where('username', $d['nik'])->first()->id_user;
+            $uId = DB::table('users')->where('username', $d['nik'])->first()->id;
             
-            // Update or Insert Dosen Profile
             DB::table('dosens')->updateOrInsert(
                 ['nik' => $d['nik']],
                 [
@@ -52,10 +50,10 @@ class SidulSeeder extends Seeder
                 ]
             );
             
-            $dosenIds[] = DB::table('dosens')->where('nik', $d['nik'])->first()->id_dosen;
+            $dosenIds[] = DB::table('dosens')->where('nik', $d['nik'])->first()->id;
         }
 
-        // --- 2. OPERATOR (Username: operator) ---
+        // --- 2. OPERATOR ---
         DB::table('users')->updateOrInsert(
             ['username' => 'operator'],
             [
@@ -67,69 +65,53 @@ class SidulSeeder extends Seeder
         );
 
         // --- 3. MAHASISWAS ---
-        
-        // AKUN TESTING UTAMA (Username: 3311)
-        DB::table('users')->updateOrInsert(
-            ['username' => '3311'],
-            [
-                'name' => 'Mahasiswa Test 3311',
-                'password' => Hash::make('akuakuaku'),
-                'role' => 'mahasiswa',
-                'created_at' => now(),
-            ]
-        );
-        $m3311u = DB::table('users')->where('username', '3311')->first()->id_user;
-        
-        DB::table('mahasiswas')->updateOrInsert(
-            ['nim' => '3311'],
-            [
-                'user_id' => $m3311u,
-                'nama' => 'Mahasiswa Test 3311',
-                'dosen_wali_id' => $dosenIds[0],
-                'status_magang' => 'Approve',
-                'created_at' => now(),
-            ]
-        );
+        $mhs = [
+            ['nim' => '3311', 'nama' => 'Mahasiswa Test 3311', 'prodi' => 'Informatika'],
+            ['nim' => '20210001', 'nama' => 'Ahmad Fauzi', 'prodi' => 'Informatika'],
+        ];
 
-        // MHS 1 (Username: 20210001)
-        DB::table('users')->updateOrInsert(
-            ['username' => '20210001'],
-            [
-                'name' => 'Ahmad Fauzi',
-                'password' => Hash::make('password123'),
-                'role' => 'mahasiswa',
-                'created_at' => now(),
-            ]
-        );
-        $m1u = DB::table('users')->where('username', '20210001')->first()->id_user;
-        
-        DB::table('mahasiswas')->updateOrInsert(
-            ['nim' => '20210001'],
-            [
-                'user_id' => $m1u,
-                'nama' => 'Ahmad Fauzi',
-                'dosen_wali_id' => $dosenIds[0],
-                'status_magang' => 'Approve',
-                'created_at' => now(),
-            ]
-        );
+        foreach ($mhs as $m) {
+            DB::table('users')->updateOrInsert(
+                ['username' => $m['nim']],
+                [
+                    'name' => $m['nama'],
+                    'password' => Hash::make('password123'),
+                    'role' => 'mahasiswa',
+                    'created_at' => now(),
+                ]
+            );
+            
+            $uId = DB::table('users')->where('username', $m['nim'])->first()->id;
+            
+            DB::table('mahasiswas')->updateOrInsert(
+                ['nim' => $m['nim']],
+                [
+                    'user_id' => $uId,
+                    'nama' => $m['nama'],
+                    'prodi' => $m['prodi'],
+                    'dosen_wali_id' => $dosenIds[0],
+                    'created_at' => now(),
+                ]
+            );
+        }
 
-        // Tambahkan Magang Data untuk MHS 1
-        $m1Id = DB::table('mahasiswas')->where('nim', '20210001')->first()->id_mahasiswa;
+        // --- 4. MAGANG DATA ---
+        $m1 = DB::table('mahasiswas')->where('nim', '20210001')->first();
+        
         DB::table('magangs')->updateOrInsert(
             ['kode_magang' => 'MGN-20210001-PEND'],
             [
-                'nim' => '20210001',
-                'perusahaan' => 'PT. Gojek Indonesia',
-                'status_magang' => 'Pending',
+                'dosen_pembimbing_id' => $dosenIds[1],
+                'status_magang' => 'berjalan',
                 'created_at' => now(),
             ]
         );
-        $magang1 = DB::table('magangs')->where('kode_magang', 'MGN-20210001-PEND')->first()->id_magang;
+        
+        $magang1 = DB::table('magangs')->where('kode_magang', 'MGN-20210001-PEND')->first()->id;
         
         DB::table('peserta_magangs')->updateOrInsert(
-            ['id_mahasiswa' => $m1Id, 'id_magang' => $magang1],
-            ['nim' => '20210001', 'created_at' => now()]
+            ['mahasiswa_id' => $m1->id, 'magang_id' => $magang1],
+            ['is_ketua' => true, 'created_at' => now()]
         );
     }
 }

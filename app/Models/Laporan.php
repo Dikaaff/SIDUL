@@ -9,20 +9,29 @@ class Laporan extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_laporan';
-
     protected $fillable = [
-        'id_magang',
+        'magang_id',
         'judul',
-        'konten',
-        'is_draft',
-        'laporan',
-        'status_laporan',
-        'feedback_dosen',
+        'bab1',
+        'bab2',
+        'bab3',
+        'bab4',
+        'status',
+        'catatan_dosen',
     ];
 
     public function magang()
     {
-        return $this->belongsTo(Magang::class, 'id_magang', 'id_magang');
+        return $this->belongsTo(Magang::class, 'magang_id', 'id');
+    }
+
+    public function komentar()
+    {
+        return $this->hasMany(KomentarLaporan::class, 'laporan_id', 'id');
+    }
+
+    public function revisi()
+    {
+        return $this->hasMany(RevisiLaporan::class, 'laporan_id', 'id');
     }
 }

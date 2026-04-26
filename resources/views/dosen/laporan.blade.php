@@ -45,7 +45,10 @@
 
     <div class="divide-y divide-gray-50">
         @forelse($mhsBimbingan as $magang)
-            @php $laporan = $magang->laporan; @endphp
+            @php 
+                $laporan = $magang->laporan;
+                $pesertaUtama = $magang->peserta->first();
+            @endphp
             <div class="px-8 py-5 grid grid-cols-12 gap-4 items-center hover:bg-gray-50/50 transition-all group">
                 <div class="col-span-5 flex items-center gap-4">
                     <div class="w-10 h-10 rounded-xl {{ $laporan ? 'bg-blue-50 text-blue-500' : 'bg-gray-50 text-gray-300' }} flex items-center justify-center shrink-0">
@@ -55,39 +58,38 @@
                         <p class="font-black text-[#6B21A8] text-sm tracking-tight truncate max-w-xs">
                             {{ $laporan->judul ?? 'Belum Menulis Laporan' }}
                         </p>
-                        @if($laporan)
-                            <p class="text-[10px] font-bold text-gray-400 mt-0.5 uppercase tracking-wider">
-                                Terakhir update: {{ $laporan->updated_at->diffForHumans() }}
-                            </p>
-                        @endif
                     </div>
                 </div>
                 <div class="col-span-3">
-                    <p class="font-black text-gray-800 text-sm">{{ $magang->peserta->mahasiswa->nama }}</p>
-                    <p class="text-[11px] font-bold text-gray-400 mt-0.5">{{ $magang->peserta->mahasiswa->nim }}</p>
+                    <p class="font-black text-gray-800 text-sm">{{ $pesertaUtama->mahasiswa->nama ?? 'N/A' }}</p>
+                    <p class="text-[11px] font-bold text-gray-400 mt-0.5">{{ $pesertaUtama->mahasiswa->nim ?? 'N/A' }}</p>
                 </div>
                 <div class="col-span-2">
                     @if(!$laporan)
                         <span class="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg bg-gray-100 text-gray-400">Kosong</span>
-                    @elseif($laporan->is_draft)
-                        <span class="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg bg-orange-50 text-orange-600">Drafting</span>
                     @else
                         @php
                             $color = [
-                                'Pending' => 'bg-blue-50 text-blue-600',
-                                'Revisi' => 'bg-red-50 text-red-600',
-                                'Approve' => 'bg-green-50 text-green-600'
-                            ][$laporan->status_laporan] ?? 'bg-gray-100 text-gray-600';
+                                'review' => 'bg-blue-50 text-blue-600',
+                                'revisi' => 'bg-red-50 text-red-600',
+                                'approved' => 'bg-green-50 text-green-600'
+                            ][$laporan->status] ?? 'bg-gray-100 text-gray-600';
                         @endphp
                         <span class="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg {{ $color }}">
-                            {{ $laporan->status_laporan === 'Pending' ? 'Perlu Review' : $laporan->status_laporan }}
+                            {{ ucfirst($laporan->status) }}
                         </span>
                     @endif
                 </div>
                 <div class="col-span-2 flex justify-end">
-                    @if($laporan && !$laporan->is_draft)
-                        <button onclick="openReviewModal('{{ $magang->id_magang }}', '{{ addslashes($laporan->judul) }}', '{{ base64_encode($laporan->konten) }}')" 
-                            class="btn btn-sm rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider h-10 px-6">
+                    @if($laporan)
+                        <button type="button" 
+                            class="btn-review btn btn-sm rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider h-10 px-6"
+                            data-id="{{ $magang->id }}"
+                            data-judul="{{ $laporan->judul }}"
+                            data-bab1="{{ base64_encode($laporan->bab1) }}"
+                            data-bab2="{{ base64_encode($laporan->bab2) }}"
+                            data-bab3="{{ base64_encode($laporan->bab3) }}"
+                            data-bab4="{{ base64_encode($laporan->bab4) }}">
                             Review
                         </button>
                     @else
@@ -97,10 +99,7 @@
             </div>
         @empty
             <div class="p-20 text-center">
-                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                </div>
-                <h3 class="text-gray-400 font-bold">Belum ada mahasiswa bimbingan.</h3>
+                <h3 class="text-gray-400 font-bold">Belum ada laporan mahasiswa.</h3>
             </div>
         @endforelse
     </div>
@@ -108,22 +107,25 @@
 
 {{-- Review Modal --}}
 <dialog id="reviewModal" class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box p-0 max-w-4xl bg-white overflow-hidden rounded-[2.5rem]">
+  <div class="modal-box p-0 max-w-5xl bg-white rounded-[2.5rem] flex flex-col max-h-[90vh]">
     <div class="p-8 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
         <div>
             <h3 class="font-black text-xl text-gray-800 italic" id="modalTitle">Judul Laporan</h3>
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Laporan Akhir Mahasiswa</p>
         </div>
         <form method="dialog">
             <button class="btn btn-circle btn-ghost btn-sm">✕</button>
         </form>
     </div>
     
-    <div class="p-8 md:p-10 max-h-[60vh] overflow-y-auto bg-gray-100/50 shadow-inner">
-        {{-- Paper Look for Dosen --}}
-        <div class="max-w-[750px] mx-auto bg-white shadow-xl p-12 md:p-16 min-h-[500px] rounded-sm prose prose-sm max-w-none text-gray-800" id="modalContent">
-            {{-- Konten Laporan akan di-inject di sini --}}
+    <div class="p-8 md:p-10 flex-1 overflow-y-auto bg-gray-50 custom-scrollbar">
+        <div class="flex gap-2 mb-6">
+            @foreach(['bab1' => 'Bab I', 'bab2' => 'Bab II', 'bab3' => 'Bab III', 'bab4' => 'Bab IV'] as $key => $label)
+                <button type="button" onclick="switchView('{{ $key }}')" id="view-btn-{{ $key }}" class="view-btn px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all {{ $loop->first ? 'bg-primary text-white' : 'bg-white text-gray-400 border border-gray-100' }}">
+                    {{ $label }}
+                </button>
+            @endforeach
         </div>
+        <div class="max-w-none bg-white shadow-sm p-10 md:p-14 min-h-[400px] rounded-3xl prose prose-slate text-gray-800 border border-gray-100" id="modalContent"></div>
     </div>
 
     <div class="p-8 border-t border-gray-100 bg-gray-50/30">
@@ -131,37 +133,67 @@
             @csrf
             <div class="mb-6">
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Catatan Pembimbing / Revisi</label>
-                <textarea name="feedback" rows="3" class="textarea textarea-bordered w-full rounded-2xl bg-white border-gray-200 focus:border-primary/20 text-sm font-medium" placeholder="Tulis catatan atau alasan revisi di sini..." required></textarea>
+                <textarea name="feedback" rows="3" class="textarea textarea-bordered w-full rounded-2xl bg-white border-gray-200 text-sm" placeholder="Tulis catatan..." required></textarea>
             </div>
             <div class="flex gap-3">
-                <button type="submit" name="status" value="Revisi" class="btn flex-1 bg-white hover:bg-red-50 text-red-600 border-2 border-red-100 rounded-xl font-black uppercase tracking-widest text-[10px] h-12">Berikan Revisi</button>
-                <button type="submit" name="status" value="Approve" class="btn flex-1 bg-green-600 hover:bg-green-700 text-white border-none rounded-xl font-black uppercase tracking-widest text-[10px] h-12 shadow-xl shadow-green-100">Setujui Laporan</button>
+                <button type="submit" name="status" value="revisi" class="btn flex-1 bg-white text-red-600 border-2 border-red-100 rounded-xl font-black uppercase text-[10px] h-12">Berikan Revisi</button>
+                <button type="submit" name="status" value="approved" class="btn flex-1 bg-green-600 text-white border-none rounded-xl font-black uppercase text-[10px] h-12">Setujui Laporan</button>
             </div>
         </form>
     </div>
   </div>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
 </dialog>
 
 @endsection
 
-@section('scripts')
-<script>
-    function openReviewModal(idMagang, judul, kontenBase64) {
-        const modal = document.getElementById('reviewModal');
-        const title = document.getElementById('modalTitle');
-        const content = document.getElementById('modalContent');
-        const form = document.getElementById('approvalForm');
-
-        title.innerText = judul;
-        // Decode base64 back to HTML
-        content.innerHTML = atob(kontenBase64);
-        form.action = `/dosen/laporan/${idMagang}/approve`;
-
-        modal.showModal();
+@push('styles')
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
     }
-</script>
-@endsection
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e5e7eb;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #d1d5db;
+    }
+</style>
+@endpush
 
+@push('scripts')
+<script>
+    let currentBabs = {};
+
+    function switchView(babKey) {
+        const content = document.getElementById('modalContent');
+        content.innerHTML = atob(currentBabs[babKey] || '');
+        document.querySelectorAll('.view-btn').forEach(b => {
+            b.classList.remove('bg-primary', 'text-white');
+            b.classList.add('bg-white', 'text-gray-400', 'border', 'border-gray-100');
+        });
+        document.getElementById('view-btn-' + babKey).classList.add('bg-primary', 'text-white');
+    }
+
+    document.querySelectorAll('.btn-review').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const judul = this.dataset.judul;
+            currentBabs = {
+                bab1: this.dataset.bab1,
+                bab2: this.dataset.bab2,
+                bab3: this.dataset.bab3,
+                bab4: this.dataset.bab4
+            };
+            
+            document.getElementById('modalTitle').innerText = judul;
+            document.getElementById('approvalForm').action = `/dosen/laporan/${id}/approve`;
+            switchView('bab1');
+            document.getElementById('reviewModal').showModal();
+        });
+    });
+</script>
+@endpush

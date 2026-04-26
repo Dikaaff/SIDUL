@@ -17,181 +17,162 @@ class MahasiswaController extends Controller
         $user = Auth::user();
         $mahasiswa = $user->mahasiswa;
         
-        $peserta = $mahasiswa ? $mahasiswa->pesertaMagang : null;
+        if (!$mahasiswa) {
+            return redirect('/dashboard')->with('error', 'Data profil mahasiswa tidak ditemukan.');
+        }
+        
+        $peserta = $mahasiswa->pesertaMagang;
         $magang = $peserta ? $peserta->magang : null;
 
-        $logbookCount = $magang ? Logbook::where('id_magang', $magang->id_magang)->count() : 0;
-        $laporan = $magang ? Laporan::where('id_magang', $magang->id_magang)->first() : null;
+        $logbookCount = $magang ? Logbook::where('magang_id', $magang->id)->count() : 0;
+        $laporan = $magang ? Laporan::where('magang_id', $magang->id)->first() : null;
         $pendaftaran = $magang;
 
         $isPeriodeOpen = \App\Models\Setting::get('is_periode_open', '1') == '1';
 
-        return view('mahasiswa.dashboard', compact('user', 'mahasiswa', 'pendaftaran', 'logbookCount', 'laporan', 'isPeriodeOpen'));
+        return view('mahasiswa.dashboard', compact('mahasiswa', 'magang', 'logbookCount', 'laporan', 'pendaftaran', 'isPeriodeOpen'));
     }
 
-    public function suratPengantar()
+    public function showPendaftaran()
     {
-        $user = Auth::user();
-        $mahasiswa = $user->mahasiswa;
-        $peserta = $mahasiswa ? $mahasiswa->pesertaMagang : null;
-        $magang = $peserta ? $peserta->magang()->with(['peserta.mahasiswa', 'pembimbing'])->first() : null;
-
-        if (!$magang || !in_array($magang->status_magang, ['Aktif', 'Selesai'])) {
-            return redirect()->route('mahasiswa.home')->with('error', 'Surat pengantar belum tersedia atau magang belum aktif.');
+        $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa) return redirect('/dashboard');
+        
+        if ($mahasiswa->pesertaMagang) {
+            return redirect()->route('mahasiswa.home')->with('info', 'Anda sudah terdaftar dalam sistem magang.');
         }
 
-        return view('mahasiswa.surat_pengantar', compact('magang'));
-    }
-
-    public function pendaftaran()
-    {
-        $isPeriodeOpen = \App\Models\Setting::get('is_periode_open', '1') == '1';
-        
-        if (!$isPeriodeOpen) {
+        if (\App\Models\Setting::get('is_periode_open', '1') == '0') {
             return redirect()->route('mahasiswa.home')->with('error', 'Mohon maaf, periode pendaftaran magang saat ini sedang ditutup.');
         }
-
-        $mahasiswa = Auth::user()->mahasiswa;
-        
-        if ($mahasiswa->status_magang !== 'Approve') {
-            return redirect()->route('mahasiswa.home')->with('error', 'Anda harus mendapatkan rekomendasi dari Dosen Wali terlebih dahulu sebelum mendaftar magang.');
-        }
-
-        $peserta = $mahasiswa ? $mahasiswa->pesertaMagang : null;
-        $magang = $peserta ? $peserta->magang : null;
-        
-        // Mahasiswa diperbolehkan melihat halaman pendaftaran meskipun sudah memiliki magang
-        // untuk melihat detail pendaftaran mereka sendiri.
 
         return view('mahasiswa.pendaftaran');
     }
 
     public function storePendaftaran(Request $request)
     {
+        $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa) return redirect('/dashboard');
+
         $request->validate([
-            'tipe_magang' => 'required',
-            'perusahaan' => 'required',
-            'alamat' => 'required',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date',
-            'konsentrasi' => 'required',
+            'tipe_magang' => 'required|in:individu,kelompok',
         ]);
 
-        $mahasiswa = Auth::user()->mahasiswa;
-
-        // --- Perbaikan Logic Reject ---
-        // Jika sebelumnya ada pendaftaran yang ditolak, hapus relasi peserta lamanya
-        if ($mahasiswa->pesertaMagang) {
-            $mahasiswa->pesertaMagang()->delete();
-        }
-
-        $kodeMagang = 'MGN-' . $mahasiswa->nim . '-' . strtoupper(substr(md5(time()), 0, 5));
+        $defaultDosen = \App\Models\Dosen::first();
 
         $magang = Magang::create([
-            'kode_magang' => $kodeMagang,
-            'nim' => $mahasiswa->nim,
-            'perusahaan' => $request->perusahaan,
-            'alamat' => $request->alamat,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
-            'konsentrasi' => $request->konsentrasi,
-            'tipe_magang' => $request->tipe_magang,
+            'kode_magang' => 'PEND-' . strtoupper(bin2hex(random_bytes(4))),
+            'dosen_pembimbing_id' => $defaultDosen->id,
             'status_magang' => 'Pending',
         ]);
 
         PesertaMagang::create([
-            'id_mahasiswa' => $mahasiswa->id_mahasiswa,
-            'id_magang' => $magang->id_magang,
-            'nim' => $mahasiswa->nim,
+            'mahasiswa_id' => $mahasiswa->id,
+            'magang_id' => $magang->id,
+            'is_ketua' => true,
         ]);
 
         return redirect()->route('mahasiswa.home')->with('success', 'Pendaftaran baru berhasil dikirim.');
     }
 
+    public function suratPengantar()
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa) return redirect('/dashboard');
+
+        $peserta = $mahasiswa->pesertaMagang;
+        if (!$peserta || !$peserta->magang) {
+            return redirect()->route('mahasiswa.home')->with('error', 'Surat pengantar belum tersedia.');
+        }
+
+        $magang = $peserta->magang;
+        return view('mahasiswa.surat_pengantar', compact('mahasiswa', 'magang'));
+    }
+
     public function logbook()
     {
-        if (\App\Models\Setting::get('is_periode_open', '1') !== '1') {
-            return redirect()->route('mahasiswa.home')->with('error', 'Akses ditolak. Seluruh fitur (Logbook/Laporan/Pendaftaran) sedang dinonaktifkan karena periode pendaftaran sedang ditutup.');
+        $mahasiswa = Auth::user()->mahasiswa;
+        
+        // Pengecekan data mahasiswa
+        if (!$mahasiswa) {
+            return redirect('/dashboard')->with('error', 'Data profil mahasiswa tidak ditemukan.');
         }
 
-        $user = Auth::user();
-        $mahasiswa = $user->mahasiswa;
-        $peserta = $mahasiswa ? $mahasiswa->pesertaMagang : null;
-        $magang = $peserta ? $peserta->magang : null;
-
-        if (!$magang || !in_array($magang->status_magang, ['Aktif', 'Selesai'])) {
-            return redirect()->route('mahasiswa.home')->with('error', 'Fitur Logbook hanya tersedia setelah pendaftaran Anda disetujui (Status Aktif).');
+        $peserta = $mahasiswa->pesertaMagang;
+        
+        if (!$peserta || !in_array($peserta->magang->status_magang, ['Aktif', 'berjalan', 'Approve', 'Selesai'])) {
+            return redirect()->route('mahasiswa.home')->with('error', 'Fitur Logbook hanya tersedia setelah pendaftaran Anda disetujui.');
         }
 
-        $logbooks = Logbook::where('id_magang', $magang->id_magang)->latest()->get();
+        $magang = $peserta->magang;
+        $logbooks = Logbook::where('magang_id', $magang->id)->latest()->get();
         return view('mahasiswa.logbook', compact('logbooks'));
     }
 
     public function storeLogbook(Request $request)
     {
-        if (\App\Models\Setting::get('is_periode_open', '1') !== '1') {
-            return redirect()->route('mahasiswa.home')->with('error', 'Akses ditolak. Periode magang sedang ditutup.');
-        }
+        $request->validate([
+            'logbook' => 'required|string',
+        ]);
 
-        $request->validate(['logbook' => 'required']);
         $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa || !$mahasiswa->pesertaMagang) return back();
+
         $magang = $mahasiswa->pesertaMagang->magang;
 
         Logbook::create([
-            'id_magang' => $magang->id_magang,
-            'logbook' => $request->logbook
+            'magang_id' => $magang->id,
+            'tanggal' => now(),
+            'kegiatan' => $request->logbook
         ]);
 
-        return back()->with('success', 'Logbook berhasil ditambahkan.');
+        return back()->with('success', 'Logbook hari ini berhasil disimpan.');
     }
 
     public function laporan()
     {
-        if (\App\Models\Setting::get('is_periode_open', '1') !== '1') {
-            return redirect()->route('mahasiswa.home')->with('error', 'Akses ditolak. Fitur laporan tidak tersedia selama periode ditutup.');
+        $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa) return redirect('/dashboard');
+
+        $peserta = $mahasiswa->pesertaMagang;
+        
+        if (!$peserta || !in_array($peserta->magang->status_magang, ['Aktif', 'berjalan', 'Approve', 'Selesai'])) {
+            return redirect()->route('mahasiswa.home')->with('error', 'Fitur Laporan hanya tersedia setelah pendaftaran Anda disetujui.');
         }
 
-        $user = Auth::user();
-        $mahasiswa = $user->mahasiswa;
-        $peserta = $mahasiswa ? $mahasiswa->pesertaMagang : null;
-        $magang = $peserta ? $peserta->magang : null;
-
-        if (!$magang || !in_array($magang->status_magang, ['Aktif', 'Selesai'])) {
-            return redirect()->route('mahasiswa.home')->with('error', 'Fitur Laporan hanya tersedia setelah pendaftaran Anda disetujui (Status Aktif).');
-        }
-
-        $laporan = Laporan::where('id_magang', $magang->id_magang)->first();
+        $magang = $peserta->magang;
+        $laporan = Laporan::where('magang_id', $magang->id)->first();
         return view('mahasiswa.laporan', compact('laporan'));
     }
 
     public function storeLaporan(Request $request)
     {
-        if (\App\Models\Setting::get('is_periode_open', '1') !== '1') {
-            return redirect()->route('mahasiswa.home')->with('error', 'Akses ditolak. Periode magang sedang ditutup.');
+        $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa || !$mahasiswa->pesertaMagang) {
+            return back()->with('error', 'Data magang tidak ditemukan.');
         }
 
         $request->validate([
-            'id_magang' => 'required|exists:magangs,id_magang',
+            'magang_id' => 'required|exists:magangs,id',
             'judul' => 'required|string|max:255',
-            'konten' => 'required|string',
+            'bab1' => 'nullable|string',
+            'bab2' => 'nullable|string',
+            'bab3' => 'nullable|string',
+            'bab4' => 'nullable|string',
         ]);
 
-        $isDraft = $request->has('save_draft');
-
         Laporan::updateOrCreate(
-            ['id_magang' => $request->id_magang],
+            ['magang_id' => $request->magang_id],
             [
                 'judul' => $request->judul,
-                'konten' => $request->konten,
-                'is_draft' => $isDraft,
-                'status_laporan' => $isDraft ? 'Pending' : 'Pending', // Status tetap pending atau kita bisa buat status 'Draft' jika perlu
+                'bab1' => $request->bab1,
+                'bab2' => $request->bab2,
+                'bab3' => $request->bab3,
+                'bab4' => $request->bab4,
+                'status' => 'review',
             ]
         );
 
-        $message = $isDraft ? 'Draf laporan berhasil disimpan.' : 'Laporan akhir berhasil dikirim dan menunggu verifikasi dosen.';
-        return back()->with('success', $message);
+        return back()->with('success', 'Laporan berhasil disimpan.');
     }
-
-    public function profile() { return view('mahasiswa.profile', ['user' => Auth::user()]); }
-    public function settings() { return view('mahasiswa.settings', ['user' => Auth::user()]); }
 }

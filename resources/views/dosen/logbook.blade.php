@@ -8,13 +8,13 @@
     <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
         <div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2">Review Logbook 📖</h2>
-            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Baca aktivitas harian mahasiswa bimbingan dan berikan komentar atau arahan.</p>
+            <h2 class="text-2xl md:text-3xl font-black mb-2 italic">Logbook Monitor 📑</h2>
+            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Pantau aktivitas harian dan progres pekerjaan mahasiswa bimbingan Anda secara real-time.</p>
         </div>
-        <div class="flex gap-3 self-start md:self-center shrink-0">
+        <div class="flex gap-3 shrink-0">
             <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-xl">
                 <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
-                <span class="text-xs font-bold uppercase tracking-wider">Dosen Pembimbing</span>
+                <span class="text-[10px] font-black uppercase tracking-widest">Aktivitas Terkini</span>
             </div>
         </div>
     </div>
@@ -23,118 +23,109 @@
 
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-    <!-- Student List Sidebar -->
-    <div class="lg:col-span-1 space-y-6">
-        <div class="bg-white p-6 rounded-[2rem] border border-base-200 shadow-sm">
-            <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2 italic">
-                <div class="w-1.5 h-1.5 rounded-full bg-[#6B21A8]"></div>
-                Mahasiswa Bimbingan
-            </h3>
-            
-            <div id="studentSelector" class="space-y-3">
-                <!-- Students will be rendered by JS -->
+    
+    {{-- Sidebar: List Mahasiswa --}}
+    <div class="lg:col-span-1 space-y-4">
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-6 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-black text-gray-800 text-xs uppercase tracking-widest">Daftar Bimbingan</h3>
+                <span class="badge badge-primary font-black text-[10px] py-3 px-3">{{ $mhsBimbingan->count() }}</span>
+            </div>
+            <div class="p-4 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" id="studentSelector">
+                {{-- Diisi via JS --}}
             </div>
         </div>
     </div>
 
-    <!-- Logbook Main Section -->
-    <div class="lg:col-span-3 space-y-6">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-[2rem] border border-base-200 shadow-sm">
-            <div>
-                <h3 id="activeStudentName" class="text-xl font-black text-gray-800 italic uppercase tracking-tighter">Memuat...</h3>
-                <p id="activeStudentNim" class="text-[10px] text-[#6B21A8] font-black uppercase tracking-widest mt-1">NIM: --</p>
+    {{-- Main: Logbook Timeline --}}
+    <div class="lg:col-span-3">
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden min-h-[600px]">
+            <div id="logHeader" class="p-8 md:p-10 border-b border-gray-100 bg-gray-50/30 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                    <div id="activeAvatar" class="w-20 h-20 rounded-3xl bg-primary text-white flex items-center justify-center font-black text-3xl shadow-2xl shadow-purple-200">?</div>
+                    <div>
+                        <h3 id="activeStudentName" class="text-2xl font-black text-gray-800 italic leading-tight tracking-tighter">Memuat...</h3>
+                        <p id="activeStudentNim" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-1 italic">NIM: -</p>
+                    </div>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="setView('weekly')" id="btnWeekly" class="btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg transition-all">Mingguan</button>
-                <button onclick="setView('all')" id="btnAll" class="btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg transition-all">Lihat Semua</button>
-            </div>
-        </div>
 
-        <!-- Weekly View -->
-        <div id="weeklyContainer" class="space-y-4">
-            <!-- Weekly items will be rendered by JS -->
-        </div>
-
-        <!-- All Logs List View (Minimalist) -->
-        <div id="allLogsContainer" class="hidden space-y-3">
-             <div class="bg-white p-2 rounded-[2rem] overflow-hidden border border-base-200 shadow-sm">
-                <table class="table w-full">
+            <div class="p-0">
+                <table class="table table-lg w-full">
                     <thead>
-                        <tr class="text-[9px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-50">
-                            <th class="py-4">Tanggal</th>
-                            <th>Aktivitas</th>
-                            <th class="text-right">Aksi</th>
+                        <tr class="text-gray-400 font-extrabold text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                            <th class="py-6 pl-10">Tanggal</th>
+                            <th>Aktivitas / Kegiatan</th>
+                            <th class="text-right pr-10">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="allLogsTableBody">
-                        <!-- All logs will be rendered here -->
+                    <tbody id="allLogsTableBody" class="divide-y divide-gray-50">
+                        {{-- Diisi via JS --}}
                     </tbody>
                 </table>
-             </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Log Detail Modal -->
-<dialog id="log_detail_modal" class="modal">
-    <div class="modal-box p-0 overflow-hidden bg-white max-w-xl rounded-[2.5rem] shadow-2xl">
-        <div class="bg-[#6B21A8] p-10 pb-14 relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full"></div>
-            <button onclick="document.getElementById('log_detail_modal').close()" class="btn btn-sm btn-circle btn-ghost absolute right-6 top-6 text-white hover:bg-white/10">✕</button>
+{{-- Detail Modal --}}
+<dialog id="log_detail_modal" class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box p-0 max-w-2xl bg-white rounded-[2.5rem] overflow-hidden border-none shadow-2xl">
+        <div class="bg-gray-900 p-8 text-white flex items-center justify-between relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div class="relative z-10">
-                <span id="detailDate" class="text-[9px] font-black text-purple-200 uppercase tracking-[0.3em] bg-white/10 px-4 py-2 rounded-full border border-white/20 italic">09 MARET 2026</span>
-                <h3 id="detailTitle" class="text-2xl font-black text-white italic uppercase tracking-tighter mt-6 pr-12 leading-tight">Pengembangan Fitur Dashboad Admin</h3>
+                <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1 italic">Detail Aktivitas Harian</p>
+                <h3 id="detailDate" class="text-2xl font-black italic tracking-tighter uppercase">25 MEI 2024</h3>
             </div>
+            <form method="dialog" class="relative z-10">
+                <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white">✕</button>
+            </form>
         </div>
         <div class="p-10 -mt-8 bg-white rounded-[3rem] relative z-20 space-y-8">
             <div>
-                <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Deskripsi Aktivitas</p>
-                <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 shadow-inner">
-                    <p id="detailDesc" class="text-sm font-bold text-gray-700 leading-relaxed italic">Melanjutkan pengerjaan modul dashboard admin menggunakan Laravel dan Tailwind CSS.</p>
+                <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic px-1">Isi Kegiatan / Pekerjaan</p>
+                <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 shadow-inner">
+                    <p id="detailDesc" class="text-base font-bold text-gray-700 leading-relaxed italic whitespace-pre-wrap">Konten kegiatan...</p>
                 </div>
             </div>
-            
-            <div class="grid grid-cols-2 gap-4">
-                <div class="p-5 bg-orange-50/50 rounded-2xl border border-orange-100">
-                    <p class="text-[8px] font-black text-orange-600 uppercase tracking-widest mb-2 italic">Kendala</p>
-                    <p id="detailObstacle" class="text-[11px] font-black text-orange-800 italic uppercase">Responsivitas Grafik Mobile</p>
-                </div>
-                <div class="p-5 bg-blue-50/50 rounded-2xl border border-blue-100">
-                    <p class="text-[8px] font-black text-blue-600 uppercase tracking-widest mb-2 italic">Pekerjaan</p>
-                    <p id="detailWork" class="text-[11px] font-black text-blue-800 italic uppercase">Frontend, API Integration</p>
-                </div>
+            <div class="flex gap-4">
+                <button onclick="document.getElementById('log_detail_modal').close()" class="btn btn-ghost flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl hover:bg-gray-50">Tutup Jendela</button>
             </div>
-
-            <button onclick="document.getElementById('log_detail_modal').close()" class="btn btn-ghost w-full h-14 min-h-0 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl">Tutup</button>
         </div>
     </div>
 </dialog>
+@endsection
 
+@push('styles')
+<style>
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 10px; }
+</style>
+@endpush
+
+@push('scripts')
 <script>
 const students = @json($mhsBimbingan->map(function($magang) {
+    $mhs = $magang->peserta->first() ? $magang->peserta->first()->mahasiswa : null;
     return [
-        'id' => $magang->id_magang,
-        'name' => $magang->peserta->mahasiswa->nama,
-        'nim' => $magang->peserta->mahasiswa->nim
+        'id' => $magang->id,
+        'name' => $mhs ? $mhs->nama : 'N/A',
+        'nim' => $mhs ? $mhs->nim : 'N/A'
     ];
 }));
 
 const mockLogs = @json($mhsBimbingan->mapWithKeys(function($magang) {
     return [
-        $magang->id_magang => $magang->logbooks->map(function($log) {
+        $magang->id => $magang->logbooks->map(function($log) {
             return [
-                'date' => $log->created_at->format('d M Y'),
-                'title' => $log->judul,
-                'desc' => $log->deskripsi,
-                'obstacle' => $log->kendala ?? 'Tidak ada kendala',
-                'work' => $log->kategori ?? 'Umum',
-                'week' => $log->minggu_ke ?? 1
+                'date' => \Carbon\Carbon::parse($log->tanggal)->format('d M Y'),
+                'desc' => $log->kegiatan
             ];
         })
     ];
 }));
 
-let currentView = 'weekly';
 let currentStudentId = students.length > 0 ? students[0].id : null;
 
 function renderStudents() {
@@ -142,18 +133,12 @@ function renderStudents() {
     container.innerHTML = '';
     students.forEach(s => {
         const isActive = s.id === currentStudentId;
-        const colors = [
-            'bg-purple-100 text-[#6B21A8]',
-            'bg-orange-100 text-[#F49E0A]',
-            'bg-blue-100 text-blue-600',
-            'bg-green-100 text-green-600',
-            'bg-pink-100 text-pink-600'
-        ];
+        const colors = [ 'bg-purple-100 text-[#6B21A8]', 'bg-orange-100 text-[#F49E0A]', 'bg-blue-100 text-blue-600' ];
         const avatarStyle = colors[s.id % colors.length];
 
         container.innerHTML += `
             <div onclick="selectStudent(${s.id})" class="p-5 rounded-[2rem] flex items-center gap-4 cursor-pointer transition-all border-2 ${isActive ? 'bg-purple-50 border-primary shadow-lg shadow-purple-100' : 'bg-white border-transparent hover:border-gray-100 hover:bg-gray-50 group'}">
-                <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xs group-hover:rotate-6 transition-all shrink-0">${s.name.split(' ').map(n=>n[0]).join('')}</div>
+                <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xs group-hover:rotate-6 transition-all shrink-0">${s.name[0]}</div>
                 <div class="overflow-hidden">
                     <p class="text-sm font-bold text-gray-900 truncate tracking-tight ${isActive ? 'text-primary' : ''}">${s.name}</p>
                     <p class="text-[9px] font-medium text-gray-400 tracking-wide mt-1 uppercase">${s.nim}</p>
@@ -166,97 +151,48 @@ function renderStudents() {
 function selectStudent(id) {
     currentStudentId = id;
     const student = students.find(s => s.id === id);
-    document.getElementById('activeStudentName').innerText = student.name;
-    document.getElementById('activeStudentNim').innerText = 'NIM: ' + student.nim;
-    renderStudents();
-    renderLogs();
-}
-
-function setView(view) {
-    currentView = view;
-    document.getElementById('btnWeekly').className = view === 'weekly' ? 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-[#6B21A8] text-white shadow-purple-100' : 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-white text-gray-400 hover:bg-gray-50';
-    document.getElementById('btnAll').className = view === 'all' ? 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-[#6B21A8] text-white shadow-purple-100' : 'btn btn-sm rounded-xl border-none font-black text-[9px] uppercase tracking-widest px-6 h-10 shadow-lg bg-white text-gray-400 hover:bg-gray-50';
-    
-    document.getElementById('weeklyContainer').classList.toggle('hidden', view !== 'weekly');
-    document.getElementById('allLogsContainer').classList.toggle('hidden', view !== 'all');
-    renderLogs();
+    if(student) {
+        document.getElementById('activeStudentName').innerText = student.name;
+        document.getElementById('activeStudentNim').innerText = 'NIM: ' + student.nim;
+        document.getElementById('activeAvatar').innerText = student.name[0];
+        renderStudents();
+        renderLogs();
+    }
 }
 
 function renderLogs() {
     const logs = mockLogs[currentStudentId] || [];
+    const allLogsTableBody = document.getElementById('allLogsTableBody');
+    allLogsTableBody.innerHTML = '';
     
-    if (currentView === 'weekly') {
-        const weeklyContainer = document.getElementById('weeklyContainer');
-        weeklyContainer.innerHTML = '';
-        
-        // Group by week
-        const weeks = [...new Set(logs.map(l => l.week))].sort((a,b) => b-a);
-        
-        if(weeks.length === 0) {
-            weeklyContainer.innerHTML = '<div class="p-12 text-center bg-white rounded-[2rem] border border-gray-100"><p class="text-[10px] font-black text-gray-300 uppercase italic">Belum ada logbook minggu ini</p></div>';
-            return;
-        }
-
-        weeks.forEach(w => {
-            const weekLogs = logs.filter(l => l.week === w);
-            weeklyContainer.innerHTML += `
-                <div class="bg-white p-8 rounded-[2rem] border border-base-200 shadow-sm group">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-4">
-                            <span class="text-[10px] font-black text-[#6B21A8] uppercase tracking-[0.3em] bg-[#6B21A8]/5 px-5 py-2 rounded-xl italic">Minggu ke-${w}</span>
-                            <span class="text-[10px] font-black text-gray-300 uppercase italic">${weekLogs.length} Aktivitas</span>
-                        </div>
-                    </div>
-                    <div class="space-y-3">
-                        ${weekLogs.map((l, idx) => `
-                            <div onclick="showDetail(${currentStudentId}, ${logs.indexOf(l)})" class="flex items-center justify-between p-6 bg-gray-50/50 rounded-3xl border border-gray-100 hover:bg-white hover:border-primary hover:shadow-2xl hover:shadow-purple-100 transition-all cursor-pointer group/item">
-                                <div class="flex items-center gap-5">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-purple-200 group-hover/item:bg-primary group-hover/item:scale-150 transition-all duration-300 shadow-[0_0_10px_rgba(107,33,168,0.2)]"></div>
-                                    <div>
-                                        <p class="text-sm font-black text-gray-800 italic uppercase tracking-tighter group-hover/item:text-primary transition-colors">${l.title}</p>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 italic">Review Required</p>
-                                    </div>
-                                </div>
-                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic group-hover/item:text-gray-800 transition-colors">${l.date}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        });
-    } else {
-        const allLogsTableBody = document.getElementById('allLogsTableBody');
-        allLogsTableBody.innerHTML = '';
-        if(logs.length === 0) {
-            allLogsTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-12 text-[10px] font-black text-gray-300 uppercase italic">Belum ada aktivitas</td></tr>';
-            return;
-        }
-        logs.forEach((l, idx) => {
-            allLogsTableBody.innerHTML += `
-                <tr class="hover:bg-gray-50/50 transition-all group">
-                    <td class="font-black text-[9px] text-gray-400 uppercase tracking-widest py-4 border-b border-gray-50">${l.date}</td>
-                    <td class="font-bold text-xs text-gray-700 italic border-b border-gray-50">${l.title}</td>
-                    <td class="text-right border-b border-gray-50">
-                        <button onclick="showDetail(${currentStudentId}, ${idx})" class="btn btn-ghost btn-xs text-[#6B21A8] font-black uppercase text-[8px] tracking-widest">Detail</button>
-                    </td>
-                </tr>
-            `;
-        });
+    if(logs.length === 0) {
+        allLogsTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-20 text-[10px] font-black text-gray-300 uppercase italic tracking-widest">Belum ada aktivitas yang dicatat</td></tr>';
+        return;
     }
+    
+    logs.forEach((l, idx) => {
+        allLogsTableBody.innerHTML += `
+            <tr class="hover:bg-gray-50/50 transition-all group">
+                <td class="font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] py-6 pl-10 border-b border-gray-50">${l.date}</td>
+                <td class="font-bold text-sm text-gray-700 italic border-b border-gray-50">
+                    <div class="max-w-md truncate group-hover:text-gray-900 transition-colors">${l.desc}</div>
+                </td>
+                <td class="text-right pr-10 border-b border-gray-50">
+                    <button onclick="showDetail(${currentStudentId}, ${idx})" class="btn btn-ghost btn-sm text-[#6B21A8] font-black uppercase text-[9px] tracking-widest hover:bg-purple-50 rounded-xl">Lihat Detail →</button>
+                </td>
+            </tr>
+        `;
+    });
 }
 
 function showDetail(studentId, logIndex) {
     const log = mockLogs[studentId][logIndex];
     document.getElementById('detailDate').innerText = log.date.toUpperCase();
-    document.getElementById('detailTitle').innerText = log.title;
     document.getElementById('detailDesc').innerText = log.desc;
-    document.getElementById('detailObstacle').innerText = log.obstacle;
-    document.getElementById('detailWork').innerText = log.work;
     document.getElementById('log_detail_modal').showModal();
 }
 
 // Init
-selectStudent(1);
-setView('weekly');
+if(currentStudentId) selectStudent(currentStudentId);
 </script>
-@endsection
+@endpush

@@ -116,7 +116,7 @@ class OperatorController extends Controller
     public function assignDosen(Request $request, Magang $magang)
     {
         $request->validate([
-            'dosen_id' => 'required|exists:dosens,id_dosen',
+            'dosen_id' => 'required|exists:dosens,id',
         ]);
 
         // Auto Generate ID Magang (Prefix SIDUL-YYYY-XXX)

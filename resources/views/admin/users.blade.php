@@ -68,7 +68,7 @@
                         @endif
                     </td>
                     <td class="pr-8 text-right">
-                        <form action="{{ route('admin.users.destroy', $u->id_user) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini secara permanen?');">
+                        <form action="{{ route('admin.users.destroy', $u->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini secara permanen?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="p-2 rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors tooltip tooltip-left" data-tip="Hapus Akun">

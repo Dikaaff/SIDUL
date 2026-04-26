@@ -9,28 +9,27 @@ class Mahasiswa extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_mahasiswa';
-
     protected $fillable = [
         'user_id',
         'nim',
         'nama',
-        'dosen_wali_id',
+        'prodi',
         'status_magang',
+        'dosen_wali_id',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id_user');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function dosenWali()
     {
-        return $this->belongsTo(Dosen::class, 'dosen_wali_id', 'id_dosen');
+        return $this->belongsTo(Dosen::class, 'dosen_wali_id', 'id');
     }
 
     public function pesertaMagang()
     {
-        return $this->hasOne(PesertaMagang::class, 'id_mahasiswa', 'id_mahasiswa');
+        return $this->hasOne(PesertaMagang::class, 'mahasiswa_id', 'id');
     }
 }

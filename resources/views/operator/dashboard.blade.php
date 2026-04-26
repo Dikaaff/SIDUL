@@ -137,10 +137,9 @@
                 </div>
                 
                 <div class="flex flex-col gap-3 min-w-[240px]">
-                    <form id="toggle-period-form" action="{{ route('operator.periode.toggle') }}" method="POST">
+                    <form action="{{ route('operator.periode.toggle') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin ' + ('{{ $isPeriodeOpen }}' == '1' ? 'MENUTUP' : 'MEMBUKA') + ' pendaftaran?')">
                         @csrf
-                        <button type="button" 
-                                onclick="confirmTogglePeriod('{{ $isPeriodeOpen ? 'TUTUP' : 'BUKA' }}')"
+                        <button type="submit" 
                                 class="w-full group relative px-8 py-5 rounded-2xl {{ $isPeriodeOpen ? 'bg-gray-900 shadow-gray-900/10' : 'bg-amber-500 shadow-amber-500/20' }} text-white font-black overflow-hidden transition-all hover:scale-[1.02] active:scale-95 border-none shadow-2xl">
                             <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             <span class="relative flex items-center justify-center gap-3 text-xs uppercase tracking-[0.2em]">
@@ -159,17 +158,6 @@
             </div>
         </div>
 
-        <script>
-            function confirmTogglePeriod(action) {
-                const message = action === 'TUTUP' 
-                    ? "⚠️ PERHATIAN: Apakah Anda yakin ingin MENUTUP periode pendaftaran?\n\nMahasiswa tidak akan bisa mengirim berkas baru sampai Anda membukanya kembali."
-                    : "🚀 KONFIRMASI: Apakah Anda ingin MEMBUKA periode pendaftaran?\n\nMahasiswa akan dapat mulai mengisi form pendaftaran magang.";
-                
-                if (confirm(message)) {
-                    document.getElementById('toggle-period-form').submit();
-                }
-            }
-        </script>
 
         <div class="bg-white rounded-[2rem] border border-base-200 shadow-sm overflow-hidden">
             <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">

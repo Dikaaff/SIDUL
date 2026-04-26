@@ -8,13 +8,20 @@
         <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-1 italic">
             Digital Report Editor 📄
         </h2>
-        <p class="text-gray-500 font-medium text-sm">Tulis laporan akhir Anda dengan pengalaman layaknya Google Docs.</p>
+        <p class="text-gray-500 font-medium text-sm">Susun laporan akhir Anda bab demi bab sesuai standar.</p>
     </div>
     <div class="flex gap-2">
         <div class="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl flex items-center gap-3">
-            <div class="w-2 h-2 rounded-full {{ $laporan && !$laporan->is_draft ? 'bg-green-500' : 'bg-orange-500 animate-pulse' }}"></div>
+            @php
+                $statusClass = [
+                    'approved' => 'bg-green-500',
+                    'revisi' => 'bg-red-500 animate-bounce',
+                    'review' => 'bg-blue-500 animate-pulse'
+                ][$laporan->status ?? ''] ?? 'bg-gray-300';
+            @endphp
+            <div class="w-2.5 h-2.5 rounded-full {{ $statusClass }}"></div>
             <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">
-                Status: {{ $laporan ? ($laporan->is_draft ? 'Drafting' : 'Submitted') : 'New Document' }}
+                Status: {{ $laporan ? ucfirst($laporan->status) : 'New Document' }}
             </span>
         </div>
     </div>
@@ -23,37 +30,66 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto pb-20 px-4 sm:px-6">
-    <form action="{{ route('mahasiswa.laporan.store') }}" method="POST" id="docForm">
-        @csrf
-        <input type="hidden" name="id_magang" value="{{ Auth::user()->mahasiswa->pesertaMagang->id_magang }}">
-        
-        <div class="flex flex-col gap-8">
-            <!-- Header Info -->
-            <div class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-6 transition-all hover:shadow-md">
-                <div class="flex-1">
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 ml-1 italic">Judul Laporan</label>
-                    <input type="text" name="judul" value="{{ old('judul', $laporan->judul ?? '') }}" 
-                        placeholder="Contoh: LAPORAN AKHIR MAGANG PT. GOJEK INDONESIA..."
-                        class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 text-xl md:text-2xl font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all outline-none placeholder:text-gray-300"
-                        {{ $laporan && !$laporan->is_draft ? 'readonly' : '' }} required>
+    
+    {{-- Notifikasi Revisi --}}
+    @if($laporan && $laporan->status === 'revisi')
+    <div class="mb-8 bg-orange-50 border-2 border-orange-100 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden group">
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-orange-100 rounded-full blur-3xl opacity-50"></div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-start gap-6">
+                <div class="w-16 h-16 rounded-3xl bg-[#F49E0A] text-white flex items-center justify-center shadow-xl shadow-orange-200 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                 </div>
-            </div>
-
-            <!-- Editor Workspace -->
-            <div class="flex flex-col gap-0 shadow-2xl rounded-[2rem] overflow-hidden border border-gray-200">
-                <!-- Toolbar Container -->
-                <div id="toolbar-container" class="bg-white border-b border-gray-100 z-30 sticky top-4 mx-4 my-4 rounded-2xl shadow-xl"></div>
-
-                <!-- Scrollable Container for Page -->
-                <div class="bg-gray-100/80 p-4 md:p-12 min-h-[900px] flex justify-center">
-                    <!-- The Page -->
-                    <div class="w-full max-w-[850px] bg-white shadow-lg min-h-[1100px] p-16 md:p-24 prose prose-slate max-w-none focus:outline-none" id="editor">
-                        {!! old('konten', $laporan->konten ?? '') !!}
+                <div>
+                    <h3 class="text-xl font-black text-orange-800 mb-2 italic uppercase tracking-tighter">Perlu Revisi Laporan ✍️</h3>
+                    <div class="p-5 bg-white/60 backdrop-blur-md rounded-2xl border border-orange-100 text-sm font-bold text-orange-900 leading-relaxed italic max-h-48 overflow-y-auto custom-scrollbar">
+                        "{!! nl2br(e($laporan->catatan_dosen ?? 'Mohon perbaiki laporan sesuai arahan pembimbing.')) !!}"
                     </div>
                 </div>
             </div>
-            
-            <textarea name="konten" id="hidden-konten" class="hidden"></textarea>
+            <button type="button" onclick="document.getElementById('judulInput').focus()" class="btn bg-orange-500 hover:bg-orange-600 border-none text-white px-8 h-14 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-orange-200 shrink-0">
+                Mulai Revisi Sekarang
+            </button>
+        </div>
+    </div>
+    @endif
+
+    <form action="{{ route('mahasiswa.laporan.store') }}" method="POST" id="docForm">
+        @csrf
+        <input type="hidden" name="magang_id" value="{{ Auth::user()->mahasiswa->pesertaMagang->magang->id }}">
+        
+        <div class="flex flex-col gap-8">
+            <!-- Judul Section -->
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-gray-100 transition-all hover:shadow-md">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 ml-1 italic">Judul Laporan</label>
+                <input type="text" name="judul" id="judulInput" value="{{ old('judul', $laporan->judul ?? '') }}" 
+                    placeholder="Contoh: LAPORAN AKHIR MAGANG PT. GOJEK INDONESIA..."
+                    class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 text-xl font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all outline-none placeholder:text-gray-300"
+                    {{ $laporan && $laporan->status === 'approved' ? 'readonly' : '' }} required>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="flex flex-wrap gap-2 mb-[-1.5rem] px-4">
+                @foreach(['bab1' => 'Bab I: Pendahuluan', 'bab2' => 'Bab II: Profil Instansi', 'bab3' => 'Bab III: Pelaksanaan', 'bab4' => 'Bab IV: Penutup'] as $key => $label)
+                    <button type="button" onclick="switchTab('{{ $key }}')" id="tab-btn-{{ $key }}" 
+                        class="tab-btn px-6 py-4 rounded-t-2xl font-black text-[11px] uppercase tracking-wider transition-all border-b-4 {{ $loop->first ? 'bg-white border-primary text-primary shadow-sm' : 'bg-gray-100 border-transparent text-gray-400 hover:bg-gray-200' }}">
+                        {{ $label }}
+                    </button>
+                @endforeach
+            </div>
+
+            <!-- Editor Workspace -->
+            <div class="flex flex-col shadow-2xl rounded-[2rem] overflow-hidden border border-gray-200 bg-white">
+                @foreach(['bab1', 'bab2', 'bab3', 'bab4'] as $key)
+                    <div id="pane-{{ $key }}" class="tab-pane {{ $loop->first ? '' : 'hidden' }}">
+                        <div class="p-8 md:p-12 min-h-[600px]">
+                            <textarea name="{{ $key }}" id="editor-{{ $key }}" class="editor-instance">
+                                {!! old($key, $laporan->$key ?? '') !!}
+                            </textarea>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
 
             <!-- Status & Actions -->
             <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -62,22 +98,18 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     </div>
                     <div class="text-[11px] text-gray-400 font-bold leading-tight">
-                        Dokumen ini tersimpan secara lokal di browser Anda. <br>
-                        Pastikan klik "Kirim" setelah selesai menyusun laporan.
+                        Pastikan semua Bab telah terisi sebelum mengirim laporan untuk direview.
                     </div>
                  </div>
 
                  <div class="flex gap-4 w-full md:w-auto">
-                    @if(!$laporan || $laporan->is_draft)
-                    <button type="submit" name="save_draft" value="1" class="btn h-14 px-8 bg-white hover:bg-gray-50 text-gray-600 border-2 border-gray-100 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all flex-1 md:flex-none">
-                        Simpan Draf
-                    </button>
-                    <button type="submit" name="submit_final" value="1" class="btn h-14 px-10 bg-primary hover:bg-purple-700 text-white border-none rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl shadow-purple-200 flex-1 md:flex-none transition-all">
-                        Kirim Laporan
+                    @if(!$laporan || $laporan->status !== 'approved')
+                    <button type="submit" class="btn h-14 px-10 bg-primary hover:bg-purple-700 text-white border-none rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl shadow-purple-200 flex-1 md:flex-none transition-all">
+                        {{ ($laporan && $laporan->status === 'revisi') ? 'Kirim Ulang Revisi' : 'Simpan & Kirim Laporan' }}
                     </button>
                     @else
                     <div class="h-14 px-10 bg-green-50 text-green-600 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center gap-3 border border-green-100">
-                        Laporan Selesai ✓
+                        Laporan Disetujui ✓
                     </div>
                     @endif
                  </div>
@@ -85,173 +117,61 @@
         </div>
     </form>
 </div>
-
-<style>
-    /* Styling khusus agar editor benar-benar mirip Word */
-    .ck-editor__editable_inline {
-        min-height: 1000px !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
-        border-color: transparent !important;
-    }
-    .ck-toolbar {
-        border: none !important;
-        border-radius: 1rem !important;
-    }
-    #editor {
-        font-family: 'Times New Roman', serif; /* Font standard laporan */
-        font-size: 12pt;
-        line-height: 1.5;
-        color: #000;
-    }
-</style>
 @endsection
 
+@push('styles')
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e5e7eb;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #d1d5db;
+    }
+</style>
+@endpush
+
 @push('scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/super-build/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
 <script>
-    CKEDITOR.ClassicEditor
-        .create(document.querySelector('#editor'), {
-            toolbar: {
-                items: [
-                    'exportPDF', 'exportWord', '|',
-                    'findAndReplace', 'selectAll', '|',
-                    'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
-                    'bulletedList', 'numberedList', 'todoList', '|',
-                    'outdent', 'indent', '|',
-                    'undo', 'redo',
-                    '-',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                    'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
-                    'specialCharacters', 'horizontalLine', 'pageBreak', '|',
-                    'textPartLanguage', '|',
-                    'sourceEditing'
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                ]
-            },
-            placeholder: 'Mulai menulis isi laporan di sini...',
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            fontSize: {
-                options: [ 10, 12, 14, 'default', 18, 20, 22 ],
-                supportAllValues: true
-            },
-            htmlSupport: {
-                allow: [
-                    {
-                        name: /.*/,
-                        attributes: true,
-                        classes: true,
-                        styles: true
-                    }
-                ]
-            },
-            htmlEmbed: {
-                showPreviews: true
-            },
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
-                }
-            },
-            mention: {
-                feeds: [
-                    {
-                        marker: '@',
-                        feed: [
-                            '@apple', '@bears', '@blackberry', '@bread', '@carrot', '@cars', '@cat', '@cherry', '@cloud', '@cow', '@dog', '@elephant', '@fruit', '@fox', '@gears', '@grapes', '@ice', '@lemon', '@lion', '@melon', '@monkeys', '@orange', '@pear', '@pineapple', '@pizza', '@potatoes', '@rabbit', '@sand', '@sheep', '@strawberry', '@sun', '@tomato', '@trolley', '@wheat'
-                        ],
-                        minimumCharacters: 1
-                    }
-                ]
-            },
-            removePlugins: [
-                'CKBox',
-                'CKFinder',
-                'EasyImage',
-                'RealTimeDeviceTracking',
-                'RealTimeCollaboration',
-                'RealTimeCollaborationRevisionHistory',
-                'RealTimeCollaborationComments',
-                'RealTimeCollaborationTrackChanges',
-                'RealTimeCollaborationPresenceList',
-                'RealTimeCollaborationNotifications',
-                'Title',
-                'CloudServices',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                'MathType',
-                'SlashCommand',
-                'Template',
-                'DocumentOutline',
-                'FormatPainter',
-                'TableOfContents',
-                'PasteFromOfficeEnhanced',
-                'CaseChange',
-                'AIAssistant'
-            ]
-        })
-        .then(editor => {
-            const toolbarContainer = document.querySelector('#toolbar-container');
-            toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+    let editors = {};
 
-            @if($laporan && !$laporan->is_draft)
-                editor.enableReadOnlyMode('view-only');
-            @endif
+    function switchTab(tabKey) {
+        // Hide all panes
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+        // Show selected pane
+        document.getElementById('pane-' + tabKey).classList.remove('hidden');
 
-            const form = document.querySelector('#docForm');
-            form.addEventListener('submit', () => {
-                document.querySelector('#hidden-konten').value = editor.getData();
-            });
-        })
-        .catch(error => {
-            console.error(error);
+        // Reset all buttons
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('bg-white', 'border-primary', 'text-primary', 'shadow-sm');
+            b.classList.add('bg-gray-100', 'border-transparent', 'text-gray-400');
         });
+        // Style active button
+        const btn = document.getElementById('tab-btn-' + tabKey);
+        btn.classList.add('bg-white', 'border-primary', 'text-primary', 'shadow-sm');
+        btn.classList.remove('bg-gray-100', 'border-transparent', 'text-gray-400');
+    }
+
+    document.querySelectorAll('.editor-instance').forEach(el => {
+        ClassicEditor
+            .create(el, {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo' ],
+                placeholder: 'Tulis isi bab di sini...'
+            })
+            .then(editor => {
+                editors[el.name] = editor;
+                @if($laporan && $laporan->status === 'approved')
+                    editor.enableReadOnlyMode('view-only');
+                @endif
+            })
+            .catch(error => { console.error(error); });
+    });
 </script>
 @endpush

@@ -49,7 +49,7 @@ class AdminController extends Controller
         // Jika dia Dosen, otomatis buat profil Dosennya
         if ($request->role === 'dosen') {
             Dosen::create([
-                'user_id' => $user->id_user,
+                'user_id' => $user->id,
                 'nik' => $request->username, // Anggap username dosen adalah NIK
                 'nama' => $request->name,
             ]);
@@ -64,7 +64,7 @@ class AdminController extends Controller
 
         if ($user->role === 'dosen') {
             // Hapus relasi dosen jika ada
-            Dosen::where('user_id', $user->id_user)->delete();
+            Dosen::where('user_id', $user->id)->delete();
         }
 
         $user->delete();

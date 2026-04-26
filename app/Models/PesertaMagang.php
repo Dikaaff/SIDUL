@@ -9,21 +9,19 @@ class PesertaMagang extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_peserta_magang';
-
     protected $fillable = [
-        'id_mahasiswa',
-        'id_magang',
-        'nim',
+        'mahasiswa_id',
+        'magang_id',
+        'is_ketua',
     ];
 
     public function magang()
     {
-        return $this->belongsTo(Magang::class, 'id_magang', 'id_magang');
+        return $this->belongsTo(Magang::class, 'magang_id', 'id');
     }
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa', 'id_mahasiswa');
+        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');
     }
 }

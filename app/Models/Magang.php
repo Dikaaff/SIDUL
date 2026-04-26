@@ -9,40 +9,29 @@ class Magang extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_magang';
-
     protected $fillable = [
         'kode_magang',
-        'nim',
-        'perusahaan',
-        'alamat',
-        'tanggal_mulai',
-        'tanggal_selesai',
-        'konsentrasi',
-        'tipe_magang',
-        'link_bukti_magang',
-        'link_survey_perusahaan',
         'dosen_pembimbing_id',
         'status_magang',
     ];
 
     public function peserta()
     {
-        return $this->hasMany(PesertaMagang::class, 'id_magang', 'id_magang');
+        return $this->hasMany(PesertaMagang::class, 'magang_id', 'id');
     }
 
     public function pembimbing()
     {
-        return $this->belongsTo(Dosen::class, 'dosen_pembimbing_id', 'id_dosen');
+        return $this->belongsTo(Dosen::class, 'dosen_pembimbing_id', 'id');
     }
 
     public function logbooks()
     {
-        return $this->hasMany(Logbook::class, 'id_magang', 'id_magang');
+        return $this->hasMany(Logbook::class, 'magang_id', 'id');
     }
 
     public function laporan()
     {
-        return $this->hasOne(Laporan::class, 'id_magang', 'id_magang');
+        return $this->hasOne(Laporan::class, 'magang_id', 'id');
     }
 }

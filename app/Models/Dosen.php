@@ -9,8 +9,6 @@ class Dosen extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_dosen';
-
     protected $fillable = [
         'user_id',
         'nik',
@@ -19,16 +17,16 @@ class Dosen extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id_user');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function mahasiswaWali()
     {
-        return $this->hasMany(Mahasiswa::class, 'dosen_wali_id', 'id_dosen');
+        return $this->hasMany(Mahasiswa::class, 'dosen_wali_id', 'id');
     }
 
     public function bimbinganMagang()
     {
-        return $this->hasMany(Magang::class, 'dosen_pembimbing_id', 'id_dosen');
+        return $this->hasMany(Magang::class, 'dosen_pembimbing_id', 'id');
     }
 }

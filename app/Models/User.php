@@ -12,8 +12,6 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $primaryKey = 'id_user';
-
     protected $fillable = [
         'name',
         'username',
@@ -26,12 +24,12 @@ class User extends Authenticatable
      */
     public function mahasiswa()
     {
-        return $this->hasOne(Mahasiswa::class, 'user_id', 'id_user');
+        return $this->hasOne(Mahasiswa::class, 'user_id', 'id');
     }
 
     public function dosen()
     {
-        return $this->hasOne(Dosen::class, 'user_id', 'id_user');
+        return $this->hasOne(Dosen::class, 'user_id', 'id');
     }
 
     /**

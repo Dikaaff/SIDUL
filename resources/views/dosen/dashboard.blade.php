@@ -138,17 +138,21 @@
             </div>
 
             <div class="col-span-3">
+                @php
+                    $targetLogbooks = 30; // Target hari magang
+                    $progress = $magang->status_magang === 'Selesai' ? 100 : min(100, round(($magang->logbooks_count / $targetLogbooks) * 100));
+                @endphp
                 <div class="flex items-center justify-between mb-2">
                     <div class="badge {{ $magang->status_magang === 'Selesai' ? 'bg-purple-50 text-[#6B21A8] border-purple-100' : ($magang->status_magang === 'Pending' ? 'bg-orange-50 text-[#F49E0A] border-orange-100' : 'bg-green-50 text-green-600 border-green-100') }} font-black text-[8px] px-3 py-3 uppercase tracking-widest rounded-lg italic border-2">
                         {{ strtoupper($magang->status_magang) }}
                     </div>
-                    <span class="text-xs font-black italic text-gray-800">100%</span>
+                    <span class="text-xs font-black italic text-gray-800">{{ $progress }}%</span>
                 </div>
-                <progress class="progress [&::-webkit-progress-value]:bg-[#6B21A8] w-full h-[0.4rem] bg-gray-100 [&::-webkit-progress-value]:transition-all [&::-webkit-progress-value]:duration-500 rounded-full" value="100" max="100"></progress>
+                <progress class="progress [&::-webkit-progress-value]:bg-[#6B21A8] w-full h-[0.4rem] bg-gray-100 [&::-webkit-progress-value]:transition-all [&::-webkit-progress-value]:duration-500 rounded-full" value="{{ $progress }}" max="100"></progress>
             </div>
 
             <div class="col-span-1 flex justify-end">
-                <button onclick="showStudentDetail('{{ $magang->peserta->first()->mahasiswa->nama ?? '' }}', '{{ $magang->nim }}', '{{ $magang->perusahaan }}', 100, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-purple-50 transition-all">
+                <button onclick="showStudentDetail('{{ $magang->peserta->first()->mahasiswa->nama ?? '' }}', '{{ $magang->nim }}', '{{ $magang->perusahaan }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-purple-50 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </button>
             </div>

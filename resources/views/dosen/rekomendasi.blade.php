@@ -78,7 +78,7 @@
                                     <span class="italic">Direkomendasikan</span>
                                 </button>
                             @else
-                                <form action="{{ route('dosen.rekomendasi.approve', $mhs->id_mahasiswa) }}" method="POST" class="inline">
+                                <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" class="btn h-14 min-h-0 bg-[#6B21A8] hover:bg-purple-800 text-white border-none rounded-[1.5rem] px-10 font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-purple-900/20 transition-all hover:scale-105 active:scale-95 group">
                                         <span>Approve</span>

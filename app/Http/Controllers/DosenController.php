@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\Magang;
+use App\Models\Laporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +16,15 @@ class DosenController extends Controller
         
         // Data Dosen Wali
         $mhsWaliCount = $dosen ? $dosen->mahasiswaWali()->count() : 0;
+        // Kita asumsikan status_magang masih ada di mahasiswa untuk rekomendasi sementara
         $pendingRekomendasiCount = $dosen ? $dosen->mahasiswaWali()->where('status_magang', 'Pending')->count() : 0;
         
         // Data Dosen Pembimbing
         $mhsBimbinganCount = $dosen ? $dosen->bimbinganMagang()->count() : 0;
-        $mhsBimbinganList = $dosen ? $dosen->bimbinganMagang()->with('peserta.mahasiswa')->take(5)->get() : collect();
+        $mhsBimbinganList = $dosen ? $dosen->bimbinganMagang()
+            ->with(['peserta.mahasiswa'])
+            ->withCount('logbooks')
+            ->take(5)->get() : collect();
         $lulusCount = $dosen ? $dosen->bimbinganMagang()->where('status_magang', 'Selesai')->count() : 0;
 
         return view('dosen.dashboard', compact(
@@ -78,20 +83,19 @@ class DosenController extends Controller
     public function approveLaporan(Request $request, Magang $magang)
     {
         $request->validate([
-            'status' => 'required|in:Revisi,Approve',
+            'status' => 'required|in:revisi,approved',
             'feedback' => 'required|string',
         ]);
 
         $laporan = $magang->laporan;
         if ($laporan) {
             $laporan->update([
-                'status_laporan' => $request->status,
-                'feedback_dosen' => $request->feedback,
-                'is_draft' => ($request->status === 'Revisi'), // Jika revisi, kembalikan ke draf agar mahasiswa bisa edit
+                'status' => $request->status,
+                'catatan_dosen' => $request->feedback,
             ]);
 
-            // Jika Approve, tandai magang sebagai Selesai
-            if ($request->status === 'Approve') {
+            // Jika approved, tandai magang sebagai Selesai
+            if ($request->status === 'approved') {
                 $magang->update(['status_magang' => 'Selesai']);
             }
         }

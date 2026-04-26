@@ -32,11 +32,13 @@ class DummyDataController extends Controller
                 Dosen::firstOrCreate(
                     ['nik' => $nik],
                     [
-                        'user_id' => $u->id_user,
+                        'user_id' => $u->id,
                         'nama' => $u->name,
                     ]
                 );
             }
+
+            $dosens = Dosen::all();
 
             // 2. Mahasiswa yang butuh di-plot oleh Operator (Sudah Daftar)
             for ($i = 1; $i <= 3; $i++) {
@@ -48,30 +50,23 @@ class DummyDataController extends Controller
                     'role' => 'mahasiswa'
                 ]);
                 $m = Mahasiswa::create([
-                    'user_id' => $u->id_user,
+                    'user_id' => $u->id,
                     'nim' => $nim,
                     'nama' => $u->name,
+                    'prodi' => 'Informatika',
                     'status_magang' => 'Approve' // Sudah approve wali
                 ]);
 
                 $magang = Magang::create([
                     'kode_magang' => 'PEND-' . $nim,
-                    'nim' => $nim,
-                    'perusahaan' => "PT Maju Terus $i",
-                    'alamat' => "Jl. Contoh No $i",
-                    'tanggal_mulai' => now(),
-                    'tanggal_selesai' => now()->addMonths(3),
+                    'dosen_pembimbing_id' => $dosens->random()->id,
                     'status_magang' => 'Pending',
-                    'tipe_magang' => 'Wajib',
-                    'konsentrasi' => 'Software Engineering',
-                    'link_bukti_magang' => 'http://example.com',
-                    'link_survey_perusahaan' => 'http://example.com'
                 ]);
 
                 PesertaMagang::create([
-                    'id_magang' => $magang->id_magang,
-                    'id_mahasiswa' => $m->id_mahasiswa,
-                    'nim' => $nim
+                    'magang_id' => $magang->id,
+                    'mahasiswa_id' => $m->id,
+                    'is_ketua' => true,
                 ]);
             }
 
@@ -85,9 +80,10 @@ class DummyDataController extends Controller
                     'role' => 'mahasiswa'
                 ]);
                 Mahasiswa::create([
-                    'user_id' => $u->id_user,
+                    'user_id' => $u->id,
                     'nim' => $nim,
                     'nama' => $u->name,
+                    'prodi' => 'Informatika',
                     'status_magang' => 'Approve'
                 ]);
             }
@@ -96,7 +92,6 @@ class DummyDataController extends Controller
             return back()->with('success', '✨ Sukses! 5 Data Mahasiswa Dummy berhasil dibuat untuk pengujian.');
         } catch (\Exception $e) {
             DB::rollBack();
-            // Return error trace for easier debugging by the user if it still fails
             return "Error: " . $e->getMessage() . " at " . $e->getFile() . ":" . $e->getLine();
         }
     }

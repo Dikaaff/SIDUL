@@ -9,16 +9,15 @@ class Logbook extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_logbook';
-
     protected $fillable = [
-        'id_magang',
-        'logbook',
+        'magang_id',
+        'tanggal',
+        'kegiatan',
         'catatan_dosen',
     ];
 
     public function magang()
     {
-        return $this->belongsTo(Magang::class, 'id_magang', 'id_magang');
+        return $this->belongsTo(Magang::class, 'magang_id', 'id');
     }
 }

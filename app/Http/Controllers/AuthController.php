@@ -57,10 +57,10 @@ class AuthController extends Controller
 
             // 2. Create Mahasiswa Profile
             Mahasiswa::create([
-                'user_id' => $user->id_user, // Mengikuti nama kolom ID baru di tabel Users
+                'user_id' => $user->id,
                 'nim' => $request->username,
                 'nama' => $request->name,
-                'status_magang' => 'Pending'
+                'prodi' => 'Informatika', // Default value
                 // dosen_wali_id akan diisi oleh operator/admin nanti
             ]);
 
