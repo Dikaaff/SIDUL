@@ -15,11 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('kode_magang')->unique();
             $table->foreignId('dosen_pembimbing_id')
+                ->nullable()
                 ->constrained('dosens', 'id')
                 ->cascadeOnDelete();
-            $table->string('status_magang');
+            $table->string('perusahaan')->nullable();
+            $table->text('alamat')->nullable();
+            $table->string('konsentrasi')->nullable();
+            $table->string('tipe_magang')->default('individu');
+            $table->date('tanggal_mulai')->nullable();
+            $table->date('tanggal_selesai')->nullable();
             $table->timestamps();
-});
+        });
     }
 
     /**

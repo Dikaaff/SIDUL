@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('magang_id')
                 ->constrained('magangs')
                 ->cascadeOnDelete();
-            $table->string('judul');
+            $table->string('judul')->nullable();
             $table->longText('bab1')->nullable();
             $table->longText('bab2')->nullable();
             $table->longText('bab3')->nullable();

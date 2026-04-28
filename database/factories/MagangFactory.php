@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Factories;
-
+use App\Models\Dosen;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +18,7 @@ class MagangFactory extends Factory
     {
         return [
             'kode_magang' => fake()->unique()->bothify('MAG-###'),
-            'dosen_pembimbing_id' => \App\Models\Dosen::inRandomOrder()->first()->id ?? \App\Models\Dosen::factory(),
+            'dosen_pembimbing_id' => Dosen::inRandomOrder()->first()->id ?? Dosen::factory()->create()->id,
             'status_magang' => 'berjalan'
         ];
     }

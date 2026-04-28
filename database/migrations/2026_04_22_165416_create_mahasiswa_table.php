@@ -16,8 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nim')->unique();
             $table->string('nama');
-            $table->string('prodi');
+            $table->string('konsentrasi')->nullable();
             $table->unsignedBigInteger('dosen_wali_id')->nullable();
+            $table->enum('status_magang', ['approve', 'pending','rejected'])->default('pending');
             $table->timestamps();
             $table->foreign('dosen_wali_id')
                 ->references('id')

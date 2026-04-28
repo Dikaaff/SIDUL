@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
+use App\Models\Dosen;
 use Illuminate\Support\Facades\Hash;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Mahasiswa>
@@ -28,7 +29,8 @@ class MahasiswaFactory extends Factory
 
         'nim' => $nim,
         'nama' => fake()->name(),
-        'prodi' => 'Informatika'
+        'prodi' => 'Informatika',
+        'dosen_wali_id' => Dosen::inRandomOrder()->first()->id
     ];
 }
 }

@@ -16,7 +16,10 @@ class Dosen extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function mahasiswa()
+    {
+        return $this->hasMany(Mahasiswa::class, 'dosen_wali_id');
+    }
     public function magang()
     {
         return $this->hasMany(Magang::class, 'dosen_pembimbing_id');

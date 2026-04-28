@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('peserta_magangs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('magang_id')
+                ->nullable()
                 ->constrained('magangs')
                 ->cascadeOnDelete();
             $table->foreignId('mahasiswa_id')
