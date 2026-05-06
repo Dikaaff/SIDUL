@@ -198,9 +198,9 @@
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-40 w-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
             </div>
             <div class="relative z-10">
-                <h3 class="text-xl font-bold mb-2 italic uppercase">Buku Panduan 📖</h3>
+                <h3 class="text-xl font-bold mb-2 italic uppercase">Panduan Magang 📖</h3>
                 <p class="text-white/80 text-[10px] font-bold mb-6 italic">Pelajari prosedur magang terbaru & format laporan.</p>
-                <a href="#" class="btn bg-white hover:bg-gray-50 text-[#F49E0A] border-none w-full rounded-xl h-12 text-[10px] font-black uppercase tracking-widest italic shadow-sm">Unduh PDF</a>
+                <a href="https://d3ti.amikom.ac.id/page/magang#" class="btn bg-white hover:bg-gray-50 text-[#F49E0A] border-none w-full rounded-xl h-12 text-[10px] font-black uppercase tracking-widest italic shadow-sm">Lihat</a>
             </div>
         </div>
     </div>

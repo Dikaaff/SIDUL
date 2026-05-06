@@ -9,6 +9,7 @@ use App\Models\Magang;
 use App\Models\PesertaMagang;
 use App\Models\Logbook;
 use App\Models\Laporan;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MahasiswaController extends Controller
 {
@@ -33,7 +34,7 @@ class MahasiswaController extends Controller
         return view('mahasiswa.dashboard', compact('mahasiswa', 'magang', 'logbookCount', 'laporan', 'pendaftaran', 'isPeriodeOpen'));
     }
 
-    public function showPendaftaran()
+    public function pendaftaran()
     {
         $mahasiswa = Auth::user()->mahasiswa;
         if (!$mahasiswa) return redirect('/dashboard');
@@ -56,13 +57,21 @@ class MahasiswaController extends Controller
 
         $request->validate([
             'tipe_magang' => 'required|in:individu,kelompok',
+            'konsentrasi' => 'required|string',
+            'perusahaan' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
         ]);
 
-        $defaultDosen = \App\Models\Dosen::first();
-
         $magang = Magang::create([
-            'kode_magang' => 'PEND-' . strtoupper(bin2hex(random_bytes(4))),
-            'dosen_pembimbing_id' => $defaultDosen->id,
+            'kode_magang' => 'MGN-' . strtoupper(bin2hex(random_bytes(3))),
+            'tipe_magang' => $request->tipe_magang,
+            'konsentrasi' => $request->konsentrasi,
+            'perusahaan' => $request->perusahaan,
+            'alamat' => $request->alamat,
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_selesai' => $request->tanggal_selesai,
             'status_magang' => 'Pending',
         ]);
 
@@ -72,7 +81,7 @@ class MahasiswaController extends Controller
             'is_ketua' => true,
         ]);
 
-        return redirect()->route('mahasiswa.home')->with('success', 'Pendaftaran baru berhasil dikirim.');
+        return redirect()->route('mahasiswa.home')->with('success', 'Pendaftaran magang berhasil dikirim. Menunggu verifikasi Operator.');
     }
 
     public function suratPengantar()
@@ -174,5 +183,39 @@ class MahasiswaController extends Controller
         );
 
         return back()->with('success', 'Laporan berhasil disimpan.');
+    }
+
+    public function cetakLaporan()
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa) return redirect('/dashboard');
+
+        $peserta = $mahasiswa->pesertaMagang;
+        if (!$peserta || !$peserta->magang) {
+            return redirect()->route('mahasiswa.home')->with('error', 'Laporan tidak ditemukan.');
+        }
+
+        $magang = $peserta->magang;
+        $laporan = Laporan::where('magang_id', $magang->id)->first();
+
+        if (!$laporan) {
+            return redirect()->back()->with('error', 'Silakan simpan draft laporan terlebih dahulu.');
+        }
+
+        $pdf = Pdf::loadView('mahasiswa.laporan_pdf', compact('mahasiswa', 'magang', 'laporan'))
+                  ->setPaper('a4', 'portrait');
+
+        return $pdf->download('Laporan_Akhir_' . $mahasiswa->nim . '.pdf');
+    }
+
+    public function profile()
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        return view('mahasiswa.profile', compact('mahasiswa'));
+    }
+
+    public function settings()
+    {
+        return view('mahasiswa.settings');
     }
 }

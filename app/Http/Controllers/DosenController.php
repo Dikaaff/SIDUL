@@ -56,7 +56,10 @@ class DosenController extends Controller
     public function monitoring()
     {
         $dosen = Auth::user()->dosen;
-        $mhsBimbingan = $dosen ? $dosen->bimbinganMagang()->with('peserta.mahasiswa')->get() : collect();
+        $mhsBimbingan = $dosen ? $dosen->bimbinganMagang()
+            ->with(['peserta.mahasiswa'])
+            ->withCount('logbooks')
+            ->get() : collect();
         return view('dosen.monitoring', compact('mhsBimbingan'));
     }
 

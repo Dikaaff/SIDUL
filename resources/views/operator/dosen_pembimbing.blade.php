@@ -75,13 +75,13 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="py-16 text-center">
+                        <td colspan="5" class="py-24 text-center">
                             <div class="flex flex-col items-center gap-4">
-                                <p class="text-[10px] font-black text-gray-600 uppercase tracking-widest italic font-bold">Semua mahasiswa yang terverifikasi sudah memiliki pembimbing</p>
-                                <a href="/seed-dummy" class="btn btn-sm bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-widest px-8 rounded-xl shadow-lg ring-4 ring-purple-100">
-                                    ✨ Buat Data Dummy Penugasan
-                                </a>
-                                <p class="text-[9px] text-gray-400 font-bold italic">Klik tombol di atas untuk mengisi data percobaan secara otomatis.</p>
+                                <div class="w-20 h-20 rounded-3xl bg-gray-50 flex items-center justify-center text-gray-300 mb-2 border-2 border-dashed border-gray-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                </div>
+                                <h4 class="text-lg font-black text-gray-400 italic">Antrean Plotting Kosong</h4>
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic font-bold">Semua mahasiswa yang terverifikasi sudah memiliki pembimbing</p>
                             </div>
                         </td>
                     </tr>

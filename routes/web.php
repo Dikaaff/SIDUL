@@ -37,8 +37,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mahasiswa/pendaftaran/store', [App\Http\Controllers\MahasiswaController::class, 'storePendaftaran'])->name('mahasiswa.pendaftaran.store');
     Route::get('/mahasiswa/surat-pengantar', [App\Http\Controllers\MahasiswaController::class, 'suratPengantar'])->name('mahasiswa.surat_pengantar');
     Route::get('/mahasiswa/logbook', [App\Http\Controllers\MahasiswaController::class, 'logbook'])->name('mahasiswa.logbook');
+    Route::get('/mahasiswa/logbook/pdf', [MahasiswaController::class, 'cetakLogbook'])->name('mahasiswa.logbook.pdf');
     Route::post('/mahasiswa/logbook', [MahasiswaController::class, 'storeLogbook'])->name('mahasiswa.logbook.store');
     Route::get('/mahasiswa/laporan', [MahasiswaController::class, 'laporan'])->name('mahasiswa.laporan');
+    Route::get('/mahasiswa/laporan/pdf', [MahasiswaController::class, 'cetakLaporan'])->name('mahasiswa.laporan.pdf');
     Route::post('/mahasiswa/laporan', [MahasiswaController::class, 'storeLaporan'])->name('mahasiswa.laporan.store');
     Route::get('/mahasiswa/profile', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile');
     Route::get('/mahasiswa/settings', [MahasiswaController::class, 'settings'])->name('mahasiswa.settings');

@@ -10,10 +10,16 @@
         </h2>
         <p class="text-gray-500 font-medium text-sm">Catat aktivitas harian dan progres pekerjaan magang Anda.</p>
     </div>
-    <button onclick="document.getElementById('logbook_modal').showModal()" class="w-full md:w-auto btn bg-[#6B21A8] hover:bg-purple-800 text-white border-none px-8 rounded-xl shadow-xl shadow-purple-900/20 font-black uppercase tracking-widest text-[10px] h-14 transition-all hover:scale-[1.02] active:scale-95">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
-        Isi Logbook Hari Ini
-    </button>
+    <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-100 px-8 rounded-xl font-black uppercase tracking-widest text-[10px] h-14 transition-all flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            Cetak Logbook
+        </a>
+        <button onclick="document.getElementById('logbook_modal').showModal()" class="btn bg-[#6B21A8] hover:bg-purple-800 text-white border-none px-8 rounded-xl shadow-xl shadow-purple-900/20 font-black uppercase tracking-widest text-[10px] h-14 transition-all hover:scale-[1.02] active:scale-95">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
+            Isi Logbook Hari Ini
+        </button>
+    </div>
 </div>
 @endsection
 
