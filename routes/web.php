@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dosen/laporan/{magang}/approve', [App\Http\Controllers\DosenController::class, 'approveLaporan'])->name('dosen.laporan.approve');
     Route::get('/dosen/rekomendasi', [App\Http\Controllers\DosenController::class, 'rekomendasi'])->name('dosen.rekomendasi');
     Route::post('/dosen/rekomendasi/{mahasiswa}/approve', [App\Http\Controllers\DosenController::class, 'rekomendasikan'])->name('dosen.rekomendasi.approve');
+    Route::post('/dosen/rekomendasi/{mahasiswa}/reject', [App\Http\Controllers\DosenController::class, 'tolakRekomendasi'])->name('dosen.rekomendasi.reject');
 
     // Operator Routes
     Route::get('/dashboard/operator', [App\Http\Controllers\OperatorController::class, 'dashboard'])->name('operator.dashboard');

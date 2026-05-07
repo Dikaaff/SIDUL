@@ -38,6 +38,10 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Auth::user()->mahasiswa;
         if (!$mahasiswa) return redirect('/dashboard');
+
+        if ($mahasiswa->status_magang !== 'Approve') {
+            return redirect()->route('mahasiswa.home')->with('error', 'Pendaftaran gagal! Anda harus mendapatkan rekomendasi/approval dari Dosen Wali terlebih dahulu.');
+        }
         
         if ($mahasiswa->pesertaMagang) {
             return redirect()->route('mahasiswa.home')->with('info', 'Anda sudah terdaftar dalam sistem magang.');
@@ -55,6 +59,16 @@ class MahasiswaController extends Controller
         $mahasiswa = Auth::user()->mahasiswa;
         if (!$mahasiswa) return redirect('/dashboard');
 
+        // Security check 1: Cek pendaftaran ganda (Cuma bisa 1x)
+        if ($mahasiswa->pesertaMagang) {
+            return redirect()->route('mahasiswa.home')->with('info', 'Anda sudah terdaftar dalam sistem magang.');
+        }
+
+        // Security check 2: Cek rekomendasi dosen wali
+        if ($mahasiswa->status_magang !== 'Approve') {
+            return redirect()->route('mahasiswa.home')->with('error', 'Pendaftaran ditolak! Anda belum mendapatkan rekomendasi Dosen Wali.');
+        }
+
         $request->validate([
             'tipe_magang' => 'required|in:individu,kelompok',
             'konsentrasi' => 'required|string',
@@ -62,7 +76,37 @@ class MahasiswaController extends Controller
             'alamat' => 'required|string',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after:tanggal_mulai',
+            'nim_anggota' => 'nullable|array',
+            'nim_anggota.*' => 'nullable|string|exists:mahasiswas,nim',
+        ], [
+            'nim_anggota.*.exists' => 'Salah satu NIM anggota tidak terdaftar di sistem. Pastikan teman Anda sudah memiliki akun.',
         ]);
+
+        // Jika kelompok, minimal 2 orang (Ketua + 1 Anggota)
+        if ($request->tipe_magang === 'kelompok') {
+            $anggotaNims = array_filter($request->nim_anggota ?? []);
+            if (count($anggotaNims) < 1) {
+                return back()->with('error', 'Pendaftaran kelompok minimal harus memiliki 2 orang (termasuk Ketua).')->withInput();
+            }
+            if (count($anggotaNims) > 2) {
+                return back()->with('error', 'Pendaftaran kelompok maksimal 3 orang (termasuk Ketua).')->withInput();
+            }
+
+            // Cek apakah ada anggota yang sudah terdaftar di magang lain ATAU belum di-approve dosen wali
+            foreach ($anggotaNims as $nim) {
+                $mhsAnggota = Mahasiswa::where('nim', $nim)->first();
+                
+                // 1. Cek approval dosen wali anggota
+                if ($mhsAnggota->status_magang !== 'Approve') {
+                    return back()->with('error', "Pendaftaran Gagal! Mahasiswa dengan NIM {$nim} ({$mhsAnggota->nama}) belum mendapatkan rekomendasi Dosen Wali. Pastikan semua mahasiswa sudah di approve dosen wali.")->withInput();
+                }
+
+                // 2. Cek apakah anggota sudah terdaftar di magang lain
+                if ($mhsAnggota->pesertaMagang) {
+                    return back()->with('error', "Mahasiswa dengan NIM {$nim} ({$mhsAnggota->nama}) sudah terdaftar di magang lain.")->withInput();
+                }
+            }
+        }
 
         $magang = Magang::create([
             'kode_magang' => 'MGN-' . strtoupper(bin2hex(random_bytes(3))),
@@ -75,11 +119,25 @@ class MahasiswaController extends Controller
             'status_magang' => 'Pending',
         ]);
 
+        // Simpan Ketua
         PesertaMagang::create([
             'mahasiswa_id' => $mahasiswa->id,
             'magang_id' => $magang->id,
             'is_ketua' => true,
         ]);
+
+        // Simpan Anggota (Jika ada)
+        if ($request->tipe_magang === 'kelompok') {
+            $anggotaNims = array_filter($request->nim_anggota ?? []);
+            foreach ($anggotaNims as $nim) {
+                $mhsAnggota = Mahasiswa::where('nim', $nim)->first();
+                PesertaMagang::create([
+                    'mahasiswa_id' => $mhsAnggota->id,
+                    'magang_id' => $magang->id,
+                    'is_ketua' => false,
+                ]);
+            }
+        }
 
         return redirect()->route('mahasiswa.home')->with('success', 'Pendaftaran magang berhasil dikirim. Menunggu verifikasi Operator.');
     }
@@ -205,7 +263,30 @@ class MahasiswaController extends Controller
         $pdf = Pdf::loadView('mahasiswa.laporan_pdf', compact('mahasiswa', 'magang', 'laporan'))
                   ->setPaper('a4', 'portrait');
 
-        return $pdf->download('Laporan_Akhir_' . $mahasiswa->nim . '.pdf');
+        return $pdf->stream('Laporan_Akhir_' . $mahasiswa->nim . '.pdf');
+    }
+
+    public function cetakLogbook()
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        if (!$mahasiswa) return redirect('/dashboard');
+
+        $peserta = $mahasiswa->pesertaMagang;
+        if (!$peserta || !$peserta->magang) {
+            return redirect()->route('mahasiswa.home')->with('error', 'Data magang tidak ditemukan.');
+        }
+
+        $magang = $peserta->magang;
+        $logbooks = Logbook::where('magang_id', $magang->id)->oldest()->get();
+
+        if ($logbooks->isEmpty()) {
+            return redirect()->back()->with('error', 'Belum ada data logbook untuk dicetak.');
+        }
+
+        $pdf = Pdf::loadView('mahasiswa.logbook_pdf', compact('mahasiswa', 'magang', 'logbooks'))
+                  ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('Logbook_Magang_' . $mahasiswa->nim . '.pdf');
     }
 
     public function profile()

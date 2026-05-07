@@ -31,7 +31,7 @@
                 </h3>
             </div>
             <div class="flex gap-2">
-                <input class="input input-md bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold w-64 focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Cari Mahasiswa Berdasarkan Nama..." />
+                <input id="searchInput" onkeyup="filterByNIM()" class="input input-md bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold w-64 focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Cari Mahasiswa Berdasarkan NIM..." />
             </div>
         </div>
 
@@ -48,28 +48,34 @@
 
                 <div id="recommendationList" class="space-y-3">
                     @forelse($mhsWali as $mhs)
-                    <div class="bg-white hover:bg-gray-50/50 border border-base-200 rounded-[2rem] p-6 transition-all group shadow-sm grid grid-cols-12 gap-4 items-center">
+                    <div class="mhs-row bg-white hover:bg-gray-50/50 border border-base-200 rounded-[2rem] p-6 transition-all group shadow-sm grid grid-cols-12 gap-4 items-center">
                         <div class="col-span-4 flex items-center gap-5">
                             <div class="w-14 h-14 rounded-2xl bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-sm group-hover:rotate-6 transition-all duration-500">
                                 {{ substr($mhs->nama, 0, 2) }}
                             </div>
                             <div class="overflow-hidden">
                                 <h4 class="font-bold text-gray-900 text-lg leading-tight truncate tracking-tight">{{ $mhs->nama }}</h4>
-                                <p class="text-[11px] text-[#6B21A8] font-semibold tracking-wide mt-1 truncate opacity-70">{{ $mhs->nim }}</p>
+                                <p class="mhs-nim text-[11px] text-[#6B21A8] font-semibold tracking-wide mt-1 truncate opacity-70">{{ $mhs->nim }}</p>
                             </div>
                         </div>
-                        
-                        <div class="col-span-2 flex justify-center">
-                            <div class="badge {{ $mhs->status_magang === 'Approve' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-orange-50 text-[#F49E0A] border-orange-100' }} font-black text-[9px] px-5 py-4 uppercase tracking-[0.2em] rounded-xl italic border-2">
+                                              <div class="col-span-2 flex justify-center">
+                            @php
+                                $statusClasses = [
+                                    'Approve' => 'bg-green-50 text-green-600 border-green-100',
+                                    'Rejected' => 'bg-red-50 text-red-600 border-red-100',
+                                    'Pending' => 'bg-orange-50 text-[#F49E0A] border-orange-100',
+                                ][$mhs->status_magang] ?? 'bg-gray-50 text-gray-500 border-gray-100';
+                            @endphp
+                            <div class="badge {{ $statusClasses }} font-black text-[9px] px-5 py-4 uppercase tracking-[0.2em] rounded-xl italic border-2">
                                 {{ strtoupper($mhs->status_magang) }}
                             </div>
                         </div>
-
+ 
                         <div class="col-span-3 flex items-center">
                             <span class="text-[10px] font-bold text-gray-400">Pengajuan Pendaftaran Akun</span>
                         </div>
-
-                        <div class="col-span-3 flex justify-end items-center">
+ 
+                        <div class="col-span-3 flex justify-end items-center gap-2">
                             @if($mhs->status_magang === 'Approve')
                                 <button class="btn btn-sm btn-ghost text-green-600 font-black uppercase text-[10px] cursor-default pointer-events-none gap-2">
                                     <div class="w-8 h-8 bg-green-100 text-green-600 rounded-xl flex items-center justify-center shadow-inner">
@@ -77,14 +83,31 @@
                                     </div>
                                     <span class="italic">Direkomendasikan</span>
                                 </button>
-                            @else
+                            @elseif($mhs->status_magang === 'Rejected')
                                 <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline">
                                     @csrf
-                                    <button type="submit" class="btn h-14 min-h-0 bg-[#6B21A8] hover:bg-purple-800 text-white border-none rounded-[1.5rem] px-10 font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-purple-900/20 transition-all hover:scale-105 active:scale-95 group">
-                                        <span>Approve</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded-xl gap-2 transition-all">
+                                        <div class="w-8 h-8 bg-red-100 text-red-600 rounded-xl flex items-center justify-center shadow-inner">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                        </div>
+                                        <span class="italic">Ubah ke Approve?</span>
                                     </button>
                                 </form>
+                            @else
+                                <div class="flex gap-2">
+                                    <form action="{{ route('dosen.rekomendasi.reject', $mhs->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95">
+                                            Reject
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm h-11 bg-[#6B21A8] hover:bg-purple-800 text-white border-none rounded-xl px-6 font-black uppercase tracking-wider text-[9px] shadow-lg shadow-purple-900/20 transition-all hover:scale-105 active:scale-95 group">
+                                            Approve
+                                        </button>
+                                    </form>
+                                </div>
                             @endif
                         </div>
                     </div>

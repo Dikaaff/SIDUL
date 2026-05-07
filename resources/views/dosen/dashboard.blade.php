@@ -3,29 +3,29 @@
 @section('title', 'Dashboard Dosen - SIDUL')
 
 @section('header')
-<div class="bg-gradient-to-br from-[#6B21A8] via-[#7E22CE] to-[#9333EA] text-white p-8 md:p-12 rounded-[3rem] relative overflow-hidden shadow-2xl shadow-purple-200/50 mt-4 mx-2">
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden shadow-2xl mt-4 mx-2">
     <!-- Decorative elements -->
-    <div class="absolute -right-20 -top-20 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-    <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
 
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 relative z-10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
         <div>
-            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-6">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-4">
                 <span class="relative flex h-2 w-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
                 <span class="text-[10px] font-black uppercase tracking-[0.2em]">Sistem Informasi Magang</span>
             </div>
-            <h2 class="text-3xl md:text-5xl font-black tracking-tighter leading-tight italic mb-2">
+            <h2 class="text-2xl md:text-3xl font-black tracking-tighter leading-tight italic mb-2">
                 Halo, Bapak/Ibu<br>{{ explode(' ', Auth::user()->name)[0] }} 👋
             </h2>
-            <p class="text-white/80 font-medium text-sm md:text-lg max-w-xl leading-relaxed italic">Pantau progres magang dan kelola persetujuan bimbingan mahasiswa Anda dengan lebih mudah.</p>
+            <p class="text-white/80 font-medium text-xs md:text-sm max-w-xl leading-relaxed italic">Pantau progres magang dan kelola persetujuan bimbingan mahasiswa Anda dengan lebih mudah.</p>
         </div>
         <div class="flex flex-col gap-3 shrink-0">
-            <div class="bg-white/10 backdrop-blur-xl px-8 py-5 rounded-3xl border border-white/20 text-white flex flex-col items-center gap-1 shadow-2xl min-w-[160px]">
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">Hari Ini</span>
-                <span class="text-2xl font-black italic">{{ now()->format('d M Y') }}</span>
+            <div class="bg-white/10 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/20 text-white flex flex-col items-center gap-1 shadow-2xl min-w-[140px]">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-white/60">Hari Ini</span>
+                <span class="text-xl font-black italic">{{ now()->format('d M Y') }}</span>
             </div>
         </div>
     </div>

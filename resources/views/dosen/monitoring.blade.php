@@ -2,80 +2,163 @@
 
 @section('title', 'Monitoring Magang')
 
-@section('header')
-<div class="px-4 lg:px-12">
-    <div class="bg-gradient-to-r from-[#6B21A8] to-[#9333EA] text-white p-12 md:p-16 rounded-[4rem] shadow-2xl relative overflow-hidden">
-        <div class="absolute -right-20 -top-20 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
-        
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-10">
-            <div class="space-y-5">
-                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    <span class="text-[11px] font-black uppercase tracking-[0.2em]">Monitoring System</span>
-                </div>
-                <h2 class="text-4xl md:text-7xl font-black italic tracking-tighter uppercase leading-tight">Monitoring<br>Mahasiswa 📊</h2>
-                <p class="text-white/70 font-medium italic text-xl max-w-2xl leading-relaxed">Kelola dan pantau seluruh aktivitas magang mahasiswa bimbingan Anda secara real-time.</p>
-            </div>
-            <div class="bg-white/10 backdrop-blur-xl p-10 rounded-[3.5rem] border border-white/20 shadow-2xl flex flex-col items-center min-w-[200px] text-center">
-                <span class="text-[12px] font-black uppercase tracking-[0.3em] text-white/50 mb-3">Total Aktif</span>
-                <span class="text-6xl font-black italic">{{ $mhsBimbingan->count() }}</span>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
-
 @section('content')
-<div class="px-4 lg:px-12 space-y-16 pb-40">
-    <!-- Search & Filters -->
-    <div class="flex flex-col lg:flex-row items-center justify-between gap-10 bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
-        <div class="relative w-full lg:w-[600px] group">
-            <div class="absolute inset-y-0 left-0 pl-8 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#6B21A8] transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+<div class="px-4 lg:px-6 py-6 space-y-6 overflow-x-hidden">
+
+    <!-- HERO BANNER -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#6B21A8] to-[#7E22CE] p-6 md:p-8 shadow-xl">
+
+        <!-- Blur Decoration -->
+        <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+
+            <!-- Left Content -->
+            <div class="max-w-2xl">
+
+                <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-full mb-4">
+                    <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+
+                    <span class="text-xs uppercase tracking-[0.2em] font-bold text-white">
+                        Monitoring System
+                    </span>
+                </div>
+
+                <h1 class="text-3xl md:text-5xl font-black italic leading-tight text-white">
+                    Monitoring Mahasiswa
+                </h1>
+
+                <p class="mt-3 text-sm md:text-base text-white/80 max-w-xl">
+                    Pantau aktivitas magang mahasiswa secara realtime dengan sistem monitoring SIDUL.
+                </p>
+
             </div>
-            <input id="searchInput" onkeyup="filterGrid()" type="text" placeholder="Cari Nama, NIM, atau Instansi Magang..." class="w-full bg-gray-50 border-none rounded-[2rem] py-6 pl-20 pr-10 text-base font-bold text-gray-800 focus:bg-white focus:ring-8 focus:ring-purple-50 transition-all outline-none italic shadow-inner" />
-        </div>
-        
-        <div class="flex items-center gap-6">
-             <div class="bg-emerald-50 px-8 py-4 rounded-2xl border border-emerald-100 flex items-center gap-4">
-                <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-                <span class="text-[12px] font-black text-emerald-600 uppercase tracking-[0.2em] italic">Server Connected</span>
-             </div>
+
+            <!-- Right Counter -->
+            <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl px-8 py-6 text-center min-w-[180px]">
+
+                <p class="text-xs uppercase tracking-[0.3em] text-white/60 font-bold mb-2">
+                    Total Aktif
+                </p>
+
+                <h2 class="text-5xl font-black italic text-white">
+                    {{ $mhsBimbingan->count() }}
+                </h2>
+
+            </div>
+
         </div>
     </div>
 
-    <!-- Student Cards Grid -->
-    <div id="studentGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
-        <!-- Rendered via JS -->
-    </div>
+    <!-- SEARCH SECTION -->
+    <div class="bg-white rounded-3xl border border-gray-100 p-5 shadow-sm">
 
-    <!-- Empty State -->
-    <div id="emptyState" class="hidden py-52 text-center bg-white rounded-[4rem] border-2 border-dashed border-gray-100">
-        <div class="w-28 h-28 bg-gray-50 rounded-full flex items-center justify-center text-gray-200 mx-auto mb-8">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        <div class="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+
+            <!-- Search -->
+            <div class="relative w-full lg:max-w-2xl">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+
+                <input
+                    id="searchInput"
+                    onkeyup="filterGrid()"
+                    type="text"
+                    placeholder="Cari mahasiswa atau instansi..."
+                    class="w-full h-14 pl-14 pr-5 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-purple-100 focus:border-[#6B21A8] outline-none transition">
+
+            </div>
+
+            <!-- Status -->
+            <div class="flex items-center gap-3 bg-emerald-50 border border-emerald-100 px-5 py-3 rounded-2xl">
+
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+
+                <span class="text-xs uppercase tracking-[0.2em] font-bold text-emerald-600">
+                    Server Connected
+                </span>
+
+            </div>
+
         </div>
-        <h4 class="text-2xl font-black text-gray-400 italic uppercase tracking-widest">Tidak Ada Hasil</h4>
-        <p class="text-base font-bold text-gray-300 mt-3 italic">Gunakan kata kunci pencarian yang lain.</p>
     </div>
 
-    <!-- Pagination Footer -->
-    <div id="paginationContainer" class="flex flex-col md:flex-row items-center justify-between gap-10 pt-16 border-t border-gray-100">
-        <p id="paginationInfo" class="text-[12px] font-black text-gray-400 uppercase tracking-[0.4em] italic"></p>
-        <div class="join shadow-2xl rounded-3xl overflow-hidden" id="paginationBtns"></div>
+    <!-- GRID MAHASISWA -->
+    <div id="studentGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <!-- Render by JavaScript -->
     </div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState"
+        class="hidden py-24 text-center bg-white rounded-3xl border border-dashed border-gray-200 shadow-sm">
+
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-10 w-10 text-gray-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+
+        </div>
+
+        <h4 class="text-lg font-bold text-gray-500">
+            Tidak Ada Hasil
+        </h4>
+
+        <p class="text-sm text-gray-400 mt-2">
+            Gunakan kata kunci pencarian yang lain.
+        </p>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div id="paginationContainer"
+        class="flex flex-col md:flex-row items-center justify-between gap-5 pt-4">
+
+        <p id="paginationInfo"
+            class="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        </p>
+
+        <div class="join rounded-2xl overflow-hidden shadow-sm"
+            id="paginationBtns">
+        </div>
+
+    </div>
+
 </div>
 
 @push('scripts')
 <script>
+// Data Mahasiswa dari Controller
 const students = {!! json_encode($mhsBimbingan->map(function($magang) {
-    $mhs = $magang->peserta->first() ? $magang->peserta->first()->mahasiswa : null;
+
+    $mhs = $magang->peserta->first()
+        ? $magang->peserta->first()->mahasiswa
+        : null;
+
     $logCount = $magang->logbooks_count ?? 0;
-    $progress = ($magang->status_magang === 'Selesai') ? 100 : min(100, round(($logCount / 30) * 100));
-    
+
+    $progress = ($magang->status_magang === 'Selesai')
+        ? 100
+        : min(100, round(($logCount / 30) * 100));
+
     return [
         'name' => $mhs ? $mhs->nama : 'N/A',
         'nim' => $mhs ? $mhs->nim : 'N/A',
@@ -86,6 +169,7 @@ const students = {!! json_encode($mhsBimbingan->map(function($magang) {
         'logs' => $logCount,
         'prodi' => $magang->konsentrasi ?? 'Teknik Informatika'
     ];
+
 })->toArray()) !!};
 
 let currentPage = 1;
@@ -93,119 +177,219 @@ const itemsPerPage = 6;
 let filteredStudents = [...students];
 
 function renderGrid() {
+
     const grid = document.getElementById('studentGrid');
     const empty = document.getElementById('emptyState');
     const pagination = document.getElementById('paginationContainer');
-    
+
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const items = filteredStudents.slice(start, end);
-    
+
     grid.innerHTML = '';
-    
+
     if (filteredStudents.length === 0) {
+
         empty.classList.remove('hidden');
         grid.classList.add('hidden');
         pagination.classList.add('hidden');
+
     } else {
+
         empty.classList.add('hidden');
         grid.classList.remove('hidden');
         pagination.classList.remove('hidden');
     }
-    
+
     items.forEach((s, i) => {
-        const colors = ['bg-purple-100 text-[#6B21A8]', 'bg-blue-100 text-blue-600', 'bg-emerald-100 text-emerald-600', 'bg-orange-100 text-orange-600'];
+
+        const colors = [
+            'bg-purple-100 text-[#6B21A8]',
+            'bg-blue-100 text-blue-600',
+            'bg-emerald-100 text-emerald-600',
+            'bg-orange-100 text-orange-600'
+        ];
+
         const avatarStyle = colors[i % colors.length];
-        const badgeColor = s.status === 'Selesai' ? 'bg-blue-50 text-blue-600' : (['Aktif', 'berjalan'].includes(s.status) ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-600');
-        
+
+        const badgeColor =
+            s.status === 'Selesai'
+                ? 'bg-blue-50 text-blue-600'
+                : (['Aktif', 'berjalan'].includes(s.status)
+                    ? 'bg-emerald-50 text-emerald-600'
+                    : 'bg-orange-50 text-orange-600');
+
         const card = `
-            <div class="group bg-white rounded-[4rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 p-12 flex flex-col justify-between min-h-[480px] relative overflow-hidden">
-                <div class="absolute -right-16 -top-16 w-56 h-56 bg-gray-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
-                
+            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-7 flex flex-col justify-between min-h-[360px] relative overflow-hidden">
+
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-gray-50 rounded-full opacity-60"></div>
+
                 <div class="relative z-10">
-                    <div class="flex items-start justify-between gap-6 mb-10">
-                        <div class="w-20 h-20 rounded-[2rem] ${avatarStyle} flex items-center justify-center font-black text-3xl shadow-inner group-hover:rotate-6 transition-transform">
+
+                    <div class="flex items-start justify-between mb-6">
+
+                        <div class="w-14 h-14 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xl">
                             ${s.name[0]}
                         </div>
+
                         <div class="text-right">
-                             <span class="text-[10px] font-black uppercase tracking-widest italic ${badgeColor} px-4 py-2 rounded-2xl border border-current opacity-80 inline-block mb-3">${s.status}</span>
-                             <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest italic">${s.kode}</p>
+
+                            <span class="text-[10px] uppercase font-bold tracking-wider ${badgeColor} px-3 py-1 rounded-xl inline-block mb-2">
+                                ${s.status}
+                            </span>
+
+                            <p class="text-[10px] text-gray-400 font-semibold uppercase">
+                                ${s.kode}
+                            </p>
+
                         </div>
+
                     </div>
-                    
-                    <h4 class="text-3xl font-black text-gray-800 italic tracking-tighter leading-tight mb-3 group-hover:text-[#6B21A8] transition-colors line-clamp-2">${s.name}</h4>
-                    <p class="text-[12px] font-black text-gray-400 uppercase tracking-[0.25em] italic mb-10">${s.nim} • ${s.prodi}</p>
-                    
-                    <div class="space-y-7">
+
+                    <h3 class="text-2xl font-black text-gray-800 leading-tight mb-1">
+                        ${s.name}
+                    </h3>
+
+                    <p class="text-xs text-gray-400 uppercase tracking-widest mb-8">
+                        ${s.nim} • ${s.prodi}
+                    </p>
+
+                    <div class="space-y-5">
+
                         <div>
-                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic mb-3">Instansi Magang</p>
-                            <p class="text-base font-black text-gray-700 italic line-clamp-1">${s.instansi}</p>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-wider mb-1">
+                                Instansi Magang
+                            </p>
+
+                            <p class="font-semibold text-gray-700 line-clamp-1">
+                                ${s.instansi}
+                            </p>
                         </div>
-                        
+
                         <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">Progress Magang</p>
-                                <p class="text-sm font-black text-[#6B21A8] italic">${s.progress}%</p>
+
+                            <div class="flex items-center justify-between mb-2">
+
+                                <p class="text-[10px] text-gray-400 uppercase tracking-wider">
+                                    Progress
+                                </p>
+
+                                <p class="text-sm font-bold text-[#6B21A8]">
+                                    ${s.progress}%
+                                </p>
+
                             </div>
-                            <div class="h-4 w-full bg-gray-100 rounded-full overflow-hidden shadow-inner border border-gray-50">
-                                <div class="h-full bg-gradient-to-r from-[#6B21A8] to-[#9333EA] rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(107,33,168,0.4)]" style="width: ${s.progress}%"></div>
+
+                            <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+
+                                <div class="h-full bg-gradient-to-r from-[#6B21A8] to-[#9333EA] rounded-full"
+                                    style="width:${s.progress}%">
+                                </div>
+
                             </div>
-                            <p class="text-[10px] font-black text-gray-400 mt-3 italic text-right uppercase tracking-tighter">${s.logs} / 30 Hari Terisi</p>
+
+                            <p class="text-[10px] text-gray-400 mt-2 text-right">
+                                ${s.logs} / 30 Hari
+                            </p>
+
                         </div>
+
                     </div>
+
                 </div>
 
-                <div class="pt-12 relative z-10">
-                    <a href="{{ route('dosen.logbook') }}" class="w-full bg-gray-50 hover:bg-[#6B21A8] text-[#6B21A8] hover:text-white py-6 rounded-[2rem] font-black text-[12px] uppercase tracking-[0.25em] italic transition-all block text-center shadow-sm hover:shadow-xl active:scale-95">
+                <div class="pt-7 relative z-10">
+
+                    <a href="{{ route('dosen.logbook') }}"
+                        class="block w-full text-center bg-gray-100 hover:bg-[#6B21A8] hover:text-white text-[#6B21A8] rounded-2xl py-4 text-xs font-bold uppercase tracking-[0.2em] transition-all">
+
                         Buka Logbook →
+
                     </a>
+
                 </div>
+
             </div>
         `;
+
         grid.innerHTML += card;
+
     });
-    
+
     updatePagination();
 }
 
 function filterGrid() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    filteredStudents = students.filter(s => 
-        s.name.toLowerCase().includes(q) || 
-        s.nim.includes(q) || 
+
+    const q = document.getElementById('searchInput')
+        .value
+        .toLowerCase();
+
+    filteredStudents = students.filter(s =>
+        s.name.toLowerCase().includes(q) ||
+        s.nim.includes(q) ||
         s.kode.toLowerCase().includes(q) ||
         s.instansi.toLowerCase().includes(q)
     );
+
     currentPage = 1;
+
     renderGrid();
 }
 
 function updatePagination() {
+
     const total = filteredStudents.length;
+
     const pages = Math.ceil(total / itemsPerPage) || 1;
-    const start = total === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
+
+    const start = total === 0
+        ? 0
+        : (currentPage - 1) * itemsPerPage + 1;
+
     const end = Math.min(currentPage * itemsPerPage, total);
-    
-    document.getElementById('paginationInfo').innerText = `Menampilkan ${start}-${end} dari ${total} Mahasiswa`;
-    
+
+    document.getElementById('paginationInfo').innerText =
+        `Menampilkan ${start}-${end} dari ${total} Mahasiswa`;
+
     const container = document.getElementById('paginationBtns');
+
     container.innerHTML = '';
-    
+
     if (pages > 1) {
-        for(let i = 1; i <= pages; i++) {
+
+        for (let i = 1; i <= pages; i++) {
+
             const btn = document.createElement('button');
-            btn.className = `join-item btn btn-md h-14 px-8 font-black text-[11px] uppercase border-none ${currentPage === i ? 'bg-[#6B21A8] text-white shadow-2xl shadow-purple-200' : 'bg-white text-gray-400 hover:bg-gray-50'}`;
+
+            btn.className =
+                `px-5 h-11 text-sm font-bold transition ${
+                    currentPage === i
+                    ? 'bg-[#6B21A8] text-white'
+                    : 'bg-white text-gray-500 hover:bg-gray-100'
+                }`;
+
             btn.innerText = i;
-            btn.onclick = () => { 
-                currentPage = i; 
-                renderGrid(); 
-                window.scrollTo({top: 0, behavior: 'smooth'}); 
+
+            btn.onclick = () => {
+
+                currentPage = i;
+
+                renderGrid();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             };
+
             container.appendChild(btn);
         }
     }
 }
 
+// Initial Render
 renderGrid();
 </script>
 @endpush
+@endsection

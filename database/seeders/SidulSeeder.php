@@ -66,14 +66,15 @@ class SidulSeeder extends Seeder
 
         // --- 3. MAHASISWAS ---
         $mhs = [
-            ['nim' => '3311', 'nama' => 'Mahasiswa Test 3311', 'konsentrasi' => 'Web Development'],
             ['nim' => '20210001', 'nama' => 'Ahmad Fauzi', 'konsentrasi' => 'Web Development'],
             ['nim' => '12345678', 'nama' => 'Dika Afif', 'konsentrasi' => 'Web Development'],
             ['nim' => '23015010', 'nama' => 'Arbyan', 'konsentrasi' => 'Web Development'],
-            ['nim' => '23011234', 'nama' => 'Yusuf', 'konsentrasi' => 'Web Development'],
-            ['nim' => '23011231', 'nama' => 'anu', 'konsentrasi' => 'Web Development'],
-            ['nim' => '23.01.1239', 'nama' => 'jaladri', 'konsentrasi' => 'Web Development'],
-            ['nim' => '23.01.1238', 'nama' => 'uus', 'konsentrasi' => 'Web Development'],
+            ['nim' => '010101', 'nama' => 'Ayan234', 'konsentrasi' => 'Web Development'],
+            ['nim' => '010102', 'nama' => 'lalaa', 'konsentrasi' => 'Web Development'],
+            ['nim' => '010103', 'nama' => 'jaja', 'konsentrasi' => 'Web Development'],
+            ['nim' => '010104', 'nama' => 'Ayasan', 'konsentrasi' => 'Web Development'],
+            
+            
         ];
 
         foreach ($mhs as $m) {

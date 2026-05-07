@@ -110,9 +110,21 @@
                         <a href="{{ route('mahasiswa.pendaftaran') }}" class="btn bg-primary hover:bg-primary/90 text-white border-none rounded-2xl px-8 h-14 font-bold uppercase tracking-widest text-xs">
                             Daftar Magang Sekarang
                         </a>
+                    @elseif($mahasiswa->status_magang === 'Rejected')
+                        <div class="bg-red-50 text-red-700 p-6 rounded-2xl border border-red-100 flex flex-col items-center gap-3">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            </div>
+                            <h4 class="font-black uppercase tracking-widest text-xs">Rekomendasi Ditolak ⚠️</h4>
+                            <p class="text-sm font-bold opacity-80 italic text-center">Mohon maaf, pengajuan rekomendasi Anda ditolak. Silahkan konsultasi ke dosen wali untuk informasi lebih lanjut.</p>
+                        </div>
                     @else
-                        <div class="bg-orange-50 text-orange-700 p-4 rounded-2xl border border-orange-100 text-sm font-bold">
-                            Menunggu Rekomendasi Dosen Wali
+                        <div class="bg-orange-50 text-orange-700 p-6 rounded-2xl border border-orange-100 flex flex-col items-center gap-3">
+                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 animate-pulse">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <h4 class="font-black uppercase tracking-widest text-[10px]">Sedang Diproses</h4>
+                            <p class="text-sm font-bold opacity-80 italic">Menunggu Rekomendasi Dosen Wali</p>
                         </div>
                     @endif
                 </div>
@@ -182,7 +194,7 @@
                             </div>
                         </div>
 
-                        @if($pendaftaran && in_array($pendaftaran->status_magang, ['Aktif', 'Selesai']))
+                        @if($pendaftaran && in_array($pendaftaran->status_magang, ['Pending', 'Aktif', 'Selesai']))
                         <a href="{{ route('mahasiswa.surat_pengantar') }}" target="_blank" class="btn btn-outline btn-primary w-full rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] border-2">
                              Cetak Surat Pengantar
                         </a>

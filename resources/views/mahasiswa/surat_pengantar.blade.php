@@ -66,7 +66,7 @@
                 </tr>
                 <tr>
                     <td>NIM</td>
-                    <td>: {{ $p->nim }}</td>
+                    <td>: {{ $p->mahasiswa->nim }}</td>
                 </tr>
                 @endforeach
                 <tr>

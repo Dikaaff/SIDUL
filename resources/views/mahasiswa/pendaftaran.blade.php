@@ -135,16 +135,42 @@
                         </h3>
                     </div>
 
-                    <div class="bg-purple-50/50 rounded-[2rem] p-8 border border-purple-100 space-y-6" id="anggotaWrapper">
-                        <p class="text-[11px] text-purple-600 font-black uppercase tracking-widest italic mb-2">* Fitur penambahan anggota kelompok secara sistem sedang dalam sinkronisasi data.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative anggota-item">
-                            <div>
-                                <label class="block text-[10px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">NIM Anggota 1</label>
-                                <input type="text" id="nimAnggota1" placeholder="Masukkan NIM" class="w-full bg-white border border-purple-100 rounded-2xl py-4 px-6 text-sm font-black text-purple-900 focus:ring-4 focus:ring-primary/5 outline-none transition-all" {{ $isLocked ? 'readonly' : '' }} />
+                    <div class="bg-purple-50/50 rounded-[2rem] p-8 border border-purple-100 space-y-8" id="anggotaWrapper">
+                        <p class="text-[11px] text-purple-600 font-black uppercase tracking-widest italic mb-2">* Kelompok minimal 2 orang dan maksimal 3 orang (termasuk Ketua).</p>
+                        
+                        <!-- Anggota 1 (Wajib jika kelompok) -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2">
+                                <span class="badge badge-primary badge-sm font-black italic">Anggota 1 (Wajib)</span>
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Nama Anggota 1</label>
-                                <input type="text" id="namaAnggota1" placeholder="Masukkan Nama Lengkap" class="w-full bg-white border border-purple-100 rounded-2xl py-4 px-6 text-sm font-black text-purple-900 focus:ring-4 focus:ring-primary/5 outline-none transition-all" {{ $isLocked ? 'readonly' : '' }} />
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                                <div>
+                                    <label class="block text-[10px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">NIM Anggota 1</label>
+                                    <input type="text" name="nim_anggota[]" id="nimAnggota1" placeholder="Masukkan NIM" class="w-full bg-white border border-purple-100 rounded-2xl py-4 px-6 text-sm font-black text-purple-900 focus:ring-4 focus:ring-primary/5 outline-none transition-all" {{ $isLocked ? 'readonly' : '' }} />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Nama Anggota 1</label>
+                                    <input type="text" name="nama_anggota[]" id="namaAnggota1" placeholder="Masukkan Nama Lengkap" class="w-full bg-white border border-purple-100 rounded-2xl py-4 px-6 text-sm font-black text-purple-900 focus:ring-4 focus:ring-primary/5 outline-none transition-all" {{ $isLocked ? 'readonly' : '' }} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-purple-100 border-dashed">
+
+                        <!-- Anggota 2 (Opsional) -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2">
+                                <span class="badge bg-purple-200 text-purple-700 border-none badge-sm font-black italic">Anggota 2 (Opsional)</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                                <div>
+                                    <label class="block text-[10px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">NIM Anggota 2</label>
+                                    <input type="text" name="nim_anggota[]" id="nimAnggota2" placeholder="Masukkan NIM (Opsional)" class="w-full bg-white border border-purple-100 rounded-2xl py-4 px-6 text-sm font-black text-purple-900 focus:ring-4 focus:ring-primary/5 outline-none transition-all" {{ $isLocked ? 'readonly' : '' }} />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Nama Anggota 2</label>
+                                    <input type="text" name="nama_anggota[]" id="namaAnggota2" placeholder="Masukkan Nama Lengkap" class="w-full bg-white border border-purple-100 rounded-2xl py-4 px-6 text-sm font-black text-purple-900 focus:ring-4 focus:ring-primary/5 outline-none transition-all" {{ $isLocked ? 'readonly' : '' }} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -250,15 +276,27 @@
 
         // 2. Validasi Anggota Kelompok (Jika Kelompok)
         if (tipeMagang === 'kelompok') {
-            if (!nimAnggota1.value.trim() || !namaAnggota1.value.trim()) {
+            const nim1 = nimAnggota1.value.trim();
+            const nama1 = namaAnggota1.value.trim();
+            const nim2 = document.getElementById('nimAnggota2').value.trim();
+            const nama2 = document.getElementById('namaAnggota2').value.trim();
+
+            if (!nim1 || !nama1) {
                 nimAnggota1.classList.add('border-red-500', 'bg-red-50');
                 namaAnggota1.classList.add('border-red-500', 'bg-red-50');
                 isFormValid = false;
-                
-                showToast('error', "Data Anggota Kelompok 1 wajib diisi!");
+                showToast('error', "Minimal harus ada 1 anggota tambahan untuk pendaftaran kelompok (Total 2 orang).");
             } else {
                 nimAnggota1.classList.remove('border-red-500', 'bg-red-50');
                 namaAnggota1.classList.remove('border-red-500', 'bg-red-50');
+            }
+            
+            // Validasi jika Anggota 2 diisi separuh
+            if ((nim2 && !nama2) || (!nim2 && nama2)) {
+                document.getElementById('nimAnggota2').classList.add('border-red-500', 'bg-red-50');
+                document.getElementById('namaAnggota2').classList.add('border-red-500', 'bg-red-50');
+                isFormValid = false;
+                showToast('error', "Data Anggota 2 harus lengkap (NIM & Nama).");
             }
         }
 

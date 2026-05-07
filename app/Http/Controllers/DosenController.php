@@ -47,9 +47,17 @@ class DosenController extends Controller
     public function rekomendasikan(Mahasiswa $mahasiswa)
     {
         $mahasiswa->update([
-            'status_magang' => 'Approve' // Dosen wali merekomendasikan
+            'status_magang' => 'Approve'
         ]);
         return back()->with('success', 'Mahasiswa berhasil direkomendasikan.');
+    }
+
+    public function tolakRekomendasi(Mahasiswa $mahasiswa)
+    {
+        $mahasiswa->update([
+            'status_magang' => 'Rejected'
+        ]);
+        return back()->with('info', 'Rekomendasi mahasiswa ditolak.');
     }
 
     // --- FUNGSI DOSEN PEMBIMBING ---
