@@ -7,8 +7,6 @@ use App\Http\Controllers\AuthController;
 // Public Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 Route::get('/', function () {
     return redirect()->route('dashboard.redirect');
@@ -42,8 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mahasiswa/laporan', [MahasiswaController::class, 'laporan'])->name('mahasiswa.laporan');
     Route::get('/mahasiswa/laporan/pdf', [MahasiswaController::class, 'cetakLaporan'])->name('mahasiswa.laporan.pdf');
     Route::post('/mahasiswa/laporan', [MahasiswaController::class, 'storeLaporan'])->name('mahasiswa.laporan.store');
-    Route::get('/mahasiswa/profile', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile');
-    Route::get('/mahasiswa/settings', [MahasiswaController::class, 'settings'])->name('mahasiswa.settings');
+
 
     // Dosen Routes
     Route::get('/dashboard/dosen', [App\Http\Controllers\DosenController::class, 'dashboard'])->name('dosen.dashboard');

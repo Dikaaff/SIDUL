@@ -22,8 +22,8 @@ class DosenController extends Controller
         // Data Dosen Pembimbing
         $mhsBimbinganCount = $dosen ? $dosen->bimbinganMagang()->count() : 0;
         $mhsBimbinganList = $dosen ? $dosen->bimbinganMagang()
-            ->with(['peserta.mahasiswa'])
-            ->withCount('logbooks')
+            ->with(['peserta.mahasiswa', 'laporan'])
+            ->withCount(['logbooks'])
             ->take(5)->get() : collect();
         $lulusCount = $dosen ? $dosen->bimbinganMagang()->where('status_magang', 'Selesai')->count() : 0;
 
@@ -65,8 +65,8 @@ class DosenController extends Controller
     {
         $dosen = Auth::user()->dosen;
         $mhsBimbingan = $dosen ? $dosen->bimbinganMagang()
-            ->with(['peserta.mahasiswa'])
-            ->withCount('logbooks')
+            ->with(['peserta.mahasiswa', 'laporan'])
+            ->withCount(['logbooks'])
             ->get() : collect();
         return view('dosen.monitoring', compact('mhsBimbingan'));
     }

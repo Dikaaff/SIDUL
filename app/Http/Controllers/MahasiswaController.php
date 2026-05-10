@@ -288,15 +288,4 @@ class MahasiswaController extends Controller
 
         return $pdf->stream('Logbook_Magang_' . $mahasiswa->nim . '.pdf');
     }
-
-    public function profile()
-    {
-        $mahasiswa = Auth::user()->mahasiswa;
-        return view('mahasiswa.profile', compact('mahasiswa'));
-    }
-
-    public function settings()
-    {
-        return view('mahasiswa.settings');
-    }
 }

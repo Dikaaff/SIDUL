@@ -84,7 +84,7 @@
                                     <span class="italic">Direkomendasikan</span>
                                 </button>
                             @elseif($mhs->status_magang === 'Rejected')
-                                <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline">
+                                <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline" onsubmit="event.preventDefault(); handleDelayedSubmit(this);">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded-xl gap-2 transition-all">
                                         <div class="w-8 h-8 bg-red-100 text-red-600 rounded-xl flex items-center justify-center shadow-inner">
@@ -95,13 +95,10 @@
                                 </form>
                             @else
                                 <div class="flex gap-2">
-                                    <form action="{{ route('dosen.rekomendasi.reject', $mhs->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95">
-                                            Reject
-                                        </button>
-                                    </form>
-                                    <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline">
+                                    <button type="button" onclick="openRejectModal('{{ $mhs->id }}', '{{ $mhs->nama }}')" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95">
+                                        Reject
+                                    </button>
+                                    <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline" onsubmit="event.preventDefault(); handleDelayedSubmit(this);">
                                         @csrf
                                         <button type="submit" class="btn btn-sm h-11 bg-[#6B21A8] hover:bg-purple-800 text-white border-none rounded-xl px-6 font-black uppercase tracking-wider text-[9px] shadow-lg shadow-purple-900/20 transition-all hover:scale-105 active:scale-95 group">
                                             Approve
@@ -146,18 +143,54 @@
     </div>
 </div>
 
-@if(session('success'))
-<!-- Notification Toast -->
-<div id="notifContainer" class="fixed top-8 right-8 z-[9999]">
-    <div id="successNotif" class="animate-in fade-in slide-in-from-right-8 duration-300">
-        <div class="flex items-center gap-5 bg-gray-900 text-white p-6 rounded-[2.5rem] shadow-2xl border border-white/10 min-w-[350px]">
-            <div id="notifIcon" class="w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/40"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></div>
-            <p class="font-black text-xs uppercase tracking-widest italic">{{ session('success') }}</p>
+<!-- Rejection Modal -->
+<x-modal id="reject_confirmation_modal" title="Konfirmasi Penolakan" width="md">
+    <div class="text-center space-y-6">
+        <div class="w-20 h-20 bg-red-50 text-red-500 rounded-[2rem] flex items-center justify-center mx-auto shadow-xl shadow-red-500/10 border border-red-100 animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
         </div>
+        <div>
+            <h4 class="text-xl font-black text-gray-800 uppercase italic tracking-tight">Yakin Menolak?</h4>
+            <p class="text-gray-500 font-medium text-sm mt-2 leading-relaxed">Anda akan menolak pengajuan rekomendasi mahasiswa <span id="mhs_name_modal" class="text-red-500 font-black"></span>. Tindakan ini tidak dapat dibatalkan dengan mudah.</p>
+        </div>
+        
+        <form id="reject_form" method="POST" action="" onsubmit="event.preventDefault(); handleDelayedSubmit(this);">
+            @csrf
+            <div class="flex flex-col gap-3">
+                <button type="submit" class="btn h-14 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20 transition-all active:scale-95">
+                    Ya, Tolak Sekarang
+                </button>
+                <button type="button" onclick="closeModalRejectConfirmationModal()" class="btn h-14 bg-gray-50 hover:bg-gray-100 text-gray-500 border-none rounded-2xl font-black uppercase tracking-widest text-xs transition-all">
+                    Batalkan
+                </button>
+            </div>
+        </form>
     </div>
-</div>
+</x-modal>
+
+@push('scripts')
 <script>
-    setTimeout(() => document.getElementById('notifContainer').style.display = 'none', 3500);
+    function openRejectModal(id, name) {
+        const form = document.getElementById('reject_form');
+        form.action = `/dosen/rekomendasi/${id}/reject`;
+        document.getElementById('mhs_name_modal').innerText = name;
+        openModalRejectConfirmationModal();
+    }
+
+    function handleDelayedSubmit(form) {
+        const btn = form.querySelector('button[type="submit"]');
+        setLoading(btn);
+        // Snappy UX: 800ms delay then submit
+        setTimeout(() => {
+            form.submit();
+        }, 800);
+    }
+
+    function setLoading(btn) {
+        btn.classList.add('loading');
+        btn.setAttribute('disabled', 'true');
+        btn.innerHTML = `<span class="loading loading-spinner loading-xs"></span> PROCESSING...`;
+    }
 </script>
-@endif
+@endpush
 @endsection

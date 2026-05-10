@@ -34,29 +34,16 @@
 <!-- Modal Dialog -->
 <dialog
     id="{{ e($id) }}"
-    class="modal
+    class="modal modal-bottom sm:modal-middle transition-all duration-300"
+>
+    <!-- Modal Box -->
+    <div class="modal-box p-0 overflow-hidden bg-white rounded-[2.5rem] shadow-2xl relative 
            {{ $width === 'sm' ? 'max-w-sm' :
              ($width === 'md' ? 'max-w-md' :
              ($width === 'lg' ? 'max-w-lg' :
              ($width === 'xl' ? 'max-w-xl' :
              ($width === 'full' ? 'w-full max-w-[90vw]' :
-             'max-w-md')))) }}
-           rounded-[2.5rem] shadow-2xl"
->
-    <!-- Modal Content Wrapper -->
-    <div class="relative">
-        <!-- Close Button -->
-        <button
-            type="button"
-            class="absolute top-4 right-4 z-10 btn btn-circle btn-ghost btn-sm text-gray-400"
-            @click="close"
-            aria-label="Close modal"
-        >
-            ✕
-        </button>
-
-        <!-- Modal Box -->
-        <div class="modal-box p-0 overflow-hidden bg-white rounded-[2.5rem] shadow-2xl">
+             'max-w-md')))) }} w-11/12 mx-auto">
             <!-- Header -->
             @if($title)
                 <div class="bg-gray-50 border-b border-gray-100 p-8 flex items-center justify-between">
@@ -65,7 +52,6 @@
                             {{ $title }}
                         </h3>
                     </div>
-                    <form method="dialog"><button class="btn btn-circle btn-ghost btn-sm text-gray-400">✕</button></form>
                 </div>
             @endif
 
@@ -73,8 +59,10 @@
             <div class="p-10 space-y-6">
                 {{ $slot }}
             </div>
+
+            <!-- Single Close Button -->
+            <button type="button" onclick="closeModal{{ \Illuminate\Support\Str::studly($id) }}()" class="absolute top-6 right-6 btn btn-circle btn-ghost btn-sm text-gray-400 hover:bg-gray-100 transition-all">✕</button>
         </div>
-    </div>
 </dialog>
 
 <script>

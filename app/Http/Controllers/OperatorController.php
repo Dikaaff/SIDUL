@@ -178,11 +178,23 @@ class OperatorController extends Controller
     /**
      * Monitoring — semua mahasiswa magang di seluruh sistem.
      */
-    public function monitoring()
+    public function monitoring(Request $request)
     {
-        $magangs = Magang::with(['peserta.mahasiswa', 'pembimbing'])
-            ->latest()
-            ->get();
+        $query = Magang::with(['peserta.mahasiswa', 'pembimbing']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nim', 'LIKE', "%{$search}%")
+                  ->orWhere('perusahaan', 'LIKE', "%{$search}%")
+                  ->orWhere('kode_magang', 'LIKE', "%{$search}%")
+                  ->orWhereHas('peserta.mahasiswa', function($mq) use ($search) {
+                      $mq->where('nama', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
+        $magangs = $query->latest()->get();
 
         return view('operator.monitoring', compact('magangs'));
     }

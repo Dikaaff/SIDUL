@@ -87,9 +87,16 @@
                 <span class="text-3xl font-black text-gray-800 tracking-tighter">
                         @php
                             $progress = 0;
-                            if($pendaftaran) $progress += 30;
-                            if($logbookCount > 0) $progress += 30;
-                            if($laporan) $progress += 40;
+                            if($pendaftaran) $progress += 20; // Daftar: 20%
+                            if($logbookCount > 0) $progress += 40; // Logbook: 40% (Total 60%)
+                            
+                            if($laporan) {
+                                if($laporan->status === 'approved') {
+                                    $progress += 40; // Approved: +40% (Total 100%)
+                                } else {
+                                    $progress += 10; // Uploaded but pending: +10% (Total 70%)
+                                }
+                            }
                         @endphp
                     {{ $progress }}%
                 </span>

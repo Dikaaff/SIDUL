@@ -17,10 +17,12 @@
                 </span>
                 <span class="text-[10px] font-black uppercase tracking-[0.2em]">Sistem Informasi Magang</span>
             </div>
-            <h2 class="text-2xl md:text-3xl font-black tracking-tighter leading-tight italic mb-2">
-                Halo, Bapak/Ibu<br>{{ explode(' ', Auth::user()->name)[0] }} 👋
+            <h2 class="text-3xl md:text-5xl font-black tracking-tighter leading-tight italic mb-3">
+                Selamat Datang Kembali,<br>{{ explode(' ', Auth::user()->name)[0] }} ✨
             </h2>
-            <p class="text-white/80 font-medium text-xs md:text-sm max-w-xl leading-relaxed italic">Pantau progres magang dan kelola persetujuan bimbingan mahasiswa Anda dengan lebih mudah.</p>
+            <p class="text-white/80 font-medium text-sm md:text-base max-w-xl leading-relaxed italic">
+                Saat ini Anda mendampingi <span class="text-white font-black underline decoration-green-400 decoration-2 underline-offset-4">{{ $mhsBimbinganCount }} Mahasiswa</span> yang sedang menjalankan program magang.
+            </p>
         </div>
         <div class="flex flex-col gap-3 shrink-0">
             <div class="bg-white/10 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/20 text-white flex flex-col items-center gap-1 shadow-2xl min-w-[140px]">
@@ -98,38 +100,56 @@
 
             <div class="space-y-4">
                 @forelse($mhsBimbinganList as $magang)
-                <div class="group bg-white hover:bg-gray-50/80 border border-gray-100 rounded-[2.5rem] p-8 transition-all duration-300 shadow-2xl shadow-gray-100/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center gap-6">
-                        <div class="w-16 h-16 rounded-[1.5rem] bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-xl shadow-inner group-hover:rotate-6 transition-transform">
-                            {{ substr($magang->peserta->first()->mahasiswa->nama ?? 'M', 0, 2) }}
+                @php
+                    $progress = 0;
+                    if($magang) $progress += 20; // Registered: 20%
+                    if($magang->logbooks_count > 0) $progress += 40; // Logbooks: 40% (Total 60%)
+                    
+                    if($magang->laporan) {
+                        if($magang->laporan->status === 'approved') {
+                            $progress += 40; // Approved: +40% (Total 100%)
+                        } else {
+                            $progress += 10; // Uploaded: +10% (Total 70%)
+                        }
+                    }
+
+                    if($magang->status_magang === 'Selesai') $progress = 100;
+                @endphp
+                <div class="group bg-white hover:bg-gray-50/80 border border-gray-100 rounded-[2rem] p-6 md:p-8 transition-all duration-300 shadow-2xl shadow-gray-100/50 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
+                    <div class="flex items-center gap-4 md:gap-6">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[1.5rem] bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-lg md:text-xl shadow-inner group-hover:rotate-6 transition-transform shrink-0">
+                            @php
+                                $nameParts = explode(' ', $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa');
+                                $initials = count($nameParts) > 1 
+                                    ? strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1))
+                                    : strtoupper(substr($nameParts[0], 0, 2));
+                            @endphp
+                            {{ $initials }}
                         </div>
-                        <div>
-                            <h4 class="font-black text-gray-900 text-xl leading-tight tracking-tighter italic group-hover:text-[#6B21A8] transition-colors">{{ $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa' }}</h4>
-                            <div class="flex items-center gap-3 mt-1.5">
-                                <span class="text-[10px] text-gray-400 font-black tracking-[0.2em] uppercase italic">{{ $magang->nim }}</span>
-                                <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-                                <span class="text-[10px] text-[#6B21A8] font-black tracking-[0.2em] uppercase italic">{{ $magang->konsentrasi }}</span>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-black text-gray-900 text-lg md:text-xl leading-tight tracking-tighter italic group-hover:text-[#6B21A8] transition-colors truncate">{{ $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa' }}</h4>
+                            <div class="flex items-center gap-2 md:gap-3 mt-1">
+                                <span class="text-[9px] md:text-[10px] text-gray-400 font-black tracking-widest uppercase italic truncate">{{ $magang->nim }}</span>
+                                <span class="w-1 h-1 rounded-full bg-gray-300 shrink-0"></span>
+                                <span class="text-[9px] md:text-[10px] text-primary font-black tracking-widest uppercase italic truncate">{{ $magang->konsentrasi }}</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="flex items-center gap-10">
-                        <div class="hidden md:block w-48">
-                            <div class="flex items-center justify-between mb-2 px-1">
-                                <span class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] italic">Progress</span>
-                                @php
-                                    $targetLogbooks = 30;
-                                    $progress = $magang->status_magang === 'Selesai' ? 100 : min(100, round(($magang->logbooks_count / $targetLogbooks) * 100));
-                                @endphp
-                                <span class="text-[11px] font-black text-gray-800 italic">{{ $progress }}%</span>
+                    <div class="flex items-center justify-between md:justify-end gap-6 md:gap-10 mt-2 md:mt-0">
+                        {{-- Responsive Progress --}}
+                        <div class="flex-1 md:w-48">
+                            <div class="flex items-center justify-between mb-1.5 md:mb-2 px-1">
+                                <span class="text-[8px] md:text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] italic">Progress</span>
+                                <span class="text-[10px] md:text-[11px] font-black text-gray-800 italic">{{ $progress }}%</span>
                             </div>
-                            <div class="relative h-2 w-full bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                            <div class="relative h-1.5 md:h-2 w-full bg-gray-100 rounded-full overflow-hidden shadow-inner">
                                 <div class="absolute top-0 left-0 h-full bg-[#6B21A8] rounded-full transition-all duration-1000 ease-out" style="width: {{ $progress }}%"></div>
                             </div>
                         </div>
 
-                        <button onclick="showStudentDetail('{{ $magang->peserta->first()->mahasiswa->nama ?? '' }}', '{{ $magang->nim }}', '{{ $magang->perusahaan }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-purple-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <button onclick="showStudentDetail('{{ $magang->peserta->first()->mahasiswa->nama ?? '' }}', '{{ $magang->nim }}', '{{ $magang->perusahaan }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-purple-100 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         </button>
                     </div>
                 </div>

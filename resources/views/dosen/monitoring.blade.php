@@ -79,16 +79,7 @@
 
             </div>
 
-            <!-- Status -->
-            <div class="flex items-center gap-3 bg-emerald-50 border border-emerald-100 px-5 py-3 rounded-2xl">
 
-                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-
-                <span class="text-xs uppercase tracking-[0.2em] font-bold text-emerald-600">
-                    Server Connected
-                </span>
-
-            </div>
 
         </div>
     </div>
@@ -154,10 +145,23 @@ const students = {!! json_encode($mhsBimbingan->map(function($magang) {
         : null;
 
     $logCount = $magang->logbooks_count ?? 0;
+    $laporan = $magang->laporan;
 
-    $progress = ($magang->status_magang === 'Selesai')
-        ? 100
-        : min(100, round(($logCount / 30) * 100));
+    // Milestone logic consistent with Mahasiswa Dashboard
+    $progress = 0;
+    if($magang) $progress += 20; // Registered: 20%
+    if($logCount > 0) $progress += 40; // Has logbooks: 40% (Total 60%)
+    
+    if($laporan) {
+        if($laporan->status === 'approved') {
+            $progress += 40; // Approved: +40% (Total 100%)
+        } else {
+            $progress += 10; // Uploaded: +10% (Total 70%)
+        }
+    }
+    
+    // Override if status is explicitly 'Selesai'
+    if($magang->status_magang === 'Selesai') $progress = 100;
 
     return [
         'name' => $mhs ? $mhs->nama : 'N/A',

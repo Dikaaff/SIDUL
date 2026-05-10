@@ -60,40 +60,50 @@
             }
         }
 
-        // Global Toast Notification Logic
-        window.addEventListener('DOMContentLoaded', () => {
-            @if(session('success'))
-                showToast('success', "{{ session('success') }}");
-            @endif
-
-            @if(session('error'))
-                showToast('error', "{{ session('error') }}");
-            @endif
-        });
-
+        // Robust Global Toast Logic
         function showToast(type, message) {
-            const container = document.getElementById('globalNotifContainer');
             const successNotif = document.getElementById('globalSuccessNotif');
             const errorNotif = document.getElementById('globalErrorNotif');
             
-            if (type === 'success') {
+            // Hide all first
+            successNotif.classList.add('hidden');
+            errorNotif.classList.add('hidden');
+
+            if (type === 'success' || type === 'info') {
+                const titleText = successNotif.querySelector('p.font-black');
+                const iconContainer = successNotif.querySelector('.icon-container');
+                
+                if (type === 'info') {
+                    iconContainer.className = 'icon-container w-12 h-12 rounded-2xl bg-blue-500 flex items-center justify-center shadow-lg shadow-blue-500/20';
+                    titleText.innerText = 'Informasi';
+                } else {
+                    iconContainer.className = 'icon-container w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20';
+                    titleText.innerText = 'Berhasil!';
+                }
+
                 document.getElementById('globalSuccessMsg').innerText = message;
                 successNotif.classList.remove('hidden');
                 setTimeout(() => successNotif.classList.add('hidden'), 5000);
-            } else {
+            } else if (type === 'error') {
                 document.getElementById('globalErrorMsg').innerText = message;
                 errorNotif.classList.remove('hidden');
                 setTimeout(() => errorNotif.classList.add('hidden'), 5000);
             }
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            @if(session('success')) showToast('success', "{{ session('success') }}"); @endif
+            @if(session('error')) showToast('error', "{{ session('error') }}"); @endif
+            @if(session('info')) showToast('info', "{{ session('info') }}"); @endif
+        });
     </script>
 
     <!-- Global Notification Toast -->
     <div id="globalNotifContainer" class="fixed top-8 right-8 z-[9999] space-y-4 pointer-events-none">
-        <!-- Success Notif -->
+        <!-- Success/Info Notif -->
         <div id="globalSuccessNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 pointer-events-auto">
             <div class="flex items-center gap-4 bg-gray-900 text-white p-5 rounded-[2rem] shadow-2xl border border-white/10 min-w-[340px]">
-                <div class="w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
+                <div class="icon-container w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                 </div>
                 <div>

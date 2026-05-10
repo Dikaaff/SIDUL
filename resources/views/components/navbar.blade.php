@@ -13,7 +13,7 @@
         <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar ring ring-transparent hover:ring-primary/30 transition-all cursor-pointer">
                 <div class="w-10 rounded-full border border-gray-100">
-                    <img src="https://ui-avatars.com/api/?name=Mahasiswa+SIDUL&background=6B21A8&color=fff&rounded=true&bold=true" alt="User Avatar" />
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'User') }}&background=6B21A8&color=fff&rounded=true&bold=true" alt="User Avatar" />
                 </div>
             </label>
             <ul tabindex="0" class="mt-3 z-[1] p-3 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-64 border border-base-200 gap-1 animate-in fade-in slide-in-from-top-2 duration-200">
