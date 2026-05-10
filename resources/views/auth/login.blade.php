@@ -6,44 +6,30 @@
 <div class="flex flex-col lg:flex-row w-full max-w-5xl bg-white rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 min-h-[650px] relative z-10 m-4">
     
     <!-- Left Side: Branding / Illustration with Amikom Image -->
-    <div class="lg:w-1/2 p-12 text-white flex flex-col justify-between relative overflow-hidden group hidden lg:flex rounded-[2rem] m-2 bg-cover bg-center shadow-inner" style="background-image: url('/images/amikom.jpg');">
-        <!-- Overlay to ensure text readability -->
-        <div class="absolute inset-0 bg-gradient-to-b from-purple-900/90 via-[#6B21A8]/70 to-[#1e0a2e]/95 z-0 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-90"></div>
-        <div class="absolute inset-0 bg-black/20 z-0"></div>
+    <div class="w-full lg:w-1/2 p-16 text-white flex flex-col justify-between relative overflow-hidden group rounded-[2rem] m-2 bg-cover bg-center shadow-inner min-h-[400px] lg:min-h-auto" style="background-image: url('{{ asset('images/amikom.png') }}');">
+        <!-- Overlay: Sophisticated gradient for depth -->
+        <div class="absolute inset-0 bg-gradient-to-tr from-[#1e0a2e] via-purple-900/60 to-transparent z-0"></div>
+        <div class="absolute inset-0 bg-black/10 z-0"></div>
         
+        <!-- Top: Brand Identity -->
         <div class="z-10 relative">
-            <div class="flex items-center gap-4 mb-10">
-                <div class="w-14 h-14 rounded-[1.2rem] bg-white/10 backdrop-blur-md border border-white/30 text-white flex items-center justify-center font-black text-3xl shadow-2xl">
-                    S
-                </div>
-                <span class="text-3xl font-black tracking-widest uppercase drop-shadow-md">SIDUL</span>
+            <div class="flex items-center gap-3">
+                <div class="w-1 h-8 bg-purple-500 rounded-full"></div>
+                <span class="text-xl font-black tracking-[0.3em] uppercase opacity-90 text-white">SIDUL</span>
             </div>
-                
-            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight mb-6 drop-shadow-lg text-transparent bg-clip-text bg-gradient-to-br from-white via-purple-100 to-[#d8b4fe]">
-                Portal Mahasiswa<br>Magang Terpadu
-            </h1>
-            <p class="text-white/95 font-medium text-[15px] max-w-md tracking-wide leading-relaxed drop-shadow-md backdrop-blur-sm bg-black/20 p-5 rounded-2xl border border-white/10 shadow-inner">
-                Sistem Informasi Manajemen Magang <strong class="font-black text-white">Universitas Amikom Yogyakarta</strong>. Kelola Pendaftaran, Logbook, Bimbingan, hingga Laporan Akhir dengan mudah dan terstruktur.
-            </p>
         </div>
-        
-        <div class="z-10 relative mt-12 bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-[1.5rem] inline-block shadow-xl">
-            <div class="flex items-center gap-4">
-                <div class="flex -space-x-3">
-                    <img class="w-11 h-11 border-2 border-[#6B21A8] rounded-full object-cover shadow-lg" src="https://ui-avatars.com/api/?name=Fauzi&background=F49E0A&color=fff&bold=true" alt="Mahasiswa 1">
-                    <img class="w-11 h-11 border-2 border-[#6B21A8] rounded-full object-cover shadow-lg" src="https://ui-avatars.com/api/?name=Dika&background=white&color=6B21A8&bold=true" alt="Mahasiswa 2">
-                    <img class="w-11 h-11 border-2 border-[#6B21A8] rounded-full object-cover shadow-lg" src="https://ui-avatars.com/api/?name=Arby&background=F49E0A&color=fff&bold=true" alt="Mahasiswa 3">
-                </div>
-                <div>
-                    <div class="flex items-center gap-1 text-yellow-400 mb-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 drop-shadow" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 drop-shadow" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 drop-shadow" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 drop-shadow" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 drop-shadow opacity-50" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                    </div>
-                    <p class="text-[11px] font-black uppercase tracking-widest text-white/90">Dipercaya 2K+ Mahasiswa</p>
-                </div>
+
+        <!-- Bottom: Main Inspirational Message -->
+        <div class="z-10 relative">
+            <h1 class="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-6 drop-shadow-2xl">
+                Satu Pintu,<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-purple-400">Beribu Peluang.</span>
+            </h1>
+            
+            <div class="flex items-center gap-3 pt-8 mt-4 border-t border-white/10">
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">Digital System</span>
+                <div class="w-1.5 h-1.5 rounded-full bg-purple-500/50"></div>
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-purple-200/70">Amikom Yogyakarta</span>
             </div>
         </div>
     </div>
@@ -51,49 +37,39 @@
     <!-- Right Side: Login Form -->
     <div class="lg:w-1/2 p-8 lg:p-16 flex flex-col justify-center bg-white relative">
         <div class="w-full max-w-md mx-auto relative z-10">
-            <!-- Mobile Logo -->
-            <div class="flex items-center gap-3 mb-10 lg:hidden justify-center">
-                <div class="w-12 h-12 rounded-[1rem] bg-gradient-to-br from-[#6B21A8] to-purple-900 text-white flex items-center justify-center font-black text-2xl shadow-xl shadow-purple-900/30">S</div>
-                <span class="text-3xl font-black tracking-tighter uppercase text-[#6B21A8]">SIDUL</span>
+            <!-- Mobile Logo Identity -->
+            <div class="flex items-center gap-3 mb-12 lg:hidden justify-center">
+                <div class="w-1.5 h-10 bg-[#6B21A8] rounded-full"></div>
+                <span class="text-4xl font-black tracking-tighter uppercase text-[#6B21A8]">SIDUL</span>
             </div>
 
-            <div class="mb-10 text-center lg:text-left">
-                <h2 class="text-3xl md:text-4xl font-black tracking-tighter text-gray-900 mb-3">Welcome Back! 👋</h2>
-                <p class="text-sm font-medium text-gray-500 leading-relaxed">Masuk dengan akun akademik Anda untuk melanjutkan progres magang hari ini.</p>
+            <div class="mb-12 text-center lg:text-left">
+                <h2 class="text-4xl font-black tracking-tighter text-gray-900 mb-3">Selamat Datang 👋</h2>
+                <p class="text-[15px] font-medium text-gray-400 leading-relaxed max-w-xs mx-auto lg:mx-0">Masuk ke Portal Akademik Magang Terpadu Universitas Amikom Yogyakarta.</p>
             </div>
 
-            <!-- Enhanced Alert/Notification -->
-            @if ($errors->any() || session('error'))
-                <div class="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-4 animate-in fade-in slide-in-from-top duration-300 shadow-sm">
-                    <div class="p-2 bg-red-100 rounded-xl text-red-600 shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                        </svg>
+            <!-- Floating Toast Notification (Kanan Atas) -->
+            <div class="fixed top-6 right-6 z-[100] flex flex-col gap-3 w-full max-w-xs pointer-events-none">
+                @if ($errors->any())
+                    <div class="alert bg-white/95 backdrop-blur-md border-l-4 border-red-500 shadow-2xl rounded-2xl p-4 flex items-center gap-4 animate-in slide-in-from-right fade-in duration-500 pointer-events-auto">
+                        <div class="bg-red-100 p-2 rounded-xl text-red-600 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <span class="text-xs font-bold text-gray-800">{{ $errors->first() }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-black uppercase tracking-widest text-red-700 mb-1">Login Gagal</p>
-                        <p class="text-[11px] font-bold text-red-600/80 leading-relaxed">
-                            {{ $errors->first('username') ?: session('error') ?: 'Kredensial tidak valid. Silakan cek kembali data Anda.' }}
-                        </p>
-                    </div>
-                </div>
-            @endif
+                @endif
 
-            @if (session('success'))
-                <div class="mb-8 p-4 bg-green-50 border border-green-100 rounded-2xl flex items-start gap-4 animate-in fade-in slide-in-from-top duration-300 shadow-sm">
-                    <div class="p-2 bg-green-100 rounded-xl text-green-600 shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
+                @if (session('success'))
+                    <div class="alert bg-white/95 backdrop-blur-md border-l-4 border-green-500 shadow-2xl rounded-2xl p-4 flex items-center gap-4 animate-in slide-in-from-right fade-in duration-500 pointer-events-auto">
+                        <div class="bg-green-100 p-2 rounded-xl text-green-600 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <span class="text-xs font-bold text-gray-800">{{ session('success') }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-black uppercase tracking-widest text-green-700 mb-1">Berhasil</p>
-                        <p class="text-[11px] font-bold text-green-600/80 leading-relaxed">{{ session('success') }}</p>
-                    </div>
-                </div>
-            @endif
+                @endif
+            </div>
             
-            <form action="{{ route('login') }}" method="POST" class="space-y-6">
+            <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
                 @csrf
                 <!-- Username/NIM/NIK Field -->
                 <div>
@@ -111,9 +87,8 @@
                 
                 <!-- Password Field -->
                 <div>
-                    <div class="flex items-center justify-between mb-2">
+                    <div class="mb-2">
                         <label class="text-xs font-bold text-gray-700 uppercase tracking-wider">Password</label>
-                        <a href="#" class="text-xs font-bold text-[#6B21A8] hover:text-purple-800 hover:underline transition-all">Lupa Password?</a>
                     </div>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#6B21A8] transition-colors">
@@ -162,16 +137,24 @@
 
 @push('scripts')
 <script>
+    // Auto-hide login toasts after 2 seconds
+    document.addEventListener('DOMContentLoaded', () => {
+        const toasts = document.querySelectorAll('.alert');
+        toasts.forEach(toast => {
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-full');
+                toast.classList.add('transition-all', 'duration-500');
+                setTimeout(() => toast.remove(), 500);
+            }, 2000);
+        });
+    });
+
     const togglePassword = document.querySelector('#togglePassword');
     const password = document.querySelector('#password');
-    const eyeIcon = document.querySelector('#eyeIcon');
 
     togglePassword.addEventListener('click', function (e) {
-        // toggle the type attribute
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
         password.setAttribute('type', type);
-        
-        // toggle the eye icon (optional: you could change the SVG path here)
         this.classList.toggle('text-[#6B21A8]');
     });
 </script>

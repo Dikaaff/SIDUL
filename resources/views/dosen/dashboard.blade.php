@@ -3,31 +3,33 @@
 @section('title', 'Dashboard Dosen - SIDUL')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden shadow-2xl mt-4 mx-2">
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2.5rem] relative overflow-hidden shadow-2xl mt-4 mx-2 min-h-[220px] flex items-center">
     <!-- Decorative elements -->
     <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
     <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
 
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-        <div>
-            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-4">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                <span class="text-[10px] font-black uppercase tracking-[0.2em]">Sistem Informasi Magang</span>
-            </div>
-            <h2 class="text-3xl md:text-5xl font-black tracking-tighter leading-tight italic mb-3">
-                Selamat Datang Kembali,<br>{{ explode(' ', Auth::user()->name)[0] }} ✨
+    <div class="flex flex-col md:flex-row md:items-center justify-between w-full gap-6 relative z-10">
+        <div class="space-y-4">
+            <h2 class="text-3xl md:text-4xl font-black tracking-tighter leading-tight">
+                Halo, {{ Auth::user()->name }} 👋
             </h2>
-            <p class="text-white/80 font-medium text-sm md:text-base max-w-xl leading-relaxed italic">
-                Saat ini Anda mendampingi <span class="text-white font-black underline decoration-green-400 decoration-2 underline-offset-4">{{ $mhsBimbinganCount }} Mahasiswa</span> yang sedang menjalankan program magang.
-            </p>
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
+                    <span class="text-xl font-black text-green-400">{{ $mhsBimbinganCount }}</span>
+                    <span class="text-[10px] font-bold text-white/70 uppercase tracking-widest">Mahasiswa Aktif</span>
+                </div>
+                <div class="h-8 w-[1px] bg-white/10 hidden md:block"></div>
+                <p class="text-white/60 font-medium text-xs md:text-sm italic max-w-xs">Kelola bimbingan, monitoring logbook, dan validasi laporan dalam satu pintu.</p>
+            </div>
         </div>
-        <div class="flex flex-col gap-3 shrink-0">
-            <div class="bg-white/10 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/20 text-white flex flex-col items-center gap-1 shadow-2xl min-w-[140px]">
-                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-white/60">Hari Ini</span>
-                <span class="text-xl font-black italic">{{ now()->format('d M Y') }}</span>
+        
+        <div class="hidden lg:flex items-center gap-4 bg-white/5 backdrop-blur-xl p-4 rounded-[2rem] border border-white/10 shadow-2xl">
+            <div class="text-right">
+                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">Status Sesi</p>
+                <p class="text-sm font-black italic">{{ now()->format('d M Y') }}</p>
+            </div>
+            <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             </div>
         </div>
     </div>

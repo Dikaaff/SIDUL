@@ -56,6 +56,10 @@ class MahasiswaController extends Controller
 
     public function storePendaftaran(Request $request)
     {
+        if (\App\Models\Setting::get('is_periode_open', '1') == '0') {
+            return redirect()->route('mahasiswa.home')->with('error', 'Pendaftaran gagal! Periode pendaftaran magang telah ditutup.');
+        }
+
         $mahasiswa = Auth::user()->mahasiswa;
         if (!$mahasiswa) return redirect('/dashboard');
 
@@ -173,11 +177,16 @@ class MahasiswaController extends Controller
 
         $magang = $peserta->magang;
         $logbooks = Logbook::where('magang_id', $magang->id)->latest()->get();
-        return view('mahasiswa.logbook', compact('logbooks'));
+        $isPeriodeOpen = \App\Models\Setting::get('is_periode_open', '1') == '1';
+        return view('mahasiswa.logbook', compact('logbooks', 'isPeriodeOpen'));
     }
 
     public function storeLogbook(Request $request)
     {
+        if (\App\Models\Setting::get('is_periode_open', '1') == '0') {
+            return redirect()->back()->with('error', 'Gagal! Pengisian logbook telah ditutup seiring berakhirnya periode magang.');
+        }
+
         $request->validate([
             'logbook' => 'required|string',
         ]);
@@ -209,11 +218,16 @@ class MahasiswaController extends Controller
 
         $magang = $peserta->magang;
         $laporan = Laporan::where('magang_id', $magang->id)->first();
-        return view('mahasiswa.laporan', compact('laporan'));
+        $isPeriodeOpen = \App\Models\Setting::get('is_periode_open', '1') == '1';
+        return view('mahasiswa.laporan', compact('laporan', 'isPeriodeOpen'));
     }
 
     public function storeLaporan(Request $request)
     {
+        if (\App\Models\Setting::get('is_periode_open', '1') == '0') {
+            return redirect()->back()->with('error', 'Gagal! Unggah laporan telah ditutup seiring berakhirnya periode magang.');
+        }
+
         $mahasiswa = Auth::user()->mahasiswa;
         if (!$mahasiswa || !$mahasiswa->pesertaMagang) {
             return back()->with('error', 'Data magang tidak ditemukan.');

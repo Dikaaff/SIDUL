@@ -17,9 +17,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validasi input kosong
         $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+            'username' => 'required',
+            'password' => 'required',
+        ], [
+            'username.required' => 'NIM/NIK atau Password tidak boleh kosong!',
+            'password.required' => 'NIM/NIK atau Password tidak boleh kosong!',
         ]);
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
@@ -27,9 +31,9 @@ class AuthController extends Controller
             return redirect()->to($this->redirectBasedOnRole(Auth::user()->role))->with('success', 'Selamat datang kembali!');
         }
 
-        // Jika gagal
+        // Jika salah kredensial
         return back()->withErrors([
-            'username' => 'Kredensial yang Anda berikan tidak cocok dengan data kami.',
+            'error' => 'NIM/NIK atau Password salah',
         ])->onlyInput('username');
     }
 
@@ -38,7 +42,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Anda telah berhasil keluar dari sistem.');
     }
 
     /**
@@ -50,7 +54,7 @@ class AuthController extends Controller
             'admin'    => '/dashboard/admin',
             'dosen'    => '/dashboard/dosen',
             'operator' => '/dashboard/operator',
-            default    => '/dashboard',
+            default    => '/mahasiswa/dashboard',
         };
     }
 }

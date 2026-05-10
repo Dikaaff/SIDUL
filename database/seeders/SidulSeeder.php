@@ -66,15 +66,10 @@ class SidulSeeder extends Seeder
 
         // --- 3. MAHASISWAS ---
         $mhs = [
-            ['nim' => '20210001', 'nama' => 'Ahmad Fauzi', 'konsentrasi' => 'Web Development'],
-            ['nim' => '12345678', 'nama' => 'Dika Afif', 'konsentrasi' => 'Web Development'],
-            ['nim' => '23015010', 'nama' => 'Arbyan', 'konsentrasi' => 'Web Development'],
-            ['nim' => '010101', 'nama' => 'Ayan234', 'konsentrasi' => 'Web Development'],
-            ['nim' => '010102', 'nama' => 'lalaa', 'konsentrasi' => 'Web Development'],
-            ['nim' => '010103', 'nama' => 'jaja', 'konsentrasi' => 'Web Development'],
-            ['nim' => '010104', 'nama' => 'Ayasan', 'konsentrasi' => 'Web Development'],
-            
-            
+            ['nim' => '23.01.5029', 'nama' => 'Dika Afif', 'konsentrasi' => 'Web Development'],
+            ['nim' => '23.01.5010', 'nama' => 'Arbyan', 'konsentrasi' => 'Web Development'],
+            ['nim' => '23.01.5017', 'nama' => 'Arbyan', 'konsentrasi' => 'Web Development'],
+            ['nim' => '23.01.5039', 'nama' => 'Khatta', 'konsentrasi' => 'Web Development'],
         ];
 
         foreach ($mhs as $m) {
@@ -101,24 +96,5 @@ class SidulSeeder extends Seeder
                 ]
             );
         }
-
-        // --- 4. MAGANG DATA ---
-        $m1 = DB::table('mahasiswas')->where('nim', '20210001')->first();
-        
-        DB::table('magangs')->updateOrInsert(
-            ['kode_magang' => 'MGN-20210001-PEND'],
-            [
-                'dosen_pembimbing_id' => $dosenIds[1],
-                'status_magang' => 'berjalan',
-                'created_at' => now(),
-            ]
-        );
-        
-        $magang1 = DB::table('magangs')->where('kode_magang', 'MGN-20210001-PEND')->first()->id;
-        
-        DB::table('peserta_magangs')->updateOrInsert(
-            ['mahasiswa_id' => $m1->id, 'magang_id' => $magang1],
-            ['is_ketua' => true, 'created_at' => now()]
-        );
     }
 }

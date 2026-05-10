@@ -13,44 +13,37 @@
         </div>
     </div>
 </div>
+
+
+
 @endsection
 
 @section('content')
 <div class="space-y-6 font-sans">
     
-    {{-- Filter & Tools --}}
     <div class="flex flex-col xl:flex-row gap-6 items-stretch xl:items-center justify-between bg-white p-6 md:p-8 rounded-[2.5rem] border border-gray-100 shadow-sm transition-all hover:shadow-md">
-        <div class="flex flex-col md:flex-row flex-1 gap-4">
-            {{-- Search Bar --}}
-            <form action="{{ route('operator.monitoring') }}" method="GET" class="relative flex-1 group">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama, NIM, atau Perusahaan..." class="input w-full pl-12 pr-4 h-12 bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all group-hover:border-primary/30" />
-                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            {{-- Unified Real-time Filter Form --}}
+            <div class="flex flex-col md:flex-row flex-1 gap-4">
+                <div class="relative flex-1 group">
+                    <input type="text" id="realTimeSearch" placeholder="Cari Nama, NIM, atau Perusahaan secara instan..." class="input w-full pl-12 pr-4 h-12 bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all group-hover:border-primary/30" />
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </div>
                 </div>
-                @if(request('search'))
-                    <a href="{{ route('operator.monitoring') }}" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                    </a>
-                @endif
-            </form>
 
-            <div class="flex flex-wrap md:flex-nowrap gap-3">
-                <select class="select select-md bg-gray-50 border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-primary/10 transition-all w-full md:w-auto">
-                    <option selected>Angkatan</option>
-                    <option>2021</option>
-                    <option>2022</option>
-                </select>
-                <select class="select select-md bg-gray-50 border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-primary/10 transition-all w-full md:w-auto">
-                    <option selected>Status</option>
-                    <option>Pending</option>
-                    <option>Aktif</option>
-                    <option>Selesai</option>
-                </select>
+                <div class="flex gap-3">
+                    <select id="statusFilter" class="select select-md bg-gray-50 border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-primary/10 transition-all w-full md:w-[180px]">
+                        <option value="">Semua Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Ditolak">Ditolak</option>
+                    </select>
+                </div>
             </div>
-        </div>
         
         <div class="flex gap-3">
-             <button class="btn h-12 flex-1 md:flex-none px-6 rounded-2xl border border-gray-200 bg-white text-gray-600 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 hover:border-primary/20 transition-all active:scale-95 flex items-center gap-2">
+             <button onclick="exportToExcel()" class="btn h-12 flex-1 md:flex-none px-6 rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-600 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-100 transition-all active:scale-95 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                 Export Excel
              </button>
@@ -62,7 +55,7 @@
     <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
         {{-- Desktop View (Table) --}}
         <div class="hidden md:block overflow-x-auto custom-scrollbar">
-            <table class="table w-full border-collapse">
+            <table id="monitoringTable" class="table w-full border-collapse">
                 <thead>
                     <tr class="text-gray-900 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/30 border-b border-gray-100 italic">
                         <th class="pl-8 py-6 w-16">No</th>
@@ -108,29 +101,40 @@
                             @endif
                         </td>
                         <td>
-                            <div class="px-3 py-1.5 bg-gray-900 text-white rounded-xl text-[9px] font-black tracking-[0.1em] inline-block shadow-lg shadow-black/10 border border-black group-hover:scale-105 transition-transform">
+                            <div class="px-3 py-1.5 bg-[#6B21A8] text-white rounded-xl text-[9px] font-black tracking-[0.1em] inline-block shadow-lg shadow-purple-200 border border-purple-800 group-hover:scale-105 transition-transform">
                                 {{ $magang->kode_magang ?? 'UNASSIGNED' }}
                             </div>
                         </td>
                         <td>
                             @if($magang->status_magang === 'Aktif')
-                                <span class="px-3 py-1.5 rounded-xl bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">Aktif</span>
+                                <span class="status-badge px-3 py-1.5 rounded-xl bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">Aktif</span>
                             @elseif($magang->status_magang === 'Pending')
-                                <span class="px-3 py-1.5 rounded-xl bg-orange-50 text-[#F49E0A] text-[9px] font-black uppercase tracking-wider border border-orange-100">Pending</span>
+                                <span class="status-badge px-3 py-1.5 rounded-xl bg-orange-50 text-[#F49E0A] text-[9px] font-black uppercase tracking-wider border border-orange-100">Pending</span>
                             @elseif($magang->status_magang === 'Selesai')
-                                <span class="px-3 py-1.5 rounded-xl bg-purple-50 text-[#6B21A8] text-[9px] font-black uppercase tracking-wider border border-purple-100">Selesai</span>
+                                <span class="status-badge px-3 py-1.5 rounded-xl bg-purple-50 text-[#6B21A8] text-[9px] font-black uppercase tracking-wider border border-purple-100">Selesai</span>
                             @else
-                                <span class="px-3 py-1.5 rounded-xl bg-gray-50 text-gray-500 text-[9px] font-black uppercase tracking-wider border border-gray-200">{{ $magang->status_magang }}</span>
+                                <span class="status-badge px-3 py-1.5 rounded-xl bg-gray-50 text-gray-500 text-[9px] font-black uppercase tracking-wider border border-gray-200">{{ $magang->status_magang }}</span>
                             @endif
                         </td>
                         <td class="pr-8 text-right">
+                             @php
+                                $mProgress = 20; // Start with 20% for having Magang record
+                                if ($magang->logbooks_count > 0) $mProgress += 40;
+                                if ($magang->laporan) {
+                                    if ($magang->laporan->status === 'approved') {
+                                        $mProgress += 40;
+                                    } else {
+                                        $mProgress += 10;
+                                    }
+                                }
+                             @endphp
                              <div class="flex flex-col items-end gap-1.5">
                                  <div class="w-24 bg-gray-100 rounded-full h-1.5 overflow-hidden">
-                                     <div class="h-full @if($magang->status_magang === 'Selesai') bg-[#6B21A8] @elseif($magang->status_magang === 'Aktif') bg-green-500 @else bg-orange-400 @endif rounded-full" 
-                                          style="width: @if($magang->status_magang === 'Selesai') 100% @elseif($magang->status_magang === 'Aktif') 65% @elseif($magang->status_magang === 'Terverifikasi') 25% @else 5% @endif"></div>
+                                     <div class="h-full @if($mProgress >= 100) bg-purple-600 @elseif($mProgress >= 60) bg-green-500 @else bg-orange-400 @endif rounded-full transition-all duration-1000" 
+                                          style="width: {{ $mProgress }}%"></div>
                                  </div>
                                  <span class="text-[9px] font-black text-gray-400">
-                                     @if($magang->status_magang === 'Selesai') 100% @elseif($magang->status_magang === 'Aktif') 65% @else 15% @endif
+                                     {{ $mProgress }}%
                                  </span>
                              </div>
                         </td>
@@ -198,4 +202,92 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('realTimeSearch');
+    const statusFilter = document.getElementById('statusFilter');
+
+    function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusTerm = statusFilter.value.toLowerCase();
+        const table = document.getElementById('monitoringTable');
+        const rows = table.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            if (row.querySelector('td[colspan]')) return; // Skip empty row
+
+            const text = row.innerText.toLowerCase();
+            const statusBadge = row.querySelector('.status-badge');
+            const status = statusBadge ? statusBadge.innerText.toLowerCase() : '';
+            
+            const matchesSearch = text.includes(searchTerm);
+            const matchesStatus = statusTerm === '' || status.trim() === statusTerm.trim();
+
+            if (matchesSearch && matchesStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    window.resetFilters = function() {
+        searchInput.value = '';
+        statusFilter.value = '';
+        applyFilters();
+    };
+
+    window.exportToExcel = function() {
+        const table = document.getElementById('monitoringTable');
+        const rows = table.querySelectorAll('tr');
+        let csv = [];
+        
+        // Header Khusus yang Rapi
+        csv.push(["No", "Nama Mahasiswa", "NIM", "Perusahaan", "Dosen Pembimbing", "ID Magang", "Status", "Progress"].join(","));
+
+        const dataRows = table.querySelectorAll('tbody tr');
+        dataRows.forEach((tr, index) => {
+            if (tr.style.display === 'none' || tr.querySelector('td[colspan]')) return;
+
+            const cells = tr.querySelectorAll('td');
+            const no = index + 1;
+            const nama = cells[1].querySelector('.font-black').innerText.trim();
+            const nim = cells[1].querySelector('.text-\\[10px\\]').innerText.trim();
+            const perusahaan = cells[2].querySelector('.font-bold').innerText.trim();
+            const pembimbing = cells[3].innerText.replace(/(\r\n|\n|\r)/gm, " ").trim();
+            const idMagang = cells[4].innerText.trim();
+            const status = cells[5].innerText.trim();
+            const progress = cells[6].querySelector('.text-\\[9px\\]').innerText.trim();
+
+            const rowData = [
+                `"${no}"`,
+                `"${nama}"`,
+                `"${nim}"`,
+                `"${perusahaan}"`,
+                `"${pembimbing}"`,
+                `"${idMagang}"`,
+                `"${status}"`,
+                `"${progress}"`
+            ];
+            csv.push(rowData.join(","));
+        });
+        
+        const csvContent = "\uFEFF" + csv.join("\n"); // Add BOM for Excel UTF-8 support
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute("href", url);
+        link.setAttribute("download", "Monitoring_Magang_" + new Date().toISOString().slice(0,10) + ".csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    searchInput.addEventListener('input', applyFilters);
+    statusFilter.addEventListener('change', applyFilters);
+});
+</script>
 @endsection

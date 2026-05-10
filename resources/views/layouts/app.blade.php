@@ -22,7 +22,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-h-screen lg:ml-80">
+        <div class="flex-1 flex flex-col min-h-screen lg:ml-80 min-w-0">
             <!-- Navbar -->
             @include('components.navbar')
             
@@ -61,10 +61,13 @@
         }
 
         // Robust Global Toast Logic
+        // Robust Global Toast Logic
         function showToast(type, message) {
             const successNotif = document.getElementById('globalSuccessNotif');
             const errorNotif = document.getElementById('globalErrorNotif');
             
+            if (!successNotif || !errorNotif) return;
+
             // Hide all first
             successNotif.classList.add('hidden');
             errorNotif.classList.add('hidden');
@@ -74,20 +77,36 @@
                 const iconContainer = successNotif.querySelector('.icon-container');
                 
                 if (type === 'info') {
-                    iconContainer.className = 'icon-container w-12 h-12 rounded-2xl bg-blue-500 flex items-center justify-center shadow-lg shadow-blue-500/20';
-                    titleText.innerText = 'Informasi';
+                    if(iconContainer) iconContainer.className = 'icon-container w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center shadow-lg shadow-blue-500/10 text-blue-600';
+                    if(titleText) titleText.innerText = 'Informasi';
                 } else {
-                    iconContainer.className = 'icon-container w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20';
-                    titleText.innerText = 'Berhasil!';
+                    if(iconContainer) iconContainer.className = 'icon-container w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center shadow-lg shadow-green-500/10 text-green-600';
+                    if(titleText) titleText.innerText = 'Berhasil!';
                 }
 
-                document.getElementById('globalSuccessMsg').innerText = message;
+                const msgEl = document.getElementById('globalSuccessMsg');
+                if(msgEl) msgEl.innerText = message;
+                
                 successNotif.classList.remove('hidden');
-                setTimeout(() => successNotif.classList.add('hidden'), 5000);
+                setTimeout(() => {
+                    successNotif.classList.add('opacity-0');
+                    setTimeout(() => {
+                        successNotif.classList.add('hidden');
+                        successNotif.classList.remove('opacity-0');
+                    }, 500);
+                }, 2000);
             } else if (type === 'error') {
-                document.getElementById('globalErrorMsg').innerText = message;
+                const msgEl = document.getElementById('globalErrorMsg');
+                if(msgEl) msgEl.innerText = message;
+                
                 errorNotif.classList.remove('hidden');
-                setTimeout(() => errorNotif.classList.add('hidden'), 5000);
+                setTimeout(() => {
+                    errorNotif.classList.add('opacity-0');
+                    setTimeout(() => {
+                        errorNotif.classList.add('hidden');
+                        errorNotif.classList.remove('opacity-0');
+                    }, 500);
+                }, 2000);
             }
         }
 
@@ -102,26 +121,26 @@
     <div id="globalNotifContainer" class="fixed top-8 right-8 z-[9999] space-y-4 pointer-events-none">
         <!-- Success/Info Notif -->
         <div id="globalSuccessNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 pointer-events-auto">
-            <div class="flex items-center gap-4 bg-gray-900 text-white p-5 rounded-[2rem] shadow-2xl border border-white/10 min-w-[340px]">
-                <div class="icon-container w-12 h-12 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
+            <div class="flex items-center gap-4 bg-white/95 backdrop-blur-md border-l-4 border-green-500 shadow-2xl rounded-2xl p-5 min-w-[340px]">
+                <div class="icon-container w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center shadow-lg shadow-green-500/10 text-green-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                 </div>
                 <div>
-                    <p class="font-black text-sm uppercase tracking-widest text-white">Berhasil!</p>
-                    <p id="globalSuccessMsg" class="text-xs text-gray-400 font-bold mt-0.5"></p>
+                    <p class="font-black text-sm uppercase tracking-widest text-gray-800">Berhasil!</p>
+                    <p id="globalSuccessMsg" class="text-xs text-gray-500 font-bold mt-0.5"></p>
                 </div>
             </div>
         </div>
 
         <!-- Error Notif -->
         <div id="globalErrorNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 pointer-events-auto">
-            <div class="flex items-center gap-4 bg-red-50 text-red-800 p-5 rounded-[2rem] shadow-2xl border border-red-100 min-w-[340px]">
-                <div class="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center shadow-lg shadow-red-500/20 text-white">
+            <div class="flex items-center gap-4 bg-white/95 backdrop-blur-md border-l-4 border-red-500 shadow-2xl rounded-2xl p-5 min-w-[340px]">
+                <div class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center shadow-lg shadow-red-500/10 text-red-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
                 <div>
-                    <p class="font-black text-sm uppercase tracking-widest leading-tight">Terjadi Kesalahan!</p>
-                    <p id="globalErrorMsg" class="text-xs font-bold mt-0.5"></p>
+                    <p class="font-black text-sm uppercase tracking-widest leading-tight text-gray-800">Terjadi Kesalahan!</p>
+                    <p id="globalErrorMsg" class="text-xs text-gray-500 font-bold mt-0.5"></p>
                 </div>
             </div>
         </div>

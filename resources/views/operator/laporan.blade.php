@@ -32,8 +32,7 @@
                     <th class="min-w-[200px]">Mahasiswa</th>
                     <th class="min-w-[200px]">Subjek Laporan</th>
                     <th class="min-w-[150px]">Status Laporan</th>
-                    <th class="min-w-[150px] text-center">Waktu Unggah</th>
-                    <th class="pr-8 py-6 text-right min-w-[120px]">Berkas</th>
+                    <th class="min-w-[150px] text-center pr-8">Waktu Unggah</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -79,22 +78,11 @@
                         <span class="text-[10px] font-black text-gray-700 tracking-tight bg-gray-50 px-3 py-1 rounded-lg border border-gray-100">
                             {{ $magang->laporan->created_at->format('d M Y') }}
                         </span>
-                    </td>
-                    <td class="pr-8 text-right">
-                        @if($magang->laporan && $magang->laporan->laporan)
-                        <a href="{{ $magang->laporan->laporan }}" target="_blank" class="btn btn-sm h-10 rounded-xl bg-gray-900 border-none text-white hover:bg-black font-black text-[9px] uppercase tracking-widest px-5 shadow-lg shadow-black/10 transition-all active:scale-95 flex items-center gap-2 ml-auto w-fit">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                            PDF
-                        </a>
-                        @else
-                        <span class="text-[9px] font-black text-gray-300 uppercase italic tracking-widest">No File</span>
-                        @endif
-                    </td>
                 </tr>
                 @endif
                 @empty
                 <tr>
-                    <td colspan="6" class="py-32 text-center">
+                    <td colspan="5" class="py-32 text-center">
                         <div class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 text-gray-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                         </div>

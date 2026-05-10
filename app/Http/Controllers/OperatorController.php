@@ -180,18 +180,22 @@ class OperatorController extends Controller
      */
     public function monitoring(Request $request)
     {
-        $query = Magang::with(['peserta.mahasiswa', 'pembimbing']);
+        $query = Magang::with(['peserta.mahasiswa', 'pembimbing', 'laporan'])->withCount('logbooks');
 
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('nim', 'LIKE', "%{$search}%")
-                  ->orWhere('perusahaan', 'LIKE', "%{$search}%")
+                $q->where('perusahaan', 'LIKE', "%{$search}%")
                   ->orWhere('kode_magang', 'LIKE', "%{$search}%")
                   ->orWhereHas('peserta.mahasiswa', function($mq) use ($search) {
-                      $mq->where('nama', 'LIKE', "%{$search}%");
+                      $mq->where('nama', 'LIKE', "%{$search}%")
+                        ->orWhere('nim', 'LIKE', "%{$search}%");
                   });
             });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status_magang', $request->status);
         }
 
         $magangs = $query->latest()->get();

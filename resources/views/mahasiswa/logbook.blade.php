@@ -3,28 +3,51 @@
 @section('title', 'Logbook Magang')
 
 @section('header')
-<div class="bg-white border border-gray-100 p-6 md:p-8 rounded-[2rem] shadow-sm mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div>
-        <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-1 italic">
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden shadow-2xl mt-2 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <!-- Decorative elements -->
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+
+    <div class="relative z-10">
+        <h2 class="text-2xl md:text-3xl font-bold mb-1">
             Logbook Harian 📝
         </h2>
-        <p class="text-gray-500 font-medium text-sm">Catat aktivitas harian dan progres pekerjaan magang Anda.</p>
+        <p class="text-white/80 font-medium text-sm">Catat aktivitas harian dan progres pekerjaan magang Anda.</p>
     </div>
-    <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-100 px-8 rounded-xl font-black uppercase tracking-widest text-[10px] h-14 transition-all flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+    <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto relative z-10">
+        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 transition-all flex items-center justify-center gap-2 backdrop-blur-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             Cetak Logbook
         </a>
-        <button onclick="document.getElementById('logbook_modal').showModal()" class="btn bg-[#6B21A8] hover:bg-purple-800 text-white border-none px-8 rounded-xl shadow-xl shadow-purple-900/20 font-black uppercase tracking-widest text-[10px] h-14 transition-all hover:scale-[1.02] active:scale-95">
+        @if($isPeriodeOpen)
+        <button onclick="document.getElementById('logbook_modal').showModal()" class="btn bg-[#F49E0A] hover:bg-orange-600 text-white border-none px-8 rounded-xl shadow-xl shadow-orange-900/20 font-bold uppercase tracking-widest text-[10px] h-14 transition-all hover:scale-[1.02] active:scale-95">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
             Isi Logbook Hari Ini
         </button>
+        @else
+        <button class="btn bg-gray-100 text-gray-400 border-none px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 cursor-not-allowed" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
+            Periode Tutup
+        </button>
+        @endif
     </div>
 </div>
 @endsection
 
 @section('content')
 <div class="max-w-7xl mx-auto pb-20">
+    @if(!$isPeriodeOpen)
+    <div class="mb-6 bg-red-50 border border-red-100 rounded-2xl p-4 flex items-center gap-4 text-red-600">
+        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+        </div>
+        <div>
+            <p class="text-sm font-bold">Periode Magang Telah Ditutup</p>
+            <p class="text-xs opacity-80 font-medium">Anda tidak dapat menambahkan catatan logbook baru karena periode magang semester ini telah berakhir.</p>
+        </div>
+    </div>
+    @endif
+
     <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="table w-full">

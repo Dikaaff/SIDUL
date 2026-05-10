@@ -16,9 +16,11 @@
             <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Selamat datang di Sistem Informasi Management Magang (SIDUL). Mari kelola progress magangmu hari ini.</p>
         </div>
         <div class="flex gap-3 self-start md:self-center">
-            <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-xl">
-                <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
-                <span class="text-xs font-bold uppercase tracking-wider">Akun Aktif</span>
+            <div class="{{ $pendaftaran ? 'bg-white/10 border-white/20' : 'bg-red-500/10 border-red-500/20' }} backdrop-blur-md px-5 py-2.5 rounded-2xl border text-white flex items-center gap-3 shadow-xl">
+                <div class="w-2.5 h-2.5 rounded-full {{ $pendaftaran ? 'bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]' : 'bg-red-400 shadow-[0_0_10px_rgba(248,113,113,0.8)]' }} animate-pulse"></div>
+                <span class="text-xs font-bold uppercase tracking-wider">
+                    {{ $pendaftaran ? 'Akun Aktif' : 'Belum Aktif' }}
+                </span>
             </div>
         </div>
     </div>
@@ -27,9 +29,11 @@
     <div class="flex flex-col justify-between gap-4 relative z-10 sm:hidden">
         <div class="flex items-center justify-between">
             <h2 class="text-2xl font-black">Halo, {{ explode(' ', Auth::user()->name)[0] }} 👋</h2>
-            <div class="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-white flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                <span class="text-[10px] font-bold uppercase tracking-wider">Aktif</span>
+            <div class="{{ $pendaftaran ? 'bg-white/10 border-white/20' : 'bg-red-500/10 border-red-500/20' }} backdrop-blur-md px-3 py-1.5 rounded-xl border text-white flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full {{ $pendaftaran ? 'bg-green-400' : 'bg-red-400' }} animate-pulse"></div>
+                <span class="text-[10px] font-bold uppercase tracking-wider">
+                    {{ $pendaftaran ? 'Aktif' : 'Belum Aktif' }}
+                </span>
             </div>
         </div>
         <p class="text-white/90 font-medium text-sm leading-relaxed">Selamat datang di SIDUL.</p>
@@ -55,7 +59,27 @@
 @endsection
 
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-start">
+<div class="space-y-8">
+
+    @if(!$isPeriodeOpen)
+    <!-- Global Period Closure Alert -->
+    <div class="bg-red-50 border-2 border-red-100 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group">
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-red-100 rounded-full blur-3xl opacity-50"></div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+            <div class="w-16 h-16 rounded-2xl bg-red-500 text-white flex items-center justify-center shadow-xl shadow-red-200 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-red-800 mb-1">Periode Magang Telah Berakhir</h3>
+                <p class="text-sm font-medium text-red-600/80 leading-relaxed max-w-3xl">
+                    Mohon maaf, saat ini sistem magang SIDUL sedang ditutup untuk pemeliharaan atau pergantian periode. Pendaftaran baru, pengisian logbook, dan pengiriman laporan tidak tersedia hingga periode berikutnya dibuka kembali.
+                </p>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-start">
     
     <!-- Kolom Kiri: Statistik & Konten Utama (8 Kolom) -->
     <div class="lg:col-span-8 space-y-8 min-w-0">
@@ -223,6 +247,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 

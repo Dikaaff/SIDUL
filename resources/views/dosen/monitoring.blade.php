@@ -3,10 +3,10 @@
 @section('title', 'Monitoring Magang')
 
 @section('content')
-<div class="px-4 lg:px-6 py-6 space-y-6 overflow-x-hidden">
+<div class="px-4 lg:px-6 py-2 space-y-6 overflow-x-hidden">
 
     <!-- HERO BANNER -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#6B21A8] to-[#7E22CE] p-6 md:p-8 shadow-xl">
+    <div class="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#6B21A8] to-[#7E22CE] p-6 md:p-7 shadow-xl mt-2">
 
         <!-- Blur Decoration -->
         <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
@@ -16,37 +16,17 @@
             <!-- Left Content -->
             <div class="max-w-2xl">
 
-                <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-full mb-4">
-                    <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-
-                    <span class="text-xs uppercase tracking-[0.2em] font-bold text-white">
-                        Monitoring System
-                    </span>
-                </div>
-
-                <h1 class="text-3xl md:text-5xl font-black italic leading-tight text-white">
+                <h1 class="text-2xl md:text-3xl font-bold leading-tight text-white">
                     Monitoring Mahasiswa
                 </h1>
 
-                <p class="mt-3 text-sm md:text-base text-white/80 max-w-xl">
+                <p class="mt-2 text-xs md:text-sm text-white/80 max-w-xl">
                     Pantau aktivitas magang mahasiswa secara realtime dengan sistem monitoring SIDUL.
                 </p>
 
             </div>
 
-            <!-- Right Counter -->
-            <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl px-8 py-6 text-center min-w-[180px]">
-
-                <p class="text-xs uppercase tracking-[0.3em] text-white/60 font-bold mb-2">
-                    Total Aktif
-                </p>
-
-                <h2 class="text-5xl font-black italic text-white">
-                    {{ $mhsBimbingan->count() }}
-                </h2>
-
-            </div>
-
+            <!-- Right Counter Removed -->
         </div>
     </div>
 
@@ -75,7 +55,7 @@
                     onkeyup="filterGrid()"
                     type="text"
                     placeholder="Cari mahasiswa atau instansi..."
-                    class="w-full h-14 pl-14 pr-5 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-purple-100 focus:border-[#6B21A8] outline-none transition">
+                    class="w-full h-12 pl-14 pr-5 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-purple-100 focus:border-[#6B21A8] outline-none transition text-sm">
 
             </div>
 
@@ -224,25 +204,25 @@ function renderGrid() {
                     : 'bg-orange-50 text-orange-600');
 
         const card = `
-            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-7 flex flex-col justify-between min-h-[360px] relative overflow-hidden">
+            <div class="group bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col justify-between min-h-[300px] relative overflow-hidden">
 
                 <div class="absolute -right-10 -top-10 w-40 h-40 bg-gray-50 rounded-full opacity-60"></div>
 
                 <div class="relative z-10">
 
-                    <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-start justify-between mb-4">
 
-                        <div class="w-14 h-14 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xl">
+                        <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-bold text-lg">
                             ${s.name[0]}
                         </div>
 
                         <div class="text-right">
 
-                            <span class="text-[10px] uppercase font-bold tracking-wider ${badgeColor} px-3 py-1 rounded-xl inline-block mb-2">
+                            <span class="text-[9px] uppercase font-bold tracking-wider ${badgeColor} px-2.5 py-1 rounded-lg inline-block mb-1">
                                 ${s.status}
                             </span>
 
-                            <p class="text-[10px] text-gray-400 font-semibold uppercase">
+                            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
                                 ${s.kode}
                             </p>
 
@@ -250,11 +230,11 @@ function renderGrid() {
 
                     </div>
 
-                    <h3 class="text-2xl font-black text-gray-800 leading-tight mb-1">
+                    <h3 class="text-xl font-bold text-gray-800 leading-tight mb-1">
                         ${s.name}
                     </h3>
 
-                    <p class="text-xs text-gray-400 uppercase tracking-widest mb-8">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-6">
                         ${s.nim} • ${s.prodi}
                     </p>
 

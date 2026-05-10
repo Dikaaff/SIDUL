@@ -8,14 +8,11 @@
     <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
         <div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2 italic">Logbook Monitor 📑</h2>
+            <h2 class="text-2xl md:text-3xl font-bold mb-2">Logbook Monitor 📑</h2>
             <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Pantau aktivitas harian dan progres pekerjaan mahasiswa bimbingan Anda secara real-time.</p>
         </div>
         <div class="flex gap-3 shrink-0">
-            <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-xl">
-                <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
-                <span class="text-[10px] font-black uppercase tracking-widest">Aktivitas Terkini</span>
-            </div>
+            {{-- Badge Aktivitas Terkini Dihapus --}}
         </div>
     </div>
 </div>
@@ -28,8 +25,8 @@
     <div class="lg:col-span-1 space-y-4">
         <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
-                <h3 class="font-black text-gray-800 text-xs uppercase tracking-widest">Daftar Bimbingan</h3>
-                <span class="badge badge-primary font-black text-[10px] py-3 px-3">{{ $mhsBimbingan->count() }}</span>
+                <h3 class="font-bold text-gray-800 text-xs uppercase tracking-widest">Daftar Bimbingan</h3>
+                <span class="badge badge-primary font-bold text-[10px] py-3 px-3">{{ $mhsBimbingan->count() }}</span>
             </div>
             <div class="p-4 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" id="studentSelector">
                 {{-- Diisi via JS --}}
@@ -44,25 +41,27 @@
                 <div class="flex items-center gap-6">
                     <div id="activeAvatar" class="w-20 h-20 rounded-3xl bg-primary text-white flex items-center justify-center font-black text-3xl shadow-2xl shadow-purple-200">?</div>
                     <div>
-                        <h3 id="activeStudentName" class="text-2xl font-black text-gray-800 italic leading-tight tracking-tighter">Memuat...</h3>
-                        <p id="activeStudentNim" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-1 italic">NIM: -</p>
+                        <h3 id="activeStudentName" class="text-2xl font-bold text-gray-800 leading-tight">Memuat...</h3>
+                        <p id="activeStudentNim" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">NIM: -</p>
                     </div>
                 </div>
             </div>
 
-            <div class="p-0">
-                <table class="table table-lg w-full">
-                    <thead>
-                        <tr class="text-gray-400 font-extrabold text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
-                            <th class="py-6 pl-10">Tanggal</th>
-                            <th>Aktivitas / Kegiatan</th>
-                            <th class="text-right pr-10">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="allLogsTableBody" class="divide-y divide-gray-50">
-                        {{-- Diisi via JS --}}
-                    </tbody>
-                </table>
+            <div class="p-0 overflow-x-auto custom-scrollbar">
+                <div class="min-w-[800px] md:min-w-full">
+                    <table class="table table-lg w-full">
+                        <thead>
+                            <tr class="text-gray-400 font-extrabold text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                                <th class="py-6 pl-10">Tanggal</th>
+                                <th>Aktivitas / Kegiatan</th>
+                                <th class="text-right pr-10">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allLogsTableBody" class="divide-y divide-gray-50">
+                            {{-- Diisi via JS --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -3,24 +3,28 @@
 @section('title', 'Draft Laporan Akhir')
 
 @section('header')
-<div class="bg-white border border-gray-100 p-6 md:p-8 rounded-[2rem] shadow-sm mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div>
-        <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-1 italic">
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden shadow-2xl mt-2 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <!-- Decorative elements -->
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+
+    <div class="relative z-10">
+        <h2 class="text-2xl md:text-3xl font-bold mb-1">
             Digital Report Editor 📄
         </h2>
-        <p class="text-gray-500 font-medium text-sm">Susun laporan akhir Anda bab demi bab sesuai standar.</p>
+        <p class="text-white/90 font-medium text-sm">Susun laporan akhir Anda bab demi bab sesuai standar.</p>
     </div>
-    <div class="flex gap-2">
-        <div class="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl flex items-center gap-3">
+    <div class="flex gap-2 relative z-10">
+        <div class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center gap-3">
             @php
                 $statusClass = [
-                    'approved' => 'bg-green-500',
-                    'revisi' => 'bg-red-500 animate-bounce',
-                    'review' => 'bg-blue-500 animate-pulse'
-                ][$laporan->status ?? ''] ?? 'bg-gray-300';
+                    'approved' => 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]',
+                    'revisi' => 'bg-red-400 animate-bounce shadow-[0_0_8px_rgba(248,113,113,0.6)]',
+                    'review' => 'bg-blue-400 animate-pulse shadow-[0_0_8px_rgba(96,165,250,0.6)]'
+                ][$laporan->status ?? ''] ?? 'bg-white/30';
             @endphp
             <div class="w-2.5 h-2.5 rounded-full {{ $statusClass }}"></div>
-            <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-white/90">
                 Status: {{ $laporan ? ucfirst($laporan->status) : 'New Document' }}
             </span>
         </div>
@@ -30,6 +34,17 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto pb-20 px-4 sm:px-6">
+    @if(!$isPeriodeOpen)
+    <div class="mb-8 bg-red-50 border border-red-100 rounded-3xl p-6 flex items-center gap-5 text-red-600">
+        <div class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center shadow-sm shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <div>
+            <h4 class="text-base font-bold">Akses Pengiriman Laporan Ditutup</h4>
+            <p class="text-xs font-medium opacity-80">Anda masih dapat mengedit draf laporan Anda secara lokal, namun tombol pengiriman ke pembimbing telah dinonaktifkan karena periode magang telah berakhir.</p>
+        </div>
+    </div>
+    @endif
     
     {{-- Notifikasi Revisi --}}
     @if($laporan && $laporan->status === 'revisi')
@@ -111,11 +126,17 @@
                     @endif
 
                     @if(!$laporan || $laporan->status !== 'approved')
-                    <button type="submit" class="btn h-14 px-10 bg-primary hover:bg-purple-700 text-white border-none rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl shadow-purple-200 flex-1 md:flex-none transition-all">
-                        {{ ($laporan && $laporan->status === 'revisi') ? 'Kirim Ulang Revisi' : 'Simpan & Kirim Laporan' }}
-                    </button>
+                        @if($isPeriodeOpen)
+                        <button type="submit" class="btn h-14 px-10 bg-primary hover:bg-purple-700 text-white border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-2xl shadow-purple-200 flex-1 md:flex-none transition-all">
+                            {{ ($laporan && $laporan->status === 'revisi') ? 'Kirim Ulang Revisi' : 'Simpan & Kirim Laporan' }}
+                        </button>
+                        @else
+                        <button type="button" class="btn h-14 px-10 bg-gray-100 text-gray-400 border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] flex-1 md:flex-none cursor-not-allowed" disabled>
+                            Periode Berakhir
+                        </button>
+                        @endif
                     @else
-                    <div class="h-14 px-10 bg-green-50 text-green-600 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center gap-3 border border-green-100">
+                    <div class="h-14 px-10 bg-green-50 text-green-600 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center gap-3 border border-green-100">
                         Laporan Disetujui ✓
                     </div>
                     @endif
@@ -125,24 +146,6 @@
     </form>
 </div>
 @endsection
-
-@push('styles')
-<style>
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #e5e7eb;
-        border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #d1d5db;
-    }
-</style>
-@endpush
 
 @push('scripts')
 <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>

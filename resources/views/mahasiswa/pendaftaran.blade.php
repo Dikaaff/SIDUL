@@ -3,12 +3,18 @@
 @section('title', 'Pendaftaran Magang')
 
 @section('header')
-<div class="bg-white border border-gray-100 p-6 md:p-8 rounded-[2rem] shadow-sm mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div>
-        <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-1">
-            Pendaftaran Magang 📝
-        </h2>
-        <p class="text-gray-700 font-medium text-sm">Lengkapi data pendaftaran perusahaan dan lengkapi anggota kelompokmu (jika ada).</p>
+<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden shadow-2xl mt-2">
+    <!-- Decorative elements -->
+    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-2xl md:text-3xl font-bold mb-1">
+                Pendaftaran Magang 📝
+            </h2>
+            <p class="text-white/90 font-medium text-sm">Lengkapi data pendaftaran perusahaan dan lengkapi anggota kelompokmu (jika ada).</p>
+        </div>
     </div>
 </div>
 @endsection

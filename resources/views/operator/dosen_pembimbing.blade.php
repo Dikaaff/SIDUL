@@ -41,7 +41,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($belumAssign as $index => $magang)
-                    @php $mhs = $magang->peserta->first()->mahasiswa; @endphp
+                    @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
                     <tr class="hover:bg-gray-50 transition-all group">
                         <td class="pl-8 py-6 text-[10px] font-black text-gray-600 italic">
                             {{ $index + 1 }}
@@ -114,7 +114,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100 text-sm">
                     @forelse($sudahAssign as $index => $magang)
-                    @php $mhs = $magang->peserta->first()->mahasiswa; @endphp
+                    @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
                     <tr class="hover:bg-gray-50 transition-all">
                         <td class="pl-8 py-4 text-[10px] font-black text-gray-600 italic">
                             {{ $index + 1 }}

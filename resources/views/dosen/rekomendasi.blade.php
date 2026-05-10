@@ -10,7 +10,7 @@
 
     <div class="flex flex-col md:flex-row md:items-center justify-between relative z-10">
         <div>
-            <h2 class="text-3xl font-black italic tracking-tighter uppercase mb-2">
+            <h2 class="text-3xl font-bold mb-2">
                 Rekomendasi Magang ✍️
             </h2>
             <p class="text-white opacity-90 font-medium text-sm md:text-base max-w-2xl">Sebagai Dosen Wali, Anda dapat memberikan persetujuan dan tanda tangan rekomendasi magang mahasiswa dengan cepat.</p>
@@ -22,10 +22,10 @@
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
     <!-- Main List Section -->
-    <div class="lg:col-span-3 space-y-6">
+    <div class="lg:col-span-3 space-y-6 w-full max-w-full overflow-hidden">
         <div class="flex items-center justify-between bg-white p-8 rounded-[2.5rem] border border-base-200 shadow-xl shadow-gray-100/50 mb-4 transition-all hover:shadow-2xl">
             <div>
-                <h3 class="font-black text-gray-800 flex items-center gap-4 italic uppercase tracking-tighter text-xl">
+                <h3 class="font-bold text-gray-800 flex items-center gap-4 text-xl">
                     <div class="w-2 h-8 bg-primary rounded-full"></div>
                     Antrean Rekomendasi
                 </h3>
@@ -36,10 +36,10 @@
         </div>
 
         <!-- Responsive Container for the list -->
-        <div class="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0">
-            <div class="min-w-[700px]">
+        <div class="overflow-x-auto pb-4 -mx-2 px-2 lg:mx-0 lg:px-0 custom-scrollbar">
+            <div class="min-w-[850px] md:min-w-full">
                 <!-- Compact List Header -->
-                <div class="px-8 grid grid-cols-12 gap-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] italic mb-2">
+                <div class="px-8 grid grid-cols-12 gap-4 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">
                     <div class="col-span-4">Mahasiswa & Instansi</div>
                     <div class="col-span-2 text-center">STATUS</div>
                     <div class="col-span-3">Dokumen Draft</div>

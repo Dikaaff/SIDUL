@@ -1,8 +1,7 @@
 <nav class="w-80 h-full bg-white flex flex-col relative overflow-hidden">
     <!-- Logo -->
     <div class="h-16 flex items-center px-6 border-b border-gray-100 gap-3 sticky top-0 bg-white z-10">
-        <img src="/sidul.png" alt="SIDUL Logo" class="w-10 h-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=S&background=6B21A8&color=fff&rounded=true'" />
-        <span class="text-xl font-bold text-primary">
+        <span class="text-2xl font-black text-[#6B21A8] tracking-tighter uppercase">
             SIDUL
         </span>
     </div>
@@ -104,13 +103,13 @@
 
                 <!-- MAHASISWA MENU -->
                 <li>
-                    <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
+                    <a href="{{ route('mahasiswa.home') }}" class="{{ Route::is('mahasiswa.home') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                         Dashboard Utama
                     </a>
                 </li>
                 <li>
-                    <a href="/mahasiswa/pendaftaran" class="{{ request()->is('mahasiswa/pendaftaran') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
+                    <a href="{{ route('mahasiswa.pendaftaran') }}" class="{{ Route::is('mahasiswa.pendaftaran') ? 'active bg-[#6B21A8] text-white rounded-xl py-3 px-4 font-bold shadow-md' : 'hover:bg-purple-50 hover:text-[#6B21A8] text-gray-600 transition-all duration-300 rounded-xl py-3 px-4 font-bold' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         Pendaftaran Magang
                     </a>

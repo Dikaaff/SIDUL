@@ -101,60 +101,57 @@
                 </div>
             </div>
         @endif
-        {{-- PREMIUM CONTROL CENTER --}}
-        <div class="relative group">
-            <div class="absolute -inset-1 bg-gradient-to-r {{ $isPeriodeOpen ? 'from-green-500 to-emerald-600' : 'from-amber-400 to-orange-500' }} rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-            <div class="relative bg-white rounded-[2.3rem] p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border border-gray-50">
+        {{-- BRAND CONSISTENT CONTROL CENTER --}}
+        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
                 
-                <div class="flex flex-col md:flex-row items-center gap-8">
-                    {{-- Animated Status Icon --}}
-                    <div class="relative">
-                        <div class="absolute inset-0 {{ $isPeriodeOpen ? 'bg-green-400' : 'bg-amber-400' }} rounded-3xl blur-xl opacity-20 animate-pulse"></div>
-                        <div class="w-20 h-20 rounded-3xl {{ $isPeriodeOpen ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600' }} flex items-center justify-center shadow-inner relative z-10 border border-white/50">
-                            @if($isPeriodeOpen)
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                            @else
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
-                            @endif
-                        </div>
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    {{-- Status Indicator Icon --}}
+                    <div class="w-16 h-16 rounded-2xl {{ $isPeriodeOpen ? 'bg-emerald-50 text-emerald-500' : 'bg-red-50 text-red-500' }} flex items-center justify-center shrink-0">
+                        @if($isPeriodeOpen)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        @endif
                     </div>
 
                     <div class="text-center md:text-left">
-                        <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
-                            <span class="w-2 h-2 rounded-full {{ $isPeriodeOpen ? 'bg-green-500 animate-ping' : 'bg-amber-500' }}"></span>
-                            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Main System Status</span>
+                        <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
+                            <span class="w-2 h-2 rounded-full {{ $isPeriodeOpen ? 'bg-emerald-500 animate-pulse' : 'bg-red-500' }}"></span>
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6B21A8]">Status Sistem Utama</span>
                         </div>
-                        <h4 class="text-2xl font-black text-gray-900 tracking-tight leading-tight">
-                            Pendaftaran Mahasiswa: 
-                            <span class="{{ $isPeriodeOpen ? 'text-green-600' : 'text-amber-600' }} uppercase underline decoration-4 underline-offset-4">
-                                {{ $isPeriodeOpen ? 'DIBUKA' : 'DITUTUP' }}
+                        <h4 class="text-xl font-bold text-gray-800 tracking-tight">
+                            Pendaftaran: 
+                            <span class="{{ $isPeriodeOpen ? 'text-emerald-600' : 'text-red-600' }}">
+                                {{ $isPeriodeOpen ? 'Diterima & Terbuka' : 'Ditolak & Tertutup' }}
                             </span>
                         </h4>
-                        <p class="text-sm font-medium text-gray-500 mt-2 max-w-sm">
-                            {{ $isPeriodeOpen ? 'Sistem saat ini menerima berkas pendaftaran. Pantau antrean secara berkala.' : 'Akses pendaftaran dikunci. Mahasiswa hanya dapat melihat dashboard tanpa mendaftar.' }}
+                        <p class="text-xs font-medium text-gray-500 mt-1 max-w-sm leading-relaxed">
+                            {{ $isPeriodeOpen ? 'Sistem sedang menerima berkas pendaftaran mahasiswa baru.' : 'Sistem sedang menolak seluruh akses pendaftaran mahasiswa.' }}
                         </p>
                     </div>
                 </div>
                 
-                <div class="flex flex-col gap-3 min-w-[240px]">
-                    <form action="{{ route('operator.periode.toggle') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin ' + ('{{ $isPeriodeOpen }}' == '1' ? 'MENUTUP' : 'MEMBUKA') + ' pendaftaran?')">
+                <div class="w-full md:w-auto">
+                    {{-- Toggle Form --}}
+                    <form id="toggleSystemForm" action="{{ route('operator.periode.toggle') }}" method="POST" class="hidden">
                         @csrf
-                        <button type="submit" 
-                                class="w-full group relative px-8 py-5 rounded-2xl {{ $isPeriodeOpen ? 'bg-gray-900 shadow-gray-900/10' : 'bg-amber-500 shadow-amber-500/20' }} text-white font-black overflow-hidden transition-all hover:scale-[1.02] active:scale-95 border-none shadow-2xl">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <span class="relative flex items-center justify-center gap-3 text-xs uppercase tracking-[0.2em]">
-                                @if($isPeriodeOpen)
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                                    Tutup Pendaftaran
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 11V7a5 5 0 0110 0v4M8 11v-4a4 4 0 0110 0" /></svg>
-                                    Buka Pendaftaran
-                                @endif
-                            </span>
-                        </button>
                     </form>
-                    <p class="text-[9px] font-bold text-center text-gray-400 uppercase tracking-widest italic">Otoritas akses penuh Operator SIDUL</p>
+
+                    <button type="button" 
+                            onclick="document.getElementById('toggle_confirm_modal').showModal()"
+                            class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200' }} text-white border-none px-10 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 w-full md:w-auto shadow-xl transition-all active:scale-95">
+                        @if($isPeriodeOpen)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                            Tutup Pendaftaran
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Buka Pendaftaran
+                        @endif
+                    </button>
                 </div>
+            </div>
+        </div>
             </div>
         </div>
 
@@ -220,5 +217,39 @@
         </div>
     </div>
 </div>
+
+{{-- Toggle System Confirmation Modal --}}
+<dialog id="toggle_confirm_modal" class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100 shadow-2xl">
+        <div class="flex flex-col items-center text-center">
+            {{-- Status Icon in Modal --}}
+            <div class="w-20 h-20 rounded-3xl {{ $isPeriodeOpen ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-500' }} flex items-center justify-center mb-6">
+                @if($isPeriodeOpen)
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                @else
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                @endif
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Konfirmasi Akses Sistem</h3>
+            <p class="text-sm font-medium text-gray-500 leading-relaxed max-w-xs">
+                Apakah Anda yakin ingin <strong>{{ $isPeriodeOpen ? 'MENUTUP' : 'MEMBUKA' }}</strong> akses pendaftaran magang untuk mahasiswa?
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 w-full mt-10">
+                <form method="dialog">
+                    <button class="btn btn-ghost w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] text-gray-400">Batal</button>
+                </form>
+                <button onclick="document.getElementById('toggleSystemForm').submit()" 
+                        class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600' : 'bg-emerald-500 hover:bg-emerald-600' }} text-white border-none w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200">
+                    Ya, {{ $isPeriodeOpen ? 'Tutup' : 'Buka' }} Akses
+                </button>
+            </div>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop bg-black/20 backdrop-blur-sm">
+        <button>close</button>
+    </form>
+</dialog>
 
 @endsection
