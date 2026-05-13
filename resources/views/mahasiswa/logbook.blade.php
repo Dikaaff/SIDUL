@@ -3,35 +3,28 @@
 @section('title', 'Logbook Magang')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden shadow-2xl mt-2 flex flex-col md:flex-row md:items-center justify-between gap-6">
-    <!-- Decorative elements -->
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-
-    <div class="relative z-10">
-        <h2 class="text-2xl md:text-3xl font-bold mb-1">
-            Logbook Harian 📝
-        </h2>
-        <p class="text-white/80 font-medium text-sm">Catat aktivitas harian dan progres pekerjaan magang Anda.</p>
-    </div>
+<x-page-header 
+    title="Logbook Harian 📝" 
+    subtitle="Catat aktivitas harian dan progres pekerjaan magang Anda."
+>
     <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto relative z-10">
-        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 transition-all flex items-center justify-center gap-2 backdrop-blur-md">
+        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 flex items-center justify-center gap-2 backdrop-blur-md">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             Cetak Logbook
         </a>
         @if($isPeriodeOpen)
-        <button onclick="document.getElementById('logbook_modal').showModal()" class="btn bg-[#F49E0A] hover:bg-orange-600 text-white border-none px-8 rounded-xl shadow-xl shadow-orange-900/20 font-bold uppercase tracking-widest text-[10px] h-14 transition-all hover:scale-[1.02] active:scale-95">
+        <x-button variant="amber" size="lg" onclick="document.getElementById('logbook_modal').showModal()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
             Isi Logbook Hari Ini
-        </button>
+        </x-button>
         @else
-        <button class="btn bg-gray-100 text-gray-400 border-none px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 cursor-not-allowed" disabled>
+        <x-button variant="disabled" size="lg">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
             Periode Tutup
-        </button>
+        </x-button>
         @endif
     </div>
-</div>
+</x-page-header>
 @endsection
 
 @section('content')
@@ -48,7 +41,7 @@
     </div>
     @endif
 
-    <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+    <x-card padding="none" border class="overflow-hidden">
         <div class="overflow-x-auto">
             <table class="table w-full">
                 <thead>
@@ -79,80 +72,47 @@
                         </td>
                     </tr>
                     @empty
-                    <tr>
-                        <td colspan="3" class="py-32 text-center">
-                            <div class="flex flex-col items-center">
-                                <div class="w-20 h-20 rounded-3xl bg-gray-50 flex items-center justify-center text-gray-300 mb-4 border-2 border-dashed border-gray-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                                </div>
-                                <h4 class="text-lg font-black text-gray-400 italic">Belum Ada Catatan Logbook</h4>
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2">Silakan mulai isi logbook harian Anda.</p>
-                            </div>
-                        </td>
-                    </tr>
+                    <x-empty-state colspan="3" title="Belum Ada Catatan Logbook" subtitle="Silakan mulai isi logbook harian Anda."/>
                     @endforelse
                 </tbody>
             </table>
         </div>
-    </div>
+    </x-card>
 </div>
 
-<!-- Modal: Tambah Logbook -->
-<dialog id="logbook_modal" class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box bg-white max-w-2xl rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl">
-    <div class="bg-[#6B21A8] p-8 text-white relative">
-        <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-        <h3 class="font-black text-2xl italic tracking-tighter relative z-10">Tambah Catatan Baru ✍️</h3>
-        <p class="text-white/70 text-[10px] font-black uppercase tracking-widest mt-1 relative z-10 italic">Pastikan informasi yang Anda masukkan akurat.</p>
-    </div>
-    
-    <div class="p-10 -mt-6 bg-white rounded-[2.5rem] relative z-20">
-        <form action="{{ route('mahasiswa.logbook.store') }}" method="POST" class="space-y-6">
-            @csrf
-            <div class="form-control">
-                <label class="label"><span class="label-text font-black text-gray-400 text-[10px] uppercase tracking-widest px-1">Isi Kegiatan / Pekerjaan Hari Ini</span></label>
-                <textarea name="logbook" placeholder="Tuliskan detail pekerjaan Anda hari ini..." class="textarea textarea-bordered h-48 bg-gray-50 border-none rounded-[1.5rem] text-sm font-bold text-gray-800 p-6 focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all outline-none resize-none" required></textarea>
-            </div>
-            
-            <div class="flex gap-4 pt-6">
-                <button type="button" onclick="document.getElementById('logbook_modal').close()" class="btn btn-ghost flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl">Batal</button>
-                <button type="submit" class="btn bg-[#F49E0A] hover:bg-orange-600 border-none text-white flex-[2] h-14 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-orange-100 rounded-2xl transition-all">Simpan Logbook</button>
-            </div>
-        </form>
-    </div>
-  </div>
-</dialog>
+{{-- Modal: Tambah Logbook --}}
+<x-modal id="logbook_modal" title="Tambah Catatan Baru ✍️" subtitle="Pastikan informasi yang Anda masukkan akurat." color="purple">
+    <form action="{{ route('mahasiswa.logbook.store') }}" method="POST" class="space-y-6">
+        @csrf
+        <div class="form-control">
+            <label class="label"><span class="label-text font-black text-gray-400 text-[10px] uppercase tracking-widest px-1">Isi Kegiatan / Pekerjaan Hari Ini</span></label>
+            <textarea name="logbook" placeholder="Tuliskan detail pekerjaan Anda hari ini..." class="textarea textarea-bordered h-48 bg-gray-50 border-none rounded-[1.5rem] text-sm font-bold text-gray-800 p-6 focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all outline-none resize-none" required></textarea>
+        </div>
+        <div class="flex gap-4 pt-2">
+            <x-button type="button" variant="ghost" size="lg" class="flex-1" onclick="document.getElementById('logbook_modal').close()">Batal</x-button>
+            <x-button type="submit" variant="amber" size="lg" class="flex-[2]">Simpan Logbook</x-button>
+        </div>
+    </form>
+</x-modal>
 
-<!-- Modal: Detail Logbook -->
-<dialog id="log_detail_modal" class="modal modal-bottom sm:modal-middle">
-    <div class="modal-box p-0 max-w-2xl bg-white rounded-[2.5rem] overflow-hidden border-none shadow-2xl">
-        <div class="bg-gray-900 p-8 text-white flex items-center justify-between relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-            <div class="relative z-10">
-                <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1 italic">Detail Aktivitas Magang</p>
-                <h3 id="detailDate" class="text-2xl font-black italic tracking-tighter uppercase">TANGGAL</h3>
-            </div>
-            <form method="dialog" class="relative z-10">
-                <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white">✕</button>
-            </form>
-        </div>
-        <div class="p-10 -mt-8 bg-white rounded-[3rem] relative z-20 space-y-8">
-            <div>
-                <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic px-1">Isi Kegiatan / Pekerjaan</p>
-                <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 shadow-inner">
-                    <p id="detailDesc" class="text-base font-bold text-gray-700 leading-relaxed italic whitespace-pre-wrap">Konten kegiatan...</p>
-                </div>
-            </div>
-            <button onclick="document.getElementById('log_detail_modal').close()" class="btn btn-ghost w-full h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl">Tutup Jendela</button>
+{{-- Modal: Detail Logbook --}}
+<x-modal id="log_detail_modal" color="purple" subtitle="Detail Aktivitas Magang" title="TANGGAL">
+    <div>
+        <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic px-1">Isi Kegiatan / Pekerjaan</p>
+        <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 shadow-inner">
+            <p id="detailDesc" class="text-base font-bold text-gray-700 leading-relaxed italic whitespace-pre-wrap">Konten kegiatan...</p>
         </div>
     </div>
-</dialog>
+    <x-button variant="ghost" size="lg" :full="true" onclick="document.getElementById('log_detail_modal').close()">Tutup Jendela</x-button>
+</x-modal>
+
 @endsection
 
 @push('scripts')
 <script>
     function showLogDetail(date, desc) {
-        document.getElementById('detailDate').innerText = date.toUpperCase();
+        // Update the title dynamically since x-modal renders it server-side
+        document.querySelector('#log_detail_modal h3').innerText = date.toUpperCase();
         document.getElementById('detailDesc').innerText = desc;
         document.getElementById('log_detail_modal').showModal();
     }

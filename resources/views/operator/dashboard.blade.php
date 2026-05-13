@@ -3,85 +3,34 @@
 @section('title', 'Dashboard Operator')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-        <div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2">Dashboard Operator 🚀</h2>
-            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Selamat datang. Berikut ringkasan sistem magang yang perlu Anda tindaklanjuti hari ini.</p>
-        </div>
-    </div>
-</div>
+<x-page-header 
+    title="Dashboard Operator 🚀" 
+    subtitle="Selamat datang. Berikut ringkasan sistem magang yang perlu Anda tindaklanjuti hari ini." 
+/>
 @endsection
 
 @section('content')
 {{-- Stats Grid --}}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 font-sans">
 
-    {{-- Stat 1: Tunggu Plotting --}}
-    <a href="{{ route('operator.dosen_pembimbing') }}" class="card bg-white shadow-sm border border-base-200 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
-        <div class="card-body p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-1">Perlu Plotting</p>
-                    <h3 class="text-4xl font-black text-[#F49E0A]">{{ $pendingPlottingCount }}</h3>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-orange-50 text-[#F49E0A] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-            </div>
-            <p class="text-[10px] font-bold text-orange-500 mt-3 uppercase tracking-wider">→ Plotting Dosen</p>
-        </div>
+    <a href="{{ route('operator.dosen_pembimbing') }}" class="block">
+        <x-stat-card value="{{ $pendingPlottingCount }}" label="Perlu Plotting" color="amber" class="hover:shadow-lg hover:-translate-y-1">
+            <x-slot name="icon"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></x-slot>
+        </x-stat-card>
     </a>
 
-    {{-- Stat 2: Ready to Register (Approved Wali) --}}
-    <div class="card bg-white shadow-sm border border-base-200">
-        <div class="card-body p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-1">Disetujui Wali</p>
-                    <h3 class="text-4xl font-black text-blue-600">{{ $pendingPendaftaranCount }}</h3>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                </div>
-            </div>
-            <p class="text-[10px] font-bold text-blue-500 mt-3 uppercase tracking-wider">Siap Mendaftar</p>
-        </div>
-    </div>
+    <x-stat-card value="{{ $pendingPendaftaranCount }}" label="Disetujui Wali" color="blue">
+        <x-slot name="icon"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></x-slot>
+    </x-stat-card>
 
-    {{-- Stat 3: Aktif Magang --}}
-    <div class="card bg-white shadow-sm border border-base-200">
-        <div class="card-body p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-1">Aktif Magang</p>
-                    <h3 class="text-4xl font-black text-green-600">{{ $aktifCount }}</h3>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                </div>
-            </div>
-            <p class="text-[10px] font-bold text-gray-900 mt-3 uppercase tracking-wider">Sedang berjalan</p>
-        </div>
-    </div>
+    <x-stat-card value="{{ $aktifCount }}" label="Aktif Magang" color="green">
+        <x-slot name="icon"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></x-slot>
+    </x-stat-card>
 
-    {{-- Stat 4: Selesai --}}
-    <div class="card bg-[#6B21A8] shadow-sm border-none shadow-purple-200">
-        <div class="card-body p-6 text-white">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-black text-white/60 uppercase tracking-widest mb-1">Magang Selesai</p>
-                    <h3 class="text-4xl font-black text-white">{{ $selesaiCount }}</h3>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-white/20 text-white flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                </div>
-            </div>
-            <p class="text-[10px] font-bold text-white/60 mt-3 uppercase tracking-wider">Total terselesaikan</p>
-        </div>
-    </div>
+    <x-stat-card value="{{ $selesaiCount }}" label="Magang Selesai" color="purple">
+        <x-slot name="icon"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></x-slot>
+    </x-stat-card>
+
 </div>
 
 {{-- Main Content --}}
@@ -102,61 +51,56 @@
             </div>
         @endif
         {{-- BRAND CONSISTENT CONTROL CENTER --}}
-        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
-            <div class="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    {{-- Status Indicator Icon --}}
-                    <div class="w-16 h-16 rounded-2xl {{ $isPeriodeOpen ? 'bg-emerald-50 text-emerald-500' : 'bg-red-50 text-red-500' }} flex items-center justify-center shrink-0">
-                        @if($isPeriodeOpen)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                        @endif
-                    </div>
-
-                    <div class="text-center md:text-left">
-                        <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
-                            <span class="w-2 h-2 rounded-full {{ $isPeriodeOpen ? 'bg-emerald-500 animate-pulse' : 'bg-red-500' }}"></span>
-                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6B21A8]">Status Sistem Utama</span>
-                        </div>
-                        <h4 class="text-xl font-bold text-gray-800 tracking-tight">
-                            Pendaftaran: 
-                            <span class="{{ $isPeriodeOpen ? 'text-emerald-600' : 'text-red-600' }}">
-                                {{ $isPeriodeOpen ? 'Diterima & Terbuka' : 'Ditolak & Tertutup' }}
-                            </span>
-                        </h4>
-                        <p class="text-xs font-medium text-gray-500 mt-1 max-w-sm leading-relaxed">
-                            {{ $isPeriodeOpen ? 'Sistem sedang menerima berkas pendaftaran mahasiswa baru.' : 'Sistem sedang menolak seluruh akses pendaftaran mahasiswa.' }}
-                        </p>
-                    </div>
+        <x-card padding="large" border class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                {{-- Status Indicator Icon --}}
+                <div class="w-16 h-16 rounded-2xl {{ $isPeriodeOpen ? 'bg-emerald-50 text-emerald-500' : 'bg-red-50 text-red-500' }} flex items-center justify-center shrink-0">
+                    @if($isPeriodeOpen)
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    @endif
                 </div>
-                
-                <div class="w-full md:w-auto">
-                    {{-- Toggle Form --}}
-                    <form id="toggleSystemForm" action="{{ route('operator.periode.toggle') }}" method="POST" class="hidden">
-                        @csrf
-                    </form>
 
-                    <button type="button" 
-                            onclick="document.getElementById('toggle_confirm_modal').showModal()"
-                            class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200' }} text-white border-none px-10 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 w-full md:w-auto shadow-xl transition-all active:scale-95">
-                        @if($isPeriodeOpen)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                            Tutup Pendaftaran
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            Buka Pendaftaran
-                        @endif
-                    </button>
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full {{ $isPeriodeOpen ? 'bg-emerald-500 animate-pulse' : 'bg-red-500' }}"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6B21A8]">Status Sistem Utama</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 tracking-tight">
+                        Pendaftaran: 
+                        <span class="{{ $isPeriodeOpen ? 'text-emerald-600' : 'text-red-600' }}">
+                            {{ $isPeriodeOpen ? 'Diterima & Terbuka' : 'Ditolak & Tertutup' }}
+                        </span>
+                    </h4>
+                    <p class="text-xs font-medium text-gray-500 mt-1 max-w-sm leading-relaxed">
+                        {{ $isPeriodeOpen ? 'Sistem sedang menerima berkas pendaftaran mahasiswa baru.' : 'Sistem sedang menolak seluruh akses pendaftaran mahasiswa.' }}
+                    </p>
                 </div>
             </div>
-        </div>
+            
+            <div class="w-full md:w-auto">
+                {{-- Toggle Form --}}
+                <form id="toggleSystemForm" action="{{ route('operator.periode.toggle') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
+
+                <button type="button" 
+                        onclick="document.getElementById('toggle_confirm_modal').showModal()"
+                        class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200' }} text-white border-none px-10 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 w-full md:w-auto shadow-xl transition-all active:scale-95">
+                    @if($isPeriodeOpen)
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        Tutup Pendaftaran
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Buka Pendaftaran
+                    @endif
+                </button>
             </div>
-        </div>
+        </x-card>
 
 
-        <div class="bg-white rounded-[2rem] border border-base-200 shadow-sm overflow-hidden">
+        <x-card padding="none" border>
             <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-2 h-8 bg-[#F49E0A] rounded-full"></div>
@@ -183,16 +127,16 @@
                 </div>
                 @empty
                 <div class="p-12 text-center">
-                    <p class="text-[10px] font-black text-black font-black uppercase tracking-widest italic">Tidak ada antrean pendaftaran saat ini</p>
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">Tidak ada antrean pendaftaran saat ini</p>
                 </div>
                 @endforelse
             </div>
-        </div>
+        </x-card>
     </div>
 
     {{-- Panel Aksi Cepat --}}
     <div class="space-y-4">
-        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-6 space-y-4">
+        <x-card border class="space-y-4">
             <h4 class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-2">Aksi Cepat</h4>
 
             <a href="{{ route('operator.dosen_pembimbing') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 transition-all group">
@@ -214,42 +158,42 @@
                     <p class="text-[10px] font-bold text-gray-900">{{ $aktifCount }} aktif magang</p>
                 </div>
             </a>
-        </div>
+        </x-card>
     </div>
 </div>
 
+
 {{-- Toggle System Confirmation Modal --}}
-<dialog id="toggle_confirm_modal" class="modal modal-bottom sm:modal-middle">
-    <div class="modal-box bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100 shadow-2xl">
-        <div class="flex flex-col items-center text-center">
-            {{-- Status Icon in Modal --}}
-            <div class="w-20 h-20 rounded-3xl {{ $isPeriodeOpen ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-500' }} flex items-center justify-center mb-6">
-                @if($isPeriodeOpen)
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                @else
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                @endif
-            </div>
+<x-modal id="toggle_confirm_modal" size="md">
+    <div class="flex flex-col items-center text-center">
+        {{-- Status Icon --}}
+        <div class="w-20 h-20 rounded-3xl {{ $isPeriodeOpen ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-500' }} flex items-center justify-center mb-6">
+            @if($isPeriodeOpen)
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            @else
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            @endif
+        </div>
 
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Konfirmasi Akses Sistem</h3>
-            <p class="text-sm font-medium text-gray-500 leading-relaxed max-w-xs">
-                Apakah Anda yakin ingin <strong>{{ $isPeriodeOpen ? 'MENUTUP' : 'MEMBUKA' }}</strong> akses pendaftaran magang untuk mahasiswa?
-            </p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Konfirmasi Akses Sistem</h3>
+        <p class="text-sm font-medium text-gray-500 leading-relaxed max-w-xs">
+            Apakah Anda yakin ingin <strong>{{ $isPeriodeOpen ? 'MENUTUP' : 'MEMBUKA' }}</strong> akses pendaftaran magang untuk mahasiswa?
+        </p>
 
-            <div class="grid grid-cols-2 gap-4 w-full mt-10">
-                <form method="dialog">
-                    <button class="btn btn-ghost w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] text-gray-400">Batal</button>
-                </form>
-                <button onclick="document.getElementById('toggleSystemForm').submit()" 
-                        class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600' : 'bg-emerald-500 hover:bg-emerald-600' }} text-white border-none w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200">
-                    Ya, {{ $isPeriodeOpen ? 'Tutup' : 'Buka' }} Akses
-                </button>
-            </div>
+        <div class="grid grid-cols-2 gap-4 w-full mt-10">
+            <form method="dialog">
+                <x-button variant="ghost" size="lg" :full="true">Batal</x-button>
+            </form>
+            <x-button
+                variant="{{ $isPeriodeOpen ? 'red' : 'green' }}"
+                size="lg"
+                :full="true"
+                onclick="document.getElementById('toggleSystemForm').submit()"
+            >
+                Ya, {{ $isPeriodeOpen ? 'Tutup' : 'Buka' }} Akses
+            </x-button>
         </div>
     </div>
-    <form method="dialog" class="modal-backdrop bg-black/20 backdrop-blur-sm">
-        <button>close</button>
-    </form>
-</dialog>
+</x-modal>
 
 @endsection

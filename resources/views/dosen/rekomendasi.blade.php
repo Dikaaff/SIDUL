@@ -3,37 +3,24 @@
 @section('title', 'Rekomendasi Magang')
 
 @section('header')
-<x-card class="bg-[#6B21A8] text-white p-8 mt-2 relative overflow-hidden border-none shadow-2xl">
-    <!-- Decorative elements -->
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-
-    <div class="flex flex-col md:flex-row md:items-center justify-between relative z-10">
-        <div>
-            <h2 class="text-3xl font-bold mb-2">
-                Rekomendasi Magang ✍️
-            </h2>
-            <p class="text-white opacity-90 font-medium text-sm md:text-base max-w-2xl">Sebagai Dosen Wali, Anda dapat memberikan persetujuan dan tanda tangan rekomendasi magang mahasiswa dengan cepat.</p>
-        </div>
-    </div>
-</x-card>
+<x-page-header 
+    title="Rekomendasi Magang ✍️" 
+    subtitle="Sebagai Dosen Wali, Anda dapat memberikan persetujuan dan tanda tangan rekomendasi magang mahasiswa dengan cepat."
+/>
 @endsection
 
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
     <!-- Main List Section -->
     <div class="lg:col-span-3 space-y-6 w-full max-w-full overflow-hidden">
-        <div class="flex items-center justify-between bg-white p-8 rounded-[2.5rem] border border-base-200 shadow-xl shadow-gray-100/50 mb-4 transition-all hover:shadow-2xl">
+        <x-card padding="large" border class="flex items-center justify-between mb-4 !shadow-xl !shadow-gray-100/50 hover:!shadow-2xl">
             <div>
-                <h3 class="font-bold text-gray-800 flex items-center gap-4 text-xl">
-                    <div class="w-2 h-8 bg-primary rounded-full"></div>
-                    Antrean Rekomendasi
-                </h3>
+                <x-section-title color="primary" title="Antrean Rekomendasi" />
             </div>
             <div class="flex gap-2">
                 <input id="searchInput" onkeyup="filterByNIM()" class="input input-md bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold w-64 focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Cari Mahasiswa Berdasarkan NIM..." />
             </div>
-        </div>
+        </x-card>
 
         <!-- Responsive Container for the list -->
         <div class="overflow-x-auto pb-4 -mx-2 px-2 lg:mx-0 lg:px-0 custom-scrollbar">
@@ -48,7 +35,7 @@
 
                 <div id="recommendationList" class="space-y-3">
                     @forelse($mhsWali as $mhs)
-                    <div class="mhs-row bg-white hover:bg-gray-50/50 border border-base-200 rounded-[2rem] p-6 transition-all group shadow-sm grid grid-cols-12 gap-4 items-center">
+                    <x-card padding="none" border class="mhs-row p-6 hover:bg-gray-50/50 transition-all group grid grid-cols-12 gap-4 items-center">
                         <div class="col-span-4 flex items-center gap-5">
                             <div class="w-14 h-14 rounded-2xl bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-sm group-hover:rotate-6 transition-all duration-500">
                                 {{ substr($mhs->nama, 0, 2) }}
@@ -58,17 +45,9 @@
                                 <p class="mhs-nim text-[11px] text-[#6B21A8] font-semibold tracking-wide mt-1 truncate opacity-70">{{ $mhs->nim }}</p>
                             </div>
                         </div>
-                                              <div class="col-span-2 flex justify-center">
-                            @php
-                                $statusClasses = [
-                                    'Approve' => 'bg-green-50 text-green-600 border-green-100',
-                                    'Rejected' => 'bg-red-50 text-red-600 border-red-100',
-                                    'Pending' => 'bg-orange-50 text-[#F49E0A] border-orange-100',
-                                ][$mhs->status_magang] ?? 'bg-gray-50 text-gray-500 border-gray-100';
-                            @endphp
-                            <div class="badge {{ $statusClasses }} font-black text-[9px] px-5 py-4 uppercase tracking-[0.2em] rounded-xl italic border-2">
-                                {{ strtoupper($mhs->status_magang) }}
-                            </div>
+                        
+                        <div class="col-span-2 flex justify-center">
+                            <x-status-badge :status="$mhs->status_magang" />
                         </div>
  
                         <div class="col-span-3 flex items-center">
@@ -95,7 +74,7 @@
                                 </form>
                             @else
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="openRejectModal('{{ $mhs->id }}', '{{ $mhs->nama }}')" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95">
+                                    <button type="button" onclick="openRejectModal('{{ $mhs->id }}', '{{ addslashes($mhs->nama) }}')" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95">
                                         Reject
                                     </button>
                                     <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline" onsubmit="event.preventDefault(); handleDelayedSubmit(this);">
@@ -107,12 +86,12 @@
                                 </div>
                             @endif
                         </div>
-                    </div>
+                    </x-card>
                     @empty
-                    <div class="bg-gray-50 rounded-[2rem] p-12 text-center text-gray-400 border border-gray-100 border-dashed">
+                    <x-card padding="large" border class="bg-gray-50 text-center text-gray-400 border-dashed">
                         <h4 class="font-extrabold text-lg">Belum Ada Mahasiswa Perwalian</h4>
                         <p class="text-sm mt-1">Saat ini belum ada mahasiswa yang mengajukan persetujuan akun.</p>
-                    </div>
+                    </x-card>
                     @endforelse
                 </div>
             </div>
@@ -121,21 +100,21 @@
 
     <!-- Side Panel Section -->
     <div class="lg:col-span-1 space-y-6">
-        <x-card class="bg-[#F49E0A] text-white shadow-2xl shadow-orange-900/10 italic relative overflow-hidden group border-none">
+        <x-card padding="large" border="false" shadow="none" class="bg-[#F49E0A] text-white !shadow-2xl !shadow-orange-900/10 italic relative group">
             <x-slot name="header">
-                <div class="flex items-center gap-2 mb-6">
+                <div class="flex items-center gap-2 mb-6 relative z-10">
                     <div class="w-2 h-6 bg-white rounded-full shadow-lg shadow-white/50"></div>
                     <h4 class="font-black text-xs uppercase tracking-[0.25em] italic text-white">Panduan Cepat</h4>
                 </div>
             </x-slot>
-            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-1000"></div>
+            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-1000 pointer-events-none"></div>
             <div class="space-y-5 relative z-10">
                 <div class="flex gap-4 items-center">
-                    <div class="w-8 h-8 rounded-xl bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white">1</div>
+                    <div class="w-8 h-8 rounded-xl bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white shrink-0">1</div>
                     <p class="text-[10px] font-bold leading-relaxed uppercase tracking-wider text-white">Periksa identitas pendaftar.</p>
                 </div>
                 <div class="flex gap-4 items-center">
-                    <div class="w-8 h-8 rounded-xl bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white">2</div>
+                    <div class="w-8 h-8 rounded-xl bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white shrink-0">2</div>
                     <p class="text-[10px] font-bold leading-relaxed uppercase tracking-wider text-white">Klik tombol APPROVE.</p>
                 </div>
             </div>

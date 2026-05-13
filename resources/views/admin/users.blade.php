@@ -3,19 +3,15 @@
 @section('title', 'Kelola Staf')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2 flex flex-col md:flex-row md:items-center justify-between gap-6">
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="relative z-10">
-        <h2 class="text-2xl md:text-3xl font-black mb-2">Manajemen Staf 👑</h2>
-        <p class="text-white/90 font-medium text-sm">Kelola data akses untuk Operator dan Dosen Pembimbing.</p>
-    </div>
-    
-    <button onclick="openModalAddUserModal()" class="relative z-10 btn min-h-0 h-10 px-5 rounded-xl bg-white hover:bg-purple-50 text-[#6B21A8] border-none font-black text-xs uppercase tracking-widest shadow-lg self-start md:self-auto">
+<x-page-header 
+    title="Manajemen Staf 👑" 
+    subtitle="Kelola data akses untuk Operator dan Dosen Pembimbing."
+>
+    <button onclick="openModalAddUserModal()" class="btn min-h-0 h-10 px-5 rounded-xl bg-white hover:bg-purple-50 text-[#6B21A8] border-none font-black text-xs uppercase tracking-widest shadow-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
         Tambah Staf
     </button>
-</div>
+</x-page-header>
 @endsection
 
 @section('breadcrumbs')

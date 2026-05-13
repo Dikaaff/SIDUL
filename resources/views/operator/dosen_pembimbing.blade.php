@@ -3,23 +3,17 @@
 @section('title', 'Plotting Dosen Pembimbing')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="flex items-center justify-between relative z-10">
-        <div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2">Plotting Dosen Pembimbing 🤝</h2>
-            <p class="text-white/90 font-medium text-sm">Tetapkan Dosen Pembimbing untuk mahasiswa yang telah divalidasi dokumen pendaftarannya.</p>
-        </div>
-    </div>
-</div>
+<x-page-header 
+    title="Plotting Dosen Pembimbing 🤝" 
+    subtitle="Tetapkan Dosen Pembimbing untuk mahasiswa yang telah divalidasi dokumen pendaftarannya."
+/>
 @endsection
 
 @section('content')
 <div class="grid grid-cols-1 gap-8 font-sans">
     
     {{-- Bagian: Perlu Penugasan --}}
-    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+    <x-card padding="none" border class="overflow-hidden">
         <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-2 h-8 bg-[#6B21A8] rounded-full"></div>
@@ -89,10 +83,10 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </x-card>
 
     {{-- Bagian: Riwayat Plotting Terbaru --}}
-    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+    <x-card padding="none" border class="overflow-hidden">
         <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50">
             <h3 class="font-black text-gray-800 text-lg tracking-tight flex items-center gap-3">
                 <span class="w-2 h-8 bg-green-500 rounded-full"></span>
@@ -153,7 +147,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </x-card>
 
 </div>
 

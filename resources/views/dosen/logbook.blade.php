@@ -3,19 +3,10 @@
 @section('title', 'Review Logbook Mahasiswa')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-        <div>
-            <h2 class="text-2xl md:text-3xl font-bold mb-2">Logbook Monitor 📑</h2>
-            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Pantau aktivitas harian dan progres pekerjaan mahasiswa bimbingan Anda secara real-time.</p>
-        </div>
-        <div class="flex gap-3 shrink-0">
-            {{-- Badge Aktivitas Terkini Dihapus --}}
-        </div>
-    </div>
-</div>
+<x-page-header 
+    title="Logbook Monitor 📑" 
+    subtitle="Pantau aktivitas harian dan progres pekerjaan mahasiswa bimbingan Anda secara real-time."
+/>
 @endsection
 
 @section('content')
@@ -23,7 +14,7 @@
     
     {{-- Sidebar: List Mahasiswa --}}
     <div class="lg:col-span-1 space-y-4">
-        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+        <x-card padding="none" border class="overflow-hidden">
             <div class="p-6 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
                 <h3 class="font-bold text-gray-800 text-xs uppercase tracking-widest">Daftar Bimbingan</h3>
                 <span class="badge badge-primary font-bold text-[10px] py-3 px-3">{{ $mhsBimbingan->count() }}</span>
@@ -31,12 +22,12 @@
             <div class="p-4 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" id="studentSelector">
                 {{-- Diisi via JS --}}
             </div>
-        </div>
+        </x-card>
     </div>
 
     {{-- Main: Logbook Timeline --}}
     <div class="lg:col-span-3">
-        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden min-h-[600px]">
+        <x-card padding="none" border class="overflow-hidden min-h-[600px]">
             <div id="logHeader" class="p-8 md:p-10 border-b border-gray-100 bg-gray-50/30 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-6">
                     <div id="activeAvatar" class="w-20 h-20 rounded-3xl bg-primary text-white flex items-center justify-center font-black text-3xl shadow-2xl shadow-purple-200">?</div>
@@ -63,36 +54,20 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </x-card>
     </div>
 </div>
 
 {{-- Detail Modal --}}
-<dialog id="log_detail_modal" class="modal modal-bottom sm:modal-middle">
-    <div class="modal-box p-0 max-w-2xl bg-white rounded-[2.5rem] overflow-hidden border-none shadow-2xl">
-        <div class="bg-gray-900 p-8 text-white flex items-center justify-between relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-            <div class="relative z-10">
-                <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1 italic">Detail Aktivitas Harian</p>
-                <h3 id="detailDate" class="text-2xl font-black italic tracking-tighter uppercase">25 MEI 2024</h3>
-            </div>
-            <form method="dialog" class="relative z-10">
-                <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white">✕</button>
-            </form>
-        </div>
-        <div class="p-10 -mt-8 bg-white rounded-[3rem] relative z-20 space-y-8">
-            <div>
-                <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic px-1">Isi Kegiatan / Pekerjaan</p>
-                <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 shadow-inner">
-                    <p id="detailDesc" class="text-base font-bold text-gray-700 leading-relaxed italic whitespace-pre-wrap">Konten kegiatan...</p>
-                </div>
-            </div>
-            <div class="flex gap-4">
-                <button onclick="document.getElementById('log_detail_modal').close()" class="btn btn-ghost flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl hover:bg-gray-50">Tutup Jendela</button>
-            </div>
+<x-modal id="log_detail_modal" color="dark" subtitle="Detail Aktivitas Harian" title="TANGGAL" size="2xl">
+    <div>
+        <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic px-1">Isi Kegiatan / Pekerjaan</p>
+        <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 shadow-inner">
+            <p id="detailDesc" class="text-base font-bold text-gray-700 leading-relaxed italic whitespace-pre-wrap">Konten kegiatan...</p>
         </div>
     </div>
-</dialog>
+    <x-button variant="ghost" size="lg" :full="true" onclick="document.getElementById('log_detail_modal').close()">Tutup Jendela</x-button>
+</x-modal>
 @endsection
 
 @push('styles')
@@ -186,7 +161,7 @@ function renderLogs() {
 
 function showDetail(studentId, logIndex) {
     const log = mockLogs[studentId][logIndex];
-    document.getElementById('detailDate').innerText = log.date.toUpperCase();
+    document.querySelector('#log_detail_modal h3').innerText = log.date.toUpperCase();
     document.getElementById('detailDesc').innerText = log.desc;
     document.getElementById('log_detail_modal').showModal();
 }

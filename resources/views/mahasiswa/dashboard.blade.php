@@ -3,42 +3,19 @@
 @section('title', 'Dashboard Mahasiswa')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
-    <!-- Decorative elements -->
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10 hidden sm:flex lg:flex">
-        <div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2">
-                Halo, {{ Auth::user()->name }} 👋
-            </h2>
-            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Selamat datang di Sistem Informasi Management Magang (SIDUL). Mari kelola progress magangmu hari ini.</p>
-        </div>
-        <div class="flex gap-3 self-start md:self-center">
-            <div class="{{ $pendaftaran ? 'bg-white/10 border-white/20' : 'bg-red-500/10 border-red-500/20' }} backdrop-blur-md px-5 py-2.5 rounded-2xl border text-white flex items-center gap-3 shadow-xl">
-                <div class="w-2.5 h-2.5 rounded-full {{ $pendaftaran ? 'bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]' : 'bg-red-400 shadow-[0_0_10px_rgba(248,113,113,0.8)]' }} animate-pulse"></div>
-                <span class="text-xs font-bold uppercase tracking-wider">
-                    {{ $pendaftaran ? 'Akun Aktif' : 'Belum Aktif' }}
-                </span>
-            </div>
+<x-page-header 
+    title="Halo, {{ Auth::user()->name }} 👋" 
+    subtitle="Selamat datang di SIDUL. Mari kelola progress magangmu hari ini."
+>
+    <div class="flex flex-col md:flex-row items-center gap-4">
+        <div class="{{ $pendaftaran ? 'bg-white/10 border-white/20' : 'bg-red-500/10 border-red-500/20' }} backdrop-blur-md px-5 py-2.5 rounded-2xl border text-white flex items-center gap-3 shadow-xl">
+            <div class="w-2.5 h-2.5 rounded-full {{ $pendaftaran ? 'bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]' : 'bg-red-400 shadow-[0_0_10px_rgba(248,113,113,0.8)]' }} animate-pulse"></div>
+            <span class="text-xs font-bold uppercase tracking-wider">
+                {{ $pendaftaran ? 'Akun Aktif' : 'Belum Aktif' }}
+            </span>
         </div>
     </div>
-    
-    <!-- Mobile Header -->
-    <div class="flex flex-col justify-between gap-4 relative z-10 sm:hidden">
-        <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-black">Halo, {{ explode(' ', Auth::user()->name)[0] }} 👋</h2>
-            <div class="{{ $pendaftaran ? 'bg-white/10 border-white/20' : 'bg-red-500/10 border-red-500/20' }} backdrop-blur-md px-3 py-1.5 rounded-xl border text-white flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full {{ $pendaftaran ? 'bg-green-400' : 'bg-red-400' }} animate-pulse"></div>
-                <span class="text-[10px] font-bold uppercase tracking-wider">
-                    {{ $pendaftaran ? 'Aktif' : 'Belum Aktif' }}
-                </span>
-            </div>
-        </div>
-        <p class="text-white/90 font-medium text-sm leading-relaxed">Selamat datang di SIDUL.</p>
-    </div>
-</div>
+</x-page-header>
 @endsection
 
 @section('breadcrumbs')
@@ -63,7 +40,7 @@
 
     @if(!$isPeriodeOpen)
     <!-- Global Period Closure Alert -->
-    <div class="bg-red-50 border-2 border-red-100 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group">
+    <x-card padding="large" border class="bg-red-50 !border-red-100 relative group transition-all">
         <div class="absolute -right-10 -top-10 w-40 h-40 bg-red-100 rounded-full blur-3xl opacity-50"></div>
         <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
             <div class="w-16 h-16 rounded-2xl bg-red-500 text-white flex items-center justify-center shadow-xl shadow-red-200 shrink-0">
@@ -76,7 +53,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </x-card>
     @endif
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-start">
@@ -86,25 +63,25 @@
         
         <!-- Quick Stats Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex flex-col items-center text-center group hover:shadow-md transition-all">
+            <x-card padding="none" border class="p-6 flex flex-col items-center text-center group hover:shadow-md transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center text-[#F49E0A] mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                 </div>
                 <span class="text-3xl font-black text-gray-800 tracking-tighter">{{ $logbookCount ?? 0 }}</span>
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Logbook Terisi</span>
-            </div>
+            </x-card>
 
-            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex flex-col items-center text-center group hover:shadow-md transition-all">
+            <x-card padding="none" border class="p-6 flex flex-col items-center text-center group hover:shadow-md transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
                 </div>
                 <span class="text-[10px] font-black {{ $laporan ? 'text-blue-600 bg-blue-50 border-blue-100' : 'text-gray-300 bg-gray-50 border-gray-100' }} px-4 py-2 rounded-xl mb-1 uppercase tracking-widest border">
                     {{ $laporan ? 'TERUNGGAH' : 'BELUM ADA' }}
                 </span>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Laporan Akhir</span>
-            </div>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Laporan Akhir</span>
+            </x-card>
 
-            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex flex-col items-center text-center group hover:shadow-md transition-all">
+            <x-card padding="none" border class="p-6 flex flex-col items-center text-center group hover:shadow-md transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-[#6B21A8] mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>
@@ -125,11 +102,11 @@
                     {{ $progress }}%
                 </span>
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Total Progres</span>
-            </div>
+            </x-card>
         </div>
 
         <!-- Main Action Section -->
-        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-8 md:p-12 min-h-[300px] flex items-center justify-center">
+        <x-card padding="none" border class="p-8 md:p-12 min-h-[300px] flex items-center justify-center">
             @if(!$pendaftaran)
                 <div class="text-center max-w-md">
                     <div class="w-20 h-20 bg-purple-50 text-primary rounded-3xl flex items-center justify-center mx-auto mb-6">
@@ -169,7 +146,7 @@
                             <span class="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Info Perusahaan</span>
                             <h3 class="text-3xl font-black text-gray-800 mb-2">{{ $pendaftaran->perusahaan }}</h3>
                             <p class="text-gray-500 font-bold mb-8 italic">{{ $pendaftaran->alamat }}</p>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 justify-center md:justify-start">
                                 <a href="{{ route('mahasiswa.logbook') }}" class="btn h-11 px-6 bg-primary hover:bg-purple-700 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-purple-100 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                                     Logbook
@@ -183,13 +160,13 @@
                     </div>
                 </div>
             @endif
-        </div>
+        </x-card>
     </div>
 
     <!-- Kolom Kanan: Status & Info (4 Kolom) -->
     <div class="lg:col-span-4 space-y-8">
         <!-- Status Magang -->
-        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+        <x-card padding="none" border class="overflow-hidden">
             <div class="p-8 space-y-8">
                 <div>
                     <h3 class="font-bold text-gray-800 text-lg mb-6">Status Magang</h3>
@@ -233,10 +210,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </x-card>
 
         <!-- Panduan Card -->
-        <div class="bg-[#F49E0A] text-white p-8 rounded-[2rem] relative overflow-hidden group shadow-lg shadow-orange-900/10">
+        <x-card padding="large" border="false" shadow="none" class="bg-[#F49E0A] text-white relative group !shadow-lg !shadow-orange-900/10">
             <div class="absolute -right-8 -bottom-8 opacity-20 transform -rotate-12 group-hover:scale-110 transition-transform duration-700">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-40 w-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
             </div>
@@ -245,20 +222,7 @@
                 <p class="text-white/80 text-[10px] font-bold mb-6 italic">Pelajari prosedur magang terbaru & format laporan.</p>
                 <a href="https://d3ti.amikom.ac.id/page/magang#" class="btn bg-white hover:bg-gray-50 text-[#F49E0A] border-none w-full rounded-xl h-12 text-[10px] font-black uppercase tracking-widest italic shadow-sm">Lihat</a>
             </div>
-        </div>
+        </x-card>
     </div>
 </div>
-</div>
-@endsection
-
-@section('scripts')
-<script>
-    // Logic for frontend interactivity if any
-</script>
-@endsection
-
-@section('scripts')
-<script>
-    // Frontend dynamic components if needed
-</script>
 @endsection

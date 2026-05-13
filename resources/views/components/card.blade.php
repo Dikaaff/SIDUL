@@ -31,15 +31,12 @@
 <div
     class="
         {{ str_contains($class, 'bg-') ? '' : 'bg-white' }}
-        {{ $shadow === 'sm' ? 'shadow-sm' :
-          ($shadow === 'md' ? 'shadow-md' :
-          ($shadow === 'lg' ? 'shadow-lg' :
-          ($shadow === 'none' ? 'shadow-none' :
-          'shadow-sm'))) }}
-        {{ $border ? 'border border-base-200' : '' }}
-        {{ $rounded ? 'rounded-[2rem]' : 'rounded-[2rem]' }}
-        {{ $padding ? 'p-8' : 'p-6' }}
-        {{ $class ?? '' }}
+        {{ $shadow === 'sm' ? 'shadow-sm' : ($shadow === 'md' ? 'shadow-md' : ($shadow === 'lg' ? 'shadow-lg' : ($shadow === 'none' ? 'shadow-none' : 'shadow-sm'))) }}
+        {{ $border ? 'border border-gray-100' : '' }}
+        {{ $rounded ? 'rounded-[2rem]' : 'rounded-none' }}
+        {{ $padding === 'large' ? 'p-8' : ($padding === 'small' ? 'p-4' : ($padding === 'none' ? 'p-0' : 'p-6')) }}
+        overflow-hidden
+        {{ $class }}
     "
 >
     @if($header)

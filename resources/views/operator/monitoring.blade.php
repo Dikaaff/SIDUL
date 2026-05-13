@@ -3,33 +3,23 @@
 @section('title', 'Monitoring Global Magang')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="flex items-center justify-between relative z-10">
-        <div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2">Monitoring Global Magang 📊</h2>
-            <p class="text-white/90 font-medium text-sm">Pantau perkembangan seluruh mahasiswa magang, penugasan dosen, dan status akhir proses di seluruh fakultas.</p>
-        </div>
-    </div>
-</div>
-
-
-
+<x-page-header 
+    title="Monitoring Global Magang 📊" 
+    subtitle="Pantau perkembangan seluruh mahasiswa magang, penugasan dosen, dan status akhir proses di seluruh fakultas." 
+/>
 @endsection
 
 @section('content')
 <div class="space-y-6 font-sans">
     
-    <div class="flex flex-col xl:flex-row gap-6 items-stretch xl:items-center justify-between bg-white p-6 md:p-8 rounded-[2.5rem] border border-gray-100 shadow-sm transition-all hover:shadow-md">
+    <x-card padding="large" border class="flex flex-col xl:flex-row gap-6 items-stretch xl:items-center justify-between transition-all hover:shadow-md">
             {{-- Unified Real-time Filter Form --}}
             <div class="flex flex-col md:flex-row flex-1 gap-4">
-                <div class="relative flex-1 group">
-                    <input type="text" id="realTimeSearch" placeholder="Cari Nama, NIM, atau Perusahaan secara instan..." class="input w-full pl-12 pr-4 h-12 bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all group-hover:border-primary/30" />
-                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    </div>
-                </div>
+                <x-search-input 
+                    id="realTimeSearch"
+                    placeholder="Cari Nama, NIM, atau Perusahaan secara instan..."
+                    class="flex-1 h-12 bg-gray-50 border-gray-100 text-xs font-bold"
+                />
 
                 <div class="flex gap-3">
                     <select id="statusFilter" class="select select-md bg-gray-50 border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-primary/10 transition-all w-full md:w-[180px]">
@@ -48,11 +38,11 @@
                 Export Excel
              </button>
         </div>
-    </div>
+    </x-card>
 
     {{-- Tabel Monitoring Global --}}
     {{-- Container Monitoring --}}
-    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
+    <x-card padding="none" border class="overflow-hidden">
         {{-- Desktop View (Table) --}}
         <div class="hidden md:block overflow-x-auto custom-scrollbar">
             <table id="monitoringTable" class="table w-full border-collapse">
@@ -199,7 +189,7 @@
         <div class="px-8 py-5 border-t border-gray-100 bg-gray-50/30 flex items-center justify-between">
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em]">Menampilkan {{ $magangs->count() }} hasil pemantauan</p>
         </div>
-    </div>
+    </x-card>
 
 </div>
 

@@ -1,113 +1,95 @@
-{{--
-    Reusable Modal/Dialog Component
-    Usage:
-    <x-modal
-        id="unique-modal-id"
-        title="Modal Title"
-        width="sm|md|lg|xl|full"
-        @close="closeCallback"
-    >
-        <!-- Modal Content -->
-    </x-modal>
-
-    Examples:
-    <x-modal id="revisi_modal" title="Berikan Catatan Revisi">
-        <!-- Content -->
-    </x-modal>
---}}
-
 @props([
-    'id' => 'modal-' . uniqid(),
-    'title' => null,
-    'width' => 'md',
-    'closeCallback' => null,
+    'id',
+    'title'    => null,
+    'subtitle' => null,
+    'color'    => 'default',  {{-- default | purple | dark --}}
+    'size'     => '2xl',      {{-- sm | md | lg | xl | 2xl | 5xl --}}
 ])
 
-<!-- Modal Overlay -->
-<div
-    id="{{ e($id) }}_overlay"
-    class="fixed inset-0 z-[9999] bg-black/50 hidden"
-    @click.outside="close"
-    @keydown.escape="close"
-></div>
+@php
+$maxWidth = match($size) {
+    'sm'  => 'max-w-sm',
+    'md'  => 'max-w-md',
+    'lg'  => 'max-w-lg',
+    'xl'  => 'max-w-xl',
+    '2xl' => 'max-w-2xl',
+    '5xl' => 'max-w-5xl',
+    default => 'max-w-2xl',
+};
+@endphp
 
-<!-- Modal Dialog -->
-<dialog
-    id="{{ e($id) }}"
-    class="modal modal-bottom sm:modal-middle transition-all duration-300"
->
-    <!-- Modal Box -->
-    <div class="modal-box p-0 overflow-hidden bg-white rounded-[2.5rem] shadow-2xl relative 
-           {{ $width === 'sm' ? 'max-w-sm' :
-             ($width === 'md' ? 'max-w-md' :
-             ($width === 'lg' ? 'max-w-lg' :
-             ($width === 'xl' ? 'max-w-xl' :
-             ($width === 'full' ? 'w-full max-w-[90vw]' :
-             'max-w-md')))) }} w-11/12 mx-auto">
-            <!-- Header -->
-            @if($title)
-                <div class="bg-gray-50 border-b border-gray-100 p-8 flex items-center justify-between">
+<dialog id="{{ $id }}" class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box bg-white {{ $maxWidth }} rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl">
+
+        {{-- ===== PURPLE HEADER ===== --}}
+        @if($color === 'purple' && $title)
+            <div class="bg-[#6B21A8] p-8 text-white relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                <div class="flex items-start justify-between relative z-10">
                     <div>
-                        <h3 class="font-black text-xl text-gray-800 italic uppercase">
-                            {{ $title }}
-                        </h3>
+                        <h3 class="font-black text-2xl italic tracking-tighter">{{ $title }}</h3>
+                        @if($subtitle)
+                            <p class="text-white/70 text-[10px] font-black uppercase tracking-widest mt-1 italic">{{ $subtitle }}</p>
+                        @endif
                     </div>
+                    <form method="dialog">
+                        <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white ml-4">✕</button>
+                    </form>
                 </div>
-            @endif
-
-            <!-- Body -->
-            <div class="p-10 space-y-6">
+            </div>
+            {{-- Body overlapping header with rounded top --}}
+            <div class="p-10 -mt-6 bg-white rounded-[2.5rem] relative z-20 space-y-6">
                 {{ $slot }}
             </div>
 
-            <!-- Single Close Button -->
-            <button type="button" onclick="closeModal{{ \Illuminate\Support\Str::studly($id) }}()" class="absolute top-6 right-6 btn btn-circle btn-ghost btn-sm text-gray-400 hover:bg-gray-100 transition-all">✕</button>
-        </div>
-</dialog>
+        {{-- ===== DARK HEADER ===== --}}
+        @elseif($color === 'dark' && $title)
+            <div class="bg-gray-900 p-8 text-white flex items-center justify-between relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                <div class="relative z-10">
+                    @if($subtitle)
+                        <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1 italic">{{ $subtitle }}</p>
+                    @endif
+                    <h3 class="text-2xl font-black italic tracking-tighter uppercase">{{ $title }}</h3>
+                </div>
+                <form method="dialog" class="relative z-10">
+                    <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white">✕</button>
+                </form>
+            </div>
+            <div class="p-10 -mt-8 bg-white rounded-[3rem] relative z-20 space-y-8">
+                {{ $slot }}
+            </div>
 
-<script>
-    // Modal functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const modal = document.getElementById('{{ e($id) }}');
-        const overlay = document.getElementById('{{ e($id) }}_overlay');
-
-        if (!modal || !overlay) return;
-
-        // Open modal
-        window.openModal{{ \Illuminate\Support\Str::studly($id) }} = function() {
-            modal.showModal();
-            overlay.classList.remove('hidden');
-
-            // Focus first focusable element
-            setTimeout(() => {
-                const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-                if (focusableElements.length > 0) {
-                    focusableElements[0].focus();
-                }
-            }, 100);
-        };
-
-        // Close modal
-        window.closeModal{{ \Illuminate\Support\Str::studly($id) }} = function() {
-            modal.close();
-            overlay.classList.add('hidden');
-
-            // Trigger close callback if provided
-            @if($closeCallback)
-                {{ $closeCallback }};
+        {{-- ===== DEFAULT / GRAY HEADER ===== --}}
+        @else
+            @if($title)
+                <div class="p-8 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                    <div>
+                        <h3 class="font-black text-xl text-gray-800 italic">{{ $title }}</h3>
+                        @if($subtitle)
+                            <p class="text-sm text-gray-400 font-medium mt-1">{{ $subtitle }}</p>
+                        @endif
+                    </div>
+                    <form method="dialog">
+                        <button class="btn btn-circle btn-ghost btn-sm">✕</button>
+                    </form>
+                </div>
             @endif
-        };
+            <div class="p-10 space-y-6">
+                {{ $slot }}
+            </div>
+        @endif
 
-        // Close on overlay click
-        overlay.addEventListener('click', function() {
-            closeModal{{ \Illuminate\Support\Str::studly($id) }}();
-        });
+        {{-- ===== OPTIONAL FOOTER SLOT ===== --}}
+        @isset($footer)
+            <div class="px-10 pb-10 -mt-2">
+                {{ $footer }}
+            </div>
+        @endisset
 
-        // Close on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.open) {
-                closeModal{{ \Illuminate\Support\Str::studly($id) }}();
-            }
-        });
-    });
-</script>
+    </div>
+    {{-- Close on backdrop click --}}
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>

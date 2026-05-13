@@ -3,20 +3,14 @@
 @section('title', 'Laporan Magang Mahasiswa')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="flex items-center justify-between relative z-10">
-        <div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2">Daftar Laporan Magang 📝</h2>
-            <p class="text-white/90 font-medium text-sm">Lihat semua laporan akhir yang telah diunggah mahasiswa. Approval dilakukan oleh Dosen Pembimbing masing-masing.</p>
-        </div>
-    </div>
-</div>
+<x-page-header 
+    title="Daftar Laporan Magang 📝" 
+    subtitle="Lihat semua laporan akhir yang telah diunggah mahasiswa. Approval dilakukan oleh Dosen Pembimbing masing-masing."
+/>
 @endsection
 
 @section('content')
-<div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden font-sans">
+<x-card padding="none" border class="overflow-hidden font-sans">
     <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/10">
         <h3 class="font-black text-gray-800 text-lg tracking-tight flex items-center gap-3">
             <span class="w-2 h-8 bg-[#6B21A8] rounded-full"></span>
@@ -76,7 +70,7 @@
                     </td>
                     <td class="text-center">
                         <span class="text-[10px] font-black text-gray-700 tracking-tight bg-gray-50 px-3 py-1 rounded-lg border border-gray-100">
-                            {{ $magang->laporan->created_at->format('d M Y') }}
+                            {{ optional($magang->laporan)->created_at ? $magang->laporan->created_at->format('d M Y') : '-' }}
                         </span>
                 </tr>
                 @endif
@@ -94,5 +88,5 @@
             </tbody>
         </table>
     </div>
-</div>
+</x-card>
 @endsection

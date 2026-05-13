@@ -3,17 +3,10 @@
 @section('title', 'Draft Laporan Akhir')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden shadow-2xl mt-2 flex flex-col md:flex-row md:items-center justify-between gap-6">
-    <!-- Decorative elements -->
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-
-    <div class="relative z-10">
-        <h2 class="text-2xl md:text-3xl font-bold mb-1">
-            Digital Report Editor 📄
-        </h2>
-        <p class="text-white/90 font-medium text-sm">Susun laporan akhir Anda bab demi bab sesuai standar.</p>
-    </div>
+<x-page-header 
+    title="Digital Report Editor 📄" 
+    subtitle="Susun laporan akhir Anda bab demi bab sesuai standar."
+>
     <div class="flex gap-2 relative z-10">
         <div class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center gap-3">
             @php
@@ -29,7 +22,7 @@
             </span>
         </div>
     </div>
-</div>
+</x-page-header>
 @endsection
 
 @section('content')
@@ -75,13 +68,13 @@
         
         <div class="flex flex-col gap-8">
             <!-- Judul Section -->
-            <div class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-gray-100 transition-all hover:shadow-md">
+            <x-card padding="large" border class="transition-all hover:shadow-md">
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 ml-1 italic">Judul Laporan</label>
                 <input type="text" name="judul" id="judulInput" value="{{ old('judul', $laporan->judul ?? '') }}" 
                     placeholder="Contoh: LAPORAN AKHIR MAGANG PT. GOJEK INDONESIA..."
                     class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 text-xl font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all outline-none placeholder:text-gray-300"
                     {{ $laporan && $laporan->status === 'approved' ? 'readonly' : '' }} required>
-            </div>
+            </x-card>
 
             <!-- Tab Navigation -->
             <div class="flex flex-wrap gap-2 mb-[-1.5rem] px-4">
@@ -94,7 +87,7 @@
             </div>
 
             <!-- Editor Workspace -->
-            <div class="flex flex-col shadow-2xl rounded-[2rem] overflow-hidden border border-gray-200 bg-white">
+            <x-card padding="none" border class="overflow-hidden bg-white !shadow-2xl">
                 @foreach(['bab1', 'bab2', 'bab3', 'bab4'] as $key)
                     <div id="pane-{{ $key }}" class="tab-pane {{ $loop->first ? '' : 'hidden' }}">
                         <div class="p-8 md:p-12 min-h-[600px]">
@@ -104,10 +97,10 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
+            </x-card>
 
             <!-- Status & Actions -->
-            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
+            <x-card padding="large" border class="flex flex-col md:flex-row items-center justify-between gap-6">
                  <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-primary shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
@@ -141,7 +134,7 @@
                     </div>
                     @endif
                   </div>
-            </div>
+            </x-card>
         </div>
     </form>
 </div>

@@ -21,10 +21,6 @@
 
         <!-- Bottom: Main Inspirational Message -->
         <div class="z-10 relative">
-            <h1 class="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-6 drop-shadow-2xl">
-                Satu Pintu,<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-purple-400">Beribu Peluang.</span>
-            </h1>
             
             <div class="flex items-center gap-3 pt-8 mt-4 border-t border-white/10">
                 <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">Digital System</span>

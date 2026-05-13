@@ -3,23 +3,14 @@
 @section('title', 'Laporan Magang')
 
 @section('header')
-<div class="bg-[#6B21A8] text-white p-6 md:p-8 rounded-[2rem] relative overflow-hidden border-none shadow-2xl mt-2">
-    <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-        <div>
-            <h2 class="text-2xl md:text-3xl font-bold mb-2">Review Laporan Akhir 📄</h2>
-            <p class="text-white/90 font-medium text-sm md:text-base max-w-2xl leading-relaxed">Review dan berikan persetujuan untuk laporan akhir magang mahasiswa bimbingan Anda.</p>
-        </div>
-        <div class="flex gap-3 self-start md:self-center shrink-0">
-            {{-- Badge Dosen Pembimbing Dihapus --}}
-        </div>
-    </div>
-</div>
+<x-page-header 
+    title="Review Laporan Akhir 📄" 
+    subtitle="Review dan berikan persetujuan untuk laporan akhir magang mahasiswa bimbingan Anda."
+/>
 @endsection
 
 @section('content')
-<div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden font-sans w-full">
+<x-card padding="none" border class="font-sans w-full overflow-hidden">
 
     {{-- Table Header --}}
     <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -85,7 +76,7 @@
                         <button type="button" 
                             class="btn-review btn btn-sm rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider h-10 px-6"
                             data-id="{{ $magang->id }}"
-                            data-judul="{{ $laporan->judul }}"
+                            data-judul="{{ addslashes($laporan->judul) }}"
                             data-bab1="{{ base64_encode($laporan->bab1) }}"
                             data-bab2="{{ base64_encode($laporan->bab2) }}"
                             data-bab3="{{ base64_encode($laporan->bab3) }}"
@@ -104,7 +95,7 @@
         @endforelse
         </div>
     </div>
-</div>
+</x-card>
 
 {{-- Review Modal --}}
 <dialog id="reviewModal" class="modal modal-bottom sm:modal-middle">

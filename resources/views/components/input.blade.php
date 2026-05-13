@@ -1,0 +1,32 @@
+@props([
+    'disabled' => false,
+    'readonly' => false,
+    'required' => false,
+    'label' => '',
+    'name' => '',
+    'type' => 'text',
+    'placeholder' => '',
+    'value' => '',
+])
+
+<div>
+    @if($label)
+        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1 italic" for="{{ $name }}">
+            {{ $label }}
+            @if($required)
+                <span class="text-red-500">*</span>
+            @endif
+        </label>
+    @endif
+    <input 
+        {{ $disabled ? 'disabled' : '' }} 
+        {{ $readonly ? 'readonly' : '' }} 
+        {{ $required ? 'required' : '' }} 
+        type="{{ $type }}" 
+        name="{{ $name }}" 
+        id="{{ $name }}"
+        value="{{ $value }}"
+        placeholder="{{ $placeholder }}"
+        {!! $attributes->merge(['class' => 'w-full bg-gray-50 border border-gray-100 rounded-2xl py-4 px-6 text-sm font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-primary/5 outline-none transition-all ' . ($readonly ? 'cursor-not-allowed italic' : '')]) !!}
+    />
+</div>

@@ -15,8 +15,6 @@ Route::get('/', function () {
 });
 
 // Protected Routes (Must be Logged In)
-Route::get('/seed-dummy', [\App\Http\Controllers\DummyDataController::class, 'seed']);
-Route::get('/cleanup-dummy', [\App\Http\Controllers\DummyDataController::class, 'cleanup']);
 
 Route::middleware(['auth'])->group(function () {
 
