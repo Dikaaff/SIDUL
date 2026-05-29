@@ -8,9 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MockAuthMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
+    # fungsi untuk memvalidasi session login mock
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->session()->has('mock_user')) {

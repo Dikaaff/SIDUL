@@ -2,223 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Magang;
-use App\Models\Dosen;
+use App\Services\OperatorService;
+use App\Services\PeriodeService;
+use Illuminate\Http\Request;
 
 class OperatorController extends Controller
 {
-    /**
-     * Dashboard Operator — ringkasan statistik sistem magang.
-     */
+    # fungsi constructor untuk menginisialisasi service
+    public function __construct(
+        protected OperatorService $operatorService
+    ) {}
+
+    # fungsi untuk menampilkan dashboard operator
     public function dashboard()
     {
-        $isPeriodeOpen   = \App\Models\Setting::get('is_periode_open', '1') == '1';
-        
-        // Mahasiswa yang sudah di-approve dosen wali tapi BELUM daftar magang
-        $pendingPendaftaranCount = \App\Models\Mahasiswa::where('status_magang', 'Approve')
-                                    ->whereDoesntHave('pesertaMagang')->count();
-        
-        // Mahasiswa yang SUDAH daftar tapi BELUM di-plot dosen & belum aktif
-        $pendingPlottingCount = Magang::where('status_magang', 'Pending')->count();
-        
-        $aktifCount      = Magang::where('status_magang', 'Aktif')->count();
-        $selesaiCount    = Magang::where('status_magang', 'Selesai')->count();
-
-        $recentPending = Magang::with(['peserta.mahasiswa'])
-            ->where('status_magang', 'Pending')
-            ->latest()
-            ->take(5)
-            ->get();
-
-        return view('operator.dashboard', compact(
-            'pendingPendaftaranCount', 'pendingPlottingCount', 'aktifCount', 'selesaiCount', 'recentPending', 'isPeriodeOpen'
-        ));
+        $data = $this->operatorService->getDashboardStats();
+        return view('operator.dashboard', $data);
     }
 
+    # fungsi untuk membuka atau menutup periode pendaftaran
     public function togglePeriode()
     {
         try {
-            $current = \App\Models\Setting::get('is_periode_open', '1');
-            $newStatus = ($current == '1' || $current === 1) ? '0' : '1';
-            
-            \App\Models\Setting::set('is_periode_open', $newStatus);
-
-            $msg = $newStatus == '1' ? '🚀 Berhasil! Periode pendaftaran magang kini TELAH DIBUKA.' : '🔒 Berhasil! Periode pendaftaran magang kini TELAH DITUTUP.';
+            $newStatus = PeriodeService::toggle();
+            $msg = $newStatus == '1'
+                ? 'Periode pendaftaran magang kini TELAH DIBUKA.'
+                : 'Periode pendaftaran magang kini TELAH DITUTUP.';
             return back()->with('success', $msg);
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal mengubah status periode. Pastikan database sudah ter-update (Run: php artisan migrate). Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal mengubah status periode. ' . $e->getMessage());
         }
     }
 
-    /**
-     * Halaman Verifikasi — semua pendaftaran diurutkan status.
-     */
-    public function verifikasi()
-    {
-        $magangs = Magang::with(['peserta.mahasiswa'])
-            ->orderByRaw("FIELD(status_magang, 'Pending', 'Terverifikasi', 'Aktif', 'Selesai', 'Ditolak')")
-            ->latest()
-            ->get();
-
-        return view('operator.verifikasi', compact('magangs'));
-    }
-
-    /**
-     * Approve (Verifikasi) pendaftaran magang.
-     */
-    public function verifikasiApprove(Magang $magang)
-    {
-        $magang->update(['status_magang' => 'Terverifikasi']);
-        return back()->with('success', 'Pendaftaran berhasil diverifikasi.');
-    }
-
-    /**
-     * Tolak / Batalkan pendaftaran magang (termasuk pergantian tim).
-     */
-    public function verifikasiTolak(Request $request, Magang $magang)
-    {
-        $request->validate([
-            'catatan' => 'required|string|min:5',
-        ]);
-
-        $magang->update([
-            'status_magang'    => 'Ditolak',
-            'catatan_operator' => $request->catatan,
-        ]);
-
-        return back()->with('success', 'Pendaftaran ditolak. Mahasiswa dapat mendaftar ulang.');
-    }
-
-    /**
-     * Halaman Plotting Dosen Pembimbing.
-     */
+    # fungsi untuk menampilkan halaman penugasan dosen pembimbing
     public function dosenPembimbing()
     {
-        // Tampilkan mahasiswa yang statusnya Pending (Baru daftar)
-        $belumAssign = Magang::with(['peserta.mahasiswa'])
-            ->where('status_magang', 'Pending')
-            ->get();
-
-        $sudahAssign = Magang::with(['peserta.mahasiswa', 'pembimbing'])
-            ->where('status_magang', 'Aktif')
-            ->latest()
-            ->get();
-
-        $dosens = Dosen::orderBy('nama')->get();
-
-        return view('operator.dosen_pembimbing', compact('belumAssign', 'sudahAssign', 'dosens'));
+        return view('operator.dosen_pembimbing', [
+            'belumAssign' => $this->operatorService->getBelumAssign(),
+            'sudahAssign' => $this->operatorService->getSudahAssign(),
+            'dosens'      => $this->operatorService->getDosens(),
+        ]);
     }
 
-    /**
-     * Assign Dosen Pembimbing ke Magang — otomatis set status = Aktif.
-     */
+    # fungsi untuk menugaskan dosen pembimbing ke magang
     public function assignDosen(Request $request, Magang $magang)
     {
         $request->validate([
             'dosen_id' => 'required|exists:dosens,id',
         ]);
 
-        // Auto Generate ID Magang (Prefix SIDUL-YYYY-XXX)
-        $tahun     = now()->year;
-        $prefix    = "SIDUL-{$tahun}-";
-        $lastCount = Magang::where('kode_magang', 'LIKE', "{$prefix}%")
-            ->count();
-        $kode = $prefix . str_pad($lastCount + 1, 3, '0', STR_PAD_LEFT);
+        $kode = $this->operatorService->assignDosen($magang, $request->dosen_id);
 
-        // Safety check: jika kode menabrak (jarang terjadi tapi bisa di lingkungan dev), increment terus
-        while (Magang::where('kode_magang', $kode)->exists()) {
-            $lastCount++;
-            $kode = $prefix . str_pad($lastCount + 1, 3, '0', STR_PAD_LEFT);
-        }
-
-        $magang->update([
-            'dosen_pembimbing_id' => $request->dosen_id,
-            'kode_magang'         => $kode,
-            'status_magang'       => 'Aktif',
-        ]);
-
-        return back()->with('success', "Mahasiswa disetujui! ID Magang {$kode} diterbitkan dan Dosen Pembimbing telah ditetapkan.");
+        return back()->with('success', "Mahasiswa disetujui! ID Magang {$kode} diterbitkan.");
     }
 
-    /**
-     * Halaman Kelola ID Magang.
-     */
-    public function idMagang()
-    {
-        $belumId = Magang::with(['peserta.mahasiswa'])
-            ->where('status_magang', 'Terverifikasi')
-            ->whereNull('kode_magang')
-            ->get();
-
-        $sudahId = Magang::with(['peserta.mahasiswa'])
-            ->whereNotNull('kode_magang')
-            ->latest()
-            ->get();
-
-        return view('operator.id_magang', compact('belumId', 'sudahId'));
-    }
-
-    /**
-     * Generate kode ID Magang unik: format MGG-YYYY-NNN.
-     */
-    public function generateId(Magang $magang)
-    {
-        $tahun     = now()->year;
-        $lastCount = Magang::whereNotNull('kode_magang')
-            ->whereYear('created_at', $tahun)
-            ->count();
-        $kode = 'MGG-' . $tahun . '-' . str_pad($lastCount + 1, 3, '0', STR_PAD_LEFT);
-
-        $magang->update(['kode_magang' => $kode]);
-
-        return back()->with('success', "ID Magang {$kode} berhasil dibuat.");
-    }
-
-    /**
-     * Monitoring — semua mahasiswa magang di seluruh sistem.
-     */
+    # fungsi untuk menampilkan halaman monitoring magang
     public function monitoring(Request $request)
     {
-        $query = Magang::with(['peserta.mahasiswa', 'pembimbing', 'laporan'])->withCount('logbooks');
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('perusahaan', 'LIKE', "%{$search}%")
-                  ->orWhere('kode_magang', 'LIKE', "%{$search}%")
-                  ->orWhereHas('peserta.mahasiswa', function($mq) use ($search) {
-                      $mq->where('nama', 'LIKE', "%{$search}%")
-                        ->orWhere('nim', 'LIKE', "%{$search}%");
-                  });
-            });
-        }
-        
-        if ($request->filled('status')) {
-            $query->where('status_magang', $request->status);
-        }
-
-        $magangs = $query->latest()->get();
-
+        $magangs = $this->operatorService->monitoring($request->only(['search', 'status']));
         return view('operator.monitoring', compact('magangs'));
     }
 
-    /**
-     * Laporan magang (view only untuk Operator).
-     */
+    # fungsi untuk menampilkan halaman laporan magang
     public function laporan()
     {
-        $magangs = Magang::with(['peserta.mahasiswa', 'laporan'])
-            ->whereHas('laporan')
-            ->latest()
-            ->get();
-
+        $magangs = $this->operatorService->getLaporanMagang();
         return view('operator.laporan', compact('magangs'));
     }
 
-    /**
-     * Hapus data magang (untuk data testing atau salah input).
-     */
+    # fungsi untuk menghapus data magang
     public function destroy(Magang $magang)
     {
         $magang->delete();

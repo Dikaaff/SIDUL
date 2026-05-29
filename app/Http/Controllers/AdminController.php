@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
+    # fungsi untuk menampilkan dashboard admin
     public function dashboard()
     {
         // Global Stats
@@ -23,6 +24,7 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('totalMahasiswa', 'totalMagangAktif', 'totalDosen', 'totalOperator'));
     }
 
+    # fungsi untuk menampilkan daftar user
     public function users()
     {
         // Mengambil daftar Dosen dan Operator
@@ -30,6 +32,7 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
+    # fungsi untuk menyimpan data user baru
     public function storeUser(Request $request)
     {
         $request->validate([
@@ -58,6 +61,7 @@ class AdminController extends Controller
         return back()->with('success', 'Akun ' . ucfirst($request->role) . ' berhasil ditambahkan!');
     }
 
+    # fungsi untuk menghapus data user
     public function destroyUser($id)
     {
         $user = User::findOrFail($id);

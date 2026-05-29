@@ -6,15 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+  
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('username')->unique(); // Untuk NIM/NIK
+            $table->string('username')->unique(); 
             $table->string('password');
             $table->enum('role', ['mahasiswa', 'dosen', 'operator', 'admin'])->default('mahasiswa');
             $table->rememberToken();

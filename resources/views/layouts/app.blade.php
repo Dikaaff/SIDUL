@@ -44,7 +44,7 @@
     </div>
 
     <!-- Mobile Sidebar Overlay -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity duration-300"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"></div>
 
     <script>
         function toggleSidebar() {
@@ -121,7 +121,7 @@
     <div id="globalNotifContainer" class="fixed top-8 right-8 z-[9999] space-y-4 pointer-events-none">
         <!-- Success/Info Notif -->
         <div id="globalSuccessNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 pointer-events-auto">
-            <div class="flex items-center gap-4 bg-white/95 backdrop-blur-md border-l-4 border-green-500 shadow-2xl rounded-2xl p-5 min-w-[340px]">
+            <div class="flex items-center gap-4 bg-white/95 backdrop-blur-md border-l-4 border-green-500 shadow-2xl rounded-2xl p-5 min-w-[340px] max-w-[calc(100vw-2rem)]">
                 <div class="icon-container w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center shadow-lg shadow-green-500/10 text-green-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                 </div>
@@ -134,7 +134,7 @@
 
         <!-- Error Notif -->
         <div id="globalErrorNotif" class="hidden animate-in fade-in slide-in-from-right-8 duration-300 pointer-events-auto">
-            <div class="flex items-center gap-4 bg-white/95 backdrop-blur-md border-l-4 border-red-500 shadow-2xl rounded-2xl p-5 min-w-[340px]">
+            <div class="flex items-center gap-4 bg-white/95 backdrop-blur-md border-l-4 border-red-500 shadow-2xl rounded-2xl p-5 min-w-[340px] max-w-[calc(100vw-2rem)]">
                 <div class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center shadow-lg shadow-red-500/10 text-red-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
@@ -147,5 +147,19 @@
     </div>
 
     @stack('scripts')
+
+    
+    <script>
+    // Memaksa halaman memuat ulang jika diakses dari Cache Back/Forward
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    // Mencegah browser menyimpan halaman ke dalam BFCache
+    window.addEventListener('unload', function() {});
+</script>
+
 </body>
 </html>

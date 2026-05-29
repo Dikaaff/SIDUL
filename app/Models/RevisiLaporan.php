@@ -19,11 +19,13 @@ class RevisiLaporan extends Model
         'updated_by',
     ];
 
+    # fungsi relasi belongsTo ke model Laporan
     public function laporan()
     {
         return $this->belongsTo(Laporan::class, 'laporan_id', 'id');
     }
 
+    # fungsi relasi belongsTo ke model User
     public function user()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');

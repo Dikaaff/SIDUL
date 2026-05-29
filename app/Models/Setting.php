@@ -8,6 +8,7 @@ class Setting extends Model
 {
     protected $fillable = ['key', 'value'];
 
+    # fungsi untuk mengecek apakah tabel settings tersedia
     public static function isReady()
     {
         try {
@@ -17,6 +18,7 @@ class Setting extends Model
         }
     }
 
+    # fungsi untuk mengambil nilai setting berdasarkan key
     public static function get($key, $default = null)
     {
         try {
@@ -30,6 +32,7 @@ class Setting extends Model
         }
     }
 
+    # fungsi untuk menyimpan nilai setting
     public static function set($key, $value)
     {
         try {

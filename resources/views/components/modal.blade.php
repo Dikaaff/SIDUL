@@ -93,3 +93,32 @@ $maxWidth = match($size) {
         <button>close</button>
     </form>
 </dialog>
+
+<script>
+    (function() {
+        const modalId = "{{ $id }}";
+        // Mengubah snake_case/kebab-case ke CamelCase (misal: reject_confirmation_modal -> RejectConfirmationModal)
+        const camelCaseId = modalId
+            .split(/[-_]/)
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join('');
+            
+        const openFuncName = `openModal${camelCaseId}`;
+        const closeFuncName = `closeModal${camelCaseId}`;
+        
+        window[openFuncName] = function() {
+            const modal = document.getElementById(modalId);
+            if (modal && typeof modal.showModal === 'function') {
+                modal.showModal();
+            }
+        };
+        
+        window[closeFuncName] = function() {
+            const modal = document.getElementById(modalId);
+            if (modal && typeof modal.close === 'function') {
+                modal.close();
+            }
+        };
+    })();
+</script>
+

@@ -19,32 +19,28 @@ class User extends Authenticatable
         'role',
     ];
 
-    /**
-     * Relationships with role-specific profiles
-     */
+    # fungsi relasi hasOne ke model Mahasiswa
     public function mahasiswa()
     {
         return $this->hasOne(Mahasiswa::class, 'user_id', 'id');
     }
 
+    # fungsi relasi hasOne ke model Dosen
     public function dosen()
     {
         return $this->hasOne(Dosen::class, 'user_id', 'id');
     }
 
-    /**
-     * Role checking helpers
-     */
+    # fungsi untuk mengecek apakah user adalah mahasiswa
     public function isMahasiswa() { return $this->role === 'mahasiswa'; }
+    # fungsi untuk mengecek apakah user adalah dosen
     public function isDosen() { return $this->role === 'dosen'; }
+    # fungsi untuk mengecek apakah user adalah operator
     public function isOperator() { return $this->role === 'operator'; }
+    # fungsi untuk mengecek apakah user adalah admin
     public function isAdmin() { return $this->role === 'admin'; }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    # fungsi untuk mendefinisikan casting atribut
     protected function casts(): array
     {
         return [

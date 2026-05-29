@@ -39,6 +39,30 @@
     </div>
     @endif
     
+    {{-- Notifikasi Disetujui (Terkunci) --}}
+    @if($laporan && $laporan->status === 'approved')
+    <div class="mb-8 bg-emerald-50 border-2 border-emerald-100 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-start gap-6">
+                <div class="w-16 h-16 rounded-3xl bg-emerald-500 text-white flex items-center justify-center shadow-xl shadow-emerald-200 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-emerald-800 mb-2 uppercase tracking-tighter">Laporan Disetujui ✓</h3>
+                    <p class="text-sm font-bold text-emerald-700 leading-relaxed">
+                        Laporan Anda telah disetujui oleh dosen pembimbing dan terkunci. Anda tidak dapat mengubah isi laporan lagi.
+                    </p>
+                </div>
+            </div>
+            <div class="h-14 px-8 bg-emerald-100 text-emerald-700 rounded-2xl font-black uppercase tracking-widest text-xs flex items-center gap-3 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                Terkunci
+            </div>
+        </div>
+    </div>
+    @endif
+
     {{-- Notifikasi Revisi --}}
     @if($laporan && $laporan->status === 'revisi')
     <div class="mb-8 bg-orange-50 border-2 border-orange-100 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden group">
@@ -62,7 +86,7 @@
     </div>
     @endif
 
-    <form action="{{ route('mahasiswa.laporan.store') }}" method="POST" id="docForm">
+    <form action="{{ $laporan && $laporan->status === 'approved' ? '#' : route('mahasiswa.laporan.store') }}" method="POST" id="docForm" {{ $laporan && $laporan->status === 'approved' ? 'onsubmit="return false;"' : '' }}>
         @csrf
         <input type="hidden" name="magang_id" value="{{ Auth::user()->mahasiswa->pesertaMagang->magang->id }}">
         

@@ -3,10 +3,10 @@
 @section('title', 'Login Mahasiswa - SIDUL')
 
 @section('content')
-<div class="flex flex-col lg:flex-row w-full max-w-5xl bg-white rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 min-h-[650px] relative z-10 m-4">
+<div class="flex flex-col lg:flex-row w-full max-w-5xl bg-white rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 min-h-[500px] md:min-h-[650px] relative z-10 m-4">
     
     <!-- Left Side: Branding / Illustration with Amikom Image -->
-    <div class="w-full lg:w-1/2 p-16 text-white flex flex-col justify-between relative overflow-hidden group rounded-[2rem] m-2 bg-cover bg-center shadow-inner min-h-[400px] lg:min-h-auto" style="background-image: url('{{ asset('images/amikom.png') }}');">
+    <div class="w-full lg:w-1/2 p-8 lg:p-16 text-white flex flex-col justify-between relative overflow-hidden group rounded-[2rem] m-2 bg-cover bg-center shadow-inner min-h-[400px] lg:min-h-auto" style="background-image: url('{{ asset('images/amikom.png') }}');">
         <!-- Overlay: Sophisticated gradient for depth -->
         <div class="absolute inset-0 bg-gradient-to-tr from-[#1e0a2e] via-purple-900/60 to-transparent z-0"></div>
         <div class="absolute inset-0 bg-black/10 z-0"></div>

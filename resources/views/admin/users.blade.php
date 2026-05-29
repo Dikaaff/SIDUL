@@ -96,7 +96,7 @@
             <div>
                 <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Tipe Akun (Role)</label>
                 <select name="role" class="select select-bordered w-full rounded-2xl bg-gray-50 border-gray-100 focus:border-primary/30 font-bold text-sm h-14" required>
-                    <option value="dosen">Dosen Pembimbing</option>
+                    <option value="dosen">Dosen</option>
                     <option value="operator">Operator (Admin)</option>
                 </select>
             </div>

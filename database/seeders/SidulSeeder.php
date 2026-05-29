@@ -70,6 +70,8 @@ class SidulSeeder extends Seeder
             ['nim' => '23.01.5010', 'nama' => 'Arbyan', 'konsentrasi' => 'Web Development'],
             ['nim' => '23.01.5017', 'nama' => 'Arbyan', 'konsentrasi' => 'Web Development'],
             ['nim' => '23.01.5039', 'nama' => 'Khatta', 'konsentrasi' => 'Web Development'],
+            ['nim' => '23.01.5016', 'nama' => 'ahmad', 'konsentrasi' => 'Web Development'],
+            
         ];
 
         foreach ($mhs as $m) {

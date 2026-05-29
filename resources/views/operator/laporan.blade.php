@@ -50,13 +50,13 @@
                         </div>
                     </td>
                     <td>
-                        @php $statusLaporan = $magang->laporan->status_laporan ?? 'Pending'; @endphp
-                        @if($statusLaporan === 'Approve')
+                        @php $statusLaporan = $magang->laporan->status ?? 'review'; @endphp
+                        @if($statusLaporan === 'approved')
                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">
                                 <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                                 Disetujui
                             </span>
-                        @elseif($statusLaporan === 'Revisi')
+                        @elseif($statusLaporan === 'revisi')
                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-50 text-orange-500 text-[9px] font-black uppercase tracking-wider border border-orange-100">
                                 <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
                                 Revisi

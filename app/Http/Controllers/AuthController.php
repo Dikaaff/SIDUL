@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    # fungsi untuk menampilkan halaman login
     public function showLogin()
     {
         return view('auth.login');
     }
 
+    # fungsi untuk memproses login user
     public function login(Request $request)
     {
         // Validasi input kosong
@@ -37,6 +39,7 @@ class AuthController extends Controller
         ])->onlyInput('username');
     }
 
+    # fungsi untuk memproses logout user
     public function logout(Request $request)
     {
         Auth::logout();
@@ -45,9 +48,7 @@ class AuthController extends Controller
         return redirect('/login')->with('success', 'Anda telah berhasil keluar dari sistem.');
     }
 
-    /**
-     * Redirect to the correct dashboard based on role.
-     */
+    # fungsi untuk mengarahkan user ke dashboard sesuai role
     private function redirectBasedOnRole(string $role): string
     {
         return match($role) {

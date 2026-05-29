@@ -14,6 +14,7 @@ class Operator extends Model
         'staff_id',
     ];
 
+    # fungsi relasi belongsTo ke model User
     public function user()
     {
         return $this->belongsTo(User::class);

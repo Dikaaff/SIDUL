@@ -192,7 +192,7 @@
         </div>
         
         <div class="p-10 -mt-10 bg-white rounded-[3rem] relative z-20">
-            <div class="grid grid-cols-2 gap-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div class="space-y-6">
                     <div>
                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 italic">Perusahaan Magang</p>

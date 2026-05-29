@@ -18,5 +18,20 @@
     @yield('content')
     
     @stack('scripts')
+
+<script>
+    // Memaksa halaman memuat ulang jika diakses dari Cache Back/Forward
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    // Mencegah browser menyimpan halaman ke dalam BFCache
+    window.addEventListener('unload', function() {});
+</script>
+
+
+
 </body>
 </html>

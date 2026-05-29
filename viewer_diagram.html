@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIDUL - Diagram Interactive Viewer & Importer</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Mermaid.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: #e0e7ff;
+            --accent: #a855f7;
+            --bg-base: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem 4rem;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-title p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 0.8rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 2rem;
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            width: 100%;
+            text-align: left;
+            padding: 0.85rem 1rem;
+            border: 1px solid transparent;
+            background-color: transparent;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+
+        .nav-btn-icon {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        /* Instruction Card */
+        .instruction-step {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .step-num {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .drawio-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            background: #f0803c;
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            width: 100%;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .drawio-link:hover {
+            background: #d66a26;
+        }
+
+        /* Viewport Area */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .toolbar-title h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .toolbar-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            font-family: inherit;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Render Canvas */
+        .canvas-card {
+            flex: 1;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            min-height: 500px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .mermaid {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Code Block Panel */
+        .code-panel {
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 1.25rem;
+            color: #cbd5e1;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            max-height: 250px;
+            border: 1px solid #1e293b;
+            display: none;
+        }
+
+        .code-panel.visible {
+            display: block;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #1e293b;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1>SIDUL Diagram Hub</h1>
+            <p>Aplikasi Pendukung Importasi & Rendering Diagram Skripsi Bab 3 & Bab 4</p>
+        </div>
+        <div class="badge">Laravel 11 & Mermaid Engine</div>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="card">
+                <div class="card-title">
+                    <span>🗂️ Daftar Diagram</span>
+                </div>
+                <ul class="nav-list">
+                    <li>
+                        <button class="nav-btn active" onclick="loadDiagram('usecase')">
+                            <span>🎭 Use Case Diagram</span>
+                            <span class="nav-btn-icon">➔</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" onclick="loadDiagram('activity1')">
+                            <span>⚡ Activity: Rekomendasi</span>
+                            <span class="nav-btn-icon">➔</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" onclick="loadDiagram('activity2')">
+                            <span>⚡ Activity: Plotting Dosen</span>
+                            <span class="nav-btn-icon">➔</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" onclick="loadDiagram('activity3')">
+                            <span>⚡ Activity: Logbook Harian</span>
+                            <span class="nav-btn-icon">➔</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" onclick="loadDiagram('activity4')">
+                            <span>⚡ Activity: Laporan & Kelulusan</span>
+                            <span class="nav-btn-icon">➔</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" onclick="loadDiagram('activity5')">
+                            <span>⚡ Activity: Kelola Pengguna</span>
+                            <span class="nav-btn-icon">➔</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Import Instruction Card -->
+            <div class="card" style="background-color: #fcfcff;">
+                <div class="card-title" style="border-bottom: 2px solid var(--primary-light);">
+                    <span>📥 Cara Impor ke Draw.io</span>
+                </div>
+                <div class="instruction-step">
+                    <span class="step-num">1</span>
+                    <span>Klik tombol <strong>"Salin Kode Diagram"</strong> di samping kanan atas.</span>
+                </div>
+                <div class="instruction-step">
+                    <span class="step-num">2</span>
+                    <span>Buka situs editor Draw.io dengan mengklik tombol jingga di bawah ini.</span>
+                </div>
+                <div class="instruction-step">
+                    <span class="step-num">3</span>
+                    <span>Di Draw.io, klik menu: <strong>Arrange</strong> ➔ <strong>Insert</strong> ➔ <strong>Advanced</strong> ➔ <strong>Mermaid...</strong> <br><small>(atau <i>Mengatur ➔ Sisipkan ➔ Tingkat Lanjut ➔ Mermaid</i>)</small></span>
+                </div>
+                <div class="instruction-step">
+                    <span class="step-num">4</span>
+                    <span>Tempelkan (Paste) kode diagram, lalu klik <strong>Insert</strong>. Selesai!</span>
+                </div>
+                <a href="https://app.diagrams.net/" target="_blank" class="drawio-link">🌐 Buka Editor Draw.io</a>
+            </div>
+        </div>
+
+        <!-- Main Viewport Area -->
+        <div class="content-area">
+            
+            <div class="toolbar">
+                <div class="toolbar-title">
+                    <h2 id="diagram-title">Use Case Diagram</h2>
+                    <p id="diagram-desc">Pemetaan interaksi Aktor (Mahasiswa, Dosen, Operator, Admin) terhadap sistem SIDUL.</p>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="toggleCodePanel()">🖨️ Lihat Kode Sumber</button>
+                    <button class="btn btn-primary" onclick="copyDiagramCode()">📋 Salin Kode Diagram</button>
+                </div>
+            </div>
+
+            <!-- Pre-formatted code display panel -->
+            <pre id="code-block-panel" class="code-panel"></pre>
+
+            <!-- Diagram Canvas -->
+            <div class="canvas-card">
+                <div id="mermaid-render-container" class="mermaid">
+                    <!-- Mermaid content loaded here dynamically -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-notif" class="toast">
+        <span>✅</span>
+        <span id="toast-message">Kode diagram sukses disalin!</span>
+    </div>
+
+    <script>
+        // Database Diagram Kode
+        const diagramData = {
+            usecase: {
+                title: "Use Case Diagram",
+                desc: "Pemetaan seluruh fungsionalitas sistem SIDUL berdasarkan hak akses keempat Aktor.",
+                code: `graph TD
+    classDef actor fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#0277bd;
+    classDef uc fill:#ede7f6,stroke:#5e35b1,stroke-width:1.5px,color:#4a148c;
+    classDef base fill:#fff3e0,stroke:#ffb74d,stroke-width:2px,color:#e65100;
+
+    M["👤 Mahasiswa"]:::actor
+    DW["👨‍🏫 Dosen Wali / Pembimbing"]:::actor
+    OP["⚙️ Operator"]:::actor
+    AD["👑 Admin"]:::actor
+
+    UC_Login("Login Ke Sistem"):::base
+    UC_Logout("Logout Dari Sistem"):::base
+
+    subgraph Mahasiswa_Boundary ["Batas Sistem: Fitur Mahasiswa"]
+        UC_M1("Mengajukan Rekomendasi Magang"):::uc
+        UC_M2("Melakukan Pendaftaran Magang<br>(Individu / Kelompok)"):::uc
+        UC_M3("Mengisi Logbook Harian"):::uc
+        UC_M4("Mencetak Logbook ke PDF"):::uc
+        UC_M5("Mengunggah/Update Laporan Magang<br>(Bab 1 s.d. Bab 4)"):::uc
+        UC_M6("Mencetak Laporan ke PDF"):::uc
+        UC_M7("Mengunduh Surat Pengantar Magang"):::uc
+    end
+
+    subgraph Dosen_Boundary ["Batas Sistem: Fitur Dosen"]
+        UC_D1("Verifikasi Rekomendasi Mahasiswa Wali<br>(Approve / Reject)"):::uc
+        UC_D2("Monitoring Logbook Mahasiswa Bimbingan"):::uc
+        UC_D3("Review & Approval Laporan Akhir<br>(Beri Masukan / Kelulusan)"):::uc
+    end
+
+    subgraph Operator_Boundary ["Batas Sistem: Fitur Operator"]
+        UC_O1("Membuka / Menutup Periode Magang"):::uc
+        UC_O2("Verifikasi & Validasi Pendaftaran"):::uc
+        UC_O3("Plotting Dosen Pembimbing & Terbitkan ID Magang"):::uc
+        UC_O4("Monitoring Seluruh Kelompok Magang"):::uc
+        UC_O5("Melihat Seluruh Laporan Masuk"):::uc
+        UC_O6("Menghapus Data Pendaftaran Magang"):::uc
+    end
+
+    subgraph Admin_Boundary ["Batas Sistem: Fitur Admin"]
+        UC_A1("Menambahkan Akun Baru (Dosen/Operator)"):::uc
+        UC_A2("Menghapus Akun Pengguna"):::uc
+    end
+
+    M --> UC_Login
+    M --> UC_M1
+    M --> UC_M2
+    M --> UC_M7
+    M --> UC_M3
+    M --> UC_M4
+    M --> UC_M5
+    M --> UC_M6
+    M --> UC_Logout
+
+    DW --> UC_Login
+    DW --> UC_D1
+    DW --> UC_D2
+    DW --> UC_D3
+    DW --> UC_Logout
+
+    OP --> UC_Login
+    OP --> UC_O1
+    OP --> UC_O2
+    OP --> UC_O3
+    OP --> UC_O4
+    OP --> UC_O5
+    OP --> UC_O6
+    OP --> UC_Logout
+
+    AD --> UC_Login
+    AD --> UC_A1
+    AD --> UC_A2
+    AD --> UC_Logout`
+            },
+            activity1: {
+                title: "Activity: Rekomendasi Magang",
+                desc: "Alur permohonan rekomendasi akademik oleh Mahasiswa ke Dosen Wali.",
+                code: `graph TD
+    subgraph MHS ["Kanal Mahasiswa"]
+        Start1([Mulai]) --> LogM[Login ke Sistem]
+        LogM --> CheckR[Cek Menu Dashboard]
+        CheckR --> Minta[Status Masih Pending/Belum Direkomendasikan]
+    end
+
+    subgraph DOSW ["Kanal Dosen Wali"]
+        Minta --> LogD[Login Dosen]
+        LogD --> MenuR[Buka Menu Rekomendasi Wali]
+        MenuR --> ListW[Tampilkan Daftar Mahasiswa Wali]
+        ListW --> Eval{Evaluasi Kelayakan Akademik}
+        Eval -- Setuju --> AppW[Klik Approve Rekomendasi]
+        Eval -- Tolak --> RejW[Klik Reject Rekomendasi]
+    end
+
+    subgraph DB1 ["Sistem & Database"]
+        AppW --> DBUpdateA[Update status_magang Mahasiswa = 'Approve']
+        RejW --> DBUpdateR[Update status_magang Mahasiswa = 'Rejected']
+    end
+
+    subgraph MHS_View ["Kanal Mahasiswa"]
+        DBUpdateA --> NotifA[Tampil Status: Direkomendasikan & Menu Daftar Aktif]
+        DBUpdateR --> NotifR[Tampil Status: Ditolak & Tidak Bisa Daftar]
+        NotifA --> End1([Selesai])
+        NotifR --> End1
+    end
+
+    style Start1 fill:#a5d6a7,stroke:#2e7d32
+    style End1 fill:#ef9a9a,stroke:#c62828`
+            },
+            activity2: {
+                title: "Activity: Pendaftaran & Plotting Dosen",
+                desc: "Proses pendaftaran kelompok magang oleh mahasiswa dan penetapan pembimbing serta kode ID magang oleh Operator.",
+                code: `graph TD
+    subgraph MAHASISWA ["Kanal Mahasiswa"]
+        Start2([Mulai]) --> P_Form[Buka Menu Pendaftaran]
+        P_Form --> P_Type{Pilih Tipe Magang}
+        P_Type -- Kelompok --> P_Anggota[Input NIM Anggota & Validasi Sistem]
+        P_Type -- Individu --> P_Data[Input Data Perusahaan, Alamat & Tanggal]
+        P_Anggota --> P_Data
+        P_Data --> P_Submit[Kirim Pendaftaran]
+    end
+
+    subgraph SISTEM ["Validasi Otomatis & DB"]
+        P_Submit --> S_Val{Validasi Periode & Rekomendasi Anggota}
+        S_Val -- Gagal --> S_Err[Kembalikan Form + Pesan Error]
+        S_Err --> P_Form
+        S_Val -- Sukses --> S_Save[Simpan Data Magang & Peserta Status: Pending]
+    end
+
+    subgraph OPERATOR ["Kanal Operator"]
+        S_Save --> O_Log[Login Operator]
+        O_Log --> O_Plot[Buka Menu Dosen Pembimbing]
+        O_Plot --> O_Assign[Pilih Dosen Pembimbing dari Dropdown]
+        O_Assign --> O_Submit[Simpan Plotting]
+    end
+
+    subgraph DB_PROSES ["Sistem & Database"]
+        O_Submit --> DB_Act[1. Assign dosen_pembimbing_id <br>2. Generate ID Magang Resmi <br>3. Set status_magang = 'Aktif']
+    end
+
+    subgraph SELESAI ["Kanal Mahasiswa & Operator"]
+        DB_Act --> M_Notif[Mahasiswa Mendapat Akses Logbook & PDF Surat Pengantar]
+        M_Notif --> End2([Selesai])
+    end
+
+    style Start2 fill:#a5d6a7,stroke:#2e7d32
+    style End2 fill:#ef9a9a,stroke:#c62828`
+            },
+            activity3: {
+                title: "Activity: Pengisian Logbook",
+                desc: "Alur pengisian catatan kegiatan harian mahasiswa magang yang otomatis terhubung ke sistem pembimbing.",
+                code: `graph TD
+    subgraph MAHASISWA ["Kanal Mahasiswa (Logbook)"]
+        Start3([Mulai]) --> Log_In[Buka Menu Logbook]
+        Log_In --> Log_Fill[Input Catatan Kegiatan Hari Ini]
+        Log_Fill --> Log_Sub[Simpan Kegiatan]
+        Log_Sub --> Log_PDF[Cetak Logbook PDF untuk Bimbingan Fisik]
+    end
+
+    subgraph SISTEM ["Database"]
+        Log_Sub --> DB_SaveLog[Simpan ke Tabel logbooks dengan Timestamp]
+    end
+
+    subgraph DOSEN ["Kanal Dosen Pembimbing"]
+        DB_SaveLog --> D_Log[Login Dosen]
+        D_Log --> D_Menu[Buka Menu Monitoring Logbook]
+        D_Menu --> D_Mhs[Pilih Mahasiswa Bimbingan]
+        D_Mhs --> D_View[Tinjau Aktivitas Harian Mahasiswa]
+        D_View --> D_Feed[Berikan Arahan/Masukan Bimbingan]
+        D_Feed --> End3([Selesai])
+    end
+
+    style Start3 fill:#a5d6a7,stroke:#2e7d32
+    style End3 fill:#ef9a9a,stroke:#c62828`
+            },
+            activity4: {
+                title: "Activity: Laporan & Kelulusan",
+                desc: "Siklus pengiriman draf laporan per bab oleh mahasiswa hingga evaluasi kelulusan akhir oleh Dosen Pembimbing.",
+                code: `graph TD
+    subgraph MAHASISWA ["Kanal Mahasiswa"]
+        Start4([Mulai]) --> Lap_Draft[Tulis Judul & Konten Laporan Bab 1-4]
+        Lap_Draft --> Lap_Sub[Kirim/Simpan Laporan Akhir]
+    end
+
+    subgraph SISTEM_DB ["Sistem & Database"]
+        Lap_Sub --> DB_SaveLap[Simpan Draft & Set Status = 'review']
+    end
+
+    subgraph DOSEN ["Kanal Dosen Pembimbing"]
+        DB_SaveLap --> D_Review[Buka Menu Review Laporan]
+        D_Review --> D_Check[Baca Draf Laporan Mahasiswa]
+        D_Check --> D_Decision{Keputusan Penilaian}
+        D_Decision -- Perlu Revisi --> D_Revisi[Pilih Status: Revisi + Catatan Masukan]
+        D_Decision -- Lulus / OK --> D_Approve[Pilih Status: Approved + Feedback Positif]
+    end
+
+    subgraph SYSTEM_UPDATE ["Sistem & Database"]
+        D_Revisi --> DB_Rev[Set Status Laporan = 'revisi']
+        D_Approve --> DB_App[1. Set Status Laporan = 'approved' <br>2. Set status_magang Kelompok = 'Selesai']
+    end
+
+    subgraph AKHIR ["Hasil Akhir"]
+        DB_Rev --> M_RevView[Mahasiswa Mendapat Notifikasi & Mengedit Draf Kembali]
+        M_RevView --> Lap_Draft
+        DB_App --> M_Pass[Mahasiswa Dinyatakan Lulus Magang & Cetak Laporan PDF Final]
+        M_Pass --> End4([Selesai])
+    end
+
+    style Start4 fill:#a5d6a7,stroke:#2e7d32
+    style End4 fill:#ef9a9a,stroke:#c62828`
+            },
+            activity5: {
+                title: "Activity: Kelola Pengguna",
+                desc: "Pengelolaan data master akun sistem SIDUL yang dilakukan oleh Admin.",
+                code: `graph TD
+    subgraph ADMIN ["Kanal Administrator"]
+        Start5([Mulai]) --> Ad_Log[Login Admin]
+        Ad_Log --> Ad_Menu[Masuk Menu Kelola Pengguna]
+        Ad_Menu --> Ad_Action{Pilih Operasi}
+        
+        Ad_Action -- Tambah Dosen/Op --> Ad_Create[Input Nama, Username/NIK, Password, & Role]
+        Ad_Action -- Hapus Akun --> Ad_Del[Klik Hapus pada Akun Terpilih]
+    end
+
+    subgraph SISTEM_ADMIN ["Sistem & Database"]
+        Ad_Create --> DB_Create[1. Enkripsi/Hash Password <br>2. Create data di tabel users <br>3. Jika role = dosen, otomatis create profil di tabel dosens]
+        Ad_Del --> DB_Del[1. Cek Relasi Pengguna <br>2. Hapus data di tabel users secara permanen <br>3. Cascading delete profil pendukung]
+    end
+
+    subgraph AD_RESULT ["Kanal Admin"]
+        DB_Create --> NotifC[Sistem Menampilkan Pesan Sukses Menambah Akun]
+        DB_Del --> NotifD[Sistem Menampilkan Pesan Sukses Menghapus Akun]
+        NotifC --> End5([Selesai])
+        NotifD --> End5
+    end
+
+    style Start5 fill:#a5d6a7,stroke:#2e7d32
+    style End5 fill:#ef9a9a,stroke:#c62828`
+            }
+        };
+
+        // Initialize Mermaid Engine
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        let currentActiveKey = 'usecase';
+
+        // Load specific diagram to canvas
+        function loadDiagram(key) {
+            currentActiveKey = key;
+            const data = diagramData[key];
+            
+            // Update UI texts
+            document.getElementById('diagram-title').innerText = data.title;
+            document.getElementById('diagram-desc').innerText = data.desc;
+            document.getElementById('code-block-panel').innerText = data.code;
+            
+            // Highlight nav buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Find active button based on onclick string
+            const targetBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(`'${key}'`));
+            if (targetBtn) targetBtn.classList.add('active');
+
+            // Render Mermaid
+            const canvas = document.getElementById('mermaid-render-container');
+            canvas.removeAttribute('data-processed');
+            canvas.innerHTML = data.code;
+            
+            try {
+                mermaid.parse(data.code);
+                mermaid.init(undefined, canvas);
+            } catch (err) {
+                canvas.innerHTML = `<div style="color:red; font-weight:600; padding:2rem;">⚠️ Error Rendering Diagram: ${err.message}</div>`;
+            }
+        }
+
+        // Toggle code display panel
+        function toggleCodePanel() {
+            const panel = document.getElementById('code-block-panel');
+            panel.classList.toggle('visible');
+        }
+
+        // Copy diagram code to clipboard
+        function copyDiagramCode() {
+            const code = diagramData[currentActiveKey].code;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast("Kode diagram berhasil disalin ke clipboard!");
+            }).catch(err => {
+                showToast("Gagal menyalin kode!");
+            });
+        }
+
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.getElementById('toast-notif');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initial Load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDiagram('usecase');
+        });
+    </script>
+</body>
+</html>

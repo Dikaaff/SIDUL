@@ -16,6 +16,7 @@ class Logbook extends Model
         'catatan_dosen',
     ];
 
+    # fungsi relasi belongsTo ke model Magang
     public function magang()
     {
         return $this->belongsTo(Magang::class, 'magang_id', 'id');

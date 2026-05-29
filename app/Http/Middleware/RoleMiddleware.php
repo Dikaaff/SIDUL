@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
+    # fungsi untuk memvalidasi role user
     public function handle(Request $request, Closure $next, string $role): Response
     {
         if (!Auth::check()) {
@@ -21,8 +19,8 @@ class RoleMiddleware
         $user = Auth::user();
         
         if ($user->role !== $role) {
-            // Redirect based on their actual role
             return match($user->role) {
+                'admin'    => redirect()->route('admin.dashboard'),
                 'dosen'    => redirect()->route('dosen.dashboard'),
                 'operator' => redirect()->route('operator.dashboard'),
                 default    => redirect()->route('mahasiswa.dashboard'),
