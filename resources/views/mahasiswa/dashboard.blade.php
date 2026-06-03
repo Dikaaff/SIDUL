@@ -3,8 +3,8 @@
 @section('title', 'Dashboard Mahasiswa')
 
 @section('header')
-<x-page-header 
-    title="Halo, {{ Auth::user()->name }} 👋" 
+<x-page-header
+    title="Halo, {{ Auth::user()->name }} 👋"
     subtitle="Selamat datang di SIDUL. Mari kelola progress magangmu hari ini."
 >
     <div class="flex flex-col md:flex-row items-center gap-4">
@@ -22,7 +22,7 @@
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
     <div class="text-sm breadcrumbs text-gray-400 font-bold italic">
         <ul>
-            <li><a href="/dashboard" class="hover:text-primary transition-colors">SIDUL</a></li> 
+            <li><a href="/dashboard" class="hover:text-primary transition-colors">SIDUL</a></li>
             <li>Dashboard Utama</li>
         </ul>
     </div>
@@ -57,10 +57,10 @@
     @endif
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-start">
-    
+
     <!-- Kolom Kiri: Statistik & Konten Utama (8 Kolom) -->
     <div class="lg:col-span-8 space-y-8 min-w-0">
-        
+
         <!-- Quick Stats Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <x-card padding="none" border class="p-6 flex flex-col items-center text-center group hover:shadow-md transition-all">
@@ -90,7 +90,7 @@
                             $progress = 0;
                             if($pendaftaran) $progress += 20; // Daftar: 20%
                             if($logbookCount > 0) $progress += 40; // Logbook: 40% (Total 60%)
-                            
+
                             if($laporan) {
                                 if($laporan->status === 'approved') {
                                     $progress += 40; // Approved: +40% (Total 100%)
@@ -115,7 +115,7 @@
                     <h3 class="text-2xl font-black text-gray-800 mb-4">Belum Ada Pendaftaran</h3>
                     <p class="text-gray-500 mb-8 font-medium">Segera lengkapi data magang Anda untuk memulai proses verifikasi.</p>
                     @if($mahasiswa->status_magang === 'Approve')
-                        <a href="{{ route('mahasiswa.pendaftaran') }}" class="btn bg-primary hover:bg-primary/90 text-white border-none rounded-2xl px-8 h-14 font-bold uppercase tracking-widest text-xs">
+                        <a href="{{ route('mahasiswa.pendaftaran') }}" class="btn bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl px-8 h-14 font-bold uppercase tracking-widest text-xs">
                             Daftar Magang Sekarang
                         </a>
                     @elseif($mahasiswa->status_magang === 'Rejected')

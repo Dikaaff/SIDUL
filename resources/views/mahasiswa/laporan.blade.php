@@ -3,8 +3,8 @@
 @section('title', 'Draft Laporan Akhir')
 
 @section('header')
-<x-page-header 
-    title="Digital Report Editor 📄" 
+<x-page-header
+    title="Digital Report Editor 📄"
     subtitle="Susun laporan akhir Anda bab demi bab sesuai standar."
 >
     <div class="flex gap-2 relative z-10">
@@ -39,30 +39,6 @@
     </div>
     @endif
     
-    {{-- Notifikasi Disetujui (Terkunci) --}}
-    @if($laporan && $laporan->status === 'approved')
-    <div class="mb-8 bg-emerald-50 border-2 border-emerald-100 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden">
-        <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
-        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="flex items-start gap-6">
-                <div class="w-16 h-16 rounded-3xl bg-emerald-500 text-white flex items-center justify-center shadow-xl shadow-emerald-200 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                </div>
-                <div>
-                    <h3 class="text-xl font-black text-emerald-800 mb-2 uppercase tracking-tighter">Laporan Disetujui ✓</h3>
-                    <p class="text-sm font-bold text-emerald-700 leading-relaxed">
-                        Laporan Anda telah disetujui oleh dosen pembimbing dan terkunci. Anda tidak dapat mengubah isi laporan lagi.
-                    </p>
-                </div>
-            </div>
-            <div class="h-14 px-8 bg-emerald-100 text-emerald-700 rounded-2xl font-black uppercase tracking-widest text-xs flex items-center gap-3 shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                Terkunci
-            </div>
-        </div>
-    </div>
-    @endif
-
     {{-- Notifikasi Revisi --}}
     @if($laporan && $laporan->status === 'revisi')
     <div class="mb-8 bg-orange-50 border-2 border-orange-100 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden group">
@@ -89,12 +65,12 @@
     <form action="{{ $laporan && $laporan->status === 'approved' ? '#' : route('mahasiswa.laporan.store') }}" method="POST" id="docForm" {{ $laporan && $laporan->status === 'approved' ? 'onsubmit="return false;"' : '' }}>
         @csrf
         <input type="hidden" name="magang_id" value="{{ Auth::user()->mahasiswa->pesertaMagang->magang->id }}">
-        
+
         <div class="flex flex-col gap-8">
             <!-- Judul Section -->
             <x-card padding="large" border class="transition-all hover:shadow-md">
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 ml-1 italic">Judul Laporan</label>
-                <input type="text" name="judul" id="judulInput" value="{{ old('judul', $laporan->judul ?? '') }}" 
+                <input type="text" name="judul" id="judulInput" value="{{ old('judul', $laporan->judul ?? '') }}"
                     placeholder="Contoh: LAPORAN AKHIR MAGANG PT. GOJEK INDONESIA..."
                     class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 text-xl font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all outline-none placeholder:text-gray-300"
                     {{ $laporan && $laporan->status === 'approved' ? 'readonly' : '' }} required>
@@ -103,7 +79,7 @@
             <!-- Tab Navigation -->
             <div class="flex flex-wrap gap-2 mb-[-1.5rem] px-4">
                 @foreach(['bab1' => 'Bab I: Pendahuluan', 'bab2' => 'Bab II: Profil Instansi', 'bab3' => 'Bab III: Pelaksanaan', 'bab4' => 'Bab IV: Penutup'] as $key => $label)
-                    <button type="button" onclick="switchTab('{{ $key }}')" id="tab-btn-{{ $key }}" 
+                    <button type="button" onclick="switchTab('{{ $key }}')" id="tab-btn-{{ $key }}"
                         class="tab-btn px-6 py-4 rounded-t-2xl font-black text-[11px] uppercase tracking-wider transition-all border-b-4 {{ $loop->first ? 'bg-white border-primary text-primary shadow-sm' : 'bg-gray-100 border-transparent text-gray-400 hover:bg-gray-200' }}">
                         {{ $label }}
                     </button>

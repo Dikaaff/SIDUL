@@ -133,14 +133,18 @@
 
 @push('scripts')
 <script>
+    function openModalAddUserModal() {
+        document.getElementById('add_user_modal').showModal();
+    }
+
+    function closeModalAddUserModal() {
+        document.getElementById('add_user_modal').close();
+    }
+
     // Link the header button to the new modal component function
     // fungsi untuk membuka modal tambah pengguna baru
     function showAddModal() {
-        if(typeof openModalAddUserModal === 'function') {
-            openModalAddUserModal();
-        } else {
-            console.error('Modal function not found');
-        }
+        openModalAddUserModal();
     }
 </script>
 @endpush

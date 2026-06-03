@@ -139,7 +139,7 @@
                 <button type="submit" class="btn h-14 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20 transition-all active:scale-95">
                     Ya, Tolak Sekarang
                 </button>
-                <button type="button" onclick="closeModalRejectConfirmationModal()" class="btn h-14 bg-gray-50 hover:bg-gray-100 text-gray-500 border-none rounded-2xl font-black uppercase tracking-widest text-xs transition-all">
+                <button type="button" onclick="document.getElementById('reject_confirmation_modal').close()" class="btn h-14 bg-gray-50 hover:bg-gray-100 text-gray-500 border-none rounded-2xl font-black uppercase tracking-widest text-xs transition-all">
                     Batalkan
                 </button>
             </div>

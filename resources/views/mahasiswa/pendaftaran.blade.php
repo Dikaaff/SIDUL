@@ -3,16 +3,16 @@
 @section('title', 'Pendaftaran Magang')
 
 @section('header')
-<x-page-header 
-    title="Pendaftaran Magang 📝" 
-    subtitle="Lengkapi data pendaftaran perusahaan dan lengkapi anggota kelompokmu (jika ada)." 
+<x-page-header
+    title="Pendaftaran Magang 📝"
+    subtitle="Lengkapi data pendaftaran perusahaan dan lengkapi anggota kelompokmu (jika ada)."
 />
 @endsection
 
 @section('breadcrumbs')
 <div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
   <ul>
-    <li><a href="/dashboard" class="hover:text-primary transition-colors">Dashboard</a></li> 
+    <li><a href="/dashboard" class="hover:text-primary transition-colors">Dashboard</a></li>
     <li>Pendaftaran</li>
   </ul>
 </div>
@@ -74,7 +74,6 @@
                 </div>
             </div>
             @endif
-            
             @if($magang)
             <div class="bg-purple-50 p-6 rounded-2xl border border-purple-100 flex items-center justify-between gap-4 mb-8">
                 <div class="flex items-center gap-4">
@@ -84,7 +83,7 @@
                     <div>
                         <p class="text-[10px] font-black text-primary uppercase tracking-widest mb-1 italic">Status Pendaftaran</p>
                         <h4 class="text-lg font-black text-gray-800 flex items-center gap-2">
-                            Magang Anda Saat Ini: 
+                            Magang Anda Saat Ini:
                             <x-status-badge status="{{ $magang->status_magang }}" />
                         </h4>
                     </div>
@@ -102,8 +101,8 @@
                 <x-section-title color="purple" title="Tipe Pendaftaran" />
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label class="relative cursor-pointer">
-                        <input type="radio" name="tipe_magang" value="individu" class="peer sr-only" 
-                            {{ (!$magang || $magang->tipe_magang == 'individu') ? 'checked' : '' }} 
+                        <input type="radio" name="tipe_magang" value="individu" class="peer sr-only"
+                            {{ (!$magang || $magang->tipe_magang == 'individu') ? 'checked' : '' }}
                             {{ $isLocked ? 'disabled' : '' }} onchange="toggleKelompok(false)">
                         <div class="w-full p-6 rounded-2xl border-2 border-gray-50 hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-purple-50/50 transition-all text-center group">
                             <div class="w-14 h-14 mx-auto bg-gray-50 group-hover:bg-white peer-checked:bg-white rounded-2xl flex items-center justify-center mb-4 transition-all shadow-sm">
@@ -115,7 +114,7 @@
                     </label>
 
                     <label class="relative cursor-pointer">
-                        <input type="radio" name="tipe_magang" value="kelompok" class="peer sr-only" 
+                        <input type="radio" name="tipe_magang" value="kelompok" class="peer sr-only"
                             {{ ($magang && $magang->tipe_magang == 'kelompok') ? 'checked' : '' }}
                             {{ $isLocked ? 'disabled' : '' }} onchange="toggleKelompok(true)">
                         <div class="w-full p-6 rounded-2xl border-2 border-gray-50 hover:bg-gray-50 peer-checked:border-primary peer-checked:bg-purple-50/50 transition-all text-center group">
@@ -165,7 +164,7 @@
 
                 <div class="bg-purple-50/50 rounded-[2rem] p-8 border border-purple-100 space-y-8" id="anggotaWrapper">
                     <p class="text-[11px] text-purple-600 font-black uppercase tracking-widest italic mb-2">* Kelompok minimal 2 orang dan maksimal 3 orang (termasuk Ketua).</p>
-                    
+
                     <!-- Anggota 1 (Wajib jika kelompok) -->
                     <div class="space-y-4">
                         <div class="flex items-center gap-2">
@@ -195,10 +194,10 @@
             <!-- 4. Data Perusahaan & Periode -->
             <div class="space-y-4">
                 <x-section-title color="blue" title="Data Perusahaan & Waktu" />
-                
+
                 <div class="grid grid-cols-1 gap-6">
                     <x-input label="Nama Perusahaan" name="perusahaan" value="{{ $magang->perusahaan ?? '' }}" placeholder="Contoh: PT. Sumber Maju Jaya" required :readonly="$isLocked" />
-                    
+
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1 italic">Alamat Lengkap Perusahaan <span class="text-red-500">*</span></label>
                         <textarea name="alamat" placeholder="Jl. Sudirman No. 123, Jakarta Raya..." class="w-full bg-gray-50 border border-gray-100 rounded-2xl py-4 px-6 text-sm font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-primary/5 outline-none transition-all min-h-[120px]" required {{ $isLocked ? 'readonly' : '' }}>{{ $magang->alamat ?? '' }}</textarea>
@@ -217,7 +216,7 @@
                 <button type="reset" class="w-full sm:w-auto px-8 py-4 rounded-2xl text-gray-500 font-black uppercase tracking-widest text-[11px] hover:bg-gray-50 transition-all italic" id="btnReset">
                     Reset Data
                 </button>
-                <button type="submit" class="w-full sm:w-auto bg-primary hover:bg-purple-800 text-white rounded-2xl py-4 px-10 font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-purple-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" id="btnSubmit">
+                <button type="submit" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white rounded-2xl py-4 px-10 font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-purple-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" id="btnSubmit">
                     <span id="btnText">{{ $magang ? 'Update Pendaftaran' : 'Kirim Pendaftaran' }}</span>
                     <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     <span id="btnLoading" class="loading loading-spinner hidden"></span>
@@ -294,7 +293,7 @@
                 nimAnggota1.classList.remove('border-red-500', 'bg-red-50');
                 namaAnggota1.classList.remove('border-red-500', 'bg-red-50');
             }
-            
+
             // Validasi jika Anggota 2 diisi separuh
             if ((nim2 && !nama2) || (!nim2 && nama2)) {
                 document.getElementById('nimAnggota2').classList.add('border-red-500', 'bg-red-50');
@@ -309,7 +308,7 @@
             return;
         }
 
-        
+
         // Start Loading State (Semua Valid)
         btnSubmit.disabled = true;
         btnText.innerText = "Mengirim...";
