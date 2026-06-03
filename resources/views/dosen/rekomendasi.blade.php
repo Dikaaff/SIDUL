@@ -65,7 +65,7 @@
                             @elseif($mhs->status_magang === 'Rejected')
                                 <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded-xl gap-2 transition-all">
+                                    <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded gap-2 transition-all">
                                         <div class="w-8 h-8 bg-red-100 text-red-600 rounded-xl flex items-center justify-center shadow-inner">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                                         </div>
@@ -74,12 +74,12 @@
                                 </form>
                             @else
                                 <div class="flex gap-2">
-                                    <button type="button" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95 reject-btn">
+                                    <button type="button" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="btn btn-sm h-11 bg-red-500 hover:bg-red-600 text-white border-none rounded px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95 shadow-lg shadow-red-100 reject-btn">
                                         Reject
                                     </button>
                                     <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm h-11 bg-[#6B21A8] hover:bg-purple-800 text-white border-none rounded-xl px-6 font-black uppercase tracking-wider text-[9px] shadow-lg shadow-purple-900/20 transition-all hover:scale-105 active:scale-95 group">
+                                        <button type="submit" class="btn btn-sm h-11 bg-green-500 hover:bg-green-600 text-white border-none rounded px-6 font-black uppercase tracking-wider text-[9px] shadow-lg shadow-green-100 transition-all hover:scale-105 active:scale-95 group">
                                             Approve
                                         </button>
                                     </form>
@@ -136,10 +136,10 @@
         <form id="reject_form" method="POST" action="">
             @csrf
             <div class="flex flex-col gap-3">
-                <button type="submit" class="btn h-14 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20 transition-all active:scale-95">
+                <button type="submit" class="btn h-14 bg-red-500 hover:bg-red-600 text-white border-none rounded font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20 transition-all active:scale-95">
                     Ya, Tolak Sekarang
                 </button>
-                <button type="button" onclick="document.getElementById('reject_confirmation_modal').close()" class="btn h-14 bg-gray-50 hover:bg-gray-100 text-gray-500 border-none rounded-2xl font-black uppercase tracking-widest text-xs transition-all">
+                <button type="button" onclick="document.getElementById('reject_confirmation_modal').close()" class="btn h-14 bg-gray-50 hover:bg-gray-100 text-gray-500 border-none rounded font-black uppercase tracking-widest text-xs transition-all">
                     Batalkan
                 </button>
             </div>

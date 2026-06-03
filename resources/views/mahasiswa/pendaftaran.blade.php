@@ -74,28 +74,6 @@
                 </div>
             </div>
             @endif
-            @if($magang)
-            <div class="bg-purple-50 p-6 rounded-2xl border border-purple-100 flex items-center justify-between gap-4 mb-8">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm border border-purple-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-black text-primary uppercase tracking-widest mb-1 italic">Status Pendaftaran</p>
-                        <h4 class="text-lg font-black text-gray-800 flex items-center gap-2">
-                            Magang Anda Saat Ini:
-                            <x-status-badge status="{{ $magang->status_magang }}" />
-                        </h4>
-                    </div>
-                </div>
-                @if($isLocked)
-                <div class="px-6 py-2 bg-white rounded-xl border border-purple-100 text-[10px] font-black uppercase text-purple-600 tracking-widest">
-                    ReadOnly Mode
-                </div>
-                @endif
-            </div>
-            @endif
-
             <!-- 1. Pemilihan Tipe Magang -->
             <div class="space-y-4">
                 <x-section-title color="purple" title="Tipe Pendaftaran" />
@@ -213,10 +191,10 @@
             <!-- CTA Navigation -->
             <div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-10 border-t border-gray-50">
                 @if(!$isLocked)
-                <button type="reset" class="w-full sm:w-auto px-8 py-4 rounded-2xl text-gray-500 font-black uppercase tracking-widest text-[11px] hover:bg-gray-50 transition-all italic" id="btnReset">
+                <button type="reset" class="w-full sm:w-auto px-8 py-4 bg-red-500 hover:bg-red-600 text-white border-none rounded font-black uppercase tracking-widest text-[11px] transition-all italic" id="btnReset">
                     Reset Data
                 </button>
-                <button type="submit" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white rounded-2xl py-4 px-10 font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-purple-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" id="btnSubmit">
+                <button type="submit" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white rounded py-4 px-10 font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-purple-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" id="btnSubmit">
                     <span id="btnText">{{ $magang ? 'Update Pendaftaran' : 'Kirim Pendaftaran' }}</span>
                     <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     <span id="btnLoading" class="loading loading-spinner hidden"></span>

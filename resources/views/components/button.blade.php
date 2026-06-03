@@ -8,16 +8,16 @@
 
 @php
 $variantClass = match($variant) {
-    'primary'  => 'bg-primary hover:bg-purple-700 text-white border-none shadow-lg shadow-purple-100',
-    'amber'    => 'bg-[#F49E0A] hover:bg-orange-600 text-white border-none shadow-lg shadow-orange-100',
-    'green'    => 'bg-green-600 hover:bg-green-700 text-white border-none',
-    'red'      => 'bg-red-500 hover:bg-red-600 text-white border-none',
-    'blue'     => 'bg-blue-600 hover:bg-blue-700 text-white border-none',
+    'primary'  => 'bg-amber-400 hover:bg-amber-500 text-white border-none shadow-lg shadow-amber-100',
+    'amber'    => 'bg-amber-400 hover:bg-amber-500 text-white border-none shadow-lg shadow-amber-100',
+    'green'    => 'bg-green-500 hover:bg-green-600 text-white border-none shadow-lg shadow-green-100',
+    'red'      => 'bg-red-500 hover:bg-red-600 text-white border-none shadow-lg shadow-red-100',
+    'blue'     => 'bg-blue-500 hover:bg-blue-600 text-white border-none shadow-lg shadow-blue-100',
     'ghost'    => 'btn-ghost text-gray-400 hover:bg-gray-100 border-none',
     'outline'  => 'bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50',
-    'white'    => 'bg-white hover:bg-gray-50 text-primary border-none shadow-sm',
+    'white'    => 'bg-white hover:bg-gray-50 text-amber-500 border-none shadow-sm',
     default    => 'bg-gray-100 text-gray-400 border-none cursor-not-allowed',
-};
+};  
 
 $sizeClass = match($size) {
     'sm' => 'h-10 px-4 text-[9px]',
@@ -30,7 +30,7 @@ $sizeClass = match($size) {
     type="{{ $type }}"
     {{ $variant === 'disabled' ? 'disabled' : '' }}
     {{ $attributes->merge([
-        'class' => trim("btn $variantClass $sizeClass font-black uppercase tracking-widest rounded-2xl transition-all active:scale-95" . ($full ? ' w-full' : '') . ($loading ? ' pointer-events-none' : ''))
+        'class' => trim("btn $variantClass $sizeClass font-black uppercase tracking-widest rounded transition-all active:scale-95" . ($full ? ' w-full' : '') . ($loading ? ' pointer-events-none' : ''))
     ]) }}
 >
     @if($loading)

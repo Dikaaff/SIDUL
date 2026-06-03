@@ -108,12 +108,9 @@
                     </label>
                 </div>
                 
-                <button type="submit" class="w-full relative group/btn overflow-hidden rounded-2xl p-[1px] shadow-lg shadow-purple-900/10">
-                    <span class="absolute inset-0 bg-gradient-to-r from-purple-500 via-[#6B21A8] to-purple-800 rounded-2xl opacity-90 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
-                    <div class="relative bg-gradient-to-r from-purple-500 via-[#6B21A8] to-purple-800 px-8 py-4 rounded-[15px] flex items-center justify-center gap-2 transition-all duration-300 group-hover/btn:shadow-[0_0_2.5rem_-0.5rem_#6B21A8]">
-                        <span class="font-black text-white uppercase tracking-widest text-[13px] relative z-10 drop-shadow-md">Masuk ke SIDUL</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white group-hover/btn:translate-x-1 transition-transform relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                    </div>
+                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-white rounded py-4 px-8 font-black uppercase tracking-widest text-[13px] transition-all duration-300 shadow-lg shadow-amber-900/20 active:scale-95 flex items-center justify-center gap-2">
+                    <span>Masuk ke SIDUL</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </button>
             </form>
             
@@ -125,9 +122,9 @@
 </div>
 
 <!-- Background Elements for Auth Layout -->
-<div class="fixed inset-0 z-0 bg-slate-50 pointer-events-none">
-    <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-[#6B21A8]/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
-    <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#F49E0A]/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
+<div class="fixed inset-0 z-0 bg-[#6B21A8] pointer-events-none">
+    <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-white/10 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+    <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
 </div>
 @endsection
 

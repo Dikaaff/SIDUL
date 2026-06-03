@@ -7,7 +7,7 @@
     title="Manajemen Staf 👑" 
     subtitle="Kelola data akses untuk Operator dan Dosen Pembimbing."
 >
-    <button onclick="openModalAddUserModal()" class="btn min-h-0 h-10 px-5 rounded-xl bg-white hover:bg-purple-50 text-[#6B21A8] border-none font-black text-xs uppercase tracking-widest shadow-lg">
+    <button onclick="openModalAddUserModal()" class="btn min-h-0 h-10 px-5 rounded bg-white hover:bg-purple-50 text-[#6B21A8] border-none font-black text-xs uppercase tracking-widest shadow-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
         Tambah Staf
     </button>
@@ -64,13 +64,9 @@
                             <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest italic">Active Access</span>
                         </div>
                         
-                        <form action="{{ route('admin.users.destroy', $u->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini secara permanen?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="p-2.5 rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all active:scale-95 group/btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover/btn:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                            </button>
-                        </form>
+                        <button type="button" onclick="confirmDelete('{{ $u->id }}', '{{ addslashes($u->name) }}')" class="p-2.5 rounded text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all active:scale-95 group/btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover/btn:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
                     </div>
                 </div>
                 @empty
@@ -120,15 +116,41 @@
             </div>
 
             <div class="flex flex-col gap-3 pt-6 border-t border-gray-50 mt-8">
-                <button type="submit" class="btn h-14 rounded-2xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-purple-900/20 active:scale-95 transition-all">
+                <button type="submit" class="btn h-14 rounded bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-purple-900/20 active:scale-95 transition-all">
                     Simpan Akun Baru
                 </button>
-                <button type="button" onclick="closeModalAddUserModal()" class="btn h-14 rounded-2xl bg-gray-50 hover:bg-gray-100 border-none text-gray-500 font-black text-xs uppercase tracking-widest transition-all">
+                <button type="button" onclick="closeModalAddUserModal()" class="btn h-14 rounded bg-gray-50 hover:bg-gray-100 border-none text-gray-500 font-black text-xs uppercase tracking-widest transition-all">
                     Batalkan
                 </button>
             </div>
         </div>
     </form>
+</x-modal>
+
+<!-- Modal Konfirmasi Hapus -->
+<x-modal id="delete_user_modal" title="Hapus Akun" subtitle="Tindakan ini tidak dapat dibatalkan." width="sm">
+    <div class="space-y-6">
+        <div class="flex items-center gap-4 p-5 bg-red-50 rounded-2xl border border-red-100">
+            <div class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            </div>
+            <div>
+                <p class="font-black text-gray-800 text-sm">Hapus <span id="deleteUserName" class="text-red-600"></span>?</p>
+                <p class="text-[10px] font-bold text-gray-500 mt-1">Akun ini akan dihapus secara permanen dari sistem.</p>
+            </div>
+        </div>
+
+        <form id="deleteUserForm" method="POST" class="flex flex-col gap-3 pt-2">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn h-14 rounded bg-red-500 hover:bg-red-600 border-none text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-red-500/20 active:scale-95 transition-all">
+                Ya, Hapus Akun
+            </button>
+            <button type="button" onclick="closeModalDeleteUserModal()" class="btn h-14 rounded bg-gray-50 hover:bg-gray-100 border-none text-gray-500 font-black text-xs uppercase tracking-widest transition-all">
+                Batalkan
+            </button>
+        </form>
+    </div>
 </x-modal>
 
 @push('scripts')
@@ -139,6 +161,17 @@
 
     function closeModalAddUserModal() {
         document.getElementById('add_user_modal').close();
+    }
+
+    function closeModalDeleteUserModal() {
+        document.getElementById('delete_user_modal').close();
+    }
+
+    // fungsi untuk menampilkan modal konfirmasi hapus akun
+    function confirmDelete(userId, userName) {
+        document.getElementById('deleteUserName').innerText = userName;
+        document.getElementById('deleteUserForm').action = '/admin/users/' + userId;
+        document.getElementById('delete_user_modal').showModal();
     }
 
     // Link the header button to the new modal component function

@@ -94,10 +94,10 @@
                         </div>
 
                         <div class="flex gap-2 shrink-0">
-                            <button onclick="openModalApprove{{ $item->id }}()" class="btn h-11 px-5 bg-green-50 hover:bg-green-100 text-green-600 border border-green-100 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95">
+                            <button onclick="openModalApprove{{ $item->id }}()" class="btn h-11 px-5 bg-green-500 hover:bg-green-600 text-white border-none rounded text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-green-100">
                                 Setujui
                             </button>
-                            <button onclick="openModalReject{{ $item->id }}()" class="btn h-11 px-5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95">
+                            <button onclick="openModalReject{{ $item->id }}()" class="btn h-11 px-5 bg-red-500 hover:bg-red-600 text-white border-none rounded text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-red-100">
                                 Tolak
                             </button>
                         </div>
@@ -142,10 +142,10 @@
                                 <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold" placeholder="Tambahkan catatan jika perlu..."></textarea>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-6">
-                                <button type="button" onclick="closeModalApprove{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded-2xl text-[10px] font-black uppercase tracking-widest w-full">
+                                <button type="button" onclick="closeModalApprove{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded text-[10px] font-black uppercase tracking-widest w-full">
                                     Batal
                                 </button>
-                                <button type="submit" class="btn h-14 px-8 bg-green-600 hover:bg-green-700 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest w-full shadow-lg transition-all active:scale-95">
+                                <button type="submit" class="btn h-14 px-8 bg-green-500 hover:bg-green-600 text-white border-none rounded text-[10px] font-black uppercase tracking-widest w-full shadow-lg transition-all active:scale-95 shadow-green-100">
                                     Ya, Setujui
                                 </button>
                             </div>
@@ -178,10 +178,10 @@
                                 <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold" placeholder="Berikan alasan penolakan..." required></textarea>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-6">
-                                <button type="button" onclick="closeModalReject{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded-2xl text-[10px] font-black uppercase tracking-widest w-full">
+                                <button type="button" onclick="closeModalReject{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded text-[10px] font-black uppercase tracking-widest w-full">
                                     Batal
                                 </button>
-                                <button type="submit" class="btn h-14 px-8 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest w-full shadow-lg transition-all active:scale-95">
+                                <button type="submit" class="btn h-14 px-8 bg-red-500 hover:bg-red-600 text-white border-none rounded text-[10px] font-black uppercase tracking-widest w-full shadow-lg transition-all active:scale-95">
                                     Ya, Tolak
                                 </button>
                             </div>

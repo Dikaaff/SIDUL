@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" onclick="document.getElementById('judulInput').focus()" class="btn bg-orange-500 hover:bg-orange-600 border-none text-white px-8 h-14 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-orange-200 shrink-0">
+            <button type="button" onclick="document.getElementById('judulInput').focus()" class="btn bg-orange-500 hover:bg-orange-600 border-none text-white px-8 h-14 rounded font-black uppercase tracking-widest text-xs shadow-xl shadow-orange-200 shrink-0">
                 Mulai Revisi Sekarang
             </button>
         </div>
@@ -112,19 +112,19 @@
 
                   <div class="flex flex-wrap gap-4 w-full md:w-auto">
                     @if($laporan)
-                    <a href="{{ route('mahasiswa.laporan.pdf') }}" class="btn h-14 px-8 bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-100 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    <a href="{{ route('mahasiswa.laporan.pdf') }}" class="btn h-14 px-8 bg-[#422AD5] hover:bg-[#311eb3] text-white border-none rounded font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#422AD5]/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                         Cetak PDF
                     </a>
                     @endif
-
+ 
                     @if(!$laporan || $laporan->status !== 'approved')
                         @if($isPeriodeOpen)
-                        <button type="submit" class="btn h-14 px-10 bg-primary hover:bg-purple-700 text-white border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-2xl shadow-purple-200 flex-1 md:flex-none transition-all">
+                        <button type="submit" class="btn h-14 px-10 bg-amber-400 hover:bg-amber-500 text-white border-none rounded font-bold uppercase tracking-widest text-[10px] shadow-2xl shadow-amber-100 flex-1 md:flex-none transition-all">
                             {{ ($laporan && $laporan->status === 'revisi') ? 'Kirim Ulang Revisi' : 'Simpan & Kirim Laporan' }}
                         </button>
                         @else
-                        <button type="button" class="btn h-14 px-10 bg-gray-100 text-gray-400 border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] flex-1 md:flex-none cursor-not-allowed" disabled>
+                        <button type="button" class="btn h-14 px-10 bg-gray-100 text-gray-400 border-none rounded font-bold uppercase tracking-widest text-[10px] flex-1 md:flex-none cursor-not-allowed" disabled>
                             Periode Berakhir
                         </button>
                         @endif

@@ -8,7 +8,7 @@
     subtitle="Catat aktivitas harian dan progres pekerjaan magang Anda."
 >
     <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto relative z-10">
-        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 flex items-center justify-center gap-2 backdrop-blur-md">
+        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 rounded font-bold uppercase tracking-widest text-[10px] h-14 flex items-center justify-center gap-2 backdrop-blur-md">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             Cetak Logbook
         </a>
@@ -66,7 +66,7 @@
                             </p>
                         </td>
                         <td class="text-center pr-10">
-                            <button onclick="showLogDetail('{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}', '{{ e($log->kegiatan) }}')" class="btn btn-ghost btn-sm text-[#6B21A8] font-black uppercase text-[9px] tracking-widest rounded-xl hover:bg-purple-50">
+                            <button onclick="showLogDetail('{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}', '{{ e($log->kegiatan) }}')" class="btn btn-ghost btn-sm text-[#422AD5] font-black uppercase text-[9px] tracking-widest rounded hover:bg-[#422AD5]/10">
                                 Lihat Detail
                             </button>
                         </td>

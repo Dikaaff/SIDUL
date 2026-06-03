@@ -64,7 +64,7 @@
                             </form>
                         </td>
                         <td class="pr-8 text-right">
-                            <button form="assign-form-{{ $magang->id }}" type="submit" class="btn btn-sm min-h-0 h-9 rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider px-6 shadow-sm shadow-purple-200 transition-all active:scale-95">Simpan Plotting</button>
+                            <button form="assign-form-{{ $magang->id }}" type="submit" class="btn btn-sm min-h-0 h-9 rounded bg-amber-500 hover:bg-amber-600 border-none text-white font-black text-[10px] uppercase tracking-wider px-6 shadow-sm shadow-amber-200 transition-all active:scale-95">Simpan Plotting</button>
                         </td>
                     </tr>
                     @empty

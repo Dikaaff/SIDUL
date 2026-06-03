@@ -59,7 +59,7 @@
 </div>
 
 {{-- Detail Modal --}}
-<x-modal id="log_detail_modal" color="dark" subtitle="Detail Aktivitas Harian" title="TANGGAL" size="2xl">
+<x-modal id="log_detail_modal" color="purple" subtitle="Detail Aktivitas Harian" title="TANGGAL" size="2xl">
     <div>
         <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic px-1">Isi Kegiatan / Pekerjaan</p>
         <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 shadow-inner">
@@ -155,7 +155,7 @@ function renderLogs() {
                     <div class="max-w-md truncate group-hover:text-gray-900 transition-colors">${l.desc}</div>
                 </td>
                 <td class="text-right pr-10 border-b border-gray-50">
-                    <button onclick="showDetail(${currentStudentId}, ${idx})" class="btn btn-ghost btn-sm text-[#6B21A8] font-black uppercase text-[9px] tracking-widest hover:bg-purple-50 rounded-xl">Lihat Detail →</button>
+                    <button onclick="showDetail(${currentStudentId}, ${idx})" class="btn btn-ghost btn-sm text-[#6B21A8] font-black uppercase text-[9px] tracking-widest hover:bg-purple-50 rounded">Lihat Detail →</button>
                 </td>
             </tr>
         `;

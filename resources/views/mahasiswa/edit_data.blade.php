@@ -20,6 +20,10 @@
 @endsection
 
 @section('content')
+@php
+    $existingAnggotaCount = $magang ? $magang->peserta->filter(fn($p) => !$p->is_ketua)->count() : 0;
+    $maxAdditionalAnggota = 2 - $existingAnggotaCount;
+@endphp
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
     {{-- Kolom Kiri: Form Pengajuan --}}
@@ -84,8 +88,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     </div>
                     <div>
-                        <h4 class="font-black text-amber-800 text-sm uppercase tracking-wider">Permintaan Sedang Diproses</h4>
-                        <p class="text-xs font-medium text-amber-700 mt-1">Anda masih memiliki permintaan perubahan data yang menunggu persetujuan Operator. Silakan tunggu hingga diproses.</p>
+                        <h4 class="font-black text-amber-500 text-sm uppercase tracking-wider">Permintaan Sedang Diproses</h4>
+                        <p class="text-xs font-medium text-amber-600 mt-1">Anda masih memiliki permintaan perubahan data yang menunggu persetujuan Operator. Silakan tunggu hingga diproses.</p>
                     </div>
                 </div>
             @else
@@ -132,10 +136,7 @@
                             <input type="date" name="new_value" id="dateInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10">
                         </div>
 
-                        @php
-                            $existingAnggotaCount = $magang ? $magang->peserta->filter(fn($p) => !$p->is_ketua)->count() : 0;
-                            $maxAdditionalAnggota = 2 - $existingAnggotaCount;
-                        @endphp
+
                         <div id="anggotaInputGroup" class="hidden space-y-4">
                             <div>
                                 <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Anggota Kelompok Baru <span class="text-red-500">*</span></label>
@@ -151,14 +152,14 @@
                                 @if($maxAdditionalAnggota > 0)
                                 <div class="flex items-center gap-3 anggota-row">
                                     <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" placeholder="NIM Anggota 1" required>
-                                    <button type="button" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded-xl bg-red-50 text-red-500 border border-red-100 hover:bg-red-100 hidden">
+                                    <button type="button" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded bg-red-50 text-red-500 border border-red-100 hover:bg-red-100 hidden">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                     </button>
                                 </div>
                                 @endif
                             </div>
                             @if($maxAdditionalAnggota > 0)
-                            <button type="button" onclick="tambahAnggota()" class="btn h-10 px-4 bg-gray-50 border border-gray-100 rounded-xl text-[9px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-100">
+                            <button type="button" onclick="tambahAnggota()" class="btn h-10 px-4 bg-gray-50 border border-gray-100 rounded text-[9px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-100">
                                 + Tambah Anggota
                             </button>
                             @endif
@@ -170,10 +171,10 @@
                         </div>
 
                         <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                            <a href="{{ route('mahasiswa.dashboard') }}" class="btn h-12 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 border-gray-100 text-gray-500 hover:bg-gray-50">
+                            <a href="{{ route('mahasiswa.dashboard') }}" class="btn h-12 px-6 rounded text-[10px] font-black uppercase tracking-widest border-2 border-gray-100 text-gray-500 hover:bg-gray-50">
                                 Batal
                             </a>
-                            <button type="button" onclick="showConfirmModal()" class="btn h-12 px-8 bg-primary hover:bg-purple-700 text-white border-none rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-purple-100 transition-all active:scale-95">
+                            <button type="button" onclick="showConfirmModal()" class="btn h-12 px-8 bg-amber-400 hover:bg-amber-500 text-white border-none rounded text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-100 transition-all active:scale-95">
                                 Ajukan Perubahan
                             </button>
                         </div>
@@ -424,7 +425,7 @@ function tambahAnggota() {
     row.className = 'flex items-center gap-3 anggota-row mt-3';
     row.innerHTML = `
         <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" placeholder="NIM Anggota ${anggotaCount}" required>
-        <button type="button" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded-xl bg-red-50 text-red-500 border border-red-100 hover:bg-red-100">
+        <button type="button" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded bg-red-50 text-red-500 border border-red-100 hover:bg-red-100">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
     `;

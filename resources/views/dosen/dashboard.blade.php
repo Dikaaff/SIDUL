@@ -43,8 +43,8 @@
         <div class="lg:col-span-8 space-y-6">
             <div class="flex items-center justify-between mb-2 px-2">
                 <div>
-                    <h3 class="text-2xl font-black text-gray-800 tracking-tighter italic">Progres Bimbingan Terbaru</h3>
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-0.5 italic">Menampilkan 5 aktivitas bimbingan aktif</p>
+                    <h3 class="text-2xl font-black text-gray-800 tracking-tighter italic">Progres Aktivitas Terbaru</h3>
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-0.5 italic">Menampilkan 5 aktivitas aktif</p>
                 </div>
                 <a href="{{ route('dosen.monitoring') }}" class="text-[10px] font-black uppercase tracking-widest text-[#6B21A8] hover:underline italic">Lihat Semua</a>
             </div>
@@ -65,6 +65,12 @@
                     }
 
                     if($magang->status_magang === 'Selesai') $progress = 100;
+
+                    $barColor = match(true) {
+                        $progress <= 20 => 'bg-[#F49E0A]',
+                        $progress <= 60 => 'bg-blue-500',
+                        default => 'bg-[#6B21A8]',
+                    };
                 @endphp
                 <x-card padding="large" border class="group hover:bg-gray-50/80 transition-all duration-300 !shadow-2xl !shadow-gray-100/50 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
                     <div class="flex items-center gap-4 md:gap-6">
@@ -95,7 +101,7 @@
                                 <span class="text-[10px] md:text-[11px] font-black text-gray-800 italic">{{ $progress }}%</span>
                             </div>
                             <div class="relative h-1.5 md:h-2 w-full bg-gray-100 rounded-full overflow-hidden shadow-inner">
-                                <div class="absolute top-0 left-0 h-full bg-[#6B21A8] rounded-full transition-all duration-1000 ease-out" style="width: {{ $progress }}%"></div>
+                                <div class="absolute top-0 left-0 h-full {{ $barColor }} rounded-full transition-all duration-1000 ease-out" style="width: {{ $progress }}%"></div>
                             </div>
                         </div>
 
@@ -156,7 +162,7 @@
             </div>
 
             <!-- Quick Links -->
-            <x-card padding="none" shadow="none" border="false" class="p-10 bg-[#6B21A8] text-white relative !shadow-2xl !shadow-purple-900/30">
+            <x-card padding="none" shadow="none" border="false" class="p-10 bg-[#F49E0A] text-white relative !shadow-2xl !shadow-amber-900/30">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
                 <h4 class="text-xl font-black tracking-tighter italic mb-4 relative z-10">Pusat Layanan 🚀</h4>
                 <div class="space-y-3 relative z-10">
@@ -219,8 +225,8 @@
             </div>
 
             <div class="mt-12 pt-8 border-t border-gray-100 flex gap-4">
-                <button onclick="document.getElementById('student_detail_modal').close()" class="btn bg-gray-50 hover:bg-gray-100 border-none flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl transition-all italic">Tutup Jendela</button>
-                <a id="modal_logbook_btn" href="{{ route('dosen.logbook') }}" class="btn bg-[#6B21A8] hover:bg-purple-800 border-none text-white flex-[1.5] h-14 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-purple-100 rounded-2xl transition-all italic">Lihat Detail Logbook</a>
+                <button onclick="document.getElementById('student_detail_modal').close()" class="btn bg-gray-50 hover:bg-gray-100 border-none flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded transition-all italic">Tutup Jendela</button>
+                <a id="modal_logbook_btn" href="{{ route('dosen.logbook') }}" class="btn bg-amber-500 hover:bg-amber-400 border-none text-white flex-[1.5] h-14 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-purple-100 rounded transition-all italic">Lihat Detail Logbook</a>
             </div>
         </div>
     </div>

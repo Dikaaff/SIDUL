@@ -74,7 +74,7 @@
                 <div class="col-span-2 flex justify-end">
                     @if($laporan)
                         <button type="button" 
-                            class="btn-review btn btn-sm rounded-xl bg-[#6B21A8] hover:bg-purple-800 border-none text-white font-black text-[10px] uppercase tracking-wider h-10 px-6"
+                            class="btn-review btn btn-sm rounded bg-amber-400 hover:bg-amber-500 border-none text-white font-black text-[10px] uppercase tracking-wider h-10 px-6 shadow-lg shadow-amber-100"
                             data-id="{{ $magang->id }}"
                             data-judul="{{ addslashes($laporan->judul) }}"
                             data-bab1="{{ base64_encode($laporan->bab1) }}"
@@ -84,7 +84,7 @@
                             Review
                         </button>
                     @else
-                        <button class="btn btn-sm rounded-xl bg-gray-100 text-gray-400 border-none cursor-not-allowed font-black text-[10px] uppercase tracking-wider h-10 px-6" disabled>Review</button>
+                        <button class="btn btn-sm rounded bg-gray-100 text-gray-400 border-none cursor-not-allowed font-black text-[10px] uppercase tracking-wider h-10 px-6" disabled>Review</button>
                     @endif
                 </div>
             </div>
@@ -112,7 +112,7 @@
     <div class="p-8 md:p-10 flex-1 overflow-y-auto bg-gray-50 custom-scrollbar">
         <div class="flex gap-2 mb-6">
             @foreach(['bab1' => 'Bab I', 'bab2' => 'Bab II', 'bab3' => 'Bab III', 'bab4' => 'Bab IV'] as $key => $label)
-                <button type="button" onclick="switchView('{{ $key }}')" id="view-btn-{{ $key }}" class="view-btn px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all {{ $loop->first ? 'bg-primary text-white' : 'bg-white text-gray-400 border border-gray-100' }}">
+                <button type="button" onclick="switchView('{{ $key }}')" id="view-btn-{{ $key }}" class="view-btn px-4 py-2 rounded font-bold text-[10px] uppercase tracking-wider transition-all {{ $loop->first ? 'bg-amber-400 text-white' : 'bg-white text-gray-400 border border-gray-100' }}">
                     {{ $label }}
                 </button>
             @endforeach
@@ -128,8 +128,8 @@
                 <textarea name="feedback" rows="3" class="textarea textarea-bordered w-full rounded-2xl bg-white border-gray-200 text-sm" placeholder="Tulis catatan..." required></textarea>
             </div>
             <div class="flex gap-3">
-                <button type="submit" name="status" value="revisi" class="btn flex-1 bg-white text-red-600 border-2 border-red-100 rounded-xl font-black uppercase text-[10px] h-12">Berikan Revisi</button>
-                <button type="submit" name="status" value="approved" class="btn flex-1 bg-green-600 text-white border-none rounded-xl font-black uppercase text-[10px] h-12">Setujui Laporan</button>
+                <button type="submit" name="status" value="revisi" class="btn flex-1 bg-red-500 hover:bg-red-600 text-white border-none rounded font-black uppercase text-[10px] h-12 shadow-lg shadow-red-100">Berikan Revisi</button>
+                <button type="submit" name="status" value="approved" class="btn flex-1 bg-green-500 hover:bg-green-600 text-white border-none rounded font-black uppercase text-[10px] h-12 shadow-lg shadow-green-100">Setujui Laporan</button>
             </div>
         </form>
     </div>
@@ -165,10 +165,10 @@
         const content = document.getElementById('modalContent');
         content.innerHTML = atob(currentBabs[babKey] || '');
         document.querySelectorAll('.view-btn').forEach(b => {
-            b.classList.remove('bg-primary', 'text-white');
+            b.classList.remove('bg-amber-400', 'text-white');
             b.classList.add('bg-white', 'text-gray-400', 'border', 'border-gray-100');
         });
-        document.getElementById('view-btn-' + babKey).classList.add('bg-primary', 'text-white');
+        document.getElementById('view-btn-' + babKey).classList.add('bg-amber-400', 'text-white');
     }
 
     document.querySelectorAll('.btn-review').forEach(btn => {

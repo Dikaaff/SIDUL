@@ -15,7 +15,7 @@
 
             <!-- Left Content -->
             <div class="max-w-2xl">
-
+ 
                 <h1 class="text-2xl md:text-3xl font-bold leading-tight text-white">
                     Monitoring Mahasiswa
                 </h1>
@@ -160,6 +160,18 @@ let currentPage = 1;
 const itemsPerPage = 6;
 let filteredStudents = [...students];
 
+function progressColor(p) {
+    if (p <= 20) return 'text-[#F49E0A]';
+    if (p <= 60) return 'text-blue-600';
+    return 'text-[#6B21A8]';
+}
+
+function progressBarColor(p) {
+    if (p <= 20) return 'bg-[#F49E0A]';
+    if (p <= 60) return 'bg-blue-500';
+    return 'bg-[#6B21A8]';
+}
+
 // fungsi untuk menampilkan grid kartu mahasiswa dengan data yang sudah difilter dan pagination
 function renderGrid() {
 
@@ -259,15 +271,15 @@ function renderGrid() {
                                     Progress
                                 </p>
 
-                                <p class="text-sm font-bold text-[#6B21A8]">
+                                <p class="text-sm font-bold ${progressColor(s.progress)}">
                                     ${s.progress}%
                                 </p>
 
                             </div>
 
-                            <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                                <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
 
-                                <div class="h-full bg-gradient-to-r from-[#6B21A8] to-[#9333EA] rounded-full"
+                                <div class="h-full ${progressBarColor(s.progress)} rounded-full"
                                     style="width:${s.progress}%">
                                 </div>
 
@@ -286,7 +298,7 @@ function renderGrid() {
                 <div class="pt-7 relative z-10">
 
                     <a href="{{ route('dosen.logbook') }}"
-                        class="block w-full text-center bg-gray-100 hover:bg-[#6B21A8] hover:text-white text-[#6B21A8] rounded-2xl py-4 text-xs font-bold uppercase tracking-[0.2em] transition-all">
+                        class="block w-full text-center bg-amber-500 hover:bg-amber-600 text-white rounded py-4 text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-lg shadow-blue-600/20">
 
                         Buka Logbook →
 
@@ -352,7 +364,7 @@ function updatePagination() {
             btn.className =
                 `px-5 h-11 text-sm font-bold transition ${
                     currentPage === i
-                    ? 'bg-[#6B21A8] text-white'
+                    ? 'bg-[#F49E0A] text-white'
                     : 'bg-white text-gray-500 hover:bg-gray-100'
                 }`;
 

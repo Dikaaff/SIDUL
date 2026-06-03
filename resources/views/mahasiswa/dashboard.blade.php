@@ -115,7 +115,7 @@
                     <h3 class="text-2xl font-black text-gray-800 mb-4">Belum Ada Pendaftaran</h3>
                     <p class="text-gray-500 mb-8 font-medium">Segera lengkapi data magang Anda untuk memulai proses verifikasi.</p>
                     @if($mahasiswa->status_magang === 'Approve')
-                        <a href="{{ route('mahasiswa.pendaftaran') }}" class="btn bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl px-8 h-14 font-bold uppercase tracking-widest text-xs">
+                        <a href="{{ route('mahasiswa.pendaftaran') }}" class="btn bg-amber-400 hover:bg-amber-500 text-white border-none rounded px-8 h-14 font-bold uppercase tracking-widest text-xs">
                             Daftar Magang Sekarang
                         </a>
                     @elseif($mahasiswa->status_magang === 'Rejected')
@@ -147,11 +147,11 @@
                             <h3 class="text-3xl font-black text-gray-800 mb-2">{{ $pendaftaran->perusahaan }}</h3>
                             <p class="text-gray-500 font-bold mb-8 italic">{{ $pendaftaran->alamat }}</p>
                             <div class="flex gap-2 justify-center md:justify-start">
-                                <a href="{{ route('mahasiswa.logbook') }}" class="btn h-11 px-6 bg-primary hover:bg-purple-700 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-purple-100 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                                <a href="{{ route('mahasiswa.logbook') }}" class="btn h-11 px-6 bg-amber-400 hover:bg-amber-500 text-white border-none rounded text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-100 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                                     Logbook
                                 </a>
-                                <a href="{{ route('mahasiswa.laporan') }}" class="btn h-11 px-6 bg-amber-50 hover:bg-amber-100 text-amber-600 border border-amber-100 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                                <a href="{{ route('mahasiswa.laporan') }}" class="btn h-11 px-6 bg-[#422AD5]/10 hover:bg-[#422AD5]/20 text-[#422AD5] border border-[#422AD5]/20 rounded text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                     Laporan
                                 </a>
@@ -162,7 +162,7 @@
             @endif
         </x-card>
     </div>
-
+ 
     <!-- Kolom Kanan: Status & Info (4 Kolom) -->
     <div class="lg:col-span-4 space-y-8">
         <!-- Status Magang -->
@@ -189,7 +189,7 @@
                                 </div>
                             @endif
                         </div>
-
+ 
                         <div>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Dosen Pembimbing</p>
                             <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-2xl border border-gray-100">
@@ -201,9 +201,9 @@
                                 </span>
                             </div>
                         </div>
-
+ 
                         @if($pendaftaran && in_array($pendaftaran->status_magang, ['Pending', 'Aktif', 'Selesai']))
-                        <a href="{{ route('mahasiswa.surat_pengantar') }}" target="_blank" class="btn btn-outline btn-primary w-full rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] border-2">
+                        <a href="{{ route('mahasiswa.surat_pengantar') }}" target="_blank" class="btn bg-[#422AD5] hover:bg-[#311eb3] text-white border-none w-full rounded h-14 font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#422AD5]/20">
                              Cetak Surat Pengantar
                         </a>
                         @endif
@@ -220,7 +220,7 @@
             <div class="relative z-10">
                 <h3 class="text-xl font-bold mb-2 italic uppercase">Panduan Magang 📖</h3>
                 <p class="text-white/80 text-[10px] font-bold mb-6 italic">Pelajari prosedur magang terbaru & format laporan.</p>
-                <a href="https://d3ti.amikom.ac.id/page/magang#" class="btn bg-white hover:bg-gray-50 text-[#F49E0A] border-none w-full rounded-xl h-12 text-[10px] font-black uppercase tracking-widest italic shadow-sm">Lihat</a>
+                <a href="https://d3ti.amikom.ac.id/page/magang#" class="btn bg-white hover:bg-gray-50 text-[#F49E0A] border-none w-full rounded h-12 text-[10px] font-black uppercase tracking-widest italic shadow-sm">Lihat</a>
             </div>
         </x-card>
     </div>

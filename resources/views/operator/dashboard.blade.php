@@ -93,7 +93,7 @@
 
                 <button type="button" 
                         onclick="document.getElementById('toggle_confirm_modal').showModal()"
-                        class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200' }} text-white border-none px-10 rounded-xl font-bold uppercase tracking-widest text-[10px] h-14 w-full md:w-auto shadow-xl transition-all active:scale-95">
+                        class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200' }} text-white border-none px-10 rounded font-bold uppercase tracking-widest text-[10px] h-14 w-full md:w-auto shadow-xl transition-all active:scale-95">
                     @if($isPeriodeOpen)
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                         Tutup Pendaftaran
