@@ -10,7 +10,7 @@ use App\Models\User;
 
 class EditRequestService
 {
-    public function getEditableFields(bool $hasMagang = false, ?Magang $magang = null): array
+    public function getEditableFields(bool $hasMagang = false, ?Magang $magang = null, ?Mahasiswa $mahasiswa = null): array
     {
         $fields = [
             'nama' => 'Nama Lengkap',
@@ -23,7 +23,7 @@ class EditRequestService
             $fields['tanggal_mulai'] = 'Tanggal Mulai';
             $fields['tanggal_selesai'] = 'Tanggal Selesai';
 
-            if ($magang->tipe_magang === 'kelompok') {
+            if ($magang->tipe_magang === 'kelompok' && $mahasiswa && $mahasiswa->pesertaMagang?->is_ketua) {
                 $fields['anggota_kelompok'] = 'Anggota Kelompok';
             }
         }
@@ -108,6 +108,9 @@ class EditRequestService
         }
 
         if ($field === 'anggota_kelompok') {
+            if (!$mahasiswa->pesertaMagang?->is_ketua) {
+                return ServiceResult::error('Hanya ketua kelompok yang dapat mengubah anggota kelompok.');
+            }
             return $this->ajukanAnggotaKelompok($mahasiswa, $user, $magang, $data);
         }
 

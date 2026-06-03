@@ -211,7 +211,11 @@ class MahasiswaController extends Controller
         $magang = $this->mahasiswaService->getMagang($user);
         $hasMagang = $magang !== null;
 
-        $editableFields = $this->editRequestService->getEditableFields($hasMagang, $magang);
+        if (!$hasMagang && $mahasiswa->status_magang !== 'Approve') {
+            return redirect()->route('mahasiswa.dashboard')->with('error', 'Fitur Edit Data hanya tersedia setelah Anda mendapatkan rekomendasi Dosen Wali.');
+        }
+
+        $editableFields = $this->editRequestService->getEditableFields($hasMagang, $magang, $mahasiswa);
         $currentValues = $this->editRequestService->getCurrentValues($mahasiswa, $magang);
         $hasPending = $this->editRequestService->hasPendingRequest($mahasiswa);
         $riwayat = $this->editRequestService->getHistoryForMahasiswa($mahasiswa);

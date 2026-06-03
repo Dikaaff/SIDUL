@@ -132,22 +132,36 @@
                             <input type="date" name="new_value" id="dateInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10">
                         </div>
 
+                        @php
+                            $existingAnggotaCount = $magang ? $magang->peserta->filter(fn($p) => !$p->is_ketua)->count() : 0;
+                            $maxAdditionalAnggota = 2 - $existingAnggotaCount;
+                        @endphp
                         <div id="anggotaInputGroup" class="hidden space-y-4">
                             <div>
                                 <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Anggota Kelompok Baru <span class="text-red-500">*</span></label>
-                                <p class="text-xs font-medium text-gray-400 mb-4">Masukkan NIM anggota kelompok (minimal 1, maksimal 2). Ketua kelompok (Anda) tidak perlu dimasukkan.</p>
+                                <p class="text-xs font-medium text-gray-400 mb-4">
+                                    @if($maxAdditionalAnggota <= 0)
+                                        Kelompok Anda sudah mencapai maksimal 3 orang. Tidak dapat menambahkan anggota lagi.
+                                    @else
+                                        Masukkan NIM anggota kelompok baru (maksimal {{ $maxAdditionalAnggota }} orang). Ketua kelompok (Anda) tidak perlu dimasukkan.
+                                    @endif
+                                </p>
                             </div>
                             <div id="anggotaContainer">
+                                @if($maxAdditionalAnggota > 0)
                                 <div class="flex items-center gap-3 anggota-row">
                                     <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" placeholder="NIM Anggota 1" required>
                                     <button type="button" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded-xl bg-red-50 text-red-500 border border-red-100 hover:bg-red-100 hidden">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                     </button>
                                 </div>
+                                @endif
                             </div>
+                            @if($maxAdditionalAnggota > 0)
                             <button type="button" onclick="tambahAnggota()" class="btn h-10 px-4 bg-gray-50 border border-gray-100 rounded-xl text-[9px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-100">
                                 + Tambah Anggota
                             </button>
+                            @endif
                         </div>
 
                         <div>
@@ -294,7 +308,8 @@
 
 @push('scripts')
 <script>
-let anggotaCount = 1;
+const maxAnggotaTambahan = {{ $maxAdditionalAnggota }};
+let anggotaCount = {{ $maxAdditionalAnggota > 0 ? 1 : 0 }};
 
 document.addEventListener('DOMContentLoaded', function() {
     const fieldSelect = document.getElementById('fieldSelect');
@@ -369,10 +384,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const selected = fieldSelect.options[fieldSelect.selectedIndex];
         const field = selected.value;
 
-        if (!field) { alert('Silakan pilih field terlebih dahulu.'); return; }
+        if (!field) { showToast('error', 'Silakan pilih field terlebih dahulu.'); return; }
 
         const alasan = document.querySelector('textarea[name="alasan"]').value.trim();
-        if (!alasan || alasan.length < 10) { alert('Alasan pengajuan minimal 10 karakter.'); return; }
+        if (!alasan || alasan.length < 10) { showToast('error', 'Alasan pengajuan minimal 10 karakter.'); return; }
 
         if (field === 'anggota_kelompok') {
             const nims = document.querySelectorAll('input[name="nim_anggota[]"]');
@@ -382,13 +397,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (inp.value.trim()) vals.push(inp.value.trim());
                 else valid = false;
             });
-            if (!valid || vals.length < 1) { alert('Isi minimal 1 NIM anggota kelompok.'); return; }
+            if (!valid || vals.length < 1) { showToast('error', 'Isi minimal 1 NIM anggota kelompok.'); return; }
             confirmNew.textContent = vals.join(', ');
         } else {
             const isDate = ['tanggal_mulai', 'tanggal_selesai'].includes(field);
             const isSelect = field === 'konsentrasi';
             const val = isDate ? dateInput.value.trim() : isSelect ? selectInput.value.trim() : newValueInput.value.trim();
-            if (!val) { alert('Isi nilai baru terlebih dahulu.'); return; }
+            if (!val) { showToast('error', 'Isi nilai baru terlebih dahulu.'); return; }
             confirmNew.textContent = val;
         }
 
@@ -402,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function tambahAnggota() {
-    if (anggotaCount >= 2) { alert('Maksimal 2 anggota kelompok.'); return; }
+    if (anggotaCount >= maxAnggotaTambahan) { showToast('error', 'Maksimal ' + maxAnggotaTambahan + ' anggota tambahan.'); return; }
     anggotaCount++;
     const container = document.getElementById('anggotaContainer');
     const row = document.createElement('div');
