@@ -31,6 +31,12 @@
         <x-slot name="icon"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></x-slot>
     </x-stat-card>
 
+    <a href="{{ route('operator.edit_requests') }}" class="block">
+        <x-stat-card value="{{ $pendingEditCount }}" label="Permintaan Edit" color="amber" class="hover:shadow-lg hover:-translate-y-1">
+            <x-slot name="icon"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></x-slot>
+        </x-stat-card>
+    </a>
+
 </div>
 
 {{-- Main Content --}}
@@ -156,6 +162,16 @@
                 <div>
                     <p class="font-black text-gray-800 text-sm">Monitoring</p>
                     <p class="text-[10px] font-bold text-gray-900">{{ $aktifCount }} aktif magang</p>
+                </div>
+            </a>
+
+            <a href="{{ route('operator.edit_requests') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-amber-50 hover:bg-amber-100 transition-all group">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                </div>
+                <div>
+                    <p class="font-black text-gray-800 text-sm">Permintaan Edit</p>
+                    <p class="text-[10px] font-bold text-gray-900">{{ $pendingEditCount }} menunggu</p>
                 </div>
             </a>
         </x-card>

@@ -21,6 +21,11 @@ class Magang extends Model
         'konsentrasi',
     ];
 
+    protected $casts = [
+        'tanggal_mulai' => 'date',
+        'tanggal_selesai' => 'date',
+    ];
+
     # fungsi relasi hasMany ke model PesertaMagang
     public function peserta()
     {

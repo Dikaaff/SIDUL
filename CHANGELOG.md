@@ -4,6 +4,79 @@ Dokumentasi seluruh perubahan yang dilakukan pada proyek Sistem Informasi Dual L
 
 ---
 
+## [1.5.0] — Request-Edit Data & Perbaikan Pendaftaran
+
+### 1. Fitur — Sistem Request-Edit Data Mahasiswa
+
+Mahasiswa dapat mengajukan perubahan data profil/perusahaan/anggota kelompok, dan operator menyetujui/menolak.
+
+**File baru:**
+- `app/Services/EditRequestService.php` — Service untuk ajukan, approve, reject edit request
+- `app/Models/EditRequest.php` — Model edit_requests dengan relasi ke Mahasiswa, User, processor
+- `database/migrations/2026_06_01_201657_create_edit_requests_table.php` — Tabel edit_requests (field, old_value, new_value, alasan, status, catatan_operator)
+- `database/migrations/2026_06_01_202513_add_target_type_to_edit_requests_table.php` — Kolom target_type, target_id, metadata
+- `resources/views/mahasiswa/edit_data.blade.php` — Form pengajuan + riwayat
+- `resources/views/operator/edit_requests.blade.php` — Daftar pending + approve/reject modal
+
+**File diubah:**
+- `app/Http/Controllers/MahasiswaController.php` — Method editData(), storeEditData()
+- `app/Http/Controllers/OperatorController.php` — Method editRequests(), approveEdit(), rejectEdit(); pendingEditCount di dashboard
+- `routes/web.php` — Route mahasiswa.edit-data, operator.edit-requests, approve/reject
+- `resources/views/components/sidebar.blade.php` — Link "Edit Data Profil" (mahasiswa) & "Permintaan Edit Data" (operator)
+- `resources/views/operator/dashboard.blade.php` — Stat card + quick action edit requests
+
+### 2. Fitur — Edit Konsentrasi Pakai Dropdown
+
+**File:** `resources/views/mahasiswa/edit_data.blade.php`
+
+Dropdown field Konsentrasi sekarang menampilkan 3 opsi (Web Development, Networking, 2D Animation) bukan input teks biasa.
+
+### 3. Fix — Date Casting Model Magang
+
+**Masalah:** Error `Call to a member function format() on string` di halaman edit-data karena `tanggal_mulai`/`tanggal_selesai` tidak di-cast sebagai date.
+
+**File:** `app/Models/Magang.php` — Menambahkan `$casts = ['tanggal_mulai' => 'date', 'tanggal_selesai' => 'date']`
+
+### 4. Fix — Banner Error Persistent di Pendaftaran & Edit Data
+
+**Masalah:** Error dari server hanya tampil sebagai toast yang hilang 2 detik, tidak sebagai banner persistent.
+
+**File diubah:**
+- `resources/views/mahasiswa/pendaftaran.blade.php` — Tambah banner success/error/validation persistent
+- `resources/views/mahasiswa/edit_data.blade.php` — Tambah banner success/error/validation persistent
+
+### 5. Fix — Validasi NIM Anggota Kosong di Pendaftaran
+
+**Masalah:** Input NIM anggota ke-2 yang kosong ikut divalidasi `exists:mahasiswas,nim`, menyebabkan error "Salah satu NIM anggota tidak terdaftar di sistem" meskipun NIM valid.
+
+**File:** `app/Http/Controllers/MahasiswaController.php` — Filter `nim_anggota` dengan `array_filter` sebelum validasi
+
+### 6. Fix — Form Submit Multiple Input name="new_value"
+
+**Masalah:** Tiga input dengan `name="new_value"` (text, select, date) dikirim semua ke server; PHP mengambil nilai terakhir (date kosong), menyebabkan error "The new value field is required."
+
+**File:** `resources/views/mahasiswa/edit_data.blade.php` — Input di-disable saat disembunyikan, hanya input aktif yang dikirim
+
+### 7. Fix — Halaman Pendaftaran Readonly & Data Anggota Tidak Muncul
+
+**Masalah:** Setelah daftar magang, halaman pendaftaran masih bisa diedit (tidak readonly) dan NIM/nama anggota kelompok tidak tampil.
+
+**File:** `resources/views/mahasiswa/pendaftaran.blade.php`
+- `$isLocked` diubah jadi `$magang !== null` (semua status, bukan hanya Approve/Aktif/Selesai)
+- Input NIM/Nama anggota di-pre-fill dengan data existing
+- Data Pengaju menampilkan ketua kelompok, bukan user login (untuk anggota)
+- Info biru "Anda terdaftar sebagai Anggota Kelompok" untuk anggota non-ketua
+
+### 8. Fix — Monitoring Hanya Tampilkan Ketua
+
+**Masalah:** Halaman operator monitoring hanya menampilkan peserta pertama (ketua), anggota kelompok tidak muncul.
+
+**File:** `resources/views/operator/monitoring.blade.php`
+- Desktop table & mobile card: tampilkan semua peserta dengan badge "Ketua"
+- Export Excel: kumpulkan semua nama/NIM anggota
+
+---
+
 ## [1.4.0] — Blackbox Testing Komprehensif
 
 ### 1. Fix — Mass Assignment Magang

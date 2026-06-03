@@ -110,6 +110,7 @@
 
 @push('scripts')
 <script>
+    // fungsi untuk menampilkan detail logbook pada modal berdasarkan tanggal dan deskripsi
     function showLogDetail(date, desc) {
         // Update the title dynamically since x-modal renders it server-side
         document.querySelector('#log_detail_modal h3').innerText = date.toUpperCase();

@@ -102,6 +102,7 @@ const mockLogs = @json($mhsBimbingan->mapWithKeys(function($magang) {
 
 let currentStudentId = students.length > 0 ? students[0].id : null;
 
+// fungsi untuk menampilkan daftar mahasiswa pada panel pemilih mahasiswa
 function renderStudents() {
     const container = document.getElementById('studentSelector');
     container.innerHTML = '';
@@ -122,6 +123,7 @@ function renderStudents() {
     });
 }
 
+// fungsi untuk memilih mahasiswa dan menampilkan logbook yang sesuai
 function selectStudent(id) {
     currentStudentId = id;
     const student = students.find(s => s.id === id);
@@ -134,6 +136,7 @@ function selectStudent(id) {
     }
 }
 
+// fungsi untuk menampilkan daftar logbook dari mahasiswa yang sedang dipilih
 function renderLogs() {
     const logs = mockLogs[currentStudentId] || [];
     const allLogsTableBody = document.getElementById('allLogsTableBody');
@@ -159,6 +162,7 @@ function renderLogs() {
     });
 }
 
+// fungsi untuk menampilkan detail logbook pada modal berdasarkan indeks log yang dipilih
 function showDetail(studentId, logIndex) {
     const log = mockLogs[studentId][logIndex];
     document.querySelector('#log_detail_modal h3').innerText = log.date.toUpperCase();

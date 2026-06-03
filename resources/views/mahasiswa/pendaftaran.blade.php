@@ -23,12 +23,57 @@
     $mahasiswa = Auth::user()->mahasiswa;
     $peserta = $mahasiswa->pesertaMagang;
     $magang = $peserta ? $peserta->magang : null;
-    $isLocked = $magang && in_array($magang->status_magang, ['Approve', 'Aktif', 'Selesai']);
+    $isLocked = $magang !== null;
+    $ketua = $magang ? $magang->peserta->firstWhere('is_ketua', true)?->mahasiswa : null;
+    $anggotaList = $magang ? $magang->peserta->filter(fn($p) => !$p->is_ketua)->values() : collect();
 @endphp
 <div class="max-w-5xl mx-auto pb-10">
     <x-card padding="large">
         <form action="{{ route('mahasiswa.pendaftaran.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8" id="formPendaftaran">
             @csrf
+
+            {{-- Session Success Banner --}}
+            @if(session('success'))
+            <div class="bg-green-50 border-2 border-green-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div>
+                    <h4 class="font-black text-green-800 text-sm uppercase tracking-wider">Berhasil!</h4>
+                    <p class="text-xs font-medium text-green-700 mt-1">{{ session('success') }}</p>
+                </div>
+            </div>
+            @endif
+
+            {{-- Session Error Banner --}}
+            @if(session('error'))
+            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </div>
+                <div>
+                    <h4 class="font-black text-red-800 text-sm uppercase tracking-wider">Gagal!</h4>
+                    <p class="text-xs font-medium text-red-700 mt-1">{{ session('error') }}</p>
+                </div>
+            </div>
+            @endif
+
+            {{-- Validation Errors --}}
+            @if($errors->any())
+            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </div>
+                <div>
+                    <h4 class="font-black text-red-800 text-sm uppercase tracking-wider">Terjadi Kesalahan!</h4>
+                    <ul class="text-xs font-medium text-red-700 mt-1 list-disc list-inside">
+                        @foreach($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            @endif
             
             @if($magang)
             <div class="bg-purple-50 p-6 rounded-2xl border border-purple-100 flex items-center justify-between gap-4 mb-8">
@@ -88,9 +133,17 @@
             <div class="space-y-4">
                 <x-section-title color="amber" title="Data Pengaju" />
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <x-input label="Nama Lengkap" value="{{ $mahasiswa->nama }}" readonly />
-                    <x-input label="NIM / Identitas" value="{{ $mahasiswa->nim }}" readonly />
+                    <x-input label="Nama Lengkap" value="{{ $ketua->nama ?? $mahasiswa->nama }}" readonly />
+                    <x-input label="NIM / Identitas" value="{{ $ketua->nim ?? $mahasiswa->nim }}" readonly />
                 </div>
+                @if($ketua && $ketua->id !== $mahasiswa->id)
+                <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <p class="text-[10px] font-bold text-blue-700">Anda terdaftar sebagai <strong>Anggota Kelompok</strong>. Pengajuan magang diajukan oleh Ketua Kelompok.</p>
+                </div>
+                @endif
             </div>
 
             <!-- 3. Konsentrasi -->
@@ -119,8 +172,8 @@
                             <span class="badge badge-primary badge-sm font-black italic">Anggota 1 (Wajib)</span>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-                            <x-input label="NIM Anggota 1" name="nim_anggota[]" id="nimAnggota1" placeholder="Masukkan NIM" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
-                            <x-input label="Nama Anggota 1" name="nama_anggota[]" id="namaAnggota1" placeholder="Masukkan Nama Lengkap" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
+                            <x-input label="NIM Anggota 1" name="nim_anggota[]" id="nimAnggota1" value="{{ $anggotaList[0]->mahasiswa->nim ?? '' }}" placeholder="Masukkan NIM" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
+                            <x-input label="Nama Anggota 1" name="nama_anggota[]" id="namaAnggota1" value="{{ $anggotaList[0]->mahasiswa->nama ?? '' }}" placeholder="Masukkan Nama Lengkap" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
                         </div>
                     </div>
 
@@ -132,8 +185,8 @@
                             <span class="badge bg-purple-200 text-purple-700 border-none badge-sm font-black italic">Anggota 2 (Opsional)</span>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-                            <x-input label="NIM Anggota 2" name="nim_anggota[]" id="nimAnggota2" placeholder="Masukkan NIM (Opsional)" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
-                            <x-input label="Nama Anggota 2" name="nama_anggota[]" id="namaAnggota2" placeholder="Masukkan Nama Lengkap" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
+                            <x-input label="NIM Anggota 2" name="nim_anggota[]" id="nimAnggota2" value="{{ $anggotaList[1]->mahasiswa->nim ?? '' }}" placeholder="Masukkan NIM (Opsional)" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
+                            <x-input label="Nama Anggota 2" name="nama_anggota[]" id="namaAnggota2" value="{{ $anggotaList[1]->mahasiswa->nama ?? '' }}" placeholder="Masukkan Nama Lengkap" :readonly="$isLocked" class="bg-white border-purple-100 text-purple-900" />
                         </div>
                     </div>
                 </div>
@@ -184,6 +237,7 @@
 
 
 <script>
+    // fungsi untuk menampilkan atau menyembunyikan formulir kelompok berdasarkan pilihan pendaftaran
     function toggleKelompok(isKelompok) {
         const container = document.getElementById('kelompokContainer');
         if (isKelompok) {

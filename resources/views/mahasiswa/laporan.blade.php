@@ -169,6 +169,7 @@
 <script>
     let editors = {};
 
+    // fungsi untuk mengganti tab laporan yang aktif dan memperbarui tampilan tombol tab
     function switchTab(tabKey) {
         // Hide all panes
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));

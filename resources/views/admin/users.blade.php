@@ -134,6 +134,7 @@
 @push('scripts')
 <script>
     // Link the header button to the new modal component function
+    // fungsi untuk membuka modal tambah pengguna baru
     function showAddModal() {
         if(typeof openModalAddUserModal === 'function') {
             openModalAddUserModal();

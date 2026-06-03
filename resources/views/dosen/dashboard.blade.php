@@ -227,6 +227,7 @@
 </dialog>
 
 <script>
+// fungsi untuk menampilkan detail mahasiswa pada modal berdasarkan data yang diberikan
 function showStudentDetail(name, nim, company, progress, field, status) {
     document.getElementById('modal_name').innerText = name;
     document.getElementById('modal_company').innerText = company || 'Belum Menentukan Instansi';

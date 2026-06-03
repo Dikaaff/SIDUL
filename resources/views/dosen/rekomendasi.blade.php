@@ -18,7 +18,7 @@
                 <x-section-title color="primary" title="Antrean Rekomendasi" />
             </div>
             <div class="flex gap-2">
-                <input id="searchInput" onkeyup="filterByNIM()" class="input input-md bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold w-64 focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Cari Mahasiswa Berdasarkan NIM..." />
+                <input id="searchInput" class="input input-md bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold w-64 focus:ring-4 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Cari Mahasiswa Berdasarkan NIM..." />
             </div>
         </x-card>
 
@@ -63,7 +63,7 @@
                                     <span class="italic">Direkomendasikan</span>
                                 </button>
                             @elseif($mhs->status_magang === 'Rejected')
-                                <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline" onsubmit="event.preventDefault(); handleDelayedSubmit(this);">
+                                <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded-xl gap-2 transition-all">
                                         <div class="w-8 h-8 bg-red-100 text-red-600 rounded-xl flex items-center justify-center shadow-inner">
@@ -74,10 +74,10 @@
                                 </form>
                             @else
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="openRejectModal('{{ $mhs->id }}', '{{ addslashes($mhs->nama) }}')" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95">
+                                    <button type="button" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="btn btn-sm h-11 bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 rounded-xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95 reject-btn">
                                         Reject
                                     </button>
-                                    <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline" onsubmit="event.preventDefault(); handleDelayedSubmit(this);">
+                                    <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                         @csrf
                                         <button type="submit" class="btn btn-sm h-11 bg-[#6B21A8] hover:bg-purple-800 text-white border-none rounded-xl px-6 font-black uppercase tracking-wider text-[9px] shadow-lg shadow-purple-900/20 transition-all hover:scale-105 active:scale-95 group">
                                             Approve
@@ -133,7 +133,7 @@
             <p class="text-gray-500 font-medium text-sm mt-2 leading-relaxed">Anda akan menolak pengajuan rekomendasi mahasiswa <span id="mhs_name_modal" class="text-red-500 font-black"></span>. Tindakan ini tidak dapat dibatalkan dengan mudah.</p>
         </div>
         
-        <form id="reject_form" method="POST" action="" onsubmit="event.preventDefault(); handleDelayedSubmit(this);">
+        <form id="reject_form" method="POST" action="">
             @csrf
             <div class="flex flex-col gap-3">
                 <button type="submit" class="btn h-14 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20 transition-all active:scale-95">
@@ -149,27 +149,83 @@
 
 @push('scripts')
 <script>
-    function openRejectModal(id, name) {
-        const form = document.getElementById('reject_form');
-        form.action = `/dosen/rekomendasi/${id}/reject`;
-        document.getElementById('mhs_name_modal').innerText = name;
-        openModalRejectConfirmationModal();
-    }
+    (function() {
+        // fungsi untuk menyaring daftar mahasiswa berdasarkan NIM
+        function filterByNIM() {
+            var input = document.getElementById('searchInput');
+            if (!input) return;
+            var filter = input.value.toLowerCase();
+            var rows = document.querySelectorAll('.mhs-row');
+            for (var i = 0; i < rows.length; i++) {
+                var nim = rows[i].querySelector('.mhs-nim');
+                if (nim) {
+                    var text = nim.textContent.toLowerCase();
+                    rows[i].style.display = text.indexOf(filter) !== -1 ? '' : 'none';
+                }
+            }
+        }
 
-    function handleDelayedSubmit(form) {
-        const btn = form.querySelector('button[type="submit"]');
-        setLoading(btn);
-        // Snappy UX: 800ms delay then submit
-        setTimeout(() => {
-            form.submit();
-        }, 800);
-    }
+        // fungsi untuk membuka modal penolakan rekomendasi mahasiswa
+        function openRejectModal(id, name) {
+            var form = document.getElementById('reject_form');
+            if (form) {
+                form.action = '/dosen/rekomendasi/' + id + '/reject';
+            }
+            var nameEl = document.getElementById('mhs_name_modal');
+            if (nameEl) {
+                nameEl.innerText = name;
+            }
+            var modal = document.getElementById('reject_confirmation_modal');
+            if (modal && typeof modal.showModal === 'function') {
+                modal.showModal();
+            } else {
+                alert('Menolak rekomendasi ' + name + ' (ID: ' + id + ')');
+                if (form) form.submit();
+            }
+        }
 
-    function setLoading(btn) {
-        btn.classList.add('loading');
-        btn.setAttribute('disabled', 'true');
-        btn.innerHTML = `<span class="loading loading-spinner loading-xs"></span> PROCESSING...`;
-    }
+        // fungsi untuk mengirimkan formulir dengan jeda waktu agar memberikan efek pemrosesan
+        function handleDelayedSubmit(event) {
+            event.preventDefault();
+            var form = event.target;
+            var btn = form.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.classList.add('loading');
+                btn.setAttribute('disabled', 'true');
+                btn.innerHTML = '<span class="loading loading-spinner loading-xs"></span> PROCESSING...';
+            }
+            setTimeout(function() {
+                form.submit();
+            }, 800);
+        }
+
+        // Register event handlers
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', filterByNIM);
+        }
+
+        var approveForms = document.querySelectorAll('form.approve-form');
+        for (var i = 0; i < approveForms.length; i++) {
+            approveForms[i].addEventListener('submit', handleDelayedSubmit);
+        }
+
+        var rejectBtns = document.querySelectorAll('.reject-btn');
+        for (var i = 0; i < rejectBtns.length; i++) {
+            (function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-id');
+                    var name = btn.getAttribute('data-name');
+                    openRejectModal(id, name);
+                });
+            })(rejectBtns[i]);
+        }
+
+        var rejectForm = document.getElementById('reject_form');
+        if (rejectForm) {
+            rejectForm.addEventListener('submit', handleDelayedSubmit);
+        }
+    })();
 </script>
 @endpush
 @endsection

@@ -160,6 +160,7 @@
 <script>
     let currentBabs = {};
 
+    // fungsi untuk mengganti tampilan konten laporan berdasarkan bab yang dipilih
     function switchView(babKey) {
         const content = document.getElementById('modalContent');
         content.innerHTML = atob(currentBabs[babKey] || '');

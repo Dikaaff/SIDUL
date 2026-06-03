@@ -47,6 +47,7 @@
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"></div>
 
     <script>
+        // fungsi untuk membuka atau menutup sidebar pada tampilan mobile
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
@@ -62,6 +63,7 @@
 
         // Robust Global Toast Logic
         // Robust Global Toast Logic
+        // fungsi untuk menampilkan notifikasi toast berdasarkan tipe (success/error/info) dan pesan yang diberikan
         function showToast(type, message) {
             const successNotif = document.getElementById('globalSuccessNotif');
             const errorNotif = document.getElementById('globalErrorNotif');

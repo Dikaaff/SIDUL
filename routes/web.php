@@ -49,6 +49,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/mahasiswa/laporan', [MahasiswaController::class, 'laporan'])->name('mahasiswa.laporan');
     Route::get('/mahasiswa/laporan/pdf', [MahasiswaController::class, 'cetakLaporan'])->name('mahasiswa.laporan.pdf');
     Route::post('/mahasiswa/laporan', [MahasiswaController::class, 'storeLaporan'])->name('mahasiswa.laporan.store');
+    Route::get('/mahasiswa/edit-data', [MahasiswaController::class, 'editData'])->name('mahasiswa.edit_data');
+    Route::post('/mahasiswa/edit-data/store', [MahasiswaController::class, 'storeEditData'])->name('mahasiswa.edit_data.store');
 });
 
 // Dosen Routes
@@ -72,6 +74,9 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
     Route::delete('/operator/magang/{magang}', [OperatorController::class, 'destroy'])->name('operator.magang.destroy');
     Route::get('/operator/monitoring', [OperatorController::class, 'monitoring'])->name('operator.monitoring');
     Route::get('/operator/laporan', [OperatorController::class, 'laporan'])->name('operator.laporan');
+    Route::get('/operator/edit-requests', [OperatorController::class, 'editRequests'])->name('operator.edit_requests');
+    Route::post('/operator/edit-requests/{editRequest}/approve', [OperatorController::class, 'approveEdit'])->name('operator.edit_requests.approve');
+    Route::post('/operator/edit-requests/{editRequest}/reject', [OperatorController::class, 'rejectEdit'])->name('operator.edit_requests.reject');
 });
 
 // Admin Routes

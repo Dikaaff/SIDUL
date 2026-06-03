@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\MahasiswaService;
 use App\Services\PeriodeService;
+use App\Services\EditRequestService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Laporan;
 use App\Models\Logbook;
@@ -14,7 +15,8 @@ class MahasiswaController extends Controller
 {
     # fungsi constructor untuk menginisialisasi service
     public function __construct(
-        protected MahasiswaService $mahasiswaService
+        protected MahasiswaService $mahasiswaService,
+        protected EditRequestService $editRequestService
     ) {}
 
     # fungsi untuk menampilkan dashboard mahasiswa
@@ -51,6 +53,10 @@ class MahasiswaController extends Controller
             return redirect('/dashboard');
         }
 
+        if ($mahasiswa->pesertaMagang) {
+            return view('mahasiswa.pendaftaran');
+        }
+
         $check = $this->mahasiswaService->isPendaftaranAllowed($mahasiswa);
         if (!$check->success) {
             return redirect()->route('mahasiswa.dashboard')->with('error', $check->message);
@@ -62,6 +68,12 @@ class MahasiswaController extends Controller
     # fungsi untuk menyimpan data pendaftaran magang
     public function storePendaftaran(Request $request)
     {
+        \Log::info('storePendaftaran received', $request->all());
+
+        $nimAnggota = array_values(array_filter($request->nim_anggota ?? []));
+        \Log::info('storePendaftaran filtered nim_anggota', $nimAnggota);
+        $request->merge(['nim_anggota' => $nimAnggota]);
+
         $request->validate([
             'tipe_magang'     => 'required|in:individu,kelompok',
             'konsentrasi'     => 'required|string',
@@ -70,7 +82,7 @@ class MahasiswaController extends Controller
             'tanggal_mulai'   => 'required|date',
             'tanggal_selesai' => 'required|date|after:tanggal_mulai',
             'nim_anggota'     => 'nullable|array',
-            'nim_anggota.*'   => 'nullable|string|exists:mahasiswas,nim',
+            'nim_anggota.*'   => 'required|string|exists:mahasiswas,nim',
         ], [
             'nim_anggota.*.exists' => 'Salah satu NIM anggota tidak terdaftar di sistem.',
         ]);
@@ -185,6 +197,56 @@ class MahasiswaController extends Controller
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('Laporan_Akhir_' . $mahasiswa->nim . '.pdf');
+    }
+
+    # fungsi untuk menampilkan halaman pengajuan edit data
+    public function editData()
+    {
+        $user = Auth::user();
+        $mahasiswa = $this->mahasiswaService->getCurrentMahasiswa($user);
+        if (!$mahasiswa) {
+            return redirect('/dashboard')->with('error', 'Data profil mahasiswa tidak ditemukan.');
+        }
+
+        $magang = $this->mahasiswaService->getMagang($user);
+        $hasMagang = $magang !== null;
+
+        $editableFields = $this->editRequestService->getEditableFields($hasMagang, $magang);
+        $currentValues = $this->editRequestService->getCurrentValues($mahasiswa, $magang);
+        $hasPending = $this->editRequestService->hasPendingRequest($mahasiswa);
+        $riwayat = $this->editRequestService->getHistoryForMahasiswa($mahasiswa);
+
+        return view('mahasiswa.edit_data', compact(
+            'mahasiswa', 'magang', 'hasMagang',
+            'editableFields', 'currentValues', 'hasPending', 'riwayat'
+        ));
+    }
+
+    # fungsi untuk menyimpan pengajuan edit data
+    public function storeEditData(Request $request)
+    {
+        $rules = [
+            'field'    => 'required|string',
+            'alasan'    => 'required|string|min:10',
+        ];
+
+        if ($request->field === 'anggota_kelompok') {
+            $rules['nim_anggota'] = 'required|array';
+            $rules['nim_anggota.*'] = 'required|string|exists:mahasiswas,nim';
+        } else {
+            $rules['new_value'] = 'required|string|max:255';
+        }
+
+        $messages = [
+            'alasan.min' => 'Alasan pengajuan minimal 10 karakter.',
+            'nim_anggota.*.exists' => 'Salah satu NIM anggota tidak terdaftar di sistem.',
+        ];
+
+        $request->validate($rules, $messages);
+
+        $result = $this->editRequestService->ajukan(Auth::user(), $request->all());
+
+        return back()->with($result->success ? 'success' : 'error', $result->message);
     }
 
     # fungsi untuk mencetak logbook dalam format PDF

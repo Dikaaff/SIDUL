@@ -3,21 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Magang;
+use App\Models\EditRequest;
 use App\Services\OperatorService;
 use App\Services\PeriodeService;
+use App\Services\EditRequestService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OperatorController extends Controller
 {
     # fungsi constructor untuk menginisialisasi service
     public function __construct(
-        protected OperatorService $operatorService
+        protected OperatorService $operatorService,
+        protected EditRequestService $editRequestService
     ) {}
 
     # fungsi untuk menampilkan dashboard operator
     public function dashboard()
     {
         $data = $this->operatorService->getDashboardStats();
+        $data['pendingEditCount'] = $this->editRequestService->getPendingCount();
         return view('operator.dashboard', $data);
     }
 
@@ -69,6 +74,42 @@ class OperatorController extends Controller
     {
         $magangs = $this->operatorService->getLaporanMagang();
         return view('operator.laporan', compact('magangs'));
+    }
+
+    # fungsi untuk menampilkan daftar permintaan edit data mahasiswa
+    public function editRequests()
+    {
+        $permintaan = $this->editRequestService->getPendingRequestsForOperator();
+        $riwayat = EditRequest::with(['mahasiswa.user', 'user', 'processor'])
+            ->whereIn('status', ['approved', 'rejected'])
+            ->latest()
+            ->take(20)
+            ->get();
+        return view('operator.edit_requests', compact('permintaan', 'riwayat'));
+    }
+
+    # fungsi untuk menyetujui permintaan edit data
+    public function approveEdit(Request $request, EditRequest $editRequest)
+    {
+        $result = $this->editRequestService->approve(
+            $editRequest,
+            Auth::user(),
+            $request->catatan
+        );
+
+        return back()->with($result->success ? 'success' : 'error', $result->message);
+    }
+
+    # fungsi untuk menolak permintaan edit data
+    public function rejectEdit(Request $request, EditRequest $editRequest)
+    {
+        $result = $this->editRequestService->reject(
+            $editRequest,
+            Auth::user(),
+            $request->catatan
+        );
+
+        return back()->with($result->success ? 'success' : 'error', $result->message);
     }
 
     # fungsi untuk menghapus data magang

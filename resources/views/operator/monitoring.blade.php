@@ -59,21 +59,34 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($magangs as $index => $magang)
-                    @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
-                    @if($mhs)
+                    @php $pesertaList = $magang->peserta->sortByDesc('is_ketua'); @endphp
+                    @if($pesertaList->isNotEmpty())
                     <tr class="hover:bg-gray-50 transition-all group">
                         <td class="pl-8 py-6 text-[10px] font-black text-gray-400 italic">
                             {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                         </td>
                         <td>
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-[10px] shadow-inner group-hover:rotate-3 transition-transform">
-                                    {{ strtoupper(substr($mhs->nama ?? 'MH', 0, 2)) }}
+                            <div class="flex flex-col gap-2">
+                                @foreach($pesertaList as $p)
+                                @php $mhs = $p->mahasiswa; @endphp
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-[8px] shadow-inner group-hover:rotate-3 transition-transform shrink-0">
+                                        {{ strtoupper(substr($mhs->nama ?? 'MH', 0, 2)) }}
+                                    </div>
+                                    <div class="flex flex-col min-w-0">
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="font-black text-gray-800 text-sm tracking-tight leading-tight truncate">{{ $mhs->nama }}</span>
+                                            @if($p->is_ketua)
+                                            <span class="badge bg-purple-100 text-purple-700 border-none text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 h-auto leading-tight">Ketua</span>
+                                            @endif
+                                        </div>
+                                        <span class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">{{ $mhs->nim }}</span>
+                                    </div>
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="font-black text-gray-800 text-sm tracking-tight leading-tight">{{ $mhs->nama }}</span>
-                                    <span class="text-[10px] font-bold text-gray-400 mt-1 tracking-widest uppercase">{{ $mhs->nim }}</span>
-                                </div>
+                                @if(!$loop->last)
+                                <div class="border-b border-dashed border-gray-100 last:hidden"></div>
+                                @endif
+                                @endforeach
                             </div>
                         </td>
                         <td>
@@ -144,17 +157,30 @@
         {{-- Mobile View (Card List) --}}
         <div class="md:hidden space-y-3 p-4">
             @forelse($magangs as $index => $magang)
-            @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
-            @if($mhs)
+            @php $pesertaList = $magang->peserta->sortByDesc('is_ketua'); @endphp
+            @if($pesertaList->isNotEmpty())
             <div class="bg-white border border-gray-100 rounded-[2rem] p-6 shadow-sm active:bg-gray-50 transition-all flex flex-col gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-xs shadow-inner">
-                        {{ strtoupper(substr($mhs->nama ?? 'MH', 0, 2)) }}
+                <div class="flex flex-col gap-2">
+                    @foreach($pesertaList as $p)
+                    @php $mhs = $p->mahasiswa; @endphp
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-xs shadow-inner shrink-0">
+                            {{ strtoupper(substr($mhs->nama ?? 'MH', 0, 2)) }}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-1.5">
+                                <h4 class="font-black text-gray-800 text-sm truncate">{{ $mhs->nama }}</h4>
+                                @if($p->is_ketua)
+                                <span class="badge bg-purple-100 text-purple-700 border-none text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 h-auto leading-tight">Ketua</span>
+                                @endif
+                            </div>
+                            <p class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">{{ $mhs->nim }}</p>
+                        </div>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-black text-gray-800 text-sm truncate">{{ $mhs->nama }}</h4>
-                        <p class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">{{ $mhs->nim }}</p>
-                    </div>
+                    @if(!$loop->last)
+                    <div class="border-b border-dashed border-gray-100"></div>
+                    @endif
+                    @endforeach
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 py-4 border-y border-gray-50">
@@ -198,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('realTimeSearch');
     const statusFilter = document.getElementById('statusFilter');
 
+    // fungsi untuk menyaring data monitoring berdasarkan kata kunci pencarian dan status yang dipilih
     function applyFilters() {
         const searchTerm = searchInput.value.toLowerCase();
         const statusTerm = statusFilter.value.toLowerCase();
@@ -242,8 +269,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const cells = tr.querySelectorAll('td');
             const no = index + 1;
-            const nama = cells[1].querySelector('.font-black').innerText.trim();
-            const nim = cells[1].querySelector('.text-\\[10px\\]').innerText.trim();
+            const nameEls = cells[1].querySelectorAll('.font-black');
+            const nimEls = cells[1].querySelectorAll('.text-\\[10px\\]');
+            const nama = Array.from(nameEls).map(el => el.innerText.trim()).filter(t => t && t !== 'Ketua').join(', ');
+            const nim = Array.from(nimEls).map(el => el.innerText.trim()).join(', ');
             const perusahaan = cells[2].querySelector('.font-bold').innerText.trim();
             const pembimbing = cells[3].innerText.replace(/(\r\n|\n|\r)/gm, " ").trim();
             const idMagang = cells[4].innerText.trim();

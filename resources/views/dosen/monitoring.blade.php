@@ -160,6 +160,7 @@ let currentPage = 1;
 const itemsPerPage = 6;
 let filteredStudents = [...students];
 
+// fungsi untuk menampilkan grid kartu mahasiswa dengan data yang sudah difilter dan pagination
 function renderGrid() {
 
     const grid = document.getElementById('studentGrid');
@@ -303,6 +304,7 @@ function renderGrid() {
     updatePagination();
 }
 
+// fungsi untuk memfilter data mahasiswa berdasarkan kata kunci pencarian
 function filterGrid() {
 
     const q = document.getElementById('searchInput')
@@ -321,6 +323,7 @@ function filterGrid() {
     renderGrid();
 }
 
+// fungsi untuk memperbarui informasi dan tombol navigasi halaman pagination
 function updatePagination() {
 
     const total = filteredStudents.length;
