@@ -8,7 +8,9 @@
 
     <!-- Navigation Menu -->
     <div class="p-4 flex-1 overflow-y-auto">
+        {{-- daisyui: menu --}}
         <ul class="menu menu-md w-full gap-2 text-base-content/70 font-semibold px-4 py-6">
+            {{-- daisyui: menu-title --}}
             <li class="menu-title text-[10px] font-extrabold uppercase tracking-[0.15em] text-base-content/40 mb-2 px-2">
                 MAIN NAVIGATION
             </li>
@@ -41,6 +43,7 @@
                     Dashboard Dosen
                 </x-sidebar-link>
 
+                {{-- daisyui: menu-title --}}
                 <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
                     DOSEN WALI
                 </li>
@@ -51,6 +54,7 @@
                     Rekomendasi
                 </x-sidebar-link>
 
+                {{-- daisyui: menu-title --}}
                 <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
                     PEMBIMBING
                 </li>
@@ -104,6 +108,7 @@
                     Validasi Laporan
                 </x-sidebar-link>
 
+                {{-- daisyui: menu-title --}}
                 <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
                     LAYANAN MAHASISWA
                 </li>
@@ -143,6 +148,7 @@
                     Laporan Akhir
                 </x-sidebar-link>
 
+                {{-- daisyui: menu-title --}}
                 <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
                     PENGATURAN
                 </li>
@@ -160,6 +166,7 @@
     <div class="p-6 border-t border-gray-100 sticky bottom-0 bg-white">
         <form action="{{ route('logout') }}" method="POST">
             @csrf
+            {{-- daisyui: btn --}}
             <button class="btn btn-ghost w-full justify-start gap-3 text-red-500 hover:bg-red-50 hover:text-red-600 rounded font-bold transition-all duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                 Logout

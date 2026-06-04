@@ -26,7 +26,7 @@
 
         @if($permintaan->isEmpty())
             <div class="p-16 text-center">
-                <div class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto mb-4">
+                <div class="w-16 h-16 rounded bg-gray-50 flex items-center justify-center mx-auto mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Tidak ada permintaan pending</p>
@@ -38,7 +38,7 @@
                 <div class="p-8 hover:bg-gray-50/50 transition-all">
                     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                         <div class="flex items-start gap-5 flex-1 min-w-0">
-                            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary font-black flex items-center justify-center text-sm shrink-0">
+                            <div class="w-12 h-12 rounded bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-sm shrink-0">
                                 {{ strtoupper(substr($item->mahasiswa->nama ?? '--', 0, 2)) }}
                             </div>
                             <div class="flex-1 min-w-0 space-y-1">
@@ -58,7 +58,7 @@
                                             <span class="text-gray-500">
                                                 @if($meta && isset($meta['old_anggota']))
                                                     @foreach($meta['old_anggota'] as $a)
-                                                        <span class="inline-block bg-gray-100 rounded-lg px-2 py-0.5 text-[10px]">{{ $a['nim'] }} ({{ $a['nama'] }})</span>
+                                                        <span class="inline-block bg-gray-100 rounded px-2 py-0.5 text-[10px]">{{ $a['nim'] }} ({{ $a['nama'] }})</span>
                                                     @endforeach
                                                 @else
                                                     -
@@ -67,10 +67,10 @@
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <span class="text-[10px] text-gray-400 uppercase tracking-wider">Diminta:</span>
-                                            <span class="text-primary font-black">
+                                            <span class="text-[#6B21A8] font-black">
                                                 @if($meta && isset($meta['new_nims']))
                                                     @foreach($meta['new_nims'] as $nim)
-                                                        <span class="inline-block bg-purple-50 rounded-lg px-2 py-0.5 text-[10px] text-primary">{{ $nim }}</span>
+                                                        <span class="inline-block bg-purple-50 rounded px-2 py-0.5 text-[10px] text-[#6B21A8]">{{ $nim }}</span>
                                                     @endforeach
                                                 @endif
                                             </span>
@@ -80,7 +80,7 @@
                                     <div class="flex items-center gap-4 text-xs font-bold">
                                         <span class="text-gray-400 uppercase tracking-wider text-[10px]">{{ $label }}</span>
                                         <span class="text-gray-400">→</span>
-                                        <span class="text-primary">{{ $item->new_value }}</span>
+                                        <span class="text-[#6B21A8]">{{ $item->new_value }}</span>
                                     </div>
                                 @endif
 
@@ -107,9 +107,9 @@
                 {{-- Modal Approve --}}
                 <x-modal id="approve_{{ $item->id }}" title="Setujui Perubahan Data" subtitle="VERIFIKASI OPERATOR" color="purple" size="md">
                     <div class="space-y-6">
-                        <div class="bg-green-50 border-2 border-green-200 rounded-2xl p-5">
+                        <div class="bg-green-50 border-2 border-green-200 rounded p-5">
                             <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+                                <div class="w-10 h-10 rounded bg-green-100 text-green-600 flex items-center justify-center shrink-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 </div>
                                 <div>
@@ -139,7 +139,7 @@
                             @csrf
                             <div>
                                 <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Catatan (opsional)</label>
-                                <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold" placeholder="Tambahkan catatan jika perlu..."></textarea>
+                                <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded text-sm font-bold" placeholder="Tambahkan catatan jika perlu..."></textarea>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-6">
                                 <button type="button" onclick="closeModalApprove{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded text-[10px] font-black uppercase tracking-widest w-full">
@@ -156,9 +156,9 @@
                 {{-- Modal Reject --}}
                 <x-modal id="reject_{{ $item->id }}" title="Tolak Perubahan Data" subtitle="VERIFIKASI OPERATOR" color="dark" size="md">
                     <div class="space-y-6">
-                        <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-5">
+                        <div class="bg-red-50 border-2 border-red-200 rounded p-5">
                             <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                                <div class="w-10 h-10 rounded bg-red-100 text-red-600 flex items-center justify-center shrink-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                 </div>
                                 <div>
@@ -175,7 +175,7 @@
                             @csrf
                             <div>
                                 <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Catatan <span class="text-red-500">*</span></label>
-                                <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold" placeholder="Berikan alasan penolakan..." required></textarea>
+                                <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded text-sm font-bold" placeholder="Berikan alasan penolakan..." required></textarea>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-6">
                                 <button type="button" onclick="closeModalReject{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded text-[10px] font-black uppercase tracking-widest w-full">
@@ -236,7 +236,7 @@
                                     {{ $item->old_value }}
                                 @endif
                             </td>
-                            <td class="text-xs font-bold text-primary">
+                            <td class="text-xs font-bold text-[#6B21A8]">
                                 @if($item->field === 'anggota_kelompok')
                                     @php $newNims = json_decode($item->new_value, true); @endphp
                                     {{ is_array($newNims) ? implode(', ', $newNims) : $item->new_value }}

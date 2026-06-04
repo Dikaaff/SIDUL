@@ -26,6 +26,7 @@ $sizeClass = match($size) {
 };
 @endphp
 
+{{-- daisyui: btn, btn-ghost --}}
 <button
     type="{{ $type }}"
     {{ $variant === 'disabled' ? 'disabled' : '' }}

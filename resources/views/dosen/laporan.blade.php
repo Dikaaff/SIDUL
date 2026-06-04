@@ -15,7 +15,7 @@
     {{-- Table Header --}}
     <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-[#6B21A8]">
+            <div class="w-10 h-10 rounded bg-purple-50 flex items-center justify-center text-[#6B21A8]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             </div>
             <h3 class="font-bold text-gray-800 text-lg tracking-tight">Daftar Laporan Akhir</h3>
@@ -42,7 +42,7 @@
             @endphp
             <div class="px-8 py-5 grid grid-cols-12 gap-4 items-center hover:bg-gray-50/50 transition-all group">
                 <div class="col-span-5 flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl {{ $laporan ? 'bg-blue-50 text-blue-500' : 'bg-gray-50 text-gray-300' }} flex items-center justify-center shrink-0">
+                    <div class="w-10 h-10 rounded {{ $laporan ? 'bg-blue-50 text-blue-500' : 'bg-gray-50 text-gray-300' }} flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     </div>
                     <div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-span-2">
                     @if(!$laporan)
-                        <span class="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg bg-gray-100 text-gray-400">Kosong</span>
+                        <span class="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded bg-gray-100 text-gray-400">Kosong</span>
                     @else
                         @php
                             $color = [
@@ -66,7 +66,7 @@
                                 'approved' => 'bg-green-50 text-green-600'
                             ][$laporan->status] ?? 'bg-gray-100 text-gray-600';
                         @endphp
-                        <span class="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg {{ $color }}">
+                        <span class="inline-block text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded {{ $color }}">
                             {{ ucfirst($laporan->status) }}
                         </span>
                     @endif
@@ -99,7 +99,7 @@
 
 {{-- Review Modal --}}
 <dialog id="reviewModal" class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box p-0 max-w-5xl bg-white rounded-[2.5rem] flex flex-col max-h-[90vh]">
+  <div class="modal-box p-0 max-w-5xl bg-white rounded flex flex-col max-h-[90vh]">
     <div class="p-8 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
         <div>
             <h3 class="font-black text-xl text-gray-800 italic" id="modalTitle">Judul Laporan</h3>
@@ -117,7 +117,7 @@
                 </button>
             @endforeach
         </div>
-        <div class="max-w-none bg-white shadow-sm p-10 md:p-14 min-h-[400px] rounded-3xl prose prose-slate text-gray-800 border border-gray-100" id="modalContent"></div>
+        <div class="max-w-none bg-white shadow-sm p-8 md:p-10 min-h-[400px] rounded prose prose-slate text-gray-800 border border-gray-100" id="modalContent"></div>
     </div>
 
     <div class="p-8 border-t border-gray-100 bg-gray-50/30">
@@ -125,7 +125,7 @@
             @csrf
             <div class="mb-6">
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Catatan Pembimbing / Revisi</label>
-                <textarea name="feedback" rows="3" class="textarea textarea-bordered w-full rounded-2xl bg-white border-gray-200 text-sm" placeholder="Tulis catatan..." required></textarea>
+                <textarea name="feedback" rows="3" class="textarea textarea-bordered w-full rounded bg-white border-gray-200 text-sm" placeholder="Tulis catatan..." required></textarea>
             </div>
             <div class="flex gap-3">
                 <button type="submit" name="status" value="revisi" class="btn flex-1 bg-red-500 hover:bg-red-600 text-white border-none rounded font-black uppercase text-[10px] h-12 shadow-lg shadow-red-100">Berikan Revisi</button>
@@ -138,23 +138,7 @@
 
 @endsection
 
-@push('styles')
-<style>
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #e5e7eb;
-        border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #d1d5db;
-    }
-</style>
-@endpush
+
 
 @push('scripts')
 <script>

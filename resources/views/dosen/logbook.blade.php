@@ -30,7 +30,7 @@
         <x-card padding="none" border class="overflow-hidden min-h-[600px]">
             <div id="logHeader" class="p-8 md:p-10 border-b border-gray-100 bg-gray-50/30 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-6">
-                    <div id="activeAvatar" class="w-20 h-20 rounded-3xl bg-primary text-white flex items-center justify-center font-black text-3xl shadow-2xl shadow-purple-200">?</div>
+                    <div id="activeAvatar" class="w-20 h-20 rounded bg-[#6B21A8] text-white flex items-center justify-center font-black text-3xl shadow-2xl shadow-purple-200">?</div>
                     <div>
                         <h3 id="activeStudentName" class="text-2xl font-bold text-gray-800 leading-tight">Memuat...</h3>
                         <p id="activeStudentNim" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">NIM: -</p>
@@ -62,7 +62,7 @@
 <x-modal id="log_detail_modal" color="purple" subtitle="Detail Aktivitas Harian" title="TANGGAL" size="2xl">
     <div>
         <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic px-1">Isi Kegiatan / Pekerjaan</p>
-        <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 shadow-inner">
+        <div class="bg-gray-50 p-8 rounded border border-gray-100 shadow-inner">
             <p id="detailDesc" class="text-base font-bold text-gray-700 leading-relaxed italic whitespace-pre-wrap">Konten kegiatan...</p>
         </div>
     </div>
@@ -70,13 +70,7 @@
 </x-modal>
 @endsection
 
-@push('styles')
-<style>
-    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 10px; }
-</style>
-@endpush
+
 
 @push('scripts')
 <script>
@@ -112,10 +106,10 @@ function renderStudents() {
         const avatarStyle = colors[s.id % colors.length];
 
         container.innerHTML += `
-            <div onclick="selectStudent(${s.id})" class="p-5 rounded-[2rem] flex items-center gap-4 cursor-pointer transition-all border-2 ${isActive ? 'bg-purple-50 border-primary shadow-lg shadow-purple-100' : 'bg-white border-transparent hover:border-gray-100 hover:bg-gray-50 group'}">
-                <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xs group-hover:rotate-6 transition-all shrink-0">${s.name[0]}</div>
+            <div onclick="selectStudent(${s.id})" class="p-5 rounded flex items-center gap-4 cursor-pointer transition-all border-2 ${isActive ? 'bg-purple-50 border-[#6B21A8] shadow-lg shadow-purple-100' : 'bg-white border-transparent hover:border-gray-100 hover:bg-gray-50 group'}">
+                <div class="w-12 h-12 rounded ${avatarStyle} flex items-center justify-center font-black text-xs group-hover:rotate-6 transition-all shrink-0">${s.name[0]}</div>
                 <div class="overflow-hidden">
-                    <p class="text-sm font-bold text-gray-900 truncate tracking-tight ${isActive ? 'text-primary' : ''}">${s.name}</p>
+                    <p class="text-sm font-bold text-gray-900 truncate tracking-tight ${isActive ? 'text-[#6B21A8]' : ''}">${s.name}</p>
                     <p class="text-[9px] font-medium text-gray-400 tracking-wide mt-1 uppercase">${s.nim}</p>
                 </div>
             </div>

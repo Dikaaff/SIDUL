@@ -12,8 +12,8 @@
 @section('breadcrumbs')
 <div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2 mb-6">
     <ul>
-        <li><a href="/dashboard" class="hover:text-primary transition-colors">SIDUL</a></li> 
-        <li><a href="{{ route('mahasiswa.dashboard') }}" class="hover:text-primary transition-colors">Dashboard</a></li>
+        <li><a href="/dashboard" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li> 
+        <li><a href="{{ route('mahasiswa.dashboard') }}" class="hover:text-[#6B21A8] transition-colors">Dashboard</a></li>
         <li>Edit Data</li>
     </ul>
 </div>
@@ -30,7 +30,7 @@
     <div class="lg:col-span-7 space-y-6">
         <x-card padding="large" border>
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center">
+                <div class="w-12 h-12 rounded bg-purple-50 text-[#6B21A8] flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                 </div>
                 <div>
@@ -41,8 +41,8 @@
 
             {{-- Session Success Banner --}}
             @if(session('success'))
-            <div class="bg-green-50 border-2 border-green-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+            <div class="bg-green-50 border-2 border-green-200 p-5 rounded flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded bg-green-100 text-green-600 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
                 <div>
@@ -54,8 +54,8 @@
 
             {{-- Session Error Banner --}}
             @if(session('error'))
-            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+            <div class="bg-red-50 border-2 border-red-200 p-5 rounded flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded bg-red-100 text-red-600 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
                 <div>
@@ -67,8 +67,8 @@
 
             {{-- Validation Errors --}}
             @if($errors->any())
-            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+            <div class="bg-red-50 border-2 border-red-200 p-5 rounded flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded bg-red-100 text-red-600 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
                 <div>
@@ -83,8 +83,8 @@
             @endif
 
             @if($hasPending)
-                <div class="bg-amber-50 border-2 border-amber-200 p-6 rounded-2xl flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                <div class="bg-amber-50 border-2 border-amber-200 p-6 rounded flex items-start gap-4">
+                    <div class="w-10 h-10 rounded bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     </div>
                     <div>
@@ -99,7 +99,7 @@
                     <div class="space-y-6">
                         <div>
                             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Field yang Ingin Diubah</label>
-                            <select name="field" id="fieldSelect" class="select select-md w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" required>
+                            <select name="field" id="fieldSelect" class="select select-md w-full bg-gray-50 border-gray-100 rounded text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10" required>
                                 <option value="">-- Pilih Field --</option>
                                 @foreach($editableFields as $key => $label)
                                 <option value="{{ $key }}" data-current="{{ $currentValues[$key] ?? '' }}" data-target="{{ \App\Services\EditRequestService::getFieldTarget($key) }}">
@@ -111,19 +111,19 @@
 
                         <div>
                             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Nilai Saat Ini</label>
-                            <div id="currentValueDisplay" class="w-full bg-gray-100 text-gray-500 rounded-xl px-5 py-3 text-sm font-bold">
+                            <div id="currentValueDisplay" class="w-full bg-gray-100 text-gray-500 rounded px-5 py-3 text-sm font-bold">
                                 Pilih field terlebih dahulu
                             </div>
                         </div>
 
                         <div id="textInputGroup">
                             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Nilai Baru <span class="text-red-500">*</span></label>
-                            <input type="text" name="new_value" id="newValueInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" placeholder="Masukkan nilai baru">
+                            <input type="text" name="new_value" id="newValueInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10" placeholder="Masukkan nilai baru">
                         </div>
 
                         <div id="selectInputGroup" class="hidden">
                             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Nilai Baru <span class="text-red-500">*</span></label>
-                            <select name="new_value" id="selectInput" class="select select-md w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10">
+                            <select name="new_value" id="selectInput" class="select select-md w-full bg-gray-50 border-gray-100 rounded text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10">
                                 <option value="">-- Pilih Konsentrasi --</option>
                                 <option value="Web Development">Web Development</option>
                                 <option value="Networking">Networking</option>
@@ -133,7 +133,7 @@
 
                         <div id="dateInputGroup" class="hidden">
                             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Nilai Baru <span class="text-red-500">*</span></label>
-                            <input type="date" name="new_value" id="dateInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10">
+                            <input type="date" name="new_value" id="dateInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10">
                         </div>
 
 
@@ -151,8 +151,8 @@
                             <div id="anggotaContainer">
                                 @if($maxAdditionalAnggota > 0)
                                 <div class="flex items-center gap-3 anggota-row">
-                                    <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" placeholder="NIM Anggota 1" required>
-                                    <button type="button" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded bg-red-50 text-red-500 border border-red-100 hover:bg-red-100 hidden">
+                                    <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10" placeholder="NIM Anggota 1" required>
+                                    <button type="button" aria-label="Hapus anggota" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded bg-red-50 text-red-500 border border-red-100 hover:bg-red-100 hidden">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                     </button>
                                 </div>
@@ -167,7 +167,7 @@
 
                         <div>
                             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Alasan Pengajuan <span class="text-red-500">*</span></label>
-                            <textarea name="alasan" rows="3" class="textarea w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" placeholder="Jelaskan alasan Anda ingin mengubah data ini (min. 10 karakter)" required></textarea>
+                            <textarea name="alasan" rows="3" class="textarea w-full bg-gray-50 border-gray-100 rounded text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10" placeholder="Jelaskan alasan Anda ingin mengubah data ini (min. 10 karakter)" required></textarea>
                         </div>
 
                         <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
@@ -189,7 +189,7 @@
         @if($hasMagang)
         <x-card padding="large" border class="bg-blue-50/30 !border-blue-100">
             <div class="flex items-start gap-4">
-                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                <div class="w-10 h-10 rounded bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div>
@@ -211,7 +211,7 @@
 
         <x-card padding="large" border>
             <div class="flex items-center gap-4 mb-6">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <div class="w-10 h-10 rounded bg-blue-50 text-blue-600 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div>
@@ -227,7 +227,7 @@
             @else
                 <div class="space-y-3 max-h-[400px] overflow-y-auto">
                     @foreach($riwayat as $item)
-                    <div class="p-4 rounded-2xl border border-gray-100 bg-gray-50/50 space-y-2">
+                    <div class="p-4 rounded border border-gray-100 bg-gray-50/50 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] font-black uppercase tracking-wider text-gray-400">{{ $item->field === 'anggota_kelompok' ? 'Anggota Kelompok' : ($editableFields[$item->field] ?? $item->field) }}</span>
                             @if($item->status === 'approved')
@@ -245,9 +245,9 @@
                                     $newNims = json_decode($item->new_value, true);
                                 @endphp
                                 <span class="text-gray-400">{{ is_array($oldNims) ? implode(', ', $oldNims) : $item->old_value }}</span>
-                                → <span class="text-primary">{{ is_array($newNims) ? implode(', ', $newNims) : $item->new_value }}</span>
+                                → <span class="text-[#6B21A8]">{{ is_array($newNims) ? implode(', ', $newNims) : $item->new_value }}</span>
                             @else
-                                {{ $item->old_value }} → <span class="text-primary">{{ $item->new_value }}</span>
+                                {{ $item->old_value }} → <span class="text-[#6B21A8]">{{ $item->new_value }}</span>
                             @endif
                         </div>
                         @if($item->catatan_operator)
@@ -266,8 +266,8 @@
 {{-- Modal Konfirmasi --}}
 <x-modal id="confirmEditModal" title="Konfirmasi Pengajuan" subtitle="PASTIKAN DATA ANDA SUDAH SESUAI" color="purple" size="md">
     <div class="space-y-6">
-        <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+        <div class="bg-amber-50 border-2 border-amber-200 rounded p-5 flex items-start gap-4">
+            <div class="w-10 h-10 rounded bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
             </div>
             <div>
@@ -276,7 +276,7 @@
             </div>
         </div>
 
-        <div class="bg-gray-50 rounded-2xl p-5 space-y-3">
+        <div class="bg-gray-50 rounded p-5 space-y-3">
             <div class="flex justify-between items-center">
                 <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Field</span>
                 <span id="confirmField" class="text-sm font-bold text-gray-800">-</span>
@@ -287,7 +287,7 @@
             </div>
             <div class="flex justify-between items-center">
                 <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Nilai Baru</span>
-                <span id="confirmNew" class="text-sm font-bold text-primary">-</span>
+                <span id="confirmNew" class="text-sm font-bold text-[#6B21A8]">-</span>
             </div>
             <div class="flex justify-between items-center">
                 <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Alasan</span>
@@ -297,7 +297,7 @@
 
         <div class="grid grid-cols-2 gap-4 pt-2">
             <form method="dialog">
-                <x-button variant="outline" size="lg" :full="true">Batal</x-button>
+                <x-button type="submit" variant="outline" size="lg" :full="true">Batal</x-button>
             </form>
             <x-button variant="primary" size="lg" :full="true" onclick="document.getElementById('editForm').submit()">
                 Ya, Ajukan!
@@ -424,8 +424,8 @@ function tambahAnggota() {
     const row = document.createElement('div');
     row.className = 'flex items-center gap-3 anggota-row mt-3';
     row.innerHTML = `
-        <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold focus:ring-4 focus:ring-primary/10" placeholder="NIM Anggota ${anggotaCount}" required>
-        <button type="button" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded bg-red-50 text-red-500 border border-red-100 hover:bg-red-100">
+        <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10" placeholder="NIM Anggota ${anggotaCount}" required>
+        <button type="button" aria-label="Hapus anggota" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded bg-red-50 text-red-500 border border-red-100 hover:bg-red-100">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
     `;

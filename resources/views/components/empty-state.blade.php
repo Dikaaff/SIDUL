@@ -7,7 +7,7 @@
 
 @php $content = <<<'HTML'
     <div class="flex flex-col items-center py-24 px-8 text-center">
-        <div class="w-20 h-20 rounded-3xl bg-gray-50 flex items-center justify-center text-gray-300 mb-5 border-2 border-dashed border-gray-200">
+        <div class="w-20 h-20 rounded bg-gray-50 flex items-center justify-center text-gray-300 mb-5 border-2 border-dashed border-gray-200">
 HTML; @endphp
 
 @if($colspan)
@@ -16,7 +16,7 @@ HTML; @endphp
 @endif
 
 <div class="flex flex-col items-center py-24 px-8 text-center">
-    <div class="w-20 h-20 rounded-3xl bg-gray-50 flex items-center justify-center text-gray-300 mb-5 border-2 border-dashed border-gray-200">
+    <div class="w-20 h-20 rounded bg-gray-50 flex items-center justify-center text-gray-300 mb-5 border-2 border-dashed border-gray-200">
         @if($icon)
             {{ $icon }}
         @else

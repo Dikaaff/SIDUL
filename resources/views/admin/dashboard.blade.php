@@ -8,7 +8,7 @@
     subtitle="Selamat datang, Super Admin. Pantau keseluruhan ekosistem pendaftaran magang dan ketersediaan SDM dengan mudah."
 >
     <div class="flex gap-3 self-start md:self-center">
-        <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-xl">
+        <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded border border-white/20 text-white flex items-center gap-3 shadow-xl">
             <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
             <span class="text-xs font-bold uppercase tracking-wider">Layanan Normal</span>
         </div>
@@ -19,7 +19,7 @@
 @section('breadcrumbs')
 <div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
   <ul>
-    <li><a href="/dashboard/admin" class="hover:text-primary transition-colors">SIDUL</a></li> 
+    <li><a href="/dashboard/admin" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li> 
     <li>Admin Dashboard</li>
   </ul>
 </div>
@@ -65,7 +65,7 @@
         <div class="relative z-10">
             <h3 class="text-xl font-bold mb-2 italic uppercase tracking-tighter">Status Layanan Normal 🟢</h3>
             <p class="text-white/90 text-[11px] leading-relaxed font-bold mb-6 italic opacity-80">Server web dan database beroperasi tanpa adanya kendala atau penumpukan antrean verifikasi.</p>
-            <a href="/admin/users" class="inline-block w-full sm:w-auto text-center bg-white hover:bg-gray-50 text-[#F49E0A] px-6 py-3.5 rounded-xl font-black uppercase tracking-widest transition-colors text-[10px] shadow-sm italic relative z-20">
+            <a href="/admin/users" class="inline-block w-full sm:w-auto text-center bg-white hover:bg-gray-50 text-[#F49E0A] px-6 py-3.5 rounded font-black uppercase tracking-widest transition-colors text-[10px] shadow-sm italic relative z-20">
                 Kelola Staf Sekarang
             </a>
         </div>

@@ -22,7 +22,7 @@
                 />
 
                 <div class="flex gap-3">
-                    <select id="statusFilter" class="select select-md bg-gray-50 border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-primary/10 transition-all w-full md:w-[180px]">
+                    <select id="statusFilter" class="select select-md bg-gray-50 border-gray-100 rounded text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-[#6B21A8]/10 transition-all w-full md:w-[180px]">
                         <option value="">Semua Status</option>
                         <option value="Pending">Pending</option>
                         <option value="Aktif">Aktif</option>
@@ -70,7 +70,7 @@
                                 @foreach($pesertaList as $p)
                                 @php $mhs = $p->mahasiswa; @endphp
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-[8px] shadow-inner group-hover:rotate-3 transition-transform shrink-0">
+                                    <div class="w-8 h-8 rounded bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-[8px] shadow-inner group-hover:rotate-3 transition-transform shrink-0">
                                         {{ strtoupper(substr($mhs->nama ?? 'MH', 0, 2)) }}
                                     </div>
                                     <div class="flex flex-col min-w-0">
@@ -104,19 +104,19 @@
                             @endif
                         </td>
                         <td>
-                            <div class="px-3 py-1.5 bg-[#6B21A8] text-white rounded-xl text-[9px] font-black tracking-[0.1em] inline-block shadow-lg shadow-purple-200 border border-purple-800 group-hover:scale-105 transition-transform">
+                            <div class="px-3 py-1.5 bg-[#6B21A8] text-white rounded text-[9px] font-black tracking-[0.1em] inline-block shadow-lg shadow-purple-200 border border-purple-800 group-hover:scale-105 transition-transform">
                                 {{ $magang->kode_magang ?? 'UNASSIGNED' }}
                             </div>
                         </td>
                         <td>
                             @if($magang->status_magang === 'Aktif')
-                                <span class="status-badge px-3 py-1.5 rounded-xl bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">Aktif</span>
+                                <span class="status-badge px-3 py-1.5 rounded bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">Aktif</span>
                             @elseif($magang->status_magang === 'Pending')
-                                <span class="status-badge px-3 py-1.5 rounded-xl bg-orange-50 text-[#F49E0A] text-[9px] font-black uppercase tracking-wider border border-orange-100">Pending</span>
+                                <span class="status-badge px-3 py-1.5 rounded bg-orange-50 text-[#F49E0A] text-[9px] font-black uppercase tracking-wider border border-orange-100">Pending</span>
                             @elseif($magang->status_magang === 'Selesai')
-                                <span class="status-badge px-3 py-1.5 rounded-xl bg-purple-50 text-[#6B21A8] text-[9px] font-black uppercase tracking-wider border border-purple-100">Selesai</span>
+                                <span class="status-badge px-3 py-1.5 rounded bg-purple-50 text-[#6B21A8] text-[9px] font-black uppercase tracking-wider border border-purple-100">Selesai</span>
                             @else
-                                <span class="status-badge px-3 py-1.5 rounded-xl bg-gray-50 text-gray-500 text-[9px] font-black uppercase tracking-wider border border-gray-200">{{ $magang->status_magang }}</span>
+                                <span class="status-badge px-3 py-1.5 rounded bg-gray-50 text-gray-500 text-[9px] font-black uppercase tracking-wider border border-gray-200">{{ $magang->status_magang }}</span>
                             @endif
                         </td>
                         <td class="pr-8 text-right">
@@ -159,12 +159,12 @@
             @forelse($magangs as $index => $magang)
             @php $pesertaList = $magang->peserta->sortByDesc('is_ketua'); @endphp
             @if($pesertaList->isNotEmpty())
-            <div class="bg-white border border-gray-100 rounded-[2rem] p-6 shadow-sm active:bg-gray-50 transition-all flex flex-col gap-4">
+            <div class="bg-white border border-gray-100 rounded p-6 shadow-sm active:bg-gray-50 transition-all flex flex-col gap-4">
                 <div class="flex flex-col gap-2">
                     @foreach($pesertaList as $p)
                     @php $mhs = $p->mahasiswa; @endphp
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-xs shadow-inner shrink-0">
+                        <div class="w-10 h-10 rounded bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-xs shadow-inner shrink-0">
                             {{ strtoupper(substr($mhs->nama ?? 'MH', 0, 2)) }}
                         </div>
                         <div class="flex-1 min-w-0">
@@ -190,7 +190,7 @@
                     </div>
                     <div>
                         <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">Status</p>
-                        <span class="text-[9px] font-black uppercase text-primary italic">{{ $magang->status_magang }}</span>
+                        <span class="text-[9px] font-black uppercase text-[#6B21A8] italic">{{ $magang->status_magang }}</span>
                     </div>
                 </div>
 
@@ -200,7 +200,7 @@
                         <p class="text-[10px] font-bold text-gray-700 leading-tight">{{ $magang->perusahaan }}</p>
                     </div>
                     <div class="w-16 bg-gray-100 rounded-full h-1 overflow-hidden">
-                        <div class="h-full bg-primary" style="width: 65%"></div>
+                        <div class="h-full bg-[#6B21A8]" style="width: 65%"></div>
                     </div>
                 </div>
             </div>

@@ -18,8 +18,10 @@ $maxWidth = match($size) {
 };
 @endphp
 
+{{-- daisyui: modal --}}
 <dialog id="{{ $id }}" class="modal modal-bottom sm:modal-middle">
-    <div class="modal-box bg-white {{ $maxWidth }} rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl">
+    {{-- daisyui: modal-box --}}
+    <div class="modal-box bg-white {{ $maxWidth }} rounded p-0 overflow-hidden border-none shadow-2xl">
 
         {{-- ===== PURPLE HEADER ===== --}}
         @if($color === 'purple' && $title)
@@ -32,13 +34,14 @@ $maxWidth = match($size) {
                             <p class="text-white/70 text-[10px] font-black uppercase tracking-widest mt-1 italic">{{ $subtitle }}</p>
                         @endif
                     </div>
+                    {{-- daisyui: btn --}}
                     <form method="dialog">
                         <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white ml-4">✕</button>
                     </form>
                 </div>
             </div>
             {{-- Body overlapping header with rounded top --}}
-            <div class="p-10 -mt-6 bg-white rounded-[2.5rem] relative z-20 space-y-6">
+            <div class="p-10 -mt-6 bg-white rounded relative z-20 space-y-6">
                 {{ $slot }}
             </div>
 
@@ -52,11 +55,12 @@ $maxWidth = match($size) {
                     @endif
                     <h3 class="text-2xl font-black italic tracking-tighter uppercase">{{ $title }}</h3>
                 </div>
+                {{-- daisyui: btn --}}
                 <form method="dialog" class="relative z-10">
                     <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white">✕</button>
                 </form>
             </div>
-            <div class="p-10 -mt-8 bg-white rounded-[3rem] relative z-20 space-y-8">
+            <div class="p-10 -mt-8 bg-white rounded relative z-20 space-y-8">
                 {{ $slot }}
             </div>
 
@@ -70,6 +74,7 @@ $maxWidth = match($size) {
                             <p class="text-sm text-gray-400 font-medium mt-1">{{ $subtitle }}</p>
                         @endif
                     </div>
+                    {{-- daisyui: btn --}}
                     <form method="dialog">
                         <button class="btn btn-circle btn-ghost btn-sm">✕</button>
                     </form>
@@ -89,6 +94,7 @@ $maxWidth = match($size) {
 
     </div>
     {{-- Close on backdrop click --}}
+    {{-- daisyui: modal-backdrop --}}
     <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{{-- daisyui: theme --}}
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 <head>
     <meta charset="utf-8">
@@ -13,6 +14,7 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+{{-- daisyui: bg-base-200 + text-base-content --}}
 <body class="bg-base-200 font-sans antialiased text-base-content min-h-screen flex items-center justify-center p-4 lg:p-8">
     
     @yield('content')
@@ -27,8 +29,6 @@
         }
     });
 
-    // Mencegah browser menyimpan halaman ke dalam BFCache
-    window.addEventListener('unload', function() {});
 </script>
 
 

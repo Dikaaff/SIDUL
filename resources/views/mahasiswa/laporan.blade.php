@@ -8,7 +8,7 @@
     subtitle="Susun laporan akhir Anda bab demi bab sesuai standar."
 >
     <div class="flex gap-2 relative z-10">
-        <div class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center gap-3">
+        <div class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded flex items-center gap-3">
             @php
                 $statusClass = [
                     'approved' => 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]',
@@ -28,8 +28,8 @@
 @section('content')
 <div class="max-w-7xl mx-auto pb-20 px-4 sm:px-6">
     @if(!$isPeriodeOpen)
-    <div class="mb-8 bg-red-50 border border-red-100 rounded-3xl p-6 flex items-center gap-5 text-red-600">
-        <div class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center shadow-sm shrink-0">
+    <div class="mb-8 bg-red-50 border border-red-100 rounded p-6 flex items-center gap-5 text-red-600">
+        <div class="w-12 h-12 rounded bg-red-100 flex items-center justify-center shadow-sm shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
         </div>
         <div>
@@ -41,16 +41,16 @@
     
     {{-- Notifikasi Revisi --}}
     @if($laporan && $laporan->status === 'revisi')
-    <div class="mb-8 bg-orange-50 border-2 border-orange-100 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden group">
+    <div class="mb-8 bg-orange-50 border-2 border-orange-100 rounded p-8 md:p-10 relative overflow-hidden group">
         <div class="absolute -right-10 -top-10 w-40 h-40 bg-orange-100 rounded-full blur-3xl opacity-50"></div>
         <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="flex items-start gap-6">
-                <div class="w-16 h-16 rounded-3xl bg-[#F49E0A] text-white flex items-center justify-center shadow-xl shadow-orange-200 shrink-0">
+                <div class="w-16 h-16 rounded bg-[#F49E0A] text-white flex items-center justify-center shadow-xl shadow-orange-200 shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                 </div>
                 <div>
                     <h3 class="text-xl font-black text-orange-800 mb-2 italic uppercase tracking-tighter">Perlu Revisi Laporan ✍️</h3>
-                    <div class="p-5 bg-white/60 backdrop-blur-md rounded-2xl border border-orange-100 text-sm font-bold text-orange-900 leading-relaxed italic max-h-48 overflow-y-auto custom-scrollbar">
+                    <div class="p-5 bg-white/60 backdrop-blur-md rounded border border-orange-100 text-sm font-bold text-orange-900 leading-relaxed italic max-h-48 overflow-y-auto custom-scrollbar">
                         "{!! nl2br(e($laporan->catatan_dosen ?? 'Mohon perbaiki laporan sesuai arahan pembimbing.')) !!}"
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 ml-1 italic">Judul Laporan</label>
                 <input type="text" name="judul" id="judulInput" value="{{ old('judul', $laporan->judul ?? '') }}"
                     placeholder="Contoh: LAPORAN AKHIR MAGANG PT. GOJEK INDONESIA..."
-                    class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 text-xl font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all outline-none placeholder:text-gray-300"
+                    class="w-full bg-gray-50 border-none rounded px-6 py-4 text-xl font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#6B21A8]/5 transition-all outline-none placeholder:text-gray-300"
                     {{ $laporan && $laporan->status === 'approved' ? 'readonly' : '' }} required>
             </x-card>
 
@@ -80,7 +80,7 @@
             <div class="flex flex-wrap gap-2 mb-[-1.5rem] px-4">
                 @foreach(['bab1' => 'Bab I: Pendahuluan', 'bab2' => 'Bab II: Profil Instansi', 'bab3' => 'Bab III: Pelaksanaan', 'bab4' => 'Bab IV: Penutup'] as $key => $label)
                     <button type="button" onclick="switchTab('{{ $key }}')" id="tab-btn-{{ $key }}"
-                        class="tab-btn px-6 py-4 rounded-t-2xl font-black text-[11px] uppercase tracking-wider transition-all border-b-4 {{ $loop->first ? 'bg-white border-primary text-primary shadow-sm' : 'bg-gray-100 border-transparent text-gray-400 hover:bg-gray-200' }}">
+                        class="tab-btn px-6 py-4 rounded-t font-black text-[11px] uppercase tracking-wider transition-all border-b-4 {{ $loop->first ? 'bg-white border-[#6B21A8] text-[#6B21A8] shadow-sm' : 'bg-gray-100 border-transparent text-gray-400 hover:bg-gray-200' }}">
                         {{ $label }}
                     </button>
                 @endforeach
@@ -90,7 +90,7 @@
             <x-card padding="none" border class="overflow-hidden bg-white !shadow-2xl">
                 @foreach(['bab1', 'bab2', 'bab3', 'bab4'] as $key)
                     <div id="pane-{{ $key }}" class="tab-pane {{ $loop->first ? '' : 'hidden' }}">
-                        <div class="p-8 md:p-12 min-h-[600px]">
+                        <div class="p-8 md:p-10 min-h-[600px]">
                             <textarea name="{{ $key }}" id="editor-{{ $key }}" class="editor-instance">
                                 {!! old($key, $laporan->$key ?? '') !!}
                             </textarea>
@@ -102,7 +102,7 @@
             <!-- Status & Actions -->
             <x-card padding="large" border class="flex flex-col md:flex-row items-center justify-between gap-6">
                  <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-primary shrink-0">
+                    <div class="w-12 h-12 rounded bg-purple-50 flex items-center justify-center text-[#6B21A8] shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     </div>
                     <div class="text-[11px] text-gray-400 font-bold leading-tight">
@@ -129,7 +129,7 @@
                         </button>
                         @endif
                     @else
-                    <div class="h-14 px-10 bg-green-50 text-green-600 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center gap-3 border border-green-100">
+                    <div class="h-14 px-10 bg-green-50 text-green-600 rounded font-bold uppercase tracking-widest text-[10px] flex items-center gap-3 border border-green-100">
                         Laporan Disetujui ✓
                     </div>
                     @endif
@@ -154,12 +154,12 @@
 
         // Reset all buttons
         document.querySelectorAll('.tab-btn').forEach(b => {
-            b.classList.remove('bg-white', 'border-primary', 'text-primary', 'shadow-sm');
+            b.classList.remove('bg-white', 'border-[#6B21A8]', 'text-[#6B21A8]', 'shadow-sm');
             b.classList.add('bg-gray-100', 'border-transparent', 'text-gray-400');
         });
         // Style active button
         const btn = document.getElementById('tab-btn-' + tabKey);
-        btn.classList.add('bg-white', 'border-primary', 'text-primary', 'shadow-sm');
+        btn.classList.add('bg-white', 'border-[#6B21A8]', 'text-[#6B21A8]', 'shadow-sm');
         btn.classList.remove('bg-gray-100', 'border-transparent', 'text-gray-400');
     }
 
