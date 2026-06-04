@@ -21,7 +21,7 @@ $maxWidth = match($size) {
 {{-- daisyui: modal --}}
 <dialog id="{{ $id }}" class="modal modal-bottom sm:modal-middle">
     {{-- daisyui: modal-box --}}
-    <div class="modal-box bg-white {{ $maxWidth }} rounded p-0 overflow-hidden border-none shadow-2xl">
+    <div class="modal-box bg-white {{ $maxWidth }} rounded-2xl p-0 overflow-hidden border-none shadow-2xl">
 
         {{-- ===== PURPLE HEADER ===== --}}
         @if($color === 'purple' && $title)
@@ -40,8 +40,8 @@ $maxWidth = match($size) {
                     </form>
                 </div>
             </div>
-            {{-- Body overlapping header with rounded top --}}
-            <div class="p-10 -mt-6 bg-white rounded relative z-20 space-y-6">
+            {{-- Body overlapping header with rounded-2xl top --}}
+            <div class="p-10 -mt-6 bg-white rounded-2xl relative z-20 space-y-6">
                 {{ $slot }}
             </div>
 
@@ -60,7 +60,7 @@ $maxWidth = match($size) {
                     <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white">✕</button>
                 </form>
             </div>
-            <div class="p-10 -mt-8 bg-white rounded relative z-20 space-y-8">
+            <div class="p-10 -mt-8 bg-white rounded-2xl relative z-20 space-y-8">
                 {{ $slot }}
             </div>
 

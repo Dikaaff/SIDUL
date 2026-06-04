@@ -11,6 +11,6 @@
     };
 @endphp
 
-<span class="px-3 py-1 rounded text-[10px] font-black uppercase tracking-[0.1em] border {{ $colorClass }} {{ $attributes->get('class') }}">
+<span class="px-3 py-1 rounded-2xl text-[10px] font-black uppercase tracking-[0.1em] border {{ $colorClass }} {{ $attributes->get('class') }}">
     {{ $status }}
 </span>

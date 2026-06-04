@@ -7,7 +7,7 @@
         footer="Card Footer"
         shadow="sm|md|lg|none"
         border
-        rounded
+        rounded-2xl
         padding
     >
         <!-- Card Content -->
@@ -21,7 +21,7 @@
 @props([
     'shadow' => 'sm',
     'border' => false,
-    'rounded' => true,
+    'rounded_2xl' => true,
     'padding' => false,
     'header' => null,
     'footer' => null,
@@ -33,7 +33,7 @@
         {{ str_contains($class, 'bg-') ? '' : 'bg-white' }}
         {{ $shadow === 'sm' ? 'shadow-sm' : ($shadow === 'md' ? 'shadow-md' : ($shadow === 'lg' ? 'shadow-lg' : ($shadow === 'none' ? 'shadow-none' : 'shadow-sm'))) }}
         {{ $border ? 'border border-gray-100' : '' }}
-        {{ $rounded ? 'rounded' : 'rounded-none' }}
+        {{ $rounded_2xl ? 'rounded-2xl' : 'rounded-none' }}
         {{ $padding === 'large' ? 'p-8' : ($padding === 'small' ? 'p-4' : ($padding === 'none' ? 'p-0' : 'p-6')) }}
         overflow-hidden
         {{ $class }}

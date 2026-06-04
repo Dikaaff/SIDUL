@@ -34,8 +34,8 @@
 
             {{-- Session Success Banner --}}
             @if(session('success'))
-            <div class="bg-green-50 border-2 border-green-200 p-5 rounded flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+            <div class="bg-green-50 border-2 border-green-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
                 <div>
@@ -47,8 +47,8 @@
 
             {{-- Session Error Banner --}}
             @if(session('error'))
-            <div class="bg-red-50 border-2 border-red-200 p-5 rounded flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
                 <div>
@@ -60,8 +60,8 @@
 
             {{-- Validation Errors --}}
             @if($errors->any())
-            <div class="bg-red-50 border-2 border-red-200 p-5 rounded flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
+                <div class="w-10 h-10 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
                 <div>
@@ -82,8 +82,8 @@
                         <input type="radio" name="tipe_magang" value="individu" class="peer sr-only"
                             {{ (!$magang || $magang->tipe_magang == 'individu') ? 'checked' : '' }}
                             {{ $isLocked ? 'disabled' : '' }} onchange="toggleKelompok(false)">
-                        <div class="w-full p-6 rounded border-2 border-gray-50 hover:bg-gray-50 peer-checked:border-[#6B21A8] peer-checked:bg-purple-50/50 transition-all text-center group">
-                            <div class="w-14 h-14 mx-auto bg-gray-50 group-hover:bg-white peer-checked:bg-white rounded flex items-center justify-center mb-4 transition-all shadow-sm">
+                        <div class="w-full p-6 rounded-2xl border-2 border-gray-50 hover:bg-gray-50 peer-checked:border-[#6B21A8] peer-checked:bg-purple-50/50 transition-all text-center group">
+                            <div class="w-14 h-14 mx-auto bg-gray-50 group-hover:bg-white peer-checked:bg-white rounded-2xl flex items-center justify-center mb-4 transition-all shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-400 peer-checked:text-[#6B21A8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                             </div>
                             <h4 class="font-black text-gray-800 mb-1">Individu</h4>
@@ -95,8 +95,8 @@
                         <input type="radio" name="tipe_magang" value="kelompok" class="peer sr-only"
                             {{ ($magang && $magang->tipe_magang == 'kelompok') ? 'checked' : '' }}
                             {{ $isLocked ? 'disabled' : '' }} onchange="toggleKelompok(true)">
-                        <div class="w-full p-6 rounded border-2 border-gray-50 hover:bg-gray-50 peer-checked:border-[#6B21A8] peer-checked:bg-purple-50/50 transition-all text-center group">
-                            <div class="w-14 h-14 mx-auto bg-gray-50 group-hover:bg-white peer-checked:bg-white rounded flex items-center justify-center mb-4 transition-all shadow-sm">
+                        <div class="w-full p-6 rounded-2xl border-2 border-gray-50 hover:bg-gray-50 peer-checked:border-[#6B21A8] peer-checked:bg-purple-50/50 transition-all text-center group">
+                            <div class="w-14 h-14 mx-auto bg-gray-50 group-hover:bg-white peer-checked:bg-white rounded-2xl flex items-center justify-center mb-4 transition-all shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-400 peer-checked:text-[#6B21A8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                             </div>
                             <h4 class="font-black text-gray-800 mb-1">Berkelompok</h4>
@@ -114,8 +114,8 @@
                     <x-input label="NIM / Identitas" value="{{ $ketua->nim ?? $mahasiswa->nim }}" readonly />
                 </div>
                 @if($ketua && $ketua->id !== $mahasiswa->id)
-                <div class="bg-blue-50 border border-blue-100 p-4 rounded flex items-start gap-3">
-                    <div class="w-8 h-8 rounded bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <p class="text-[10px] font-bold text-blue-700">Anda terdaftar sebagai <strong>Anggota Kelompok</strong>. Pengajuan magang diajukan oleh Ketua Kelompok.</p>
@@ -140,7 +140,7 @@
             <div id="kelompokContainer" class="space-y-4 {{ ($magang && $magang->tipe_magang == 'kelompok') ? '' : 'hidden' }} animate-in fade-in slide-in-from-top-4 duration-300">
                 <x-section-title color="purple" title="Anggota Kelompok" />
 
-                <div class="bg-purple-50/50 rounded p-8 border border-purple-100 space-y-8" id="anggotaWrapper">
+                <div class="bg-purple-50/50 rounded-2xl p-8 border border-purple-100 space-y-8" id="anggotaWrapper">
                     <p class="text-[11px] text-purple-600 font-black uppercase tracking-widest italic mb-2">* Kelompok minimal 2 orang dan maksimal 3 orang (termasuk Ketua).</p>
 
                     <!-- Anggota 1 (Wajib jika kelompok) -->
@@ -178,7 +178,7 @@
 
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1 italic">Alamat Lengkap Perusahaan <span class="text-red-500">*</span></label>
-                        <textarea name="alamat" placeholder="Jl. Sudirman No. 123, Jakarta Raya..." class="w-full bg-gray-50 border border-gray-100 rounded py-4 px-6 text-sm font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#6B21A8]/5 outline-none transition-all min-h-[120px]" required {{ $isLocked ? 'readonly' : '' }}>{{ $magang->alamat ?? '' }}</textarea>
+                        <textarea name="alamat" placeholder="Jl. Sudirman No. 123, Jakarta Raya..." class="w-full bg-gray-50 border border-gray-100 rounded-2xl py-4 px-6 text-sm font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#6B21A8]/5 outline-none transition-all min-h-[120px]" required {{ $isLocked ? 'readonly' : '' }}>{{ $magang->alamat ?? '' }}</textarea>
                     </div>
                 </div>
 
@@ -191,16 +191,16 @@
             <!-- CTA Navigation -->
             <div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-10 border-t border-gray-50">
                 @if(!$isLocked)
-                <button type="reset" class="w-full sm:w-auto px-8 py-4 bg-red-500 hover:bg-red-600 text-white border-none rounded font-black uppercase tracking-widest text-[11px] transition-all italic" id="btnReset">
+                <button type="reset" class="w-full sm:w-auto px-8 py-4 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all italic" id="btnReset">
                     Reset Data
                 </button>
-                <button type="submit" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white rounded py-4 px-10 font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-purple-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" id="btnSubmit">
+                <button type="submit" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white rounded-2xl py-4 px-10 font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-purple-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" id="btnSubmit">
                     <span id="btnText">{{ $magang ? 'Update Pendaftaran' : 'Kirim Pendaftaran' }}</span>
                     <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     <span id="btnLoading" class="loading loading-spinner hidden"></span>
                 </button>
                 @else
-                <div class="flex items-center gap-3 bg-green-50 text-green-600 px-8 py-4 rounded border border-green-100 font-black uppercase tracking-widest text-[10px]">
+                <div class="flex items-center gap-3 bg-green-50 text-green-600 px-8 py-4 rounded-2xl border border-green-100 font-black uppercase tracking-widest text-[10px]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
                     Pendaftaran Selesai & Terkunci
                 </div>

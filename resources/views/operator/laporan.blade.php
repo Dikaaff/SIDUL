@@ -52,24 +52,24 @@
                     <td>
                         @php $statusLaporan = $magang->laporan->status ?? 'review'; @endphp
                         @if($statusLaporan === 'approved')
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">
                                 <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                                 Disetujui
                             </span>
                         @elseif($statusLaporan === 'revisi')
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-orange-50 text-orange-500 text-[9px] font-black uppercase tracking-wider border border-orange-100">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-orange-50 text-orange-500 text-[9px] font-black uppercase tracking-wider border border-orange-100">
                                 <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
                                 Revisi
                             </span>
                         @else
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-blue-50 text-blue-600 text-[9px] font-black uppercase tracking-wider border border-blue-100">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-blue-50 text-blue-600 text-[9px] font-black uppercase tracking-wider border border-blue-100">
                                 <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
                                 Review
                             </span>
                         @endif
                     </td>
                     <td class="text-center">
-                        <span class="text-[10px] font-black text-gray-700 tracking-tight bg-gray-50 px-3 py-1 rounded border border-gray-100">
+                        <span class="text-[10px] font-black text-gray-700 tracking-tight bg-gray-50 px-3 py-1 rounded-2xl border border-gray-100">
                             {{ optional($magang->laporan)->created_at ? $magang->laporan->created_at->format('d M Y') : '-' }}
                         </span>
                     </td>
@@ -78,7 +78,7 @@
                 @empty
                 <tr>
                     <td colspan="5" class="py-32 text-center">
-                        <div class="w-20 h-20 bg-gray-50 rounded flex items-center justify-center mx-auto mb-6 text-gray-300">
+                        <div class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-gray-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                         </div>
                         <h4 class="text-lg font-black text-gray-800 uppercase italic tracking-tighter">Belum Ada Laporan</h4>

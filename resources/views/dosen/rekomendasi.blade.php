@@ -18,7 +18,7 @@
                 <x-section-title color="primary" title="Antrean Rekomendasi" />
             </div>
             <div class="flex gap-2">
-                <input id="searchInput" class="input input-md bg-gray-50 border-gray-100 rounded text-xs font-bold w-64 focus:ring-4 focus:ring-[#6B21A8]/10 focus:bg-white transition-all" placeholder="Cari Mahasiswa Berdasarkan NIM..." />
+                <input id="searchInput" class="input input-md bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold w-64 focus:ring-4 focus:ring-[#6B21A8]/10 focus:bg-white transition-all" placeholder="Cari Mahasiswa Berdasarkan NIM..." />
             </div>
         </x-card>
 
@@ -37,7 +37,7 @@
                     @forelse($mhsWali as $mhs)
                     <x-card padding="none" border class="mhs-row p-6 hover:bg-gray-50/50 transition-all group grid grid-cols-12 gap-4 items-center">
                         <div class="col-span-4 flex items-center gap-5">
-                            <div class="w-14 h-14 rounded bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-sm group-hover:rotate-6 transition-all duration-500">
+                            <div class="w-14 h-14 rounded-2xl bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-sm group-hover:rotate-6 transition-all duration-500">
                                 {{ substr($mhs->nama, 0, 2) }}
                             </div>
                             <div class="overflow-hidden">
@@ -57,7 +57,7 @@
                         <div class="col-span-3 flex justify-end items-center gap-2">
                             @if($mhs->status_magang === 'Approve')
                                 <button class="btn btn-sm btn-ghost text-green-600 font-black uppercase text-[10px] cursor-default pointer-events-none gap-2">
-                                    <div class="w-8 h-8 bg-green-100 text-green-600 rounded flex items-center justify-center shadow-inner">
+                                    <div class="w-8 h-8 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center shadow-inner">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                                     </div>
                                     <span class="italic">Direkomendasikan</span>
@@ -65,8 +65,8 @@
                             @elseif($mhs->status_magang === 'Rejected')
                                 <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded gap-2 transition-all">
-                                        <div class="w-8 h-8 bg-red-100 text-red-600 rounded flex items-center justify-center shadow-inner">
+                                    <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded-2xl gap-2 transition-all">
+                                        <div class="w-8 h-8 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center shadow-inner">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                                         </div>
                                         <span class="italic">Ubah ke Approve?</span>
@@ -74,12 +74,12 @@
                                 </form>
                             @else
                                 <div class="flex gap-2">
-                                    <button type="button" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="btn btn-sm h-11 bg-red-500 hover:bg-red-600 text-white border-none rounded px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95 shadow-lg shadow-red-100 reject-btn">
+                                    <button type="button" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="btn btn-sm h-11 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl px-4 font-black uppercase tracking-wider text-[9px] transition-all active:scale-95 shadow-lg shadow-red-100 reject-btn">
                                         Reject
                                     </button>
                                     <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm h-11 bg-green-500 hover:bg-green-600 text-white border-none rounded px-6 font-black uppercase tracking-wider text-[9px] shadow-lg shadow-green-100 transition-all hover:scale-105 active:scale-95 group">
+                                        <button type="submit" class="btn btn-sm h-11 bg-green-500 hover:bg-green-600 text-white border-none rounded-2xl px-6 font-black uppercase tracking-wider text-[9px] shadow-lg shadow-green-100 transition-all hover:scale-105 active:scale-95 group">
                                             Approve
                                         </button>
                                     </form>
@@ -110,11 +110,11 @@
             <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-1000 pointer-events-none"></div>
             <div class="space-y-5 relative z-10">
                 <div class="flex gap-4 items-center">
-                    <div class="w-8 h-8 rounded bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white shrink-0">1</div>
+                    <div class="w-8 h-8 rounded-2xl bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white shrink-0">1</div>
                     <p class="text-[10px] font-bold leading-relaxed uppercase tracking-wider text-white">Periksa identitas pendaftar.</p>
                 </div>
                 <div class="flex gap-4 items-center">
-                    <div class="w-8 h-8 rounded bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white shrink-0">2</div>
+                    <div class="w-8 h-8 rounded-2xl bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white shrink-0">2</div>
                     <p class="text-[10px] font-bold leading-relaxed uppercase tracking-wider text-white">Klik tombol APPROVE.</p>
                 </div>
             </div>
@@ -125,7 +125,7 @@
 <!-- Rejection Modal -->
 <x-modal id="reject_confirmation_modal" title="Konfirmasi Penolakan" size="md">
     <div class="text-center space-y-6">
-        <div class="w-20 h-20 bg-red-50 text-red-500 rounded flex items-center justify-center mx-auto shadow-xl shadow-red-500/10 border border-red-100 animate-bounce">
+        <div class="w-20 h-20 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto shadow-xl shadow-red-500/10 border border-red-100 animate-bounce">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
         </div>
         <div>
@@ -136,10 +136,10 @@
         <form id="reject_form" method="POST" action="">
             @csrf
             <div class="flex flex-col gap-3">
-                <button type="submit" class="btn h-14 bg-red-500 hover:bg-red-600 text-white border-none rounded font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20 transition-all active:scale-95">
+                <button type="submit" class="btn h-14 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20 transition-all active:scale-95">
                     Ya, Tolak Sekarang
                 </button>
-                <button type="button" onclick="document.getElementById('reject_confirmation_modal').close()" class="btn h-14 bg-gray-50 hover:bg-gray-100 text-gray-500 border-none rounded font-black uppercase tracking-widest text-xs transition-all">
+                <button type="button" onclick="document.getElementById('reject_confirmation_modal').close()" class="btn h-14 bg-gray-50 hover:bg-gray-100 text-gray-500 border-none rounded-2xl font-black uppercase tracking-widest text-xs transition-all">
                     Batalkan
                 </button>
             </div>

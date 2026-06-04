@@ -31,7 +31,7 @@ $sizeClass = match($size) {
     type="{{ $type }}"
     {{ $variant === 'disabled' ? 'disabled' : '' }}
     {{ $attributes->merge([
-        'class' => trim("btn $variantClass $sizeClass font-black uppercase tracking-widest rounded transition-all active:scale-95" . ($full ? ' w-full' : '') . ($loading ? ' pointer-events-none' : ''))
+        'class' => trim("btn $variantClass $sizeClass font-black uppercase tracking-widest rounded-2xl transition-all active:scale-95" . ($full ? ' w-full' : '') . ($loading ? ' pointer-events-none' : ''))
     ]) }}
 >
     @if($loading)

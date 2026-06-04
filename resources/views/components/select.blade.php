@@ -20,7 +20,7 @@
         name="{{ $name }}" 
         {!! $attributes->merge([
             'id' => $name,
-            'class' => 'w-full bg-gray-50 border border-gray-100 rounded py-4 px-6 text-sm font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#6B21A8]/5 outline-none transition-all cursor-pointer ' . ($disabled ? 'cursor-not-allowed opacity-70' : '')
+            'class' => 'w-full bg-gray-50 border border-gray-100 rounded-2xl py-4 px-6 text-sm font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#6B21A8]/5 outline-none transition-all cursor-pointer ' . ($disabled ? 'cursor-not-allowed opacity-70' : '')
         ]) !!}
     >
         {{ $slot }}

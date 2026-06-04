@@ -40,8 +40,8 @@
     <div class="lg:col-span-2 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-400 fill-mode-both">
         
         @if(!\App\Models\Setting::isReady())
-            <div class="bg-red-50 border-2 border-red-200 p-6 rounded flex items-center gap-6 animate-pulse">
-                <div class="w-12 h-12 rounded bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+            <div class="bg-red-50 border-2 border-red-200 p-6 rounded-2xl flex items-center gap-6 animate-pulse">
+                <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
                 <div>
@@ -54,7 +54,7 @@
         <x-card padding="large" border class="flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex flex-col md:flex-row items-center gap-6">
                 {{-- Status Indicator Icon --}}
-                <div class="w-16 h-16 rounded {{ $isPeriodeOpen ? 'bg-emerald-50 text-emerald-500' : 'bg-amber-50 text-amber-500' }} flex items-center justify-center shrink-0">
+                <div class="w-16 h-16 rounded-2xl {{ $isPeriodeOpen ? 'bg-emerald-50 text-emerald-500' : 'bg-amber-50 text-amber-500' }} flex items-center justify-center shrink-0">
                     @if($isPeriodeOpen)
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     @else
@@ -87,7 +87,7 @@
 
                 <button type="button" 
                         onclick="document.getElementById('toggle_confirm_modal').showModal()"
-                        class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200' }} text-white border-none px-10 rounded font-bold uppercase tracking-widest text-[10px] h-14 w-full md:w-auto shadow-xl transition-all active:scale-95">
+                        class="btn {{ $isPeriodeOpen ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200' }} text-white border-none px-10 rounded-2xl font-bold uppercase tracking-widest text-[10px] h-14 w-full md:w-auto shadow-xl transition-all active:scale-95">
                     @if($isPeriodeOpen)
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                         Tutup Pendaftaran
@@ -115,7 +115,7 @@
                 <div class="flex items-center justify-between p-6 hover:bg-gray-50/50 transition-all">
                     <div class="flex items-center gap-4">
                         <span class="text-[10px] font-black text-black font-black w-4">{{ $index + 1 }}</span>
-                        <div class="w-10 h-10 rounded bg-orange-50 text-orange-500 font-bold flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-500 font-bold flex items-center justify-center">
                             {{ strtoupper(substr($mhs->nama, 0, 1)) }}
                         </div>
                         <div>
@@ -123,7 +123,7 @@
                             <p class="text-[10px] text-gray-900 font-medium uppercase tracking-wider">{{ $magang->perusahaan }}</p>
                         </div>
                     </div>
-                    <a href="{{ route('operator.dosen_pembimbing') }}" class="btn btn-ghost btn-sm rounded text-[9px] font-black text-[#6B21A8] uppercase tracking-widest hover:bg-purple-50 shrink-0">Plotting →</a>
+                    <a href="{{ route('operator.dosen_pembimbing') }}" class="btn btn-ghost btn-sm rounded-2xl text-[9px] font-black text-[#6B21A8] uppercase tracking-widest hover:bg-purple-50 shrink-0">Plotting →</a>
                 </div>
                 @empty
                 <div class="p-12 text-center">
@@ -139,8 +139,8 @@
         <x-card border class="space-y-4">
             <h4 class="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-2">Aksi Cepat</h4>
 
-            <a href="{{ route('operator.dosen_pembimbing') }}" class="flex items-center gap-4 p-4 rounded bg-blue-50 hover:bg-blue-100 transition-all group">
-                <div class="w-10 h-10 rounded bg-blue-100 text-blue-600 flex items-center justify-center">
+            <a href="{{ route('operator.dosen_pembimbing') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 transition-all group">
+                <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 </div>
                 <div>
@@ -149,8 +149,8 @@
                 </div>
             </a>
 
-            <a href="{{ route('operator.monitoring') }}" class="flex items-center gap-4 p-4 rounded bg-green-50 hover:bg-green-100 transition-all group">
-                <div class="w-10 h-10 rounded bg-green-100 text-green-600 flex items-center justify-center">
+            <a href="{{ route('operator.monitoring') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-green-50 hover:bg-green-100 transition-all group">
+                <div class="w-10 h-10 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                 </div>
                 <div>
@@ -168,7 +168,7 @@
 <x-modal id="toggle_confirm_modal" size="md">
     <div class="flex flex-col items-center text-center">
         {{-- Status Icon --}}
-        <div class="w-20 h-20 rounded {{ $isPeriodeOpen ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-500' }} flex items-center justify-center mb-6">
+        <div class="w-20 h-20 rounded-2xl {{ $isPeriodeOpen ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-500' }} flex items-center justify-center mb-6">
             @if($isPeriodeOpen)
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             @else

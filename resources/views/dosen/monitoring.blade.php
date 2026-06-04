@@ -6,7 +6,7 @@
 <div class="px-4 lg:px-6 py-2 space-y-6 overflow-x-hidden">
 
     <!-- HERO BANNER -->
-    <div class="relative overflow-hidden rounded bg-gradient-to-r from-[#6B21A8] to-[#7E22CE] p-6 md:p-8 shadow-xl mt-2">
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#6B21A8] to-[#7E22CE] p-6 md:p-8 shadow-xl mt-2">
 
         <!-- Blur Decoration -->
         <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- SEARCH SECTION -->
-    <div class="bg-white rounded border border-gray-100 p-5 shadow-sm">
+    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
 
         <div class="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
 
@@ -55,7 +55,7 @@
                     onkeyup="filterGrid()"
                     type="text"
                     placeholder="Cari mahasiswa atau instansi..."
-                    class="w-full h-12 pl-14 pr-5 rounded border border-gray-200 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-purple-100 focus:border-[#6B21A8] outline-none transition text-sm">
+                    class="w-full h-12 pl-14 pr-5 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-purple-100 focus:border-[#6B21A8] outline-none transition text-sm">
 
             </div>
 
@@ -71,7 +71,7 @@
 
     <!-- EMPTY STATE -->
     <div id="emptyState"
-        class="hidden py-24 text-center bg-white rounded border border-dashed border-gray-200 shadow-sm">
+        class="hidden py-24 text-center bg-white rounded-2xl border border-dashed border-gray-200 shadow-sm">
 
         <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
 
@@ -107,7 +107,7 @@
             class="text-xs font-semibold text-gray-400 uppercase tracking-wider">
         </p>
 
-        <div class="join rounded overflow-hidden shadow-sm"
+        <div class="join rounded-2xl overflow-hidden shadow-sm"
             id="paginationBtns">
         </div>
 
@@ -217,7 +217,7 @@ function renderGrid() {
                     : 'bg-orange-50 text-orange-600');
 
         const card = `
-            <div class="group bg-white rounded border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col justify-between min-h-[300px] relative overflow-hidden">
+            <div class="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col justify-between min-h-[300px] relative overflow-hidden">
 
                 <div class="absolute -right-10 -top-10 w-40 h-40 bg-gray-50 rounded-full opacity-60"></div>
 
@@ -225,13 +225,13 @@ function renderGrid() {
 
                     <div class="flex items-start justify-between mb-4">
 
-                        <div class="w-12 h-12 rounded ${avatarStyle} flex items-center justify-center font-bold text-lg">
+                        <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-bold text-lg">
                             ${s.name[0]}
                         </div>
 
                         <div class="text-right">
 
-                            <span class="text-[9px] uppercase font-bold tracking-wider ${badgeColor} px-2.5 py-1 rounded inline-block mb-1">
+                            <span class="text-[9px] uppercase font-bold tracking-wider ${badgeColor} px-2.5 py-1 rounded-2xl inline-block mb-1">
                                 ${s.status}
                             </span>
 
@@ -298,7 +298,7 @@ function renderGrid() {
                 <div class="pt-7 relative z-10">
 
                     <a href="{{ route('dosen.logbook') }}"
-                        class="block w-full text-center bg-amber-500 hover:bg-amber-600 text-white rounded py-4 text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-lg shadow-blue-600/20">
+                        class="block w-full text-center bg-amber-500 hover:bg-amber-600 text-white rounded-2xl py-4 text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-lg shadow-blue-600/20">
 
                         Buka Logbook →
 

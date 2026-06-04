@@ -5,7 +5,7 @@
     'icon' => null
 ])
 
-<div class="text-white p-6 md:p-8 rounded relative overflow-hidden shadow-2xl mt-2 group" style="background-color: {{ $color }};">
+<div class="text-white p-6 md:p-8 rounded-2xl relative overflow-hidden shadow-2xl mt-2 group" style="background-color: {{ $color }};">
     <!-- Decorative elements -->
     <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-110"></div>
     <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-110"></div>

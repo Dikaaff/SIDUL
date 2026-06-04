@@ -7,12 +7,12 @@
     title="Halo, {{ Auth::user()->name }} 👋" 
     subtitle="Selamat datang di pusat kendali pembimbing magang SIDUL. Pantau bimbingan dan laporan Anda di sini."
 >
-    <div class="hidden lg:flex items-center gap-4 bg-white/5 backdrop-blur-xl p-4 rounded border border-white/10 shadow-2xl">
+    <div class="hidden lg:flex items-center gap-4 bg-white/5 backdrop-blur-xl p-4 rounded-2xl border border-white/10 shadow-2xl">
         <div class="text-right">
             <p class="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">Status Sesi</p>
             <p class="text-sm font-black italic">{{ now()->format('d M Y') }}</p>
         </div>
-        <div class="w-10 h-10 rounded bg-white/10 flex items-center justify-center border border-white/10">
+        <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
         </div>
     </div>
@@ -74,7 +74,7 @@
                 @endphp
                 <x-card padding="large" border class="group hover:bg-gray-50/80 transition-all duration-300 !shadow-2xl !shadow-gray-100/50 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
                     <div class="flex items-center gap-4 md:gap-6">
-                        <div class="w-12 h-12 md:w-16 md:h-16 rounded md:rounded bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-lg md:text-xl shadow-inner group-hover:rotate-6 transition-transform shrink-0">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-2xl bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-lg md:text-xl shadow-inner group-hover:rotate-6 transition-transform shrink-0">
                             @php
                                 $nameParts = explode(' ', $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa');
                                 $initials = count($nameParts) > 1 
@@ -105,7 +105,7 @@
                             </div>
                         </div>
 
-                        <button onclick="showStudentDetail('{{ addslashes($magang->peserta->first()->mahasiswa->nama ?? '') }}', '{{ $magang->nim }}', '{{ addslashes($magang->perusahaan) }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" aria-label="Lihat detail mahasiswa" class="w-10 h-10 md:w-12 md:h-12 rounded md:rounded bg-gray-50 flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-purple-100 shrink-0">
+                        <button onclick="showStudentDetail('{{ addslashes($magang->peserta->first()->mahasiswa->nama ?? '') }}', '{{ $magang->nim }}', '{{ addslashes($magang->perusahaan) }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" aria-label="Lihat detail mahasiswa" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl md:rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-purple-100 shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         </button>
                     </div>
@@ -125,7 +125,7 @@
                     @if($pendingRekomendasiCount > 0)
                     <x-card padding="none" class="p-6 group relative border-orange-100 !shadow-2xl !shadow-orange-100/20 hover:scale-[1.03] transition-all cursor-pointer" border onclick="window.location.href='{{ route('dosen.rekomendasi') }}'">
                         <div class="flex items-center gap-5">
-                            <div class="w-14 h-14 rounded bg-orange-50 text-[#F49E0A] flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                            <div class="w-14 h-14 rounded-2xl bg-orange-50 text-[#F49E0A] flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             </div>
                             <div>
@@ -142,7 +142,7 @@
                     @if($pendingLaporanCount > 0)
                     <x-card padding="none" class="p-6 group relative border-purple-100 !shadow-2xl !shadow-purple-100/20 hover:scale-[1.03] transition-all cursor-pointer" border onclick="window.location.href='{{ route('dosen.laporan') }}'">
                         <div class="flex items-center gap-5">
-                            <div class="w-14 h-14 rounded bg-purple-50 text-[#6B21A8] flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                            <div class="w-14 h-14 rounded-2xl bg-purple-50 text-[#6B21A8] flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                             </div>
                             <div>
@@ -166,11 +166,11 @@
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
                 <h4 class="text-xl font-black tracking-tighter italic mb-4 relative z-10">Pusat Layanan 🚀</h4>
                 <div class="space-y-3 relative z-10">
-                    <a href="{{ route('dosen.logbook') }}" class="flex items-center justify-between p-4 bg-white/10 hover:bg-white/20 rounded border border-white/10 transition-all group">
+                    <a href="{{ route('dosen.logbook') }}" class="flex items-center justify-between p-4 bg-white/10 hover:bg-white/20 rounded-2xl border border-white/10 transition-all group">
                         <span class="text-xs font-black uppercase tracking-widest italic">Monitoring Logbook</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
                     </a>
-                    <a href="{{ route('dosen.monitoring') }}" class="flex items-center justify-between p-4 bg-white/10 hover:bg-white/20 rounded border border-white/10 transition-all group">
+                    <a href="{{ route('dosen.monitoring') }}" class="flex items-center justify-between p-4 bg-white/10 hover:bg-white/20 rounded-2xl border border-white/10 transition-all group">
                         <span class="text-xs font-black uppercase tracking-widest italic">Data Mahasiswa</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
                     </a>
@@ -182,12 +182,12 @@
 
 <!-- Modal Detail Mahasiswa -->
 <dialog id="student_detail_modal" class="modal">
-    <div class="modal-box bg-white max-w-2xl rounded p-0 overflow-hidden border-none shadow-2xl">
+    <div class="modal-box bg-white max-w-2xl rounded-2xl p-0 overflow-hidden border-none shadow-2xl">
         <div class="bg-[#6B21A8] p-10 pb-16 relative overflow-hidden">
             <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
             <button onclick="document.getElementById('student_detail_modal').close()" class="btn btn-sm btn-circle btn-ghost absolute right-6 top-6 text-white hover:bg-white/10 border-none">✕</button>
             <div class="flex items-center gap-8 relative z-10">
-                <div id="modal_avatar" class="w-24 h-24 rounded bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-4xl font-black text-white shadow-2xl italic">
+                <div id="modal_avatar" class="w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-4xl font-black text-white shadow-2xl italic">
                     AS
                 </div>
                 <div class="text-white">
@@ -197,7 +197,7 @@
             </div>
         </div>
         
-        <div class="p-10 -mt-10 bg-white rounded relative z-20">
+        <div class="p-10 -mt-10 bg-white rounded-2xl relative z-20">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div class="space-y-6">
                     <div>
@@ -212,7 +212,7 @@
                 <div class="space-y-6">
                     <div>
                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 italic">Status Saat Ini</p>
-                        <span id="modal_status" class="bg-emerald-50 text-emerald-600 border-emerald-100 px-4 py-2 rounded font-black text-[9px] uppercase tracking-widest italic border-2 inline-block">Aktif Magang</span>
+                        <span id="modal_status" class="bg-emerald-50 text-emerald-600 border-emerald-100 px-4 py-2 rounded-2xl font-black text-[9px] uppercase tracking-widest italic border-2 inline-block">Aktif Magang</span>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 italic">Pencapaian Progres</p>
@@ -225,8 +225,8 @@
             </div>
 
             <div class="mt-12 pt-8 border-t border-gray-100 flex gap-4">
-                <button onclick="document.getElementById('student_detail_modal').close()" class="btn bg-gray-50 hover:bg-gray-100 border-none flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded transition-all italic">Tutup Jendela</button>
-                <a id="modal_logbook_btn" href="{{ route('dosen.logbook') }}" class="btn bg-amber-500 hover:bg-amber-400 border-none text-white flex-[1.5] h-14 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-purple-100 rounded transition-all italic">Lihat Detail Logbook</a>
+                <button onclick="document.getElementById('student_detail_modal').close()" class="btn bg-gray-50 hover:bg-gray-100 border-none flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl transition-all italic">Tutup Jendela</button>
+                <a id="modal_logbook_btn" href="{{ route('dosen.logbook') }}" class="btn bg-amber-500 hover:bg-amber-400 border-none text-white flex-[1.5] h-14 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-purple-100 rounded-2xl transition-all italic">Lihat Detail Logbook</a>
             </div>
         </div>
     </div>

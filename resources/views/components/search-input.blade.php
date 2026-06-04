@@ -17,6 +17,6 @@
         type="text"
         placeholder="{{ $placeholder }}"
         @if($onkeyup) onkeyup="{{ $onkeyup }}" @endif
-        {{ $attributes->merge(['class' => 'w-full h-12 pl-14 pr-5 rounded border border-gray-200 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-purple-100 focus:border-[#6B21A8] outline-none transition text-sm font-semibold']) }}
+        {{ $attributes->merge(['class' => 'w-full h-12 pl-14 pr-5 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-purple-100 focus:border-[#6B21A8] outline-none transition text-sm font-semibold']) }}
     >
 </div>
