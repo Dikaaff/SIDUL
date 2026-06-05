@@ -131,9 +131,18 @@
                             </select>
                         </div>
 
-                        <div id="dateInputGroup" class="hidden">
+                        <div id="dateRangeGroup" class="hidden">
                             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Nilai Baru <span class="text-red-500">*</span></label>
-                            <input type="date" name="new_value" id="dateInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1.5 block">Tanggal Mulai</label>
+                                    <input type="date" name="new_value_start" id="dateStartInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1.5 block">Tanggal Selesai</label>
+                                    <input type="date" name="new_value_end" id="dateEndInput" class="input input-md w-full bg-gray-50 border-gray-100 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10">
+                                </div>
+                            </div>
                         </div>
 
 
@@ -247,7 +256,7 @@
                                 <span class="text-gray-400">{{ is_array($oldNims) ? implode(', ', $oldNims) : $item->old_value }}</span>
                                 → <span class="text-[#6B21A8]">{{ is_array($newNims) ? implode(', ', $newNims) : $item->new_value }}</span>
                             @else
-                                {{ $item->old_value }} → <span class="text-[#6B21A8]">{{ $item->new_value }}</span>
+                                {{ $item->old_value }} → <span class="text-[#6B21A8]">{{ str_replace('|', ' s/d ', $item->new_value) }}</span>
                             @endif
                         </div>
                         @if($item->catatan_operator)
@@ -317,10 +326,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentDisplay = document.getElementById('currentValueDisplay');
     const newValueInput = document.getElementById('newValueInput');
     const selectInput = document.getElementById('selectInput');
-    const dateInput = document.getElementById('dateInput');
+    const dateStartInput = document.getElementById('dateStartInput');
+    const dateEndInput = document.getElementById('dateEndInput');
     const textGroup = document.getElementById('textInputGroup');
     const selectGroup = document.getElementById('selectInputGroup');
-    const dateGroup = document.getElementById('dateInputGroup');
+    const dateRangeGroup = document.getElementById('dateRangeGroup');
     const anggotaGroup = document.getElementById('anggotaInputGroup');
     const confirmField = document.getElementById('confirmField');
     const confirmOld = document.getElementById('confirmOld');
@@ -331,27 +341,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function disableAllInputs() {
         newValueInput.disabled = true;
-        dateInput.disabled = true;
+        dateStartInput.disabled = true;
+        dateEndInput.disabled = true;
         selectInput.disabled = true;
     }
 
     function toggleInputGroup(field) {
         textGroup.classList.add('hidden');
         selectGroup.classList.add('hidden');
-        dateGroup.classList.add('hidden');
+        dateRangeGroup.classList.add('hidden');
         anggotaGroup.classList.add('hidden');
         newValueInput.removeAttribute('required');
-        dateInput.removeAttribute('required');
+        dateStartInput.removeAttribute('required');
+        dateEndInput.removeAttribute('required');
         selectInput.removeAttribute('required');
         disableAllInputs();
 
         if (!field) return;
 
-        const dateFields = ['tanggal_mulai', 'tanggal_selesai'];
-        if (dateFields.includes(field)) {
-            dateGroup.classList.remove('hidden');
-            dateInput.disabled = false;
-            dateInput.setAttribute('required', 'required');
+        if (field === 'periode_magang') {
+            dateRangeGroup.classList.remove('hidden');
+            dateStartInput.disabled = false;
+            dateEndInput.disabled = false;
+            dateStartInput.setAttribute('required', 'required');
+            dateEndInput.setAttribute('required', 'required');
         } else if (field === 'anggota_kelompok') {
             anggotaGroup.classList.remove('hidden');
         } else if (field === 'konsentrasi') {
@@ -400,10 +413,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             if (!valid || vals.length < 1) { showToast('error', 'Isi minimal 1 NIM anggota kelompok.'); return; }
             confirmNew.textContent = vals.join(', ');
+        } else if (field === 'periode_magang') {
+            const start = dateStartInput.value.trim();
+            const end = dateEndInput.value.trim();
+            if (!start || !end) { showToast('error', 'Isi tanggal mulai dan selesai terlebih dahulu.'); return; }
+            confirmNew.textContent = start + ' s/d ' + end;
         } else {
-            const isDate = ['tanggal_mulai', 'tanggal_selesai'].includes(field);
             const isSelect = field === 'konsentrasi';
-            const val = isDate ? dateInput.value.trim() : isSelect ? selectInput.value.trim() : newValueInput.value.trim();
+            const val = isSelect ? selectInput.value.trim() : newValueInput.value.trim();
             if (!val) { showToast('error', 'Isi nilai baru terlebih dahulu.'); return; }
             confirmNew.textContent = val;
         }

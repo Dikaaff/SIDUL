@@ -20,8 +20,7 @@ class EditRequestService
         if ($hasMagang && $magang) {
             $fields['perusahaan'] = 'Nama Perusahaan';
             $fields['alamat'] = 'Alamat Perusahaan';
-            $fields['tanggal_mulai'] = 'Tanggal Mulai';
-            $fields['tanggal_selesai'] = 'Tanggal Selesai';
+            $fields['periode_magang'] = 'Periode Magang';
 
             if ($magang->tipe_magang === 'kelompok' && $mahasiswa && $mahasiswa->pesertaMagang?->is_ketua) {
                 $fields['anggota_kelompok'] = 'Anggota Kelompok';
@@ -35,7 +34,7 @@ class EditRequestService
     {
         return match($field) {
             'nama', 'konsentrasi' => 'mahasiswa',
-            'perusahaan', 'alamat', 'tanggal_mulai', 'tanggal_selesai', 'anggota_kelompok' => 'magang',
+            'perusahaan', 'alamat', 'periode_magang', 'anggota_kelompok' => 'magang',
             default => 'mahasiswa',
         };
     }
@@ -50,8 +49,7 @@ class EditRequestService
         if ($magang) {
             $values['perusahaan'] = $magang->perusahaan;
             $values['alamat'] = $magang->alamat;
-            $values['tanggal_mulai'] = $magang->tanggal_mulai?->format('Y-m-d') ?? '';
-            $values['tanggal_selesai'] = $magang->tanggal_selesai?->format('Y-m-d') ?? '';
+            $values['periode_magang'] = ($magang->tanggal_mulai?->format('Y-m-d') ?? '') . ' s/d ' . ($magang->tanggal_selesai?->format('Y-m-d') ?? '');
 
             $anggota = $magang->peserta->filter(fn($p) => !$p->is_ketua);
             $values['anggota_kelompok'] = $anggota->map(fn($p) => $p->mahasiswa->nim . ' - ' . $p->mahasiswa->nama)->implode(', ') ?: '-';
@@ -114,13 +112,28 @@ class EditRequestService
             return $this->ajukanAnggotaKelompok($mahasiswa, $user, $magang, $data);
         }
 
-        $newValue = trim($data['new_value']);
         $alasan = trim($data['alasan']);
         $currentValues = $this->getCurrentValues($mahasiswa, $magang);
-        $oldValue = $currentValues[$field] ?? '';
 
-        if ($oldValue === $newValue) {
-            return ServiceResult::error('Nilai baru sama dengan nilai saat ini. Tidak ada perubahan.');
+        if ($field === 'periode_magang') {
+            $newMulai = trim($data['new_value_start'] ?? '');
+            $newSelesai = trim($data['new_value_end'] ?? '');
+            if (!$newMulai || !$newSelesai) {
+                return ServiceResult::error('Periode mulai dan selesai harus diisi.');
+            }
+            $oldMulai = $magang->tanggal_mulai?->format('Y-m-d') ?? '';
+            $oldSelesai = $magang->tanggal_selesai?->format('Y-m-d') ?? '';
+            if ($oldMulai === $newMulai && $oldSelesai === $newSelesai) {
+                return ServiceResult::error('Periode magang sama dengan saat ini. Tidak ada perubahan.');
+            }
+            $newValue = $newMulai . '|' . $newSelesai;
+            $oldValue = $oldMulai . ' s/d ' . $oldSelesai;
+        } else {
+            $newValue = trim($data['new_value']);
+            $oldValue = $currentValues[$field] ?? '';
+            if ($oldValue === $newValue) {
+                return ServiceResult::error('Nilai baru sama dengan nilai saat ini. Tidak ada perubahan.');
+            }
         }
 
         EditRequest::create([
@@ -226,17 +239,20 @@ class EditRequestService
                 return ServiceResult::error('Data magang tidak ditemukan.');
             }
 
-            $allowedMagangFields = ['perusahaan', 'alamat', 'tanggal_mulai', 'tanggal_selesai'];
+            $allowedMagangFields = ['perusahaan', 'alamat', 'periode_magang'];
             if (!in_array($field, $allowedMagangFields)) {
                 return ServiceResult::error('Field magang tidak valid untuk diubah.');
             }
 
-            $updateData = [$field => $editRequest->new_value];
-            if (in_array($field, ['tanggal_mulai', 'tanggal_selesai'])) {
-                $updateData[$field] = $editRequest->new_value;
+            if ($field === 'periode_magang') {
+                $dates = explode('|', $editRequest->new_value);
+                $magang->update([
+                    'tanggal_mulai' => $dates[0] ?? null,
+                    'tanggal_selesai' => $dates[1] ?? null,
+                ]);
+            } else {
+                $magang->update([$field => $editRequest->new_value]);
             }
-
-            $magang->update($updateData);
         } else {
             $mahasiswa = $editRequest->mahasiswa;
             if (!$mahasiswa) {
@@ -329,8 +345,7 @@ class EditRequestService
             'konsentrasi' => 'Konsentrasi',
             'perusahaan' => 'Nama Perusahaan',
             'alamat' => 'Alamat Perusahaan',
-            'tanggal_mulai' => 'Tanggal Mulai',
-            'tanggal_selesai' => 'Tanggal Selesai',
+            'periode_magang' => 'Periode Magang',
             'anggota_kelompok' => 'Anggota Kelompok',
             default => $field,
         };

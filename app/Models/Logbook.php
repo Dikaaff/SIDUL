@@ -13,7 +13,6 @@ class Logbook extends Model
         'magang_id',
         'tanggal',
         'kegiatan',
-        'catatan_dosen',
     ];
 
     # fungsi relasi belongsTo ke model Magang

@@ -92,8 +92,8 @@
     <div class="footer">
         <p>Hormat kami,</p>
         <div class="signature">
-            <p><strong>Administrator SIDUL</strong></p>
-            <p>Sistem Informasi Management Magang</p>
+            <p><strong>Prodi D3 Teknik Informatika</strong></p>
+            <!-- <p>Sistem Informasi Management Magang</p> -->
         </div>
     </div>
 </body>

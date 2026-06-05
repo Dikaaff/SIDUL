@@ -37,7 +37,7 @@
             <div class="divide-y divide-gray-50">
         @forelse($mhsBimbingan as $magang)
             @php 
-                $laporan = $magang->laporan;
+                $laporan = $magang->laporan && $magang->laporan->status !== 'draft' ? $magang->laporan : null;
                 $pesertaUtama = $magang->peserta->first();
             @endphp
             <div class="px-8 py-5 grid grid-cols-12 gap-4 items-center hover:bg-gray-50/50 transition-all group">

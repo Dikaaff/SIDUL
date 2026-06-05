@@ -169,9 +169,12 @@ class MahasiswaController extends Controller
             'bab2'      => 'nullable|string',
             'bab3'      => 'nullable|string',
             'bab4'      => 'nullable|string',
+            'action'    => 'required|in:save,submit',
         ]);
 
-        $result = $this->mahasiswaService->simpanLaporan(Auth::user(), $request->all());
+        $submit = $request->input('action') === 'submit';
+
+        $result = $this->mahasiswaService->simpanLaporan(Auth::user(), $request->all(), $submit);
 
         return back()->with($result->success ? 'success' : 'error', $result->message);
     }

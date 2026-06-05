@@ -1,362 +1,281 @@
-﻿# CHANGELOG SIDUL
+﻿# CHANGELOG - SIDUL (Sistem Informasi Management Magang)
 
-Dokumentasi seluruh perubahan yang dilakukan pada proyek Sistem Informasi Dual Learning (SIDUL).
+## Database Structure & Relasi
 
----
+### 1. Tabel `users`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| name | string | Nama lengkap |
+| username | string (unique) | Username untuk login |
+| password | string | Hash password |
+| role | enum('mahasiswa','dosen','operator','admin') | Role user |
+| remember_token | string, nullable | Token remember me |
+| created_at | timestamp | |
+| updated_at | timestamp | |
 
-## [1.5.0] — Request-Edit Data & Perbaikan Pendaftaran
-
-### 1. Fitur — Sistem Request-Edit Data Mahasiswa
-
-Mahasiswa dapat mengajukan perubahan data profil/perusahaan/anggota kelompok, dan operator menyetujui/menolak.
-
-**File baru:**
-- `app/Services/EditRequestService.php` — Service untuk ajukan, approve, reject edit request
-- `app/Models/EditRequest.php` — Model edit_requests dengan relasi ke Mahasiswa, User, processor
-- `database/migrations/2026_06_01_201657_create_edit_requests_table.php` — Tabel edit_requests (field, old_value, new_value, alasan, status, catatan_operator)
-- `database/migrations/2026_06_01_202513_add_target_type_to_edit_requests_table.php` — Kolom target_type, target_id, metadata
-- `resources/views/mahasiswa/edit_data.blade.php` — Form pengajuan + riwayat
-- `resources/views/operator/edit_requests.blade.php` — Daftar pending + approve/reject modal
-
-**File diubah:**
-- `app/Http/Controllers/MahasiswaController.php` — Method editData(), storeEditData()
-- `app/Http/Controllers/OperatorController.php` — Method editRequests(), approveEdit(), rejectEdit(); pendingEditCount di dashboard
-- `routes/web.php` — Route mahasiswa.edit-data, operator.edit-requests, approve/reject
-- `resources/views/components/sidebar.blade.php` — Link "Edit Data Profil" (mahasiswa) & "Permintaan Edit Data" (operator)
-- `resources/views/operator/dashboard.blade.php` — Stat card + quick action edit requests
-
-### 2. Fitur — Edit Konsentrasi Pakai Dropdown
-
-**File:** `resources/views/mahasiswa/edit_data.blade.php`
-
-Dropdown field Konsentrasi sekarang menampilkan 3 opsi (Web Development, Networking, 2D Animation) bukan input teks biasa.
-
-### 3. Fix — Date Casting Model Magang
-
-**Masalah:** Error `Call to a member function format() on string` di halaman edit-data karena `tanggal_mulai`/`tanggal_selesai` tidak di-cast sebagai date.
-
-**File:** `app/Models/Magang.php` — Menambahkan `$casts = ['tanggal_mulai' => 'date', 'tanggal_selesai' => 'date']`
-
-### 4. Fix — Banner Error Persistent di Pendaftaran & Edit Data
-
-**Masalah:** Error dari server hanya tampil sebagai toast yang hilang 2 detik, tidak sebagai banner persistent.
-
-**File diubah:**
-- `resources/views/mahasiswa/pendaftaran.blade.php` — Tambah banner success/error/validation persistent
-- `resources/views/mahasiswa/edit_data.blade.php` — Tambah banner success/error/validation persistent
-
-### 5. Fix — Validasi NIM Anggota Kosong di Pendaftaran
-
-**Masalah:** Input NIM anggota ke-2 yang kosong ikut divalidasi `exists:mahasiswas,nim`, menyebabkan error "Salah satu NIM anggota tidak terdaftar di sistem" meskipun NIM valid.
-
-**File:** `app/Http/Controllers/MahasiswaController.php` — Filter `nim_anggota` dengan `array_filter` sebelum validasi
-
-### 6. Fix — Form Submit Multiple Input name="new_value"
-
-**Masalah:** Tiga input dengan `name="new_value"` (text, select, date) dikirim semua ke server; PHP mengambil nilai terakhir (date kosong), menyebabkan error "The new value field is required."
-
-**File:** `resources/views/mahasiswa/edit_data.blade.php` — Input di-disable saat disembunyikan, hanya input aktif yang dikirim
-
-### 7. Fix — Halaman Pendaftaran Readonly & Data Anggota Tidak Muncul
-
-**Masalah:** Setelah daftar magang, halaman pendaftaran masih bisa diedit (tidak readonly) dan NIM/nama anggota kelompok tidak tampil.
-
-**File:** `resources/views/mahasiswa/pendaftaran.blade.php`
-- `$isLocked` diubah jadi `$magang !== null` (semua status, bukan hanya Approve/Aktif/Selesai)
-- Input NIM/Nama anggota di-pre-fill dengan data existing
-- Data Pengaju menampilkan ketua kelompok, bukan user login (untuk anggota)
-- Info biru "Anda terdaftar sebagai Anggota Kelompok" untuk anggota non-ketua
-
-### 8. Fix — Monitoring Hanya Tampilkan Ketua
-
-**Masalah:** Halaman operator monitoring hanya menampilkan peserta pertama (ketua), anggota kelompok tidak muncul.
-
-**File:** `resources/views/operator/monitoring.blade.php`
-- Desktop table & mobile card: tampilkan semua peserta dengan badge "Ketua"
-- Export Excel: kumpulkan semua nama/NIM anggota
+**Relasi:**
+- `hasOne(Mahasiswa)` → `mahasiswas.user_id`
+- `hasOne(Dosen)` → `dosens.user_id`
 
 ---
 
-## [1.4.0] — Blackbox Testing Komprehensif
+### 2. Tabel `mahasiswas`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| user_id | bigint (FK) | → `users.id` (cascade) |
+| nim | string (unique) | NIM mahasiswa |
+| nama | string | Nama lengkap |
+| konsentrasi | string | Konsentrasi (ex: prodi) |
+| status_magang | enum('Pending','Approve','Rejected') | Status rekomendasi dosen wali |
+| dosen_wali_id | bigint (FK, nullable) | → `dosens.id` (set null) |
+| created_at | timestamp | |
+| updated_at | timestamp | |
 
-### 1. Fix — Mass Assignment Magang
+**Relasi:**
+- `belongsTo(User)` → `users.id`
+- `belongsTo(Dosen)` sebagai wali → `dosens.id` (dosen_wali_id)
+- `hasOne(PesertaMagang)` → `peserta_magangs.mahasiswa_id`
 
-**Masalah:** Kolom `$fillable` model `Magang` tidak sesuai dengan kolom aktual di database. Controller menggunakan `alamat`, `tanggal_mulai`, `tanggal_selesai`, `dosen_pembimbing_id`, `tipe_magang`, `konsentrasi` tapi model hanya memiliki `alamat_perusahaan`, `tgl_mulai`, `tgl_selesai`, `dosen_id`.
+---
 
-**Perubahan:**
-- `app/Models/Magang.php` — `$fillable` diperbarui:
-  ```
-  Sebelum: ['kode_magang','status_magang','perusahaan','alamat_perusahaan','tgl_mulai','tgl_selesai','dosen_id']
-  Sesudah: ['kode_magang','status_magang','perusahaan','alamat','tanggal_mulai','tanggal_selesai','dosen_pembimbing_id','tipe_magang','konsentrasi']
-  ```
+### 3. Tabel `dosens`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| user_id | bigint (FK) | → `users.id` (cascade) |
+| nik | string (unique) | NIK dosen |
+| nama | string | Nama lengkap |
+| created_at | timestamp | |
+| updated_at | timestamp | |
 
-### 2. Testing — 86 Blackbox Test (35 → 86)
+**Relasi:**
+- `belongsTo(User)` → `users.id`
+- `hasMany(Mahasiswa)` sebagai wali → `mahasiswas.dosen_wali_id`
+- `hasMany(Magang)` sebagai pembimbing → `magangs.dosen_pembimbing_id`
 
-**Sebelum:** 35 test, 56 assertions — hanya covers halaman statis & akses role.
-**Sesudah:** 86 test, 201 assertions — mencakup seluruh alur bisnis blackbox dari login sampai selesai.
+---
 
-#### Hasil Pengujian dari Login sampai Selesai
+### 4. Tabel `magangs`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| kode_magang | string (unique) | Kode unik magang (MGN-xxx) |
+| tipe_magang | enum('individu','kelompok') | Tipe magang |
+| konsentrasi | string, nullable | Konsentrasi magang |
+| perusahaan | string, nullable | Nama perusahaan |
+| alamat | text, nullable | Alamat perusahaan |
+| tanggal_mulai | date, nullable | Tanggal mulai magang |
+| tanggal_selesai | date, nullable | Tanggal selesai magang |
+| dosen_pembimbing_id | bigint (FK, nullable) | → `dosens.id` (set null) |
+| status_magang | string | Status: Pending, Aktif, Selesai, Ditolak |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Relasi:**
+- `belongsTo(Dosen)` sebagai pembimbing → `dosens.id`
+- `hasMany(PesertaMagang)` → `peserta_magangs.magang_id`
+- `hasMany(Logbook)` → `logbooks.magang_id`
+- `hasOne(Laporan)` → `laporans.magang_id`
+
+---
+
+### 5. Tabel `peserta_magangs`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| magang_id | bigint (FK) | → `magangs.id` (cascade) |
+| mahasiswa_id | bigint (FK) | → `mahasiswas.id` (cascade) |
+| is_ketua | boolean | Apakah ketua kelompok |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Relasi:**
+- `belongsTo(Magang)` → `magangs.id`
+- `belongsTo(Mahasiswa)` → `mahasiswas.id`
+
+---
+
+### 6. Tabel `logbooks`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| magang_id | bigint (FK) | → `magangs.id` (cascade) |
+| tanggal | date | Tanggal kegiatan |
+| kegiatan | text | Deskripsi kegiatan |
+| catatan_dosen | text, nullable | Catatan dari dosen pembimbing |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Relasi:**
+- `belongsTo(Magang)` → `magangs.id`
+
+---
+
+### 7. Tabel `laporans`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| magang_id | bigint (FK) | → `magangs.id` (cascade) |
+| judul | string | Judul laporan |
+| bab1 | longtext, nullable | Isi bab 1 |
+| bab2 | longtext, nullable | Isi bab 2 |
+| bab3 | longtext, nullable | Isi bab 3 |
+| bab4 | longtext, nullable | Isi bab 4 |
+| status | enum('review','revisi','approved') | Status laporan |
+| catatan_dosen | text, nullable | Catatan dosen |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Relasi:**
+- `belongsTo(Magang)` → `magangs.id`
+- `hasMany(KomentarLaporan)` → `komentar_laporans.laporan_id`
+- `hasMany(RevisiLaporan)` → `revisi_laporans.laporan_id`
+
+---
+
+### 8. Tabel `komentar_laporans`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| laporan_id | bigint (FK) | → `laporans.id` (cascade) |
+| user_id | bigint (FK) | → `users.id` (cascade) |
+| bab_ke | integer, nullable | BAB yang dikomentari |
+| komentar | text | Isi komentar |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Relasi:**
+- `belongsTo(Laporan)` → `laporans.id`
+- `belongsTo(User)` → `users.id`
+
+---
+
+### 9. Tabel `revisi_laporans`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| laporan_id | bigint (FK) | → `laporans.id` (cascade) |
+| bab_yang_diubah | integer, nullable | BAB yang direvisi |
+| konten_lama | longtext | Isi sebelum direvisi |
+| konten_baru | longtext | Isi setelah direvisi |
+| updated_by | bigint (FK) | → `users.id` (cascade) |
+| created_at | timestamp | (useCurrent) |
+
+⚠️ **Tidak memiliki `updated_at`** — hanya created_at dengan `useCurrent()`
+
+**Relasi:**
+- `belongsTo(Laporan)` → `laporans.id`
+- `belongsTo(User)` → `users.id` (updated_by)
+
+---
+
+### 10. Tabel `edit_requests`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| mahasiswa_id | bigint (FK) | → `mahasiswas.id` (cascade) |
+| user_id | bigint (FK) | → `users.id` (cascade) |
+| field | string | Field yang diubah |
+| target_type | string | Target: 'mahasiswa' atau 'magang' |
+| target_id | bigint, nullable | ID dari target |
+| old_value | string, nullable | Nilai lama |
+| new_value | string | Nilai baru |
+| alasan | text | Alasan pengajuan |
+| status | enum('pending','approved','rejected') | Status permintaan |
+| catatan_operator | text, nullable | Catatan dari operator |
+| metadata | json, nullable | Data tambahan (untuk anggota kelompok) |
+| processed_by | bigint (FK, nullable) | → `users.id` (set null) |
+| processed_at | timestamp, nullable | Waktu diproses |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Relasi:**
+- `belongsTo(Mahasiswa)` → `mahasiswas.id`
+- `belongsTo(User)` → `users.id` (pengaju)
+- `belongsTo(User)` sebagai processor → `users.id` (processed_by)
+
+---
+
+### 11. Tabel `settings`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| key | string (unique) | Key setting |
+| value | text, nullable | Value setting |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Default seed:**
+- `is_periode_open` = `1`
+
+---
+
+### 12. Tabel `operators`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint (PK) | Auto increment |
+| user_id | bigint (FK) | → `users.id` |
+| staff_id | string | ID staf |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Relasi:**
+- `belongsTo(User)` → `users.id`
+
+---
+
+## Diagram Relasi (Summary)
 
 ```
-PHPUnit 11.5.55
-OK (86 tests, 201 assertions)
-Time: 00:04.094
+users (1) ── (1) mahasiswas
+users (1) ── (1) dosens
+users (1) ── (1) operators
+
+dosens (1) ── (N) mahasiswas   [dosen_wali_id]
+dosens (1) ── (N) magangs      [dosen_pembimbing_id]
+
+magangs (1) ── (N) peserta_magangs
+magangs (1) ── (N) logbooks
+magangs (1) ── (1) laporans
+
+mahasiswas (1) ── (1) peserta_magangs
+peserta_magangs (N) ── (1) mahasiswas
+
+laporans (1) ── (N) komentar_laporans
+laporans (1) ── (N) revisi_laporans
+
+mahasiswas (1) ── (N) edit_requests
+users (1) ── (N) edit_requests      [pengaju]
+users (1) ── (N) edit_requests      [processor]
+
+komentar_laporans (N) ── (1) users
+revisi_laporans   (N) ── (1) users
 ```
 
-| Modul | Skenario | Status |
-|-------|----------|--------|
-| **🔐 Auth** | Login admin, dosen, operator, mahasiswa | ✅ |
-| | Login gagal — password salah | ✅ |
-| | Login gagal — user tidak ada | ✅ |
-| | Logout | ✅ |
-| | User sudah login tidak bisa akses halaman login | ✅ |
-| | Guest diblokir dari halaman terproteksi | ✅ |
-| | Role middleware memblokir role salah | ✅ |
-| | **Total: 11 test** | |
-| **👨‍🎓 Mahasiswa** | Dashboard & role blocking (dosen, operator, admin) | ✅ |
-| | Halaman pendaftaran — butuh status Approve | ✅ |
-| | Halaman pendaftaran — load saat Approve | ✅ |
-| | **Store pendaftaran individu — sukses** | ✅ |
-| | **Store pendaftaran kelompok — sukses dengan 1 anggota** | ✅ |
-| | **Store pendaftaran kelompok — sukses dengan 2 anggota (max boundary)** | ✅ |
-| | **Store pendaftaran kelompok — 0 anggota gagal (min boundary)** | ✅ |
-| | **Store pendaftaran kelompok — 3 anggota gagal (exceed max)** | ✅ |
-| | **Store pendaftaran gagal — status masih Pending** | ✅ |
-| | **Store pendaftaran gagal — periode ditutup** | ✅ |
-| | **Store pendaftaran gagal — sudah terdaftar** | ✅ |
-| | **Store pendaftaran kelompok — NIM anggota tidak terdaftar (validasi)** | ✅ |
-| | **Store pendaftaran kelompok — anggota belum approve (business rule)** | ✅ |
-| | **Store pendaftaran — validasi tanggal selesai > mulai** | ✅ |
-| | Halaman logbook & laporan — butuh magang aktif | ✅ |
-| | **Store logbook — sukses** | ✅ |
-| | **Store logbook gagal — tanpa magang aktif** | ✅ |
-| | **Store logbook gagal — periode ditutup** | ✅ |
-| | **Store logbook — validasi kegiatan required** | ✅ |
-| | **Store laporan — sukses** | ✅ |
-| | **Store laporan gagal — periode ditutup** | ✅ |
-| | **Store laporan — update draft yang sudah ada** | ✅ |
-| | **Store laporan gagal — status sudah approved** | ✅ |
-| | **Store laporan — validasi magang_id required** | ✅ |
-| | **Store laporan — validasi judul required** | ✅ |
-| | Halaman surat pengantar — tanpa & dengan magang | ✅ |
-| | **Cetak PDF logbook — tanpa data & dengan data** | ✅ |
-| | **Cetak PDF laporan — tanpa data & dengan data** | ✅ |
-| | **Complete state flow: Pending → Approve → Daftar → Aktif → Logbook → Laporan → Selesai** | ✅ |
-| | **Total: 34 test** | |
-| **👨‍🏫 Dosen** | Dashboard, monitoring, rekomendasi page | ✅ |
-| | Role blocking (admin, mahasiswa) | ✅ |
-| | **Approve rekomendasi mahasiswa** | ✅ |
-| | **Reject rekomendasi mahasiswa** | ✅ |
-| | **Rekomendasi — update status Pending → Approve → Rejected** | ✅ |
-| | **Approve laporan — status = Selesai** | ✅ |
-| | **Request revisi laporan** | ✅ |
-| | **Approve laporan — validasi status required** | ✅ |
-| | **Approve laporan — validasi status harus approved/revisi** | ✅ |
-| | **Approve laporan — validasi feedback required** | ✅ |
-| | Halaman logbook bimbingan & laporan bimbingan | ✅ |
-| | **Total: 16 test** | |
-| **👷 Operator** | Dashboard, monitoring, dosen-pembimbing page | ✅ |
-| | Role blocking (admin, mahasiswa) | ✅ |
-| | **Toggle periode — buka → tutup** | ✅ |
-| | **Toggle periode — tutup → buka** | ✅ |
-| | **Toggle periode — multi toggles (3x)** | ✅ |
-| | **Assign dosen pembimbing — status jadi Aktif** | ✅ |
-| | **Assign dosen — kode SIDUL-YEAR-NNN ter-generate** | ✅ |
-| | **Assign dosen — kode increment berurutan** | ✅ |
-| | **Assign dosen — validasi dosen_id required** | ✅ |
-| | **Assign dosen — validasi dosen_id harus exist** | ✅ |
-| | **Monitoring search by perusahaan & nim** | ✅ |
-| | **Monitoring filter by status (Pending/Aktif)** | ✅ |
-| | **Monitoring search no results** | ✅ |
-| | **Delete magang** | ✅ |
-| | Halaman laporan | ✅ |
-| | **Total: 19 test** | |
-| **🛡️ Admin** | Dashboard, users page | ✅ |
-| | Create dosen & operator account | ✅ |
-| | Delete user | ✅ |
-| | Role blocking (mahasiswa) | ✅ |
-| | **Total: 6 test** | |
+## Alur Status
 
-**Cara menjalankan:**
-```bash
-npm run build
-php vendor/bin/phpunit
+### Status Mahasiswa (`mahasiswas.status_magang`)
+```
+Pending → Approve  (dosen wali menyetujui)
+Pending → Rejected (dosen wali menolak)
 ```
 
----
-
-## [1.3.0] — Lock Laporan Setelah Disetujui Dosen
-
-### 1. Backend — Validasi Edit Laporan
-- **`app/Services/MahasiswaService.php`** — method `simpanLaporan()`: tambah pengecekan status laporan; jika status `approved`, penyimpanan ditolak dengan pesan error "Laporan sudah disetujui dosen dan tidak dapat diedit lagi."
-
-### 2. Frontend — Notifikasi & Proteksi Form
-- **`resources/views/mahasiswa/laporan.blade.php`**:
-  - Tambah banner hijau "Laporan Disetujui ✓" dengan ikon gembok saat status `approved`
-  - Form `action` diubah ke `#` saat approved, `onsubmit="return false"` untuk cegah submit via JS/Enter
-  - Textarea judul, tombol submit, dan CKEditor sudah dalam mode read-only (sejak v1.0)
-
-### 3. Bugfix — Status Laporan Operator Selalu "Review"
-- **`resources/views/operator/laporan.blade.php`**:
-  - **Salah nama kolom:** `$magang->laporan->status_laporan` diubah jadi `$magang->laporan->status` (kolom aslinya `status`, bukan `status_laporan`)
-  - **Salah case:** Perbandingan `'Approve'` (kelebihan 'd') dan `'Revisi'` (capital) diubah ke `'approved'` dan `'revisi'` sesuai ENUM database (lowercase)
-
-### 4. Cleanup — Hapus `catatan_operator` dari Model
-- **`app/Models/Magang.php`** — `catatan_operator` dihapus dari `$fillable` karena sudah tidak ada method/controller yang memakainya
-
----
-
-## [1.2.0] — Service Layer & Testing
-
-### 1. Service Layer — Ekstraksi Logic Bisnis
-
-**Masalah:** Controller terlalu gemuk (`MahasiswaController` 305 baris) dengan logic bisnis campur aduk dan duplikasi kode (cek periode diulang 7x, guard pattern diulang 10x).
-
-**Perubahan — File baru:**
-- `app/Services/ServiceResult.php` — DTO untuk hasil operasi service (success + message + data)
-- `app/Services/PeriodeService.php` — Cek periode buka/tutup (menghilangkan 7x duplikasi `Setting::get`)
-- `app/Services/MahasiswaService.php` — Pendaftaran, logbook, laporan, validasi kelompok
-- `app/Services/DosenService.php` — Rekomendasi, approve laporan, query bimbingan
-- `app/Services/OperatorService.php` — Dashboard stats, assign dosen, monitoring, filter
-
-**Perubahan — Controller direfactor:**
-- `app/Http/Controllers/MahasiswaController.php` — 305 → 173 baris (tipis 43%)
-- `app/Http/Controllers/DosenController.php` — 116 → 67 baris (tipis 42%)
-- `app/Http/Controllers/OperatorController.php` — 227 → 73 baris (tipis 68%)
-
-### 2. Testing — 35 Unit Test
-
-**Sebelum:** Tidak ada satu pun test.
-**Sesudah:** 35 test dengan 56 assertions, mencakup:
-
-| File | Test | Assertions |
-|------|------|-----------|
-| `tests/Feature/AuthTest.php` | Login 4 role, wrong password, logout, middleware block | 11 |
-| `tests/Feature/MahasiswaTest.php` | Dashboard, role blocking, pendaftaran, logbook, laporan | 8 |
-| `tests/Feature/DosenTest.php` | Dashboard, monitoring, rekomendasi, role blocking | 5 |
-| `tests/Feature/OperatorTest.php` | Dashboard, monitoring, dosen-pembimbing, role blocking | 5 |
-| `tests/Feature/AdminTest.php` | Dashboard, users page, create/delete user, role blocking | 6 |
-
-**Cara menjalankan:**
-```bash
-php artisan test
-# atau dengan coverage:
-php artisan test --coverage
+### Status Magang (`magangs.status_magang`)
+```
+Pending → Aktif → Selesai
+Pending → Ditolak
 ```
 
----
-
-## [1.1.0] — Refactoring & Security
-
-### 1. Role Middleware Diaktifkan
-
-**Masalah:** Middleware `RoleMiddleware.php` sudah ada tapi tidak didaftarkan, sehingga user role mana pun bisa mengakses halaman role mana pun (security issue).
-
-**Perubahan:**
-- `bootstrap/app.php` — Mendaftarkan middleware alias `'role'`:
-  ```php
-  $middleware->alias([
-      'role' => \App\Http\Middleware\RoleMiddleware::class,
-  ]);
-  ```
-- `routes/web.php` — Setiap grup route sekarang dilindungi middleware `role:{role}`:
-  - `role:mahasiswa` untuk route mahasiswa
-  - `role:dosen` untuk route dosen
-  - `role:operator` untuk route operator
-  - `role:admin` untuk route admin
-- `app/Http/Middleware/RoleMiddleware.php` — Menambahkan `admin` ke match redirect, memperbaiki default route menjadi `mahasiswa.dashboard`
-
-### 2. Standarisasi Route Names
-
-**Masalah:** Nama route tidak konsisten. `mahasiswa.home` vs `dosen.dashboard` vs `operator.dashboard` vs `admin.dashboard`.
-
-**Perubahan:**
-- `routes/web.php` — `mahasiswa.home` → `mahasiswa.dashboard`
-- `app/Http/Controllers/MahasiswaController.php` — Semua 11 referensi `route('mahasiswa.home')` → `route('mahasiswa.dashboard')`
-
-### 3. Perbaikan AuthController
-
-**Masalah:** `redirectBasedOnRole()` menggunakan hardcoded path (`/dashboard/admin`, dll). Jika URL berubah, perlu diubah manual.
-
-**Perubahan:**
-- `app/Http/Controllers/AuthController.php` — Sekarang menggunakan `route('admin.dashboard')` (named route) agar otomatis mengikuti perubahan URL.
-
-### 4. Fix Mass Assignment Bug
-
-**Masalah:** `OperatorController::verifikasiTolak()` mengupdate kolom `catatan_operator` yang tidak ada di `$fillable` model Magang, menyebabkan mass assignment exception.
-
-**Perubahan:**
-- `app/Models/Magang.php` — Menambahkan `'catatan_operator'` ke array `$fillable`.
-
-### 5. Sidebar Logout Form
-
-**Perubahan:**
-- `resources/views/components/sidebar.blade.php` — Form action dari hardcoded `/logout` → `{{ route('logout') }}`
-
----
-
-## [1.0.1] — Responsive Improvements
-
-### 6. Login Page — Min-height
-
-**Masalah:** `min-h-[650px]` memaksa container setinggi 650px di semua ukuran layar, terlalu besar di HP.
-
-**File:** `resources/views/auth/login.blade.php:6`
-**Sebelum:** `min-h-[650px]`
-**Sesudah:** `min-h-[500px] md:min-h-[650px]`
-
-### 7. Login Page — Padding Berlebihan
-
-**Masalah:** `p-16` memberikan padding 4rem di semua ukuran layar, boros space di mobile.
-
-**File:** `resources/views/auth/login.blade.php:9`
-**Sebelum:** `p-16`
-**Sesudah:** `p-8 lg:p-16`
-
-### 8. Toast Notification — Overflow
-
-**Masalah:** `min-w-[340px]` menyebabkan notifikasi overflow di layar < 340px (iPhone SE, dll).
-
-**File:** `resources/views/layouts/app.blade.php:124,137`
-**Sebelum:** `min-w-[340px]`
-**Sesudah:** `min-w-[340px] max-w-[calc(100vw-2rem)]`
-
-### 9. Sidebar Overlay — Class Redundan
-
-**Masalah:** `hidden lg:hidden` — `lg:hidden` tidak berefek karena `hidden` sudah menyembunyikan elemen.
-
-**File:** `resources/views/layouts/app.blade.php:47`
-**Sebelum:** `class="fixed ... hidden lg:hidden ..."`
-**Sesudah:** `class="fixed ... hidden ..."`
-
-### 10. Modal Detail Dosen — Grid Responsive
-
-**Masalah:** `grid-cols-2` di modal detail dosen terlalu sempit di HP.
-
-**File:** `resources/views/dosen/dashboard.blade.php:195`
-**Sebelum:** `grid-cols-2`
-**Sesudah:** `grid-cols-1 md:grid-cols-2`
-
-### 11. Route Imports — Konsistensi
-
-**Masalah:** Campuran `use` imports di atas file dan inline `[App\Http\Controllers\...]`.
-
-**Perubahan:**
-- `routes/web.php` — Semua controller menggunakan `use` imports (MahasiswaController, DosenController, OperatorController, AdminController).
-
----
-
-## Cara Menjalankan
-
-```bash
-# Bersihkan cache setelah perubahan
-php artisan view:clear
-php artisan route:clear
-
-# Reset database jika perlu
-php artisan migrate:fresh --seed
-
-# Jalankan server
-php artisan serve
+### Status Laporan (`laporans.status`)
+```
+review → revisi → review  (revisi berulang)
+review → approved         (lulus)
 ```
 
+### Status Edit Request (`edit_requests.status`)
+```
+pending → approved (operator setuju)
+pending → rejected (operator tolak)
+```

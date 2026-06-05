@@ -26,12 +26,6 @@ class Laporan extends Model
         return $this->belongsTo(Magang::class, 'magang_id', 'id');
     }
 
-    # fungsi relasi hasMany ke model KomentarLaporan
-    public function komentar()
-    {
-        return $this->hasMany(KomentarLaporan::class, 'laporan_id', 'id');
-    }
-
     # fungsi relasi hasMany ke model RevisiLaporan
     public function revisi()
     {

@@ -139,10 +139,14 @@ class MahasiswaService
     }
 
     # fungsi untuk menyimpan draft laporan magang
-    public function simpanLaporan(User $user, array $data): ServiceResult
+    public function simpanLaporan(User $user, array $data, bool $submit = false): ServiceResult
     {
-        if (PeriodeService::isClosed()) {
+        if (!$submit && PeriodeService::isClosed()) {
             return ServiceResult::error('Gagal! Unggah laporan telah ditutup.');
+        }
+
+        if ($submit && PeriodeService::isClosed()) {
+            return ServiceResult::error('Gagal! Periode pengiriman laporan telah ditutup.');
         }
 
         $mahasiswa = $this->getCurrentMahasiswa($user);
@@ -155,6 +159,14 @@ class MahasiswaService
             return ServiceResult::error('Laporan sudah disetujui dosen dan tidak dapat diedit lagi.');
         }
 
+        if ($submit) {
+            $status = 'review';
+        } elseif ($laporan) {
+            $status = $laporan->status;
+        } else {
+            $status = 'draft';
+        }
+
         Laporan::updateOrCreate(
             ['magang_id' => $data['magang_id']],
             [
@@ -163,11 +175,12 @@ class MahasiswaService
                 'bab2'   => $data['bab2'] ?? null,
                 'bab3'   => $data['bab3'] ?? null,
                 'bab4'   => $data['bab4'] ?? null,
-                'status' => 'review',
+                'status' => $status,
             ]
         );
 
-        return ServiceResult::ok('Laporan berhasil disimpan.');
+        $message = $submit ? 'Laporan berhasil dikirim untuk direview.' : 'Draft laporan berhasil disimpan.';
+        return ServiceResult::ok($message);
     }
 
     # fungsi untuk memvalidasi anggota kelompok magang

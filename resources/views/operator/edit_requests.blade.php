@@ -80,7 +80,7 @@
                                     <div class="flex items-center gap-4 text-xs font-bold">
                                         <span class="text-gray-400 uppercase tracking-wider text-[10px]">{{ $label }}</span>
                                         <span class="text-gray-400">→</span>
-                                        <span class="text-[#6B21A8]">{{ $item->new_value }}</span>
+                                        <span class="text-[#6B21A8]">{{ str_replace('|', ' s/d ', $item->new_value) }}</span>
                                     </div>
                                 @endif
 
@@ -128,7 +128,7 @@
                                                 pada data perusahaan magang
                                             @endif
                                             mahasiswa <strong>{{ $item->mahasiswa->nama ?? '-' }}</strong> 
-                                            dari <strong>{{ $item->old_value }}</strong> menjadi <strong>{{ $item->new_value }}</strong>.
+                                            dari <strong>{{ $item->old_value }}</strong> menjadi <strong>{{ str_replace('|', ' s/d ', $item->new_value) }}</strong>.
                                         </p>
                                     @endif
                                 </div>
@@ -241,7 +241,7 @@
                                     @php $newNims = json_decode($item->new_value, true); @endphp
                                     {{ is_array($newNims) ? implode(', ', $newNims) : $item->new_value }}
                                 @else
-                                    {{ $item->new_value }}
+                                    {{ str_replace('|', ' s/d ', $item->new_value) }}
                                 @endif
                             </td>
                             <td>

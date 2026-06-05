@@ -20,21 +20,19 @@
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'User') }}&background=6B21A8&color=fff&rounded=true&bold=true" alt="User Avatar" />
                 </div>
             </label>
-            {{-- daisyui: menu --}}
-            <ul tabindex="0" class="mt-3 z-[1] p-3 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-64 border border-base-200 gap-1 animate-in fade-in slide-in-from-top-2 duration-200">
-                {{-- daisyui: menu-title --}}
-                <li class="menu-title px-2 pb-2">
+            {{-- dropdown menu (non-daisyui, full tailwind) --}}
+            <ul tabindex="0" class="mt-3 z-[1] p-3 shadow-xl dropdown-content bg-base-100 rounded-box w-64 border border-base-200 animate-in fade-in slide-in-from-top-2 duration-200">
+                <li class="px-2 pb-2 list-none">
                     <span class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Signed in as</span>
                     <span class="block text-sm font-black text-gray-800 truncate">{{ Auth::user()?->name ?? 'Guest' }}</span>
                     <span class="block text-[10px] font-bold text-gray-400 truncate">{{ Auth::user()?->username }}</span>
                 </li>
-                {{-- daisyui: divider --}}
-                <div class="divider my-0 opacity-50"></div>
-                <li class="mt-1 p-0">
-                    <form action="/logout" method="POST" class="block w-full">
+                <div class="h-px bg-gray-100 my-2"></div>
+                <li class="list-none">
+                    <form action="/logout" method="POST">
                         @csrf
-                        <button type="submit" class="w-full h-full flex items-center gap-3 px-3 py-3 hover:bg-red-50 text-red-500 group transition-colors rounded-2xl">
-                            <div class="w-8 h-8 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-white shadow-sm transition-colors text-red-400">
+                        <button type="submit" class="w-full flex items-center gap-3 px-3 py-3 hover:bg-red-50 focus:bg-red-50 active:bg-red-50 text-red-500 transition-colors rounded-2xl outline-none">
+                            <div class="w-8 h-8 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-white shadow-sm text-red-400 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                             </div>
                             <span class="font-black uppercase tracking-widest text-[11px]">Logout</span>

@@ -17,6 +17,9 @@
                 ][$laporan->status ?? ''] ?? 'bg-white/30';
             @endphp
             <div class="w-2.5 h-2.5 rounded-full {{ $statusClass }}"></div>
+            @if($laporan && $laporan->status === 'approved')
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            @endif
             <span class="text-[10px] font-bold uppercase tracking-widest text-white/90">
                 Status: {{ $laporan ? ucfirst($laporan->status) : 'New Document' }}
             </span>
@@ -110,28 +113,36 @@
                     </div>
                  </div>
 
-                  <div class="flex flex-wrap gap-4 w-full md:w-auto">
+                   <div class="flex flex-wrap gap-4 w-full md:w-auto">
                     @if($laporan)
                     <a href="{{ route('mahasiswa.laporan.pdf') }}" class="btn h-14 px-8 bg-[#422AD5] hover:bg-[#311eb3] text-white border-none rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#422AD5]/20">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                         Cetak PDF
                     </a>
                     @endif
- 
-                    @if(!$laporan || $laporan->status !== 'approved')
-                        @if($isPeriodeOpen)
-                        <button type="submit" class="btn h-14 px-10 bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-2xl shadow-amber-100 flex-1 md:flex-none transition-all">
-                            {{ ($laporan && $laporan->status === 'revisi') ? 'Kirim Ulang Revisi' : 'Simpan & Kirim Laporan' }}
-                        </button>
-                        @else
-                        <button type="button" class="btn h-14 px-10 bg-gray-100 text-gray-400 border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] flex-1 md:flex-none cursor-not-allowed" disabled>
-                            Periode Berakhir
-                        </button>
-                        @endif
-                    @else
+
+                    @if($laporan && $laporan->status === 'approved')
                     <div class="h-14 px-10 bg-green-50 text-green-600 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center gap-3 border border-green-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                         Laporan Disetujui ✓
                     </div>
+                    @elseif(!$isPeriodeOpen)
+                    <button type="button" class="btn h-14 px-10 bg-gray-100 text-gray-400 border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] flex-1 md:flex-none cursor-not-allowed" disabled>
+                        Periode Berakhir
+                    </button>
+                    @else
+                        <button type="submit" name="action" value="save" class="btn h-14 px-8 bg-gray-200 hover:bg-gray-300 text-gray-700 border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all">
+                            Simpan Draft
+                        </button>
+                        @if($laporan && $laporan->status === 'review')
+                        <button type="button" class="btn h-14 px-8 bg-blue-100 text-blue-500 border border-blue-200 rounded-2xl font-bold uppercase tracking-widest text-[10px] cursor-default">
+                            Sedang Direview
+                        </button>
+                        @else
+                        <button type="submit" name="action" value="submit" class="btn h-14 px-8 bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-2xl shadow-amber-100 transition-all">
+                            {{ $laporan && $laporan->status === 'revisi' ? 'Kirim Ulang Revisi' : 'Kirim Laporan' }}
+                        </button>
+                        @endif
                     @endif
                   </div>
             </x-card>
