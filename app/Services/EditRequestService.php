@@ -33,8 +33,8 @@ class EditRequestService
     public static function getFieldTarget(string $field): string
     {
         return match($field) {
-            'nama', 'konsentrasi' => 'mahasiswa',
-            'perusahaan', 'alamat', 'periode_magang', 'anggota_kelompok' => 'magang',
+            'nama' => 'mahasiswa',
+            'perusahaan', 'alamat', 'periode_magang', 'anggota_kelompok', 'konsentrasi' => 'magang',
             default => 'mahasiswa',
         };
     }
@@ -43,10 +43,10 @@ class EditRequestService
     {
         $values = [
             'nama' => $mahasiswa->nama,
-            'konsentrasi' => $mahasiswa->konsentrasi,
         ];
 
         if ($magang) {
+            $values['konsentrasi'] = $magang->konsentrasi;
             $values['perusahaan'] = $magang->perusahaan;
             $values['alamat'] = $magang->alamat;
             $values['periode_magang'] = ($magang->tanggal_mulai?->format('Y-m-d') ?? '') . ' s/d ' . ($magang->tanggal_selesai?->format('Y-m-d') ?? '');
@@ -187,9 +187,9 @@ class EditRequestService
                 \Log::warning("ajukanAnggotaKelompok: cannot add self");
                 return ServiceResult::error("Anda tidak bisa menambahkan diri sendiri sebagai anggota.");
             }
-            \Log::info("ajukanAnggotaKelompok: {$nim} status_magang = {$mhs->status_magang}");
-            if ($mhs->status_magang !== 'Approve') {
-                \Log::warning("ajukanAnggotaKelompok: {$nim} NOT approved (status={$mhs->status_magang})");
+            \Log::info("ajukanAnggotaKelompok: {$nim} status_daftar = {$mhs->status_daftar}");
+            if ($mhs->status_daftar !== 'Approve') {
+                \Log::warning("ajukanAnggotaKelompok: {$nim} NOT approved (status={$mhs->status_daftar})");
                 return ServiceResult::error("Mahasiswa NIM {$nim} ({$mhs->nama}) belum mendapat rekomendasi dari Dosen Wali.");
             }
             if ($mhs->pesertaMagang && $mhs->pesertaMagang->magang_id !== $magang->id) {
@@ -239,7 +239,7 @@ class EditRequestService
                 return ServiceResult::error('Data magang tidak ditemukan.');
             }
 
-            $allowedMagangFields = ['perusahaan', 'alamat', 'periode_magang'];
+            $allowedMagangFields = ['perusahaan', 'alamat', 'periode_magang', 'konsentrasi'];
             if (!in_array($field, $allowedMagangFields)) {
                 return ServiceResult::error('Field magang tidak valid untuk diubah.');
             }
@@ -259,7 +259,7 @@ class EditRequestService
                 return ServiceResult::error('Data mahasiswa tidak ditemukan.');
             }
 
-            $allowedMhsFields = ['nama', 'konsentrasi'];
+            $allowedMhsFields = ['nama'];
             if (!in_array($field, $allowedMhsFields)) {
                 return ServiceResult::error('Field mahasiswa tidak valid untuk diubah.');
             }

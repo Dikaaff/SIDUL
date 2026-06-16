@@ -13,11 +13,19 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
         'username',
         'password',
         'role',
     ];
+
+    public function getDisplayNameAttribute(): string
+    {
+        return match ($this->role) {
+            'mahasiswa' => $this->mahasiswa->nama,
+            'dosen'     => $this->dosen->nama,
+            default     => $this->username,
+        };
+    }
 
     # fungsi relasi hasOne ke model Mahasiswa
     public function mahasiswa()

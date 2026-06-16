@@ -214,7 +214,7 @@ class MahasiswaController extends Controller
         $magang = $this->mahasiswaService->getMagang($user);
         $hasMagang = $magang !== null;
 
-        if (!$hasMagang && $mahasiswa->status_magang !== 'Approve') {
+        if (!$hasMagang && $mahasiswa->status_daftar !== 'Approve') {
             return redirect()->route('mahasiswa.dashboard')->with('error', 'Fitur Edit Data hanya tersedia setelah Anda mendapatkan rekomendasi Dosen Wali.');
         }
 

@@ -43,17 +43,15 @@ class AdminController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $request->name,
             'username' => $request->username,
-            'password' => Hash::make($request->password), // Use the submitted password
+            'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
 
-        // Jika dia Dosen, otomatis buat profil Dosennya
         if ($request->role === 'dosen') {
             Dosen::create([
                 'user_id' => $user->id,
-                'nik' => $request->username, // Anggap username dosen adalah NIK
+                'nik' => $request->username,
                 'nama' => $request->name,
             ]);
         }

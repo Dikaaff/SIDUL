@@ -39,7 +39,7 @@ class DosenService
         $dosen = $user->dosen;
         return [
             'mhsWaliCount'          => $dosen ? $dosen->mahasiswaWali()->count() : 0,
-            'pendingRekomendasiCount' => $dosen ? $dosen->mahasiswaWali()->where('status_magang', 'Pending')->count() : 0,
+            'pendingRekomendasiCount' => $dosen ? $dosen->mahasiswaWali()->where('status_daftar', 'Pending')->count() : 0,
             'mhsBimbinganCount'      => $dosen ? $dosen->bimbinganMagang()->count() : 0,
             'lulusCount'             => $dosen ? $dosen->bimbinganMagang()->where('status_magang', 'Selesai')->count() : 0,
             'mhsBimbinganList'       => $dosen ? $dosen->bimbinganMagang()
@@ -52,23 +52,23 @@ class DosenService
     # fungsi untuk menyetujui rekomendasi mahasiswa
     public function rekomendasikan(Mahasiswa $mahasiswa): void
     {
-        $mahasiswa->update(['status_magang' => 'Approve']);
+        $mahasiswa->update(['status_daftar' => 'Approve']);
     }
 
     # fungsi untuk menolak rekomendasi mahasiswa
     public function tolakRekomendasi(Mahasiswa $mahasiswa): void
     {
-        $mahasiswa->update(['status_magang' => 'Rejected']);
+        $mahasiswa->update(['status_daftar' => 'Rejected']);
     }
 
     # fungsi untuk menyetujui atau merevisi laporan
-    public function approveLaporan(Magang $magang, string $status, string $feedback): void
+    public function approveLaporan(Magang $magang, string $status, ?string $feedback): void
     {
         $laporan = $magang->laporan;
         if ($laporan) {
             $laporan->update([
                 'status'       => $status,
-                'catatan_dosen' => $feedback,
+                'catatan_dosen' => $feedback ?? '',
             ]);
 
             if ($status === 'approved') {

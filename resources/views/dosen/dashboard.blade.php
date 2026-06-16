@@ -4,7 +4,7 @@
 
 @section('header')
 <x-page-header 
-    title="Halo, {{ Auth::user()->name }} 👋" 
+    title="Halo, {{ Auth::user()->display_name }} 👋" 
     subtitle="Selamat datang di pusat kendali pembimbing magang SIDUL. Pantau bimbingan dan laporan Anda di sini."
 >
     <div class="hidden lg:flex items-center gap-4 bg-white/5 backdrop-blur-xl p-4 rounded-2xl border border-white/10 shadow-2xl">

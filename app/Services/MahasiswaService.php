@@ -24,7 +24,7 @@ class MahasiswaService
             return ServiceResult::error('Mohon maaf, periode pendaftaran magang saat ini sedang ditutup.');
         }
 
-        if ($mahasiswa->status_magang !== 'Approve') {
+        if ($mahasiswa->status_daftar !== 'Approve') {
             return ServiceResult::error('Anda harus mendapatkan rekomendasi dari Dosen Wali terlebih dahulu.');
         }
 
@@ -196,7 +196,7 @@ class MahasiswaService
 
         foreach ($anggotaNims as $nim) {
             $mhs = Mahasiswa::where('nim', $nim)->first();
-            if ($mhs->status_magang !== 'Approve') {
+            if ($mhs->status_daftar !== 'Approve') {
                 return ServiceResult::error("Mahasiswa dengan NIM {$nim} ({$mhs->nama}) belum mendapat rekomendasi Dosen Wali.");
             }
             if ($mhs->pesertaMagang) {

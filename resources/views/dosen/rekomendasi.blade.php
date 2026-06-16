@@ -47,7 +47,7 @@
                         </div>
                         
                         <div class="col-span-2 flex justify-center">
-                            <x-status-badge :status="$mhs->status_magang" />
+                            <x-status-badge :status="$mhs->status_daftar" />
                         </div>
  
                         <div class="col-span-3 flex items-center">
@@ -55,14 +55,14 @@
                         </div>
  
                         <div class="col-span-3 flex justify-end items-center gap-2">
-                            @if($mhs->status_magang === 'Approve')
+                            @if($mhs->status_daftar === 'Approve')
                                 <button class="btn btn-sm btn-ghost text-green-600 font-black uppercase text-[10px] cursor-default pointer-events-none gap-2">
                                     <div class="w-8 h-8 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center shadow-inner">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                                     </div>
                                     <span class="italic">Direkomendasikan</span>
                                 </button>
-                            @elseif($mhs->status_magang === 'Rejected')
+                            @elseif($mhs->status_daftar === 'Rejected')
                                 <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-ghost text-red-600 font-black uppercase text-[10px] hover:bg-red-50 rounded-2xl gap-2 transition-all">

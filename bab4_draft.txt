@@ -1,0 +1,831 @@
+﻿w14:paraId="00400BCA" w14:textId="34E18231" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00D50281">BAB IVHASIL DAN PEMBAHASAN
+w14:paraId="3411019A" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00D50281">Bab ini menyajikan hasil dari seluruh tahapan pengembangan sistem yang telah dilaksanakan berdasarkan metode SDLC Prototype sebagaimana diuraikan pada BAB III. Pembahasan mencakup spesifikasi teknis sistem yang dibangun, hasil implementasi setiap modul fungsional beserta tampilan antarmukanya, hasil pengujian Black Box, serta evaluasi menyeluruh terhadap kesesuaian sistem dengan tujuan penelitian yang telah ditetapkan.
+w14:paraId="0B7733C9" w14:textId="2045D609" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD"> 4.1Implementasi
+w14:paraId="4CECD649" w14:textId="77777777" w:rsidR="00CA663E" w:rsidRPr="009E53EA" w:rsidRDefault="00CA663E" w:rsidP="00E7071B">Pada subbab ini ditampilkan hasil akhir dari proses implementasi sistem berdasarkan perancangan pada bab III. Penyajian dilakukan melalui tangkapan layar (screenshot) dari struktur basis data yang digunakan serta antarmuka sistem untuk setiap halaman utama, beserta penjelasan mengenai fungsi dan alur kerja elemen di dalamnya.
+w14:paraId="5CA3D53A" w14:textId="46CD4C17" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="006B0EC5">4.1.1Implementasi Database
+w14:paraId="432E0001" w14:textId="32B1297D" w:rsidR="006B0EC5" w:rsidRPr="009E53EA" w:rsidRDefault="006B0EC5" w:rsidP="006B0EC5">Subbab ini menyajikan hasil akhir dari implementasi perancangan basis data. Struktur tabel yang ditampilkan merupakan realisasi dari desain database yang telah dirancang pada Bab III, dan diimplementasikan menggunakan Sistem Manajemen Basis Data (DBMS) MySQL. Berikut adalah struktur final dari database yang digunakan dalam sistem, yang menunjukkan bahwa seluruh entitas dan relasi dari tahap perancangan telah berhasil diwujudkan dalam lingkungan basis data.
+w14:paraId="3C50D077" w14:textId="28A14F59" w:rsidR="00A3630A" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="006B0EC5">
+w14:paraId="5ECC9B7A" w14:textId="3CBEC76B" w:rsidR="00A3630A" w:rsidRPr="009E53EA" w:rsidRDefault="00A3630A" w:rsidP="006B0EC5">Gambar 4.1 tampilan akhir database
+w14:paraId="2AA1CBBD" w14:textId="7DF534AD" w:rsidR="00A3630A" w:rsidRPr="009E53EA" w:rsidRDefault="00A3630A" w:rsidP="006B0EC5">Guna memberikan pemahaman yang lebih rinci mengenai skema hubungan relasional pada Gambar 4.1, penjelasan mengenai fungsi spesifik serta peran dari masing-masing tabel tersebut diuraikan secara lebih mendalam melalui Tabel 4.2 berikut.
+w14:paraId="56B255D6" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">No
+w14:paraId="1293C89D" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Nama Tabel
+w14:paraId="4A83E8A8" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Penjelasan
+w14:paraId="16E707C4" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">1
+w14:paraId="3821B0C9" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">users
+w14:paraId="7F87ECE7" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan data kredensial dan autentikasi utama seluruh pengguna sistem, mencakup username, password, dan hak akses khusus pada kolom role dengan batasan enum ('mahasiswa', 'dosen', 'operator', 'admin') serta remember_token.
+w14:paraId="197323B5" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">2
+w14:paraId="712D92D8" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">mahasiswas
+w14:paraId="7C675C3B" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan profil data akademik mahasiswa yang terikat dengan user_id, mencakup nim, nama, relasi wali kelas (dosen_wali_id), dan status validasi berkas pada kolom status_daftar dengan batasan enum ('Pending', 'Approve', 'Rejected').
+w14:paraId="4DFAEE04" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">3
+w14:paraId="2E89EF10" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">dosens
+w14:paraId="7CA509F5" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan data identitas dosen (baik sebagai dosen wali maupun pembimbing) yang berelasi ke akun pengguna (user_id), memuat nomor identitas nik dan nama dosen.
+w14:paraId="47E681D4" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">4
+w14:paraId="710F7914" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">magangs
+w14:paraId="79A4F703" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan data transaksional pengajuan magang, meliputi kode_magang, tipe_magang enum ('individu', 'kelompok'), data instansi (perusahaan, alamat), masa kerja (tanggal_mulai, tanggal_selesai), relasi pembimbing (dosen_pembimbing_id), serta status_magang enum ('Pending', 'Aktif', 'Selesai').
+w14:paraId="03BA0753" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">5
+w14:paraId="12B7B29A" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">peserta_magangs
+w14:paraId="2C4B814F" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Tabel junction (pivot) yang menghubungkan entitas mahasiswas dan magangs untuk mendukung pendaftaran skema kelompok, dilengkapi kolom is_ketua sebagai penanda penanggung jawab kelompok.
+w14:paraId="5DB1077D" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">6
+w14:paraId="6B793DB2" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">logbooks
+w14:paraId="2540B619" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan catatan pelaporan aktivitas harian mahasiswa magang yang terikat dengan id riwayat kelompok/individu (magang_id), mencakup atribut tanggal pelaksanaan dan narasi deskripsi kegiatan.
+w14:paraId="35A6DC69" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">7
+w14:paraId="5D626CDA" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">laporans
+w14:paraId="23F6D6B1" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan draf hingga naskah final laporan akhir magang mahasiswa yang terbagi secara terstruktur (bab1, bab2, bab3, bab4 bertipe mediumtext), dilengkapi judul, catatan_dosen pembimbing, serta status ulasan dokumen enum ('draft', 'review', 'revisi', 'approved').
+w14:paraId="6F4A4C57" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">8
+w14:paraId="105F9361" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">settings
+w14:paraId="3DA5A7C3" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan data konfigurasi parameter aplikasi secara global menggunakan pola berpasangan antara kolom key dan value (contohnya untuk kontrol buka/tutup akses pendaftaran oleh operator).
+w14:paraId="022388A8" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">9
+w14:paraId="283E5120" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">sessions
+w14:paraId="79BB0606" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan rekaman data sesi aktif masuk (login session state) pengguna ke dalam sistem guna menjaga keamanan akses, mencakup ip_address, user_agent, payload, dan last_activity.
+w14:paraId="21EAB5D5" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">10
+w14:paraId="444E6A92" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">password_reset_tokens
+w14:paraId="0F5B33BD" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan rekaman token unik keamanan (token) sementara yang dikaitkan dengan username untuk memfasilitasi alur kerja fitur lupa atau reset kata sandi pengguna.
+w14:paraId="03B9FFE1" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">11
+w14:paraId="1199FB43" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">migrations
+w14:paraId="5B48E65F" w14:textId="77777777" w:rsidR="0085077B" w:rsidRPr="009E53EA" w:rsidRDefault="0085077B" w:rsidP="0085077B">Menyimpan data log riwayat eksekusi berkas cetak biru skema (database migration blueprint) ke dalam DBMS MySQL untuk melacak urutan pembuatan struktur tabel
+w14:paraId="7EB8E084" w14:textId="77777777" w:rsidR="0063444C" w:rsidRPr="009E53EA" w:rsidRDefault="0063444C" w:rsidP="006B0EC5">
+w14:paraId="4A30D91E" w14:textId="4A2B6B1C" w:rsidR="006B0EC5" w:rsidRPr="009E53EA" w:rsidRDefault="006B0EC5" w:rsidP="006B0EC5">4.1.2 Implementasi Fitur dan Alur Kerja Sistem
+w14:paraId="1437FC06" w14:textId="47913DB6" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00CA663E"> Subbab ini memaparkan perwujudan modul fungsional dan antarmuka aplikasi SIDUL yang telah selesai dikembangkan. Pembahasan difokuskan pada alur kerja dan bagaimana pengguna berinteraksi dengan sistem dalam menjalankan prosedur magang, yang disajikan secara runtut melalui tangkapan layar halaman utama beserta deskripsi operasionalnya dari awal hingga akhir proses.
+w14:paraId="75A0A898" w14:textId="391414C8" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00CA663E" w:rsidP="00CA663E">a. Halaman Login
+w14:paraId="436D51C1" w14:textId="362CBB5F" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00341221" w:rsidP="00330C28">Halaman login berfungsi sebagai gerbang autentikasi tunggal bagi admin, operator, dosen, dan mahasiswa untuk mengakses sistem SIDUL.
+w14:paraId="53E6205F" w14:textId="6C5E4517" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00E7071B" w:rsidP="00FA0CBD">
+w14:paraId="0E88522E" w14:textId="1EC56363" w:rsidR="00330C28" w:rsidRPr="009E53EA" w:rsidRDefault="00330C28" w:rsidP="00FA0CBD">[Gambar 4.2 Tampilan Halaman Login SIDUL]
+w14:paraId="3E74AC63" w14:textId="29810B79" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00057C2E" w:rsidP="00CF7E3F">Alurnya dimulai ketika pengguna membuka halaman masuk melalui peramban dan dihadapkan pada formulir yang meminta Username/NIM/NIK beserta kata sandi. Setelah pengguna memasukkan kredensial dan menekan tombol masuk, sistem akan memverifikasi data tersebut ke basis data. Jika data cocok, sistem akan memperbarui sesi keamanan dan mengarahkan pengguna secara otomatis ke halaman dasboard masing-masing sesuai dengan peran otoritasnya. Namun, jika kredensial tidak sesuai, sistem hanya akan menampilkan pesan galat umum tanpa merinci bagian mana yang salah demi menjaga privasi dan keamanan. Saat pengguna ingin mengakhiri sesi, mereka dapat keluar melalui menu profil yang diamankan menggunakan metode pengiriman data (POST) khusus di sisi sistem.
+w14:paraId="60859461" w14:textId="77777777" w:rsidR="00057C2E" w:rsidRPr="009E53EA" w:rsidRDefault="00057C2E" w:rsidP="00057C2E">
+w14:paraId="1D061D92" w14:textId="2F2869DB" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.2.2Dasboard Mahasiswa
+w14:paraId="09AB801A" w14:textId="5394E5B5" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00330C28" w:rsidP="00330C28">Dasboard mahasiswa menjadi titik sentral untuk memantau status pendaftaran magang, melihat progres kegiatan, serta mengakses fitur utama.
+w14:paraId="1C5C227F" w14:textId="5F0B4048" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00057C2E" w:rsidP="00FA0CBD">
+w14:paraId="650FEDF3" w14:textId="11A9EAF6" w:rsidR="00330C28" w:rsidRPr="009E53EA" w:rsidRDefault="00330C28" w:rsidP="00330C28">[Gambar 4.3 Tampilan Dasbor Mahasiswa SIDUL]
+w14:paraId="3EA7917F" w14:textId="539B6E12" w:rsidR="00330C28" w:rsidRPr="009E53EA" w:rsidRDefault="00057C2E" w:rsidP="00057C2E">Setelah berhasil masuk, mahasiswa langsung diarahkan ke halaman dasboard yang menampilkan tiga kartu statistik utama: jumlah logbook terisi, status laporan, dan persentase progres magang. Di latar belakang, sistem secara otomatis mengkalkulasi persentase progres ini berdasarkan pemenuhan tahapan (pendaftaran, kelengkapan logbook, dan persetujuan laporan). Di bagian tengah, sistem menyajikan kartu aksi yang beradaptasi dengan tahapan magang mahasiswa. Jika mahasiswa belum mendaftar, sistem akan memunculkan tombol pendaftaran, animasi proses menunggu, atau peringatan penolakan. Sebaliknya, jika magang sudah berjalan, kartu tersebut akan menampilkan informasi instansi beserta tautan cepat ke fitur logbook dan laporan. Selain itu, sistem akan memberikan pemberitahuan dan menonaktifkan aksi tertentu secara otomatis jika periode magang telah ditutup oleh operator.
+w14:paraId="15A41205" w14:textId="19F38A38" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD"/>
+w14:paraId="5253FFEA" w14:textId="226F2AB3" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.2.3Form Pendaftaran Magang
+w14:paraId="3E00DD53" w14:textId="77777777" w:rsidR="00987F83" w:rsidRPr="009E53EA" w:rsidRDefault="00987F83" w:rsidP="00987F83">Formulir ini memfasilitasi alur mahasiswa dalam merumuskan dan mengajukan permohonan pelaksanaan magang ke dalam sistem.
+w14:paraId="4BF3BD29" w14:textId="55F9FCB4" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00987F83" w:rsidP="00987F83">
+w14:paraId="5D15B8A0" w14:textId="1833B047" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00987F83">[Gambar 4.4 Tampilan Formulir Pendaftaran Magang]
+w14:paraId="675F216E" w14:textId="3A4B759E" w:rsidR="00987F83" w:rsidRPr="009E53EA" w:rsidRDefault="00987F83" w:rsidP="00987F83">Mahasiswa dapat mengakses halaman pendaftaran melalui menu navigasi atau tombol pintasan di dasboard. Sistem kemudian menampilkan formulir yang memuat data profil permanen mahasiswa secara otomatis, serta menyediakan kolom isian untuk jenis magang, nama instansi, alamat, dan rentang tanggal pelaksanaan. Setelah mahasiswa melengkapi dan mengirimkan formulir tersebut, sistem akan menyimpannya ke basis data dan mengubah status mahasiswa menjadi tahap tunggu (pending), yang berarti pengajuan sedang dalam antrean evaluasi dosen wali. Untuk mencegah kesalahan alur seperti pendaftaran ganda, sistem secara otomatis akan mengunci seluruh kolom isian menjadi mode baca jika mendeteksi bahwa mahasiswa bersangkutan telah terdaftar di periode aktif.
+w14:paraId="2558C631" w14:textId="5093449A" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.2.4Logbook Harian
+w14:paraId="097250DE" w14:textId="7BEE39E8" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00CF7E3F">Halaman logbook difungsikan bagi mahasiswa untuk mencatat urutan kegiatan harian selama menjalani masa magang di instansi terkait.
+w14:paraId="7D3072F6" w14:textId="002EEA4A" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00D212AD">
+w14:paraId="7D2F877F" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">[Gambar 4.5 Tampilan Modul Logbook Kegiatan Harian]
+w14:paraId="7661DC01" w14:textId="77777777" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00D212AD"> Saat mahasiswa membuka halaman ini melalui menu navigasi, sistem akan menyajikan area pengetikan untuk mencatat kegiatan hari itu beserta daftar riwayat kegiatan yang telah lalu. Mahasiswa cukup mengetikkan uraian aktivitas dan menekan tombol simpan, kemudian sistem akan merekam entri tersebut dan langsung menampilkannya di layar tanpa mewajibkan mahasiswa memuat ulang halaman. Mahasiswa dapat melihat rincian lengkap setiap kegiatan dengan mengeklik salah satu entri yang akan memunculkan kotak dialog detail. Jika diperlukan sebagai bukti fisik pencatatan riwayat, mahasiswa dapat memanfaatkan fitur sistem untuk mencetak seluruh logbook tersebut ke dalam format dokumen PDF.
+w14:paraId="236E05EE" w14:textId="23421A96" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD"/>
+w14:paraId="4EE6396D" w14:textId="3FB4ADE9" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.2.5Laporan Akhir
+w14:paraId="72E382BF" w14:textId="00C070C6" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00D212AD">Modul ini mewadahi alur penyusunan naskah laporan akhir magang mahasiswa yang terbagi ke dalam empat bab menggunakan penyunting teks khusus.
+w14:paraId="5C47E92E" w14:textId="70ECBE89" w:rsidR="00987F83" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00987F83">
+w14:paraId="1D1BD82B" w14:textId="3A02A8A9" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00987F83">[Gambar 4.6 Tampilan Modul Laporan Akhir dan Review Dosen]
+w14:paraId="48911431" w14:textId="77777777" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00D212AD">Alur penulisan dimulai ketika mahasiswa mengakses halaman laporan dan dihadapkan pada empat ruang kerja (tab) terpisah yang mewakili masing-masing bab. Mahasiswa menyusun naskahnya menggunakan penyunting teks kaya (rich text) dan dapat menyimpan kemajuan tulisannya sebagai draf di sistem kapan saja tanpa harus langsung menyerahkannya ke dosen. Setelah dokumen dirasa final, mahasiswa menekan tombol pengiriman yang akan memicu sistem untuk memutakhirkan status dokumen menjadi tahap ulasan (review). Dosen pembimbing kemudian akan membaca laporan tersebut, menyematkan komentar pada bab terkait, lalu memutuskan untuk menyetujui atau meminta revisi. Jika terdapat permintaan revisi, mahasiswa memperbaiki naskahnya dan mengirimkan ulang hingga sistem mencatat status akhirnya menjadi disetujui.
+w14:paraId="5BBFF63B" w14:textId="0DCDEE68" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00D212AD">4.2.7Rekomendasi Dosen Wali
+w14:paraId="31EC254B" w14:textId="77777777" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00CF7E3F">Fasilitas ini beroperasi sebagai gerbang evaluasi awal di mana dosen wali berwenang untuk meninjau kelayakan pengajuan magang mahasiswa perwaliannya.
+w14:paraId="7A54E50F" w14:textId="331C774F" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00D212AD">
+w14:paraId="70EE3559" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">[Gambar 4.8 Tampilan Dasbor Operator dan Fitur Plotting Dosen]
+w14:paraId="7D818C11" w14:textId="5DCAD9A3" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00CF7E3F">Ketika dosen wali membuka halaman rekomendasi, sistem akan memilah basis data dan hanya menampilkan daftar mahasiswa perwalian yang pengajuannya masih berstatus pending. Dosen dapat dengan mudah menelusuri mahasiswa spesifik menggunakan kolom pencarian NIM. Selanjutnya, dosen melakukan evaluasi dengan menekan ikon centang untuk menyetujui atau ikon silang untuk menolak pengajuan tersebut. Jika dosen memilih untuk menolak, sistem akan menahan alur dengan memunculkan jendela konfirmasi terlebih dahulu guna mencegah ketidaksengajaan klik. Setelah keputusan akhir dibuat, sistem memperbarui status mahasiswa menjadi disetujui agar dapat melanjutkan proses pendaftaran, atau ditolak jika tidak memenuhi kriteria.
+w14:paraId="1F00F6E1" w14:textId="77777777" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00FA0CBD"/>
+w14:paraId="270E62F7" w14:textId="3CF433E4" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00D212AD">4.2.8Monitoring Mahasiswa (Dosen Pembimbing)
+w14:paraId="0D3CD6DB" w14:textId="77777777" w:rsidR="00D212AD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00CF7E3F">Halaman monitoring memungkinkan dosen untuk mengawasi rincian alur kemajuan pemenuhan prasyarat magang dari seluruh mahasiswa bimbingannya.
+w14:paraId="477A5742" w14:textId="371D383D" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00D212AD">
+w14:paraId="3B7246FC" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">[Gambar 4.9 Tampilan Dasbor Administrator SIDUL]
+w14:paraId="2A19FA61" w14:textId="123A1AE1" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00D212AD" w:rsidP="00CF7E3F">Saat dosen pembimbing mengakses halaman ini, sistem merakit dan menyajikan kartu profil untuk masing-masing mahasiswa bimbingan yang dilengkapi dengan diagram batang progres. Diagram progres ini diatur oleh sistem untuk berubah warna secara otomatis sesuai dengan tahap penyelesaian (amber jika baru memulai, biru di pertengahan jalan, dan ungu bila hampir selesai). Dosen dapat memanfaatkan kolom pencarian untuk menyaring nama atau NIM mahasiswa di layar secara instan. Pada setiap kartu yang disajikan, dosen dapat melihat informasi instansi, meninjau persentase progres, dan menekan tombol khusus untuk beralih meninjau detail aktivitas harian mahasiswa tersebut.
+w14:paraId="41A723FE" w14:textId="6BDD324D" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.2.9Review Logbook (Dosen Pembimbing)
+w14:paraId="7F6D76C2" w14:textId="4CE45FAE" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Halaman ini merupakan kelanjutan dari fitur pengawasan, berfungsi agar dosen dapat mengikuti alur aktivitas harian mahasiswa secara langsung.
+w14:paraId="703766C2" w14:textId="5AAF11FE" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="2571DFE6" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">[Gambar 4.10 Contoh Dokumen PDF yang Dibangkitkan Sistem SIDUL]
+w14:paraId="1CA731EE" w14:textId="2A34CC0B" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Alur peninjauan dimulai ketika dosen membuka halaman evaluasi logbook, di mana sistem membagi layar menjadi panel daftar nama mahasiswa dan panel area riwayat kegiatan. Dengan memilih nama salah satu mahasiswa di panel kiri, sistem akan memuat seluruh entri kegiatan yang pernah dilaporkan mahasiswa tersebut. Dosen kemudian menelaah rincian aktivitas dengan mengeklik entri tertentu yang akan memunculkan kotak dialog penuh berisikan uraian deskripsi kegiatan. Selain mengevaluasi, dosen juga difasilitasi oleh sistem untuk meninggalkan catatan tanggapan pada setiap entri sebagai bentuk interaksi dan pengarahan di lapangan.
+w14:paraId="468487E7" w14:textId="655E94D0" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="24D59130" w14:textId="5495E5CF" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">4.2.10Review Laporan (Dosen Pembimbing)
+w14:paraId="5724FDED" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Halaman ini memfasilitasi dosen pembimbing dalam menjalankan alur evaluasi dan pemberian putusan terhadap naskah laporan akhir mahasiswa.
+w14:paraId="30503DE4" w14:textId="6C5644B9" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="11631F82" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">[Gambar 4.10 Contoh Dokumen PDF yang Dibangkitkan Sistem SIDUL]
+w14:paraId="787FDEFA" w14:textId="57EA659F" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Saat dosen mengakses halaman evaluasi, sistem menarik dan menyajikan daftar riwayat mahasiswa bimbingan yang telah menyetorkan laporannya ke sistem. Dosen memilih salah satu mahasiswa dan sistem akan menggelar isi dokumen tersebut ke dalam empat tabulasi bab mode baca. Sembari membaca laporan, dosen dapat membubuhkan komentar revisi pada masing-masing bab. Di tahap akhir, dosen mengeksekusi putusan untuk menyetujui laporan atau mengembalikannya. Jika laporan dikembalikan, sistem akan menunda progres kelulusan mahasiswa dan memberitahukan mereka untuk melakukan perbaikan naskah berdasarkan catatan yang ditinggalkan dosen.
+w14:paraId="7FAB2519" w14:textId="63BB329B" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="13DA1D27" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">4.2.11Buka/Tutup Pendaftaran (Operator)
+w14:paraId="3646CE24" w14:textId="3542AFB1" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Fitur ini merupakan alat kendali utama bagi operator untuk mengatur ketersediaan akses alur pendaftaran magang secara global.
+w14:paraId="5A5AEEA5" w14:textId="0D34D0AD" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="555F0D6D" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">[Gambar 4.10 Contoh Dokumen PDF yang Dibangkitkan Sistem SIDUL]
+w14:paraId="1F914E56" w14:textId="3215CFF2" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Saat memantau dasboard, operator dapat melihat panel indikator status periode pendaftaran yang sedang berjalan beserta tombol sakelar kendalinya. Alur eksekusi dilakukan dengan menekan tombol tersebut untuk membalikkan kondisi sistem menjadi tahap pendaftaran dibuka atau ditutup. Perubahan variabel ini langsung dicatat oleh sistem dan efeknya berlaku seketika untuk seluruh pengguna. Ketika mahasiswa membuka halaman pendaftaran, sistem akan memeriksa status terbaru ini terlebih dahulu; mengizinkan mahasiswa mengisi formulir jika periode telah dibuka, atau memblokir akses secara otomatis jika periode sedang dihentikan.
+w14:paraId="0EE92D98" w14:textId="607F4202" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">4.2.13Plotting Dosen Pembimbing (Operator)
+w14:paraId="2286D98B" w14:textId="3A81501A" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Halaman ini memfasilitasi operator dalam menjalankan alur penugasan dosen pembimbing bagi mahasiswa yang pengajuannya telah disetujui secara akademik.
+w14:paraId="2A545B40" w14:textId="4589B855" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="013D711C" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">[Gambar 4.10 Contoh Dokumen PDF yang Dibangkitkan Sistem SIDUL]
+w14:paraId="0C8385F6" w14:textId="21CCFBED" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Alur penugasan dimulai saat operator membuka halaman terkait dan dihadapkan pada dua antrean tabel: daftar mahasiswa yang telah disetujui dan daftar mahasiswa yang telah mendapatkan pembimbing. Pada tabel antrean, operator menetapkan nama dosen pembimbing melalui daftar pilihan (dropdown) yang ditarik sistem untuk setiap mahasiswa. Begitu operator menyimpan penugasan tersebut, sistem langsung mengikat data dosen ke dalam profil data magang mahasiswa di basis data. Pembaruan ini seketika merubah status magang mahasiswa menjadi aktif di sistem, dan nama pembimbing akan langsung dirender pada dasboard mahasiswa yang bersangkutan.
+w14:paraId="51A3552F" w14:textId="0207C1A5" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="58F51FD5" w14:textId="3B40D335" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">4.2.9Manajemen Users (Admin)
+w14:paraId="4ED324B1" w14:textId="657FD8CD" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">Halaman manajemen memberikan administrator kendali operasional atas alur penambahan dan penghapusan akun staf pengelola di dalam sistem..
+w14:paraId="15336CE0" w14:textId="558CE627" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00EC01FB" w:rsidP="00B40FD6">
+w14:paraId="70E4874B" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">[Gambar 4.10 Contoh Dokumen PDF yang Dibangkitkan Sistem SIDUL]
+w14:paraId="2AAFE6C8" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00CF7E3F">Admin memulai alur pengelolaan dengan membuka halaman kelola staf, di mana sistem merender daftar akun dosen dan operator yang ada ke dalam bentuk susunan kartu. Untuk menambah staf baru, admin menekan tombol penambahan dan mengisi formulir pada kotak dialog yang meminta data profil serta penentuan peran pengguna. Begitu formulir disimpan, sistem langsung mendaftarkan dan mengaktifkan akun tersebut di basis data. Sebaliknya, saat admin bermaksud menghapus staf, sistem tidak langsung membuang data, melainkan memunculkan layar konfirmasi terlebih dahulu. Setelah admin mengonfirmasi ulang, barulah sistem mencabut hak akses akun tersebut secara permanen.
+w14:paraId="1FEADA68" w14:textId="0FC99CC1" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="448F4AD7" w14:textId="4836F2D2" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="7F0E3E86" w14:textId="77777777" w:rsidR="00B40FD6" w:rsidRPr="009E53EA" w:rsidRDefault="00B40FD6" w:rsidP="00B40FD6">
+w14:paraId="553333DA" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.3Pengujian Sistem
+w14:paraId="28591B79" w14:textId="250C6414" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Pengujian sistem dilaksanakan menggunakan metode Black Box Testing yang mengevaluasi fungsionalitas sistem berdasarkan sekenario pengujian yang telah di susun pada bab 3.
+w14:paraId="7D7FAC4C" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Skenario pengujian disusun berdasarkan kebutuhan fungsional yang telah diidentifikasi pada tahap Initial Requirements, mencakup seluruh modul dan alur kerja utama sistem dari perspektif setiap kelompok pengguna. Pengujian mencakup empat kelompok skenario utama, yaitu pengujian autentikasi dan kontrol akses, pengujian modul pendaftaran magang, pengujian modul logbook, serta pengujian fitur generate PDF.
+w14:paraId="2601DA6B" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.3.1Hasil Pengujian Autentikasi dan Kontrol Akses
+w14:paraId="3025099F" w14:textId="6F9E906F" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Pengujian autentikasi dilaksanakan untuk memverifikasi bahwa mekanisme login multi-role berjalan dengan benar dan sistem mengarahkan setiap pengguna ke dasboard yang sesuai. Selain itu, dilakukan pula pengujian terhadap mekanisme RBAC untuk memastikan pengguna tidak dapat mengakses halaman yang berada di luar wewenang perannya. Hasil pengujian selengkapnya disajikan pada Tabel 4.2.
+w14:paraId="31679103" w14:textId="54F9102C" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="00FA0CBD">
+w14:paraId="7404075F" w14:textId="33A6107B" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="007F1289">
+w14:paraId="1A492AEA" w14:textId="43949177" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00B93A85">Tabel 4.2 Hasil Pengujian Login Multi-Role
+w14:paraId="727F3D98" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="009C35A4">No
+w14:paraId="166AF1EC" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="009C35A4">Modul yang Diuji
+w14:paraId="1FCFAE66" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="009C35A4">Skenario Uji
+w14:paraId="7D62335A" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="009C35A4">Langkah-langkah Pengujian
+w14:paraId="3B58FBA8" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="009C35A4">Hasil yang Diharapkan
+w14:paraId="5FBB2E87" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="009C35A4">Hasil Aktual
+w14:paraId="2AF4CA5C" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="009C35A4">Status
+w14:paraId="0E81CD16" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">1
+w14:paraId="24A59099" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="7EA8FB9F" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login mahasiswa dengan data valid
+w14:paraId="646B374F" w14:textId="322BA986" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="277B2DDD" w14:textId="573EDEAA" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Isi NIM dan password mahasiswa yang valid.
+w14:paraId="3B9B4DE8" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">3. Klik tombol "Login".
+w14:paraId="50087E3E" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem mengarahkan pengguna ke halaman Dashboard Mahasiswa.
+w14:paraId="70DFFCDE" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menampilkan halaman Dashboard Mahasiswa dengan benar sesuai hak akses.
+w14:paraId="5BF4C383" w14:textId="17D8A91A" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="2EF0B95F" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">2
+w14:paraId="640445A8" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="12F11733" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login dosen dengan data valid
+w14:paraId="7DA734F2" w14:textId="2362C55C" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="729BC01D" w14:textId="3C435191" w:rsidR="000746B3" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Isi NIK dan password dosen yang valid.
+w14:paraId="4113582B" w14:textId="3F8ADE64" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Login".
+w14:paraId="1E2A3587" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem mengarahkan pengguna ke halaman Dashboard Dosen.
+w14:paraId="54542F98" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menampilkan halaman Dashboard Dosen dengan benar sesuai hak akses.
+w14:paraId="3CB2B2DC" w14:textId="1C95DABA" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="2ADD6167" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">3
+w14:paraId="09EE74A7" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="1BFDE20B" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login operator dengan data valid
+w14:paraId="1A11CB3E" w14:textId="4EB27273" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="3BCA44D8" w14:textId="376F12A8" w:rsidR="000746B3" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Isi username dan password operator yang valid.
+w14:paraId="3BB7CA49" w14:textId="09707F24" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Login".
+w14:paraId="14D82219" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem mengarahkan pengguna ke halaman Dashboard Operator.
+w14:paraId="42A0C8D0" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menampilkan halaman Dashboard Operator dengan benar sesuai hak akses.
+w14:paraId="2D44A217" w14:textId="58F267F6" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="6C164841" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">4
+w14:paraId="2DDEC7FF" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="56AB4825" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login administrator dengan data valid
+w14:paraId="63F7B9DF" w14:textId="3AECF8F8" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="422F0619" w14:textId="7665D017" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Isi username dan password admin yang valid.
+w14:paraId="2109CF17" w14:textId="1018F5B0" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Login".
+w14:paraId="105A6F50" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem mengarahkan pengguna ke halaman Dashboard Administrator.
+w14:paraId="786D0E40" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menampilkan halaman Dashboard Administrator dengan benar sesuai hak akses.
+w14:paraId="0AC8A451" w14:textId="3C8C7C4B" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="1573CA2A" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">5
+w14:paraId="161F7006" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="4F194396" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login dengan password salah
+w14:paraId="7420E8A2" w14:textId="410E7F95" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="33008C3E" w14:textId="7F1F9D77" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Isi username valid dan password tidak sesuai.
+w14:paraId="79B439FB" w14:textId="3710E264" w:rsidR="000746B3" w:rsidRPr="000746B3" w:rsidRDefault="000746B3" w:rsidP="000746B3">Klik tombol "Login".
+w14:paraId="12215709" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menolak akses dan menampilkan pesan kesalahan login.
+w14:paraId="2414A9B2" w14:textId="2F3042A8" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Akses ditolak dan muncul pesan peringatan " NIM/NIK atau Password salah".
+w14:paraId="47BED8B2" w14:textId="25B4445D" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="39CEDF9A" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">6
+w14:paraId="5064FA60" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="4CE61023" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login dengan username tidak terdaftar
+w14:paraId="4C16117B" w14:textId="26E11477" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="5061EF1C" w14:textId="366A2B32" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Isi username yang tidak tercatat pada sistem.
+w14:paraId="581EEFA5" w14:textId="0CB64ADF" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Login".
+w14:paraId="35DC6B0D" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menolak akses dan menampilkan pesan kesalahan login.
+w14:paraId="6403B0F4" w14:textId="563B9BAA" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Akses ditolak dan muncul pesan peringatan " NIM/NIK atau Password salah ".
+w14:paraId="7CA87BAB" w14:textId="27CF062F" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="3D6EA416" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">7
+w14:paraId="5899C1B3" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="1DA8C479" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login dengan username kosong
+w14:paraId="2B382A0D" w14:textId="3D679DF9" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="5DDFBC3E" w14:textId="684231D8" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Kosongkan kolom username, isi password.
+w14:paraId="6B457827" w14:textId="6FF1395A" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Login".
+w14:paraId="631F6401" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menampilkan pesan validasi bahwa kolom wajib diisi.
+w14:paraId="464C73AC" w14:textId="5660CDB0" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Muncul notifikasi validasi "Kolom username wajib diisi".
+w14:paraId="7DFE6A3E" w14:textId="4EEFEE06" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="178315DB" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">8
+w14:paraId="1AEA3001" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="254047BE" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login dengan password kosong
+w14:paraId="4687ACBE" w14:textId="73E03EB3" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="7C4E89E4" w14:textId="26D8ABDF" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Isi username, kosongkan kolom password.
+w14:paraId="6C0CE3AA" w14:textId="61002DE0" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Login".
+w14:paraId="4586EA11" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menampilkan pesan validasi bahwa kolom wajib diisi.
+w14:paraId="63CE6B03" w14:textId="00C89276" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Muncul notifikasi validasi "Kolom password wajib diisi".
+w14:paraId="00EC2DF5" w14:textId="5352C6A1" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="79B0EBC9" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">9
+w14:paraId="13528844" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="6042511F" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login dengan seluruh kolom kosong
+w14:paraId="06999FC7" w14:textId="3CCB7CAB" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Buka laman login.
+w14:paraId="4E9355F5" w14:textId="2985F3A0" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Login" tanpa mengisi data apa pun pada form.
+w14:paraId="0555687B" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menampilkan pesan validasi pada seluruh kolom input.
+w14:paraId="3895ED4F" w14:textId="0207344F" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Muncul notifikasi validasi "Kolom Username dan password wajib diisi".
+w14:paraId="6ABDB322" w14:textId="1208A455" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="065AFEEC" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">10
+w14:paraId="6BF24EAA" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Login Multi-Role
+w14:paraId="49C0D308" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Proses logout dari sistem
+w14:paraId="056CBCBE" w14:textId="01275743" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="000746B3">Klik tombol "Logout" pada menu navigasi akun dalam kondisi sesi pengguna aktif.
+w14:paraId="3791688A" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sistem menghancurkan sesi aktif dan mengarahkan kembali ke halaman login.
+w14:paraId="606453B7" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="007F1289" w:rsidP="007F1289">Sesi pengguna dihapus dari server dan sistem langsung mengarahkan kembali ke halaman utama login.
+w14:paraId="03EC8EAB" w14:textId="7E9BFD70" w:rsidR="007F1289" w:rsidRPr="000746B3" w:rsidRDefault="009C35A4" w:rsidP="007F1289">Berhasil
+w14:paraId="7E4B1FC4" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">
+w14:paraId="230E932E" w14:textId="7A14BF14" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">
+w14:paraId="1F2F7128" w14:textId="7BE76968" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="007F1289">
+w14:paraId="13027E00" w14:textId="4827A56B" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="007F1289">4.3.2Hasil Pengujian Form Pendaftaran Magang
+w14:paraId="18AC66E1" w14:textId="08F1575D" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="007F1289">Pengujian modul pendaftaran magang dilaksanakan untuk memverifikasi bahwa sistem memproses pengajuan magang sesuai dengan alur bisnis yang telah ditetapkan, termasuk validasi prasyarat berlapis dan validasi data formulir. Tabel 4.3 menyajikan hasil pengujian terhadap skenario-skenario yang mencakup kondisi normal maupun kondisi batas pada modul pendaftaran.
+w14:paraId="550DE7DA" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">No
+w14:paraId="11846CF7" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">Modul yang Diuji
+w14:paraId="2055003F" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">Skenario Uji
+w14:paraId="77F7336C" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">Langkah-langkah Pengujian
+w14:paraId="617C9B76" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">Hasil yang Diharapkan
+w14:paraId="0464E6FF" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">Hasil Aktual
+w14:paraId="2DFE720B" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">Status
+w14:paraId="1BA9C381" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">1
+w14:paraId="5ABDDBBE" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pengajuan Magang
+w14:paraId="40A3E47C" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pendaftaran dengan data lengkap dan valid
+w14:paraId="7CC48690" w14:textId="31862055" w:rsidR="00DC056B" w:rsidRPr="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Login sebagai mahasiswa yang sudah direkomendasikan.
+w14:paraId="0288C73F" w14:textId="77777777" w:rsidR="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Akses formulir pada periode pendaftaran yang terbuka.
+w14:paraId="16266034" w14:textId="0E021FC0" w:rsidR="00DC056B" w:rsidRPr="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Lengkapi seluruh data formulir lalu klik submit.
+w14:paraId="5945561F" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Data tersimpan, status berubah menjadi Menunggu Plotting
+w14:paraId="5405DC0C" w14:textId="704C9A9C" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Data tersimpan, status berubah "Pending" di tabel magangs.
+w14:paraId="7FD78AB4" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Berhasil
+w14:paraId="73CB535B" w14:textId="737DABC6" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">2
+w14:paraId="5A49D234" w14:textId="4D6B991F" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pengajuan Magang
+w14:paraId="5D11F060" w14:textId="1EA40855" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Melakukan Pendaftaran dengan data tidak lengkap
+w14:paraId="19F14FF0" w14:textId="2FA4E098" w:rsidR="00DC056B" w:rsidRPr="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Login sebagai mahasiswa yang sudah direkomendasikan.
+w14:paraId="4D4F3F15" w14:textId="77777777" w:rsidR="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Akses formulir pada periode pendaftaran yang terbuka.
+w14:paraId="143F8AC3" w14:textId="6F2A8578" w:rsidR="00DC056B" w:rsidRPr="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">kosongi kolom alamat lengkap Perusahaan lalu klik submit.
+w14:paraId="64BB264A" w14:textId="6CD821E7" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Muncul notifikasi "Kolom alamat perusahaan  wajib diisi".
+w14:paraId="7AB8E1B6" w14:textId="1BCEEFF4" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Sistem menampilkan notifikasi "Kolom alamat perusahaan  wajib diisi".
+w14:paraId="21B7F47C" w14:textId="791438E3" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Berhasil
+w14:paraId="2386FBBD" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="0C743A16" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="61E508D9" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="2A916924" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="277B4AAB" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="3FEC4BA0" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="671E1A3B" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="3BE910A3" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="77301ADF" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="0B83DF2A" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="5D15155D" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="0CE17917" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="40EF14D6" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="2EFF3966" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="5C91A100" w14:textId="138E390C" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">3
+w14:paraId="59DA5A0F" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pengajuan Magang
+w14:paraId="28BDE238" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pendaftaran mahasiswa belum direkomendasikan
+w14:paraId="70C6E691" w14:textId="77777777" w:rsidR="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Login sebagai mahasiswa yang belum mendapat rekomendasi dosen wali.
+w14:paraId="5FE9E217" w14:textId="4C624391" w:rsidR="00DC056B" w:rsidRPr="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Coba akses atau lakukan pendaftaran magang.
+w14:paraId="2A937B07" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Sistem menampilkan pesan bahwa mahasiswa belum direkomendasikan
+w14:paraId="76E379E1" w14:textId="1C2515DF" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pesan ditampilkan, “anda harus mendapatkan rekomendasi dari Dosen Wali terlebih dahulu”.
+w14:paraId="0FC7B1BD" w14:textId="744F2E56" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Berhasil
+w14:paraId="282C3C2A" w14:textId="769AD7F7" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">4
+w14:paraId="4B467227" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pengajuan
+w14:paraId="440CCCD5" w14:textId="118A528C" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Magang
+w14:paraId="3A1ADC59" w14:textId="49596492" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pendaftaran mahasiswa kelompok dengan anggota yang sudah di approve dosen wali
+w14:paraId="2981E570" w14:textId="77777777" w:rsidR="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Login sebagai ketua kelompok yang sudah mendapat rekomendasi dosen wali.
+w14:paraId="33841B6C" w14:textId="1CC76BDE" w:rsidR="00DC056B" w:rsidRPr="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Lakukan pendaftaran magang dengan inputkan nama dan NIM anggota kelompok yang belum di approve dosen wali.
+w14:paraId="6E1CD6F2" w14:textId="59401CDC" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Sistem menampilkan pesan bahwa salah satu mahasiswa belum direkomendasikan
+w14:paraId="19025FAE" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pesan di tampilkan
+w14:paraId="658E3118" w14:textId="0C2BE34C" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">“Salah satu NIM anggota tidak terdaftar di sistem.”
+w14:paraId="636F0483" w14:textId="25B2AA56" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">
+w14:paraId="350D0682" w14:textId="66EC9FF8" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Berhasil
+w14:paraId="04B3AC7E" w14:textId="409A59E7" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">5
+w14:paraId="7BED1D9C" w14:textId="6999FA66" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Pengajuan Magang
+w14:paraId="5295E095" w14:textId="532802AE" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Pendaftaran kelompok dengan anggota valid
+w14:paraId="4D605C6E" w14:textId="77777777" w:rsidR="002865B7" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Buka form pendaftaran kelompok.
+w14:paraId="5AD59828" w14:textId="41E37084" w:rsidR="00673DAB" w:rsidRPr="002865B7" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Input data kelompok berisi tiga mahasiswa (semuanya sudah direkomendasikan) lalu submit.
+w14:paraId="4F3B232D" w14:textId="20E09162" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Semua anggota terdaftar dengan kode magang yang sama
+w14:paraId="2AC15DB9" w14:textId="62362C8C" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Data kelompok tersimpan
+w14:paraId="57355D05" w14:textId="5357EFCB" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">Berhasil
+w14:paraId="72B59BF8" w14:textId="1875FCFE" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="002865B7">6
+w14:paraId="3C2D5B53" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pengajuan Magang
+w14:paraId="33155E16" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pendaftaran di luar periode aktif
+w14:paraId="6DE35D48" w14:textId="77777777" w:rsidR="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Kondisikan periode magang sedang ditutup oleh operator.
+w14:paraId="24BDB65A" w14:textId="456925FE" w:rsidR="00DC056B" w:rsidRPr="002865B7" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Mahasiswa mencoba mengakses formulir pendaftaran.
+w14:paraId="1D095D29" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Sistem menampilkan pesan periode tidak aktif
+w14:paraId="0B47A5CB" w14:textId="47B3B843" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Pesan ditampilkan, “Mohon maaf, periode pendaftaran magang saat ini sedang ditutup”.
+w14:paraId="56B0238D" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="002865B7">Berhasil
+w14:paraId="7578965A" w14:textId="0AC11FB6" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">7
+w14:paraId="795C19E3" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">Pengajuan
+w14:paraId="2E2CFDBF" w14:textId="283D208C" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">Magang
+w14:paraId="0F0F5664" w14:textId="6D762781" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">Status setelah pendaftaran
+w14:paraId="5A71F12D" w14:textId="22E1D8B8" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">Akses halaman pendaftaran setelah data tersimpan.
+w14:paraId="603E23B0" w14:textId="2086A82F" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">Form terkunci, status pendaftaran tampil.
+w14:paraId="4AEBF6B2" w14:textId="3A451CA8" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">Komponen input menjadi read-only.
+w14:paraId="5963E9BF" w14:textId="76D13170" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="002865B7">Berhasil
+w14:paraId="7C11BFF1" w14:textId="0AAB900A" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">
+w14:paraId="4FFD8AB8" w14:textId="36703B9C" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">
+w14:paraId="4CBF8C96" w14:textId="70A649F5" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">
+w14:paraId="6F47F76A" w14:textId="599CD50D" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">
+w14:paraId="36EB861C" w14:textId="0012503D" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">
+w14:paraId="0484A988" w14:textId="7844BCF7" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">
+w14:paraId="70687336" w14:textId="4E143511" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="000E24D0">
+w14:paraId="05C7E9D5" w14:textId="77777777" w:rsidR="00DC056B" w:rsidRPr="009E53EA" w:rsidRDefault="00DC056B" w:rsidP="007F1289">
+w14:paraId="19C73249" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="007F1289">
+w14:paraId="111A7800" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="007F1289">
+w14:paraId="5324082E" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="007F1289">
+w14:paraId="38D6BF58" w14:textId="77777777" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="007F1289">
+w14:paraId="3C225C78" w14:textId="58EACE0B" w:rsidR="007F1289" w:rsidRPr="009E53EA" w:rsidRDefault="007F1289" w:rsidP="00673DAB"/>
+w14:paraId="48C7C1A5" w14:textId="77777777" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00673DAB" w:rsidP="00673DAB">
+w14:paraId="4DDEEFEB" w14:textId="7BDF2F31" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.3.3Hasil Pengujian Modul Logbook
+w14:paraId="7CA6D692" w14:textId="5728B649" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Pengujian modul logbook dilaksanakan untuk memverifikasi bahwa seluruh operasi manajemen entri logbook berjalan sesuai spesifikasi, termasuk validasi kelengkapan data dan pembatasan akses berdasarkan status magang mahasiswa. Hasil pengujian terhadap skenario modul logbook disajikan pada Tabel 4.4.
+w14:paraId="4BD5395E" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">No
+w14:paraId="4E06A789" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Modul yang Diuji
+w14:paraId="70560B2F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Skenario Uji
+w14:paraId="2FF7F0CD" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Langkah-langkah Pengujian
+w14:paraId="55DDC382" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Hasil yang Diharapkan
+w14:paraId="677DCBEF" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">1
+w14:paraId="60058A68" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Pengajuan Magang
+w14:paraId="4F9B97EA" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Mengisi formulir pengajuan dengan data valid
+w14:paraId="1F1FC793" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">1. Buka halaman formulir pengajuan.
+w14:paraId="21380488" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">2. Lengkapi seluruh kolom formulir dengan data instansi lengkap dan valid.
+w14:paraId="7D129CBC" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">3. Klik tombol "Kirim Pendaftaran" setelah konfirmasi.
+w14:paraId="4E13D580" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Data pengajuan magang berhasil disimpan ke dalam basis data
+w14:paraId="16C25D9F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">2
+w14:paraId="398E57E2" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Pengajuan Magang
+w14:paraId="24CE38A5" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Kolom nama perusahaan dikosongkan
+w14:paraId="165FC69E" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">1. Buka halaman formulir pengajuan.
+w14:paraId="73536979" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">2. Kosongkan kolom nama perusahaan, isi data lain.
+w14:paraId="62022B22" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">3. Klik tombol "Kirim Pendaftaran".
+w14:paraId="083DB203" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Sistem menghentikan proses penyimpanan dan menampilkan validasi bahwa kolom wajib diisi
+w14:paraId="3764E575" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">3
+w14:paraId="34C3925F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Pengajuan Magang
+w14:paraId="4DD30A52" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Kolom alamat perusahaan dikosongkan
+w14:paraId="343FD464" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">1. Buka halaman formulir pengajuan.
+w14:paraId="0FC3C9B0" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">2. Kosongkan kolom alamat perusahaan, isi data lain.
+w14:paraId="651D11BE" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">3. Klik tombol "Kirim Pendaftaran".
+w14:paraId="273E97B1" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Sistem menghentikan proses penyimpanan dan menampilkan validasi bahwa kolom wajib diisi
+w14:paraId="7CA7A39F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">4
+w14:paraId="463D0365" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Pengajuan Magang
+w14:paraId="2DB8249E" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Menyimpan data pendaftaran duplikat
+w14:paraId="0C617C98" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">1. Kirimkan data formulir pengajuan untuk kedua kalinya menggunakan identitas data yang sudah terdaftar di sistem (setelah pendaftaran pertama berhasil).
+w14:paraId="12F599BB" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Sistem mendeteksi duplikasi, menolak instruksi penyimpanan, dan menampilkan pesan bahwa sudah terdaftar
+w14:paraId="5FB7C8DC" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">5
+w14:paraId="28A180A8" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Pengajuan Magang
+w14:paraId="56D1739D" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Memeriksa pembaruan status pengajuan
+w14:paraId="3C4D2BEC" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">1. Akses halaman pendaftaran setelah data pengajuan disimpan dan rekam data tersedia.
+w14:paraId="779AC70F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Sistem menampilkan status pendaftaran aktual dan form dalam keadaan terkunci (read-only)
+w14:paraId="5A8EEE00" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">6
+w14:paraId="384D4A5F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Pengajuan Magang
+w14:paraId="082AE639" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Pendaftaran saat periode magang ditutup
+w14:paraId="70CEC5A9" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">1. Operator menutup periode pendaftaran pada sistem.
+w14:paraId="4781E3FF" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">
+w14:paraId="5D14945D" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">2. Mahasiswa mencoba mengakses dan mengisi halaman pendaftaran.
+w14:paraId="798C8EBF" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00223065">Form pendaftaran tidak dapat dikirim dan tombol submit berstatus non-aktif
+w14:paraId="6914CA48" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="00FA0CBD">
+w14:paraId="525A0E3F" w14:textId="01FF37BC" w:rsidR="00673DAB" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="0059793D">4.3.4 Hasil Pengujian Laporan Akhir Magang
+w14:paraId="76D71F95" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">No
+w14:paraId="35E39ED3" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Modul yang Diuji
+w14:paraId="7850DCB1" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Skenario Uji
+w14:paraId="512F5C8C" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Langkah-langkah Pengujian
+w14:paraId="20FE5694" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Hasil yang Diharapkan
+w14:paraId="584C3EEF" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Hasil Aktual
+w14:paraId="0017487F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Status
+w14:paraId="2344CD96" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">1
+w14:paraId="218FAD0F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Laporan Akhir Magang
+w14:paraId="1FEED73E" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Menyimpan laporan sebagai draft
+w14:paraId="073C1873" w14:textId="4C1652C1" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">1. Isi formulir data laporan (judul + isi bab).
+w14:paraId="2782ADD9" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">2. Klik tombol "Simpan Draft" pada halaman penyusunan laporan.
+w14:paraId="5B542EE7" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Status laporan tersimpan sebagai "Draft"
+w14:paraId="4798424A" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Laporan berhasil tersimpan di sistem dengan status "Draft" dan dapat diedit kembali oleh mahasiswa
+w14:paraId="3733D9B7" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Berhasil
+w14:paraId="767987F2" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">2
+w14:paraId="2F613B30" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Laporan Akhir Magang
+w14:paraId="4028660C" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Mengirim laporan untuk direview
+w14:paraId="67984B24" w14:textId="695D465A" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">1. Pastikan seluruh komponen data laporan telah terisi.
+w14:paraId="5887803D" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">2. Klik tombol "Kirim Laporan" pada halaman pelaporan mahasiswa.
+w14:paraId="614F8E08" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Status laporan berubah menjadi "Review" pada panel dosen
+w14:paraId="4408BBFF" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Laporan berhasil dikirim, status berubah menjadi "Review", dan data muncul di halaman peninjauan dosen
+w14:paraId="1E20FF7A" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Berhasil
+w14:paraId="586035A9" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">3
+w14:paraId="7DF7890E" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Laporan Akhir Magang
+w14:paraId="1C51D72C" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Dosen memberikan catatan revisi
+w14:paraId="624D6B5C" w14:textId="2DBF692D" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">1. Login sebagai dosen pembimbing.
+w14:paraId="4F1C9FC8" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">2. Isi form catatan umpan balik revisi dengan teks valid dan simpan.
+w14:paraId="182AA30F" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Status laporan berubah menjadi "Revisi" dan mahasiswa dapat melihat catatan dosen
+w14:paraId="36BE4367" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Catatan umpan balik berhasil disimpan, status laporan berubah menjadi "Revisi", dan catatan langsung tampil di akun mahasiswa
+w14:paraId="3C2C8ECD" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Berhasil
+w14:paraId="0456BA2C" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">4
+w14:paraId="0E30EDA6" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Laporan Akhir Magang
+w14:paraId="0619AD9C" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Dosen menyetujui laporan
+w14:paraId="22CB6AB4" w14:textId="695D70F7" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">1. Login sebagai dosen pembimbing.
+w14:paraId="70C94DBC" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">2. Klik tombol "Setujui" pada halaman review laporan akhir setelah data laporan selesai direview.
+w14:paraId="75B81709" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Status laporan menjadi "Approved" dan status magang berubah menjadi "Selesai"
+w14:paraId="3258AA48" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Sistem mengubah status laporan menjadi "Approved" dan secara otomatis mengubah status aktivitas magang mahasiswa menjadi "Selesai"
+w14:paraId="0E89694C" w14:textId="77777777" w:rsidR="00350087" w:rsidRPr="009E53EA" w:rsidRDefault="00350087" w:rsidP="000E24D0">Berhasil
+w14:paraId="03E89AD0" w14:textId="77777777" w:rsidR="000E24D0" w:rsidRPr="009E53EA" w:rsidRDefault="000E24D0" w:rsidP="00350087">
+w14:paraId="03C01D6F" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="00350087">
+w14:paraId="0CC3D759" w14:textId="2750B302" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="00B93A85">4.3.5 Modul Rekomendasi Dosen Wali
+w14:paraId="0A9302AD" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">No
+w14:paraId="44DA4CC3" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Modul yang Diuji
+w14:paraId="05BFAB3C" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Skenario Uji
+w14:paraId="2518E0D5" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Langkah-langkah Pengujian
+w14:paraId="46762285" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Hasil yang Diharapkan
+w14:paraId="3D172BAC" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Hasil Aktual
+w14:paraId="3CF339C7" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Status
+w14:paraId="4423F022" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">
+w14:paraId="31C02138" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">1
+w14:paraId="32C72528" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">
+w14:paraId="1CE931C5" w14:textId="0BC19BE2" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Dashboard Dosen Wali
+w14:paraId="39271BEC" w14:textId="3B6F3EB8" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Tampilkan mahasiswa perwalian
+w14:paraId="0223D135" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">1. Login dosen.
+w14:paraId="2C66FFE8" w14:textId="7B44314A" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">2. Buka halaman rekomendasi.
+w14:paraId="06743297" w14:textId="265FED65" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Hanya mahasiswa perwalian status pending.
+w14:paraId="32C56D06" w14:textId="231F3C7B" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Mahasiswa status_daftar Pending tampil.
+w14:paraId="5AF4526C" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Berhasil
+w14:paraId="37E444A7" w14:textId="05A022C2" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">2
+w14:paraId="4B2A8645" w14:textId="392AA6CA" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Dashboard Dosen Wali
+w14:paraId="396DE979" w14:textId="3620E2BC" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Merekomdasikan Mahasiswa
+w14:paraId="48A289B8" w14:textId="241D6051" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Klik tombol approve
+w14:paraId="1E8A2B9E" w14:textId="2A0EB7DE" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Status mahasiswa  Approve.
+w14:paraId="35B802B9" w14:textId="524EE345" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Status_daftar terupdate Approve.
+w14:paraId="6F4D4121" w14:textId="2542D8BD" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Berhasil
+w14:paraId="3049EB25" w14:textId="73A5BA5D" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">3
+w14:paraId="1ECEAB42" w14:textId="5F0B2D29" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Dashboard Dosen Wali
+w14:paraId="798CBB05" w14:textId="63B6373E" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="0088258C">Tolak rekomendasi Mahasiswa
+w14:paraId="26EFA9ED" w14:textId="1F5C1141" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Klik tombol Reject
+w14:paraId="5356AD5B" w14:textId="755DC7F4" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Status mahasiswa  Reject.
+w14:paraId="3F45681B" w14:textId="504E2CD2" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Status_daftar terupdate Rejected.
+w14:paraId="64B7AACC" w14:textId="33101069" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Berhasil
+w14:paraId="0626EAF5" w14:textId="350C9A50" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">4
+w14:paraId="1E106E5B" w14:textId="640D0AAE" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Dashboard Dosen Wali
+w14:paraId="7766591F" w14:textId="73572D5C" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Mencari Mahasiswa Berdasarkan NIM
+w14:paraId="2C75DFB7" w14:textId="5A9AE3F5" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Isi NIM di kolom Pencarian
+w14:paraId="41144739" w14:textId="1B1DF0A1" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Data mahasiswa cocok tampil.
+w14:paraId="41FD2415" w14:textId="257AEE2A" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Tabel terfilter instan.
+w14:paraId="275E1352" w14:textId="2C153494" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="0088258C">Berhasil
+w14:paraId="0A30CA0C" w14:textId="2DCE2EB2" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85">
+w14:paraId="59E23921" w14:textId="77777777" w:rsidR="00B93A85" w:rsidRPr="009E53EA" w:rsidRDefault="00B93A85" w:rsidP="00350087">
+w14:paraId="0B3BF543" w14:textId="71C5CBBE" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="009D712C">4.3.6 Hasil Pengujian Monitoring Mahasiswa (Dosen Pembimbing)
+w14:paraId="4CE4974D" w14:textId="3C769448" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">No
+w14:paraId="788D39DD" w14:textId="2C237542" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Modul yang Diuji
+w14:paraId="5CF1CBC5" w14:textId="67563C6A" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Skenario Uji
+w14:paraId="43232167" w14:textId="7258ADBC" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Langkah-langkah Pengujian
+w14:paraId="35C54848" w14:textId="4F0DEF78" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Hasil yang Diharapkan
+w14:paraId="6C72C027" w14:textId="64A8B744" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Hasil Aktual
+w14:paraId="09429BBF" w14:textId="378BA264" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Status
+w14:paraId="6942EF00" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">
+w14:paraId="47D7BD06" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">1
+w14:paraId="5347722F" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">
+w14:paraId="76F465C3" w14:textId="3A7B69D8" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Monitoring Mahasiswa
+w14:paraId="18F0F13D" w14:textId="009D9BBE" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Menampilkan daftar mahasiswa bimbingan
+w14:paraId="6E636D53" w14:textId="3B78D8D2" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">1. Login dosen. 2. Buka monitoring.
+w14:paraId="776603E2" w14:textId="3915BB2F" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Kartu profil mahasiswa bimbingan tampil.
+w14:paraId="1FAFE353" w14:textId="51545CA1" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Sistem berhasil memuat dan menampilkan mahasiswa bimbingan dalam bentuk kartu
+w14:paraId="39B0A21F" w14:textId="6586BA9A" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berhasil
+w14:paraId="0105D839" w14:textId="530B43B6" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">2
+w14:paraId="5844AAB8" w14:textId="6B27242A" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Monitoring Mahasiswa
+w14:paraId="5D562E88" w14:textId="3B0197D4" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Diagram proses Logbook
+w14:paraId="4E440CF8" w14:textId="6A8E6AD9" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Amati progres bar
+w14:paraId="23B25FB6" w14:textId="5288BAA9" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Presentasi berubah warna sesuai tahap
+w14:paraId="0D0E85E3" w14:textId="28FF1DE8" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Bar berubah warna amber/biru/ungu
+w14:paraId="013314DC" w14:textId="0EAE9AB8" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Berhasil
+w14:paraId="42C4C5D2" w14:textId="44979B0A" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">3
+w14:paraId="11E5F0D8" w14:textId="27E4DF5A" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Monitoring Mahasiswa
+w14:paraId="3D5542FE" w14:textId="2C501518" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Mencari mahasiswa berdasarkan NIM
+w14:paraId="0AF7F0C7" w14:textId="09A15318" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Ketik NIM di kolom pencarian
+w14:paraId="64DCC859" w14:textId="32C747F3" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Data yang cocok tampil
+w14:paraId="04FEF82B" w14:textId="756DDACC" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Sistem berhasil menampilkan data mahasiswa yang cocok berdasarkan nim yang di cari .
+w14:paraId="44834A6F" w14:textId="42102078" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Berhasil
+w14:paraId="3561E571" w14:textId="3CAE91C8" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">4
+w14:paraId="07ABE0DE" w14:textId="1CFE92AB" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Monitoring Mahasiswa
+w14:paraId="67DE5CB1" w14:textId="6D4D7A5E" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Akses logbook dari monitoring
+w14:paraId="5896ED68" w14:textId="1F39D85C" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Klik buka logbook
+w14:paraId="311E9955" w14:textId="2D3DA2E5" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Redirect ke halaman review logbook mahasiswa.
+w14:paraId="7DED1097" w14:textId="5302AF5C" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Sistem berhasil redirect ke halaman review logbook
+w14:paraId="0AA27256" w14:textId="6B6E68B1" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">Berhasil
+w14:paraId="75EC454B" w14:textId="54FC97A7" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">
+w14:paraId="042B5785" w14:textId="77777777" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">
+w14:paraId="0DC933CE" w14:textId="77777777" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">
+w14:paraId="7AD518EF" w14:textId="77777777" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">
+w14:paraId="5C2A8461" w14:textId="77777777" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">
+w14:paraId="66256B4E" w14:textId="77777777" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">
+w14:paraId="44928905" w14:textId="77777777" w:rsidR="009D712C" w:rsidRPr="009E53EA" w:rsidRDefault="009D712C" w:rsidP="000E24D0">
+w14:paraId="16AEF392" w14:textId="694A0528" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="00FA0CBD">4.3.7 Modul Review Logbook (Dosen Pembimbing)
+w14:paraId="74674911" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">No
+w14:paraId="396B101B" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Modul yang Diuji
+w14:paraId="5B55AA42" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Skenario Uji
+w14:paraId="007186A3" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Langkah-langkah Pengujian
+w14:paraId="1E46DAD5" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Hasil yang Diharapkan
+w14:paraId="1F45D906" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Hasil Aktual
+w14:paraId="55A390A2" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Status
+w14:paraId="6CED0C28" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="5CF8490D" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">1
+w14:paraId="3C174E91" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="652DD828" w14:textId="7E16EA7C" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Review Logbook
+w14:paraId="2ACA5B50" w14:textId="69C14E9F" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Menampilkan daftar logbook mahasiswa
+w14:paraId="5F40E5E9" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">1. Login dosen.
+w14:paraId="301DCB4E" w14:textId="6DA7C74F" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">2. Review logbook
+w14:paraId="0A7C37C4" w14:textId="4E2857D4" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="006773E3">Panel kiri Daftar Bimbingan.
+w14:paraId="020D2E81" w14:textId="7420D744" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="006773E3">
+w14:paraId="4EBDC30F" w14:textId="144F8C58" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Sistem berhasil menampilkan Mahasiswa bimbingan muncul di panel kiri.
+w14:paraId="60F0F921" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Berhasil
+w14:paraId="692ADFF3" w14:textId="2BE90E32" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">2
+w14:paraId="2CDE53B5" w14:textId="20A9D3FF" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Review Logbook
+w14:paraId="683E05D7" w14:textId="6F4469BA" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Lihat detail logbook
+w14:paraId="2E730710" w14:textId="00F5D8D2" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Klik tombol lihat detail
+w14:paraId="0DE2B141" w14:textId="4EFDC803" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="006773E3">Dialog detail deskripsi kegiatan.
+w14:paraId="4CB6C62E" w14:textId="1472895E" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Modal dengan uraian dan timestamp.
+w14:paraId="1ADDBC10" w14:textId="167532FA" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Berhasil
+w14:paraId="5C312538" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="646DCB94" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="6327DEBB" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="0B989057" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="76E61C5D" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="74DB15EA" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="13E4B536" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="624EBBE0" w14:textId="0E0E2975" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="00FA0CBD">
+w14:paraId="59948E30" w14:textId="2E642C60" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="003C16C9">4.3.8 Modul Review Laporan (Dosen Pembimbing)
+w14:paraId="331FA613" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">No
+w14:paraId="6032EA30" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Modul yang Diuji
+w14:paraId="1C4F11A0" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Skenario Uji
+w14:paraId="2063E6F7" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Langkah-langkah Pengujian
+w14:paraId="33A06248" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Hasil yang Diharapkan
+w14:paraId="2AE721C0" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Hasil Aktual
+w14:paraId="00068212" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Status
+w14:paraId="06EB8D25" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="1592686E" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">1
+w14:paraId="2CBCF6C8" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">
+w14:paraId="68542E7D" w14:textId="683D8D63" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Review Laporan
+w14:paraId="00886541" w14:textId="7B7AF20F" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Menampilkan daftar bimbingan  Laporan  mahasiswa
+w14:paraId="0BA11B0D" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">1. Login dosen.
+w14:paraId="3E976A2F" w14:textId="7463A031" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">2. Review laporan
+w14:paraId="6B9DA72C" w14:textId="169CEC7D" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Laporan status review tampil.
+w14:paraId="1A233DF2" w14:textId="62BD1BE1" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Sistem berhasil menampilkan Laporan Mahasiswa
+w14:paraId="550C233C" w14:textId="77777777" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Berhasil
+w14:paraId="12D5675E" w14:textId="725EE860" w:rsidR="003C16C9" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">2
+w14:paraId="1FEB3A9F" w14:textId="429EE566" w:rsidR="003C16C9" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">Review Laporan
+w14:paraId="1E34A574" w14:textId="47407F4F" w:rsidR="003C16C9" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">Baca konten per bab
+w14:paraId="64BC15C0" w14:textId="390B4215" w:rsidR="003C16C9" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="003C16C9">1. Klik review. 2. Buka tab BAB I-IV.
+w14:paraId="1E9B52F3" w14:textId="622C42B0" w:rsidR="003C16C9" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">Konten tampil mode baca.
+w14:paraId="47C9F2D8" w14:textId="54709BF1" w:rsidR="003C16C9" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">Setiap tab menampilkan konten BAB.
+w14:paraId="297615A6" w14:textId="22B4412B" w:rsidR="003C16C9" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">Berhasil
+w14:paraId="63EA5799" w14:textId="7AC5ECE8" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">3
+w14:paraId="302F875D" w14:textId="7872DD89" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Review Laporan
+w14:paraId="2A68BB26" w14:textId="48BB410D" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Memberikan catatan revisi
+w14:paraId="0EE07BC5" w14:textId="511E67B7" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="006773E3">1. Isi catatan. 2. Klik "Berikan Revisi".
+w14:paraId="54F8FBAC" w14:textId="7480D150" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Status revisi, catatan tersimpan.
+w14:paraId="6EDBDDC8" w14:textId="09343761" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Sistem menampilkan status revisi
+w14:paraId="03D83BDE" w14:textId="4DA7C6EE" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Berhasil
+w14:paraId="49A2FE55" w14:textId="28DB21E6" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="003C16C9" w:rsidP="0088258C">4
+w14:paraId="0D03D90D" w14:textId="236EC870" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Review Laporan
+w14:paraId="67AA76DA" w14:textId="08B2271F" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Approve laporan mahasiswa tanpa catatan
+w14:paraId="119E6CB4" w14:textId="3B91CB79" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="006773E3">Klik setuju tanpa catatan
+w14:paraId="05BCF143" w14:textId="351B1848" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Status approve magang selesai
+w14:paraId="3C804FD6" w14:textId="2386BD1A" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Sistem menampilkan status approve
+w14:paraId="21839CEF" w14:textId="3E39F930" w:rsidR="006773E3" w:rsidRPr="009E53EA" w:rsidRDefault="006773E3" w:rsidP="0088258C">Berhasil
+w14:paraId="7A6B9A04" w14:textId="6B1AB757" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009E53EA">4.3.9 Hasil Pengujian Modul Buka/Tutup Pendaftaran (Operator)
+w14:paraId="537A7498" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">No
+w14:paraId="1BD7D4DF" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Modul yang Diuji
+w14:paraId="420E26D5" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Skenario Uji
+w14:paraId="33F49F95" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Langkah-langkah Pengujian
+w14:paraId="4A9AE7AD" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Hasil yang Diharapkan
+w14:paraId="33B6BBCE" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Hasil Aktual
+w14:paraId="044F8D28" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Status
+w14:paraId="04DE7F6A" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">
+w14:paraId="66CAC246" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">1
+w14:paraId="0B8BDD30" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">
+w14:paraId="0FB1212E" w14:textId="0C25E4B8" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Buka/Tutup Pendaftaran
+w14:paraId="195291AB" w14:textId="14B6707F" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Buka periode pendaftaran
+w14:paraId="2FB2AEB4" w14:textId="33BEA16E" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">1. Login operator. 2. Klik toggle ke "Buka".
+w14:paraId="74E4EC01" w14:textId="3CFAF2CC" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Status periode = dibuka.
+w14:paraId="0D3EE08C" w14:textId="29B92EE1" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Indikator hijau, nilai setting terupdate.
+w14:paraId="403909D7" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="0088258C">Berhasil
+w14:paraId="2D851539" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">
+w14:paraId="658BF523" w14:textId="15CFC2D1" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">2
+w14:paraId="3C1D164C" w14:textId="77777777" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">
+w14:paraId="42ED33F5" w14:textId="454819DB" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Buka/Tutup Pendaftaran
+w14:paraId="20EF0962" w14:textId="5EF91E6C" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Tutup periode pendaftaran
+w14:paraId="0D47C41B" w14:textId="109AEC90" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317"> Klik toggle ke "Tutup".
+w14:paraId="153AE893" w14:textId="3B07ECC7" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Status periode = ditutup.
+w14:paraId="0FF8FBB0" w14:textId="3A136549" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Indikator merah, nilai setting terupdate.
+w14:paraId="5DDC4FD3" w14:textId="152176F1" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Berhasil
+w14:paraId="37881E1A" w14:textId="08B2D3E6" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">3
+w14:paraId="7BF78E34" w14:textId="5EA911FF" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Buka/Tutup Pendaftaran
+w14:paraId="63175B06" w14:textId="1D2C66DF" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Mahasiswa akses saat ditutup
+w14:paraId="120BD205" w14:textId="4B734810" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">1. Operator tutup. 2. Login mahasiswa. 3. Buka pendaftaran.
+w14:paraId="6A84BF50" w14:textId="20A0707F" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Form diblokir.
+w14:paraId="01AC546E" w14:textId="46087414" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Tombol disabled, banner periode ditutup.
+w14:paraId="4B2FB6CF" w14:textId="4D5A0918" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Berhasil
+w14:paraId="5738E583" w14:textId="156DE8D7" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">4
+w14:paraId="3CC9CA07" w14:textId="348A3827" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Buka/Tutup Pendaftaran
+w14:paraId="2458368D" w14:textId="63385BDF" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Mahasiswa akses saat dibuka
+w14:paraId="6731880D" w14:textId="04295B59" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">1. Operator buka. 2. Login mahasiswa. 3. Buka pendaftaran.
+w14:paraId="723D49D7" w14:textId="41A216EF" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Form dapat diakses.
+w14:paraId="3446A542" w14:textId="0256B21C" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Input aktif, tombol submit dapat diklik.
+w14:paraId="153E9B0A" w14:textId="52FB8322" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">Berhasil
+w14:paraId="67932E04" w14:textId="14594731" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317">
+w14:paraId="400CE051" w14:textId="7EF0D5F0" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="009F1317">4.3.10 Hasil Pengujian Modul Plotting Dosen Pembimbing (Operator)
+w14:paraId="2CF77590" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">No
+w14:paraId="2C65E291" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Modul yang Diuji
+w14:paraId="5BB19291" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Skenario Uji
+w14:paraId="46509FDD" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Langkah-langkah Pengujian
+w14:paraId="1E11BD4D" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Hasil yang Diharapkan
+w14:paraId="2997E88C" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Hasil Aktual
+w14:paraId="43C117D4" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Status
+w14:paraId="03505987" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">
+w14:paraId="3C8745EB" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">1
+w14:paraId="2C9212DB" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">
+w14:paraId="7AEA14CD" w14:textId="3E0D3087" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Plotting Dosen Pembimbing
+w14:paraId="012CF3FD" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Buka periode pendaftaran
+w14:paraId="3498D999" w14:textId="5082DDA7" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">1. Login operator. 2. Klik plotting dosen pembimbing".
+w14:paraId="66E08E42" w14:textId="3E61E8E4" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Dosen terplotting, kode tergenerate.
+w14:paraId="4FBE70DA" w14:textId="33698A72" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Kode SIDUL-TAHUN-XXX, status Aktif.
+w14:paraId="57FC2885" w14:textId="77777777" w:rsidR="00851B4D" w:rsidRPr="009E53EA" w:rsidRDefault="00851B4D" w:rsidP="0088258C">Berhasil
+w14:paraId="1D698335" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="73DB56A0" w14:textId="39173A23" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">2
+w14:paraId="01173805" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="72CCD927" w14:textId="4097382E" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Plotting Dosen Pembimbing
+w14:paraId="37B395FF" w14:textId="5061A565" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Tampilkan sudah diassign
+w14:paraId="7F8E1B25" w14:textId="6AD60493" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">1. Buka tab "Sudah Diassign".
+w14:paraId="09B44D89" w14:textId="07804B18" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Tabel dengan dosen tampil.
+w14:paraId="650F343E" w14:textId="6E334E5F" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Magang Aktif lengkap nama dosen.
+w14:paraId="13542690" w14:textId="415293B0" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Berhasil
+w14:paraId="00FB2F5E" w14:textId="5D472F4C" w:rsidR="009F1317" w:rsidRPr="009E53EA" w:rsidRDefault="009F1317" w:rsidP="009F1317">
+w14:paraId="12CED9A4" w14:textId="5B0A91D1" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="009E53EA">4.3.11 Hasil Pengujian Modul Manajemen Users (Admin)
+w14:paraId="09F1B420" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">No
+w14:paraId="1897E461" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Modul yang Diuji
+w14:paraId="16210BEC" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Skenario Uji
+w14:paraId="0CD3166F" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Langkah-langkah Pengujian
+w14:paraId="19104E8F" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Hasil yang Diharapkan
+w14:paraId="21A27A33" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Hasil Aktual
+w14:paraId="7136BD7B" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="0088258C">Status
+w14:paraId="70855061" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="45698A15" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">1
+w14:paraId="7CE31062" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="2DF867C1" w14:textId="2EB2771B" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Manajemen User
+w14:paraId="2DB11D2C" w14:textId="57E4E799" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Tampilkan daftar user
+w14:paraId="7EB8F473" w14:textId="231851D2" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">1. Login admin. 2. Buka manajemen users.
+w14:paraId="1886ED52" w14:textId="7A56DF0B" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Akun dosen dan operator tampil.
+w14:paraId="0B4B1AEA" w14:textId="2CE5E6A8" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Daftar user dengan username, role, status.
+w14:paraId="5B54385B" w14:textId="300A1984" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Berhasil
+w14:paraId="3E11A74F" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="464C467C" w14:textId="5BE4739A" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">2
+w14:paraId="28D219AE" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="1F2FE847" w14:textId="7738D324" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Manajemen User
+w14:paraId="0BEEAAE3" w14:textId="28A49455" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Tambah Staf baru
+w14:paraId="5E1E77B1" w14:textId="7B760D80" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">1. Klik "Tambah Staf". 2. Isi form. 3. Submit.
+w14:paraId="51E2A81A" w14:textId="5E5D8900" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Staf  baru tersimpan.
+w14:paraId="7F57CF60" w14:textId="55B4E4A9" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Akun dapat login dengan kredensial baru.
+w14:paraId="66BB7F39" w14:textId="17B51970" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Berhasil
+w14:paraId="76E7B5E1" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="7E4A92F4" w14:textId="45B3F240" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">3
+w14:paraId="0DF4A99B" w14:textId="6206E58A" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Manajemen User
+w14:paraId="7E1B68A9" w14:textId="03528305" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Field kosong saat tambah
+w14:paraId="7C8B14ED" w14:textId="0F79038D" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">1. Kosongkan field. 2. Submit.
+w14:paraId="7EAEB9E9" w14:textId="3089FC90" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Validasi error.
+w14:paraId="101F1C8E" w14:textId="38AADD9B" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Pesan field wajib diisi.
+w14:paraId="14971F46" w14:textId="0E044D1E" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Berhasil
+w14:paraId="44D1D5EB" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="0418B9AC" w14:textId="07C8707B" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">4
+w14:paraId="43979D34" w14:textId="7B88597E" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Manajemen User
+w14:paraId="2A76A3B1" w14:textId="750B1F98" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Hapus user
+w14:paraId="247281F0" w14:textId="46C7EEFF" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">1. Klik hapus. 2. Konfirmasi.
+w14:paraId="57EF9659" w14:textId="7F289250" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">User terhapus.
+w14:paraId="1D67BD16" w14:textId="5281F38F" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Akun tidak dapat login lagi.
+w14:paraId="2FCDA5EC" w14:textId="5E698F63" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">Berhasil
+w14:paraId="2EC6A9C0" w14:textId="77777777" w:rsidR="00D07CD9" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">
+w14:paraId="68BF7C56" w14:textId="5B5B9A4E" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00D07CD9" w:rsidP="00D07CD9">4.3.12 Hasil Pengujian Fitur Generate PDF
+w14:paraId="19E4BB14" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">No
+w14:paraId="76E99CA5" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Modul yang Diuji
+w14:paraId="7B2B507C" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Skenario Uji
+w14:paraId="47BBB0A3" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Langkah-langkah Pengujian
+w14:paraId="06744658" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Hasil yang Diharapkan
+w14:paraId="35BB4B60" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Hasil Aktual
+w14:paraId="6D477E8F" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Status
+w14:paraId="28478268" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">1
+w14:paraId="5A6285F4" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Cetak Dokumen PDF
+w14:paraId="10B9C7FF" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Cetak logbook dengan entri tersedia
+w14:paraId="4EC6A330" w14:textId="6151DA1D" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">1. Akses halaman riwayat logbook mahasiswa.
+w14:paraId="0A3159BE" w14:textId="7F3DF787" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">2. Pastikan terdapat entri logbook dalam sistem.
+w14:paraId="224C7F41" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">3. Klik tombol "Cetak PDF".
+w14:paraId="6BBAA10D" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berkas PDF logbook berhasil diunduh
+w14:paraId="71C151A7" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">PDF diunduh dengan konten lengkap
+w14:paraId="20665D18" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berhasil
+w14:paraId="44974B13" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">2
+w14:paraId="7B27E334" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Cetak Dokumen PDF
+w14:paraId="444430C9" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Cetak laporan akhir yang sudah disetujui
+w14:paraId="1A969CFA" w14:textId="5681EE53" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">1. Cari data laporan akhir yang sudah berstatus Approved.
+w14:paraId="1F10E73B" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">2. Klik opsi atau tombol untuk mencetak laporan akhir tersebut.
+w14:paraId="6683960D" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berkas PDF laporan akhir berhasil diunduh
+w14:paraId="612065D5" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">PDF diunduh dengan konten lengkap
+w14:paraId="32EF98E9" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berhasil
+w14:paraId="5B413A38" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">3
+w14:paraId="70635892" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Cetak Dokumen PDF
+w14:paraId="2E49DE43" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Cetak laporan yang belum disetujui dosen
+w14:paraId="5AE85AF8" w14:textId="1E096F6C" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">1. Akses data laporan akhir yang masih berstatus Review.
+w14:paraId="1EF6BB2E" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">2. Coba lakukan eksekusi tombol atau tautan cetak dokumen.
+w14:paraId="7A779A71" w14:textId="35FFB32C" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berkas PDF laporan akhir berhasil diunduh
+w14:paraId="596CCCDF" w14:textId="56E26D3F" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">PDF diunduh dengan konten lengkap
+w14:paraId="3DFC6F8A" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berhasil
+w14:paraId="470C9C9C" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">4
+w14:paraId="49E0D79A" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Cetak Dokumen PDF
+w14:paraId="51BBFAFF" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Generate surat pengantar magang
+w14:paraId="0D4EBBD0" w14:textId="1F840B24" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">1. Pilih data record mahasiswa yang telah berstatus Aktif.
+w14:paraId="2087CA38" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">2. Klik tombol cetak untuk memproses pembuatan surat pengantar magang.
+w14:paraId="14658DE7" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Surat pengantar dengan nomor otomatis berhasil dibangkitkan
+w14:paraId="17019C4E" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Surat berhasil dibangkitkan
+w14:paraId="33D61775" w14:textId="77777777" w:rsidR="0059793D" w:rsidRPr="009E53EA" w:rsidRDefault="0059793D" w:rsidP="000E24D0">Berhasil
+w14:paraId="3430CB98" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">
+w14:paraId="2354D877" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="000E24D0" w:rsidP="00FF4FA5">4.3.14 Rekapitulasi Akhir Hasil Pengujian
+w14:paraId="0901207B" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Setelah melampaui seluruh proses pengujian fungsionalitas menggunakan skenario pengujian spesifik yang terbagi ke dalam tiga belas rumpun modul utama aplikasi, diperoleh ringkasan data statistik rekapitulasi akhir kelulusan kasus uji (test case) sebagai berikut:
+w14:paraId="2800E755" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">No
+w14:paraId="45B76D43" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Rumpun Modul Sistem
+w14:paraId="2F47D37E" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Jumlah
+w14:paraId="28E784D3" w14:textId="100D3964" w:rsidR="00135CAE" w:rsidRPr="009E53EA" w:rsidRDefault="00135CAE" w:rsidP="00FF4FA5">pengujian
+w14:paraId="54DF5231" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Berhasil
+w14:paraId="1660FCD7" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Gagal
+w14:paraId="21D0922F" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Persentase
+w14:paraId="579B490C" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">1
+w14:paraId="7B4E317D" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Login Multi-Role
+w14:paraId="01CD8A57" w14:textId="34A0EC17" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">10
+w14:paraId="4540DDE2" w14:textId="20B0F708" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">10
+w14:paraId="648CFC5F" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="0FBAAE1E" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="74765B5A" w14:textId="6BA14072" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">2
+w14:paraId="7B9B9410" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Form Pendaftaran Magang
+w14:paraId="1A8C1A22" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">7
+w14:paraId="0BD3489F" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">7
+w14:paraId="4395AD11" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="601D2C95" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="04A339EA" w14:textId="581632FA" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">3
+w14:paraId="04F184CD" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Logbook Harian
+w14:paraId="40806831" w14:textId="6F9CC0E7" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="1929F0BA" w14:textId="48FEE3CB" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="7904C9A3" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="47B869A7" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="60CBBC6B" w14:textId="50174662" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="03083BC0" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Laporan Akhir Magang
+w14:paraId="6DE8F749" w14:textId="436B7A29" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="1D6390C1" w14:textId="119F8951" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="0FB4EF71" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="2B5285CA" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="718732C1" w14:textId="65B3B748" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">5
+w14:paraId="6AB3168A" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Rekomendasi Dosen Wali
+w14:paraId="737492DB" w14:textId="7912F692" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="5A32DCE2" w14:textId="39CC2BC2" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="6C50B7B8" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="6FA50414" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="46302CA7" w14:textId="632F295D" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">6
+w14:paraId="412DEA85" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Monitoring Mahasiswa (Dosen)
+w14:paraId="198AC0B8" w14:textId="651D8BF3" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="7B10027F" w14:textId="2CCFE21A" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="303CB00F" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="233AF4E9" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="4A6FF7B7" w14:textId="37862757" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">7
+w14:paraId="447F02E5" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Review Logbook (Dosen)
+w14:paraId="579ED5BE" w14:textId="2F582835" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">2
+w14:paraId="037ACFF7" w14:textId="477CAC0C" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">2
+w14:paraId="1988E676" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="33FE0B65" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="2D9A8C80" w14:textId="526D0063" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">8
+w14:paraId="1D0CC685" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Review Laporan (Dosen)
+w14:paraId="0E28A2C1" w14:textId="1A0F858A" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="47F86FB3" w14:textId="15240D25" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="20E1F89A" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="180AE5DE" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="168C4745" w14:textId="62C28091" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">9
+w14:paraId="1E96EA3A" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Buka/Tutup Pendaftaran
+w14:paraId="1EA4637A" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="2388FFD6" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="59CB7747" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="6DABC405" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="1DA4FD9A" w14:textId="39254F31" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">10
+w14:paraId="5DA1C566" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Plotting Dosen Pembimbing
+w14:paraId="221ECCB2" w14:textId="0EA6F2A9" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">2
+w14:paraId="129F9F0F" w14:textId="6D5B4446" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">2
+w14:paraId="10A5C67D" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="42BC5A30" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="06C32E0B" w14:textId="4CD4E870" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">11
+w14:paraId="08CA1CBD" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Manajemen Users (Admin)
+w14:paraId="4CBD2FBD" w14:textId="69208548" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="10DD3E87" w14:textId="48185770" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="12B484DB" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="325987CC" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="4D73CED1" w14:textId="75858D29" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">12
+w14:paraId="6ED20C54" w14:textId="6F7F8768" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Generate pdf
+w14:paraId="0B2FDBA5" w14:textId="0A7A948D" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="4609F66C" w14:textId="1BA18AC4" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">4
+w14:paraId="073F70E5" w14:textId="1F5534C2" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="27DAA4A2" w14:textId="40772A32" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="4356B667" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">-
+w14:paraId="70A058B8" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Total Keseluruhan
+w14:paraId="527879BD" w14:textId="06CB427C" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00135CAE" w:rsidP="00FF4FA5">53
+w14:paraId="72E31AE7" w14:textId="5921CE22" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00135CAE" w:rsidP="00FF4FA5">53
+w14:paraId="0D8C088E" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">0
+w14:paraId="5030F425" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">100%
+w14:paraId="4EFF6587" w14:textId="0B47BA98" w:rsidR="000E24D0" w:rsidRPr="009E53EA" w:rsidRDefault="000E24D0">
+w14:paraId="1DB0C0F3" w14:textId="77777777" w:rsidR="00B74ED7" w:rsidRPr="009E53EA" w:rsidRDefault="00B74ED7" w:rsidP="00FA0CBD">
+w14:paraId="58201562" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FA0CBD">
+w14:paraId="61E128A4" w14:textId="7FDA587B" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Merujuk pada data kuantitatif yang disajikan pada Tabel 4.2 di atas, tercatat bahwa dari total 54 kasus uji yang telah dieksekusi secara riil pada sistem, seluruh skenario uji (100%) menunjukkan hasil aktual yang sepenuhnya selaras dan sinkron dengan hasil yang diharapkan. Tidak ditemukan adanya error kritis, malfungsi logika transaksional data, maupun kebocoran celah otorisasi rute.
+w14:paraId="15E105D4" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FF4FA5">Dengan demikian, dari perspektif evaluasi Black Box Testing, Sistem Informasi Magang SIDUL dinyatakan telah Lulus Uji Kelayakan Fungsional dengan Persentase Kesuksesan 100%, sehingga sistem ini dinilai siap dan layak untuk diimplementasikan ke dalam lingkungan produksi nyata.
+w14:paraId="446FA015" w14:textId="77777777" w:rsidR="00FF4FA5" w:rsidRPr="009E53EA" w:rsidRDefault="00FF4FA5" w:rsidP="00FA0CBD">
+w14:paraId="3555B2B2" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.4Pembahasan
+w14:paraId="33B52DE2" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.4.1Kesesuaian Sistem dengan Tujuan Penelitian
+w14:paraId="48ADFB10" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Tujuan utama penelitian ini adalah merancang dan membangun sistem informasi monitoring magang berbasis web yang mampu mendigitalisasi dan mengotomatisasi seluruh alur pengelolaan magang di Program Studi D3 Teknik Informatika Universitas Amikom Yogyakarta. Berdasarkan hasil implementasi dan pengujian yang telah dilaksanakan, sistem SIDUL terbukti telah berhasil memenuhi tujuan tersebut secara menyeluruh.
+w14:paraId="558564FC" w14:textId="487BCA3A" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Seluruh 12 kebutuhan fungsional yang diidentifikasi pada tahap Initial Requirements telah berhasil diimplementasikan dan diverifikasi melalui pengujian Black Box Testing dengan hasil yang sesuai ekspektasi. Proses pengelolaan magang yang sebelumnya bergantung pada Google Form, spreadsheet, dan pengiriman dokumen fisik telah berhasil diintegrasikan ke dalam satu platform digital terpadu yang dapat diakses oleh seluruh pemangku kepentingan melalui peramban web standar. Alur kerja yang sebelumnya memerlukan komunikasi manual antara mahasiswa, dosen, dan operator kini dapat dikelola sepenuhnya melalui antarmuka sistem yang terstruktur dan terotomasi.
+w14:paraId="797FFF05" w14:textId="47B69899" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Implementasi mekanisme RBAC yang ketat memastikan setiap kelompok pengguna hanya dapat mengakses informasi dan menjalankan fungsi yang sesuai dengan perannya, menjawab kebutuhan keamanan sistem yang teridentifikasi pada tahap analisis kebutuhan. Fitur monitoring real-time melalui dashboard yang terintegrasi memungkinkan dosen pembimbing dan operator untuk memantau perkembangan setiap mahasiswa tanpa perlu komunikasi manual, secara signifikan meningkatkan efektivitas pengawasan program magang.
+w14:paraId="3E675D1A" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.4.2Evaluasi Penyelesaian Permasalahan
+w14:paraId="1E6B72B5" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Berdasarkan hasil identifikasi masalah yang dilaksanakan melalui wawancara dengan operator akademik dan observasi terhadap proses magang yang berjalan, terdapat beberapa permasalahan utama yang menjadi landasan pengembangan sistem. Pertama, ketergantungan pada Google Form dan spreadsheet menyebabkan data tidak terorganisasi dalam basis data terpusat, sehingga sulit untuk dilakukan monitoring yang efektif. Sistem SIDUL menyelesaikan permasalahan ini dengan mengimplementasikan basis data relasional MySQL yang terstruktur dengan delapan tabel yang saling berelasi, memastikan seluruh data tersimpan secara terpusat dan dapat diakses secara konsisten oleh semua pihak yang berwenang.
+w14:paraId="1B1C4F71" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Kedua, proses finalisasi laporan dan komunikasi antara mahasiswa dan dosen pembimbing yang masih dilakukan secara manual menyebabkan keterlambatan dalam penyelesaian program magang. Sistem SIDUL mengatasi permasalahan ini melalui modul laporan akhir yang terintegrasi dengan alur review dan persetujuan dosen secara digital, memungkinkan seluruh proses evaluasi laporan berlangsung dalam satu platform tanpa memerlukan pengiriman berkas fisik atau komunikasi melalui saluran di luar sistem.
+w14:paraId="282052AE" w14:textId="6F119DB2" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Ketiga, tidak adanya mekanisme monitoring yang memadai menyebabkan dosen pembimbing kesulitan dalam memantau perkembangan mahasiswa bimbingannya selama periode magang.Dasboard monitoring yang terintegrasi dalam SIDUL memberikan akses real-time kepada dosen pembimbing terhadap seluruh data aktivitas mahasiswa, termasuk entri logbook harian, status laporan, dan indikator progres keseluruhan, sehingga fungsi pembimbingan dapat dilaksanakan secara lebih efektif dan berbasis data.
+w14:paraId="7B10B2A0" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.4.3Kelebihan Sistem
+w14:paraId="4AA1A706" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Sistem SIDUL memiliki sejumlah keunggulan yang membedakannya dari pendekatan pengelolaan magang konvensional. Pertama, integrasi multi-peran dalam satu platform terpadu memungkinkan seluruh pemangku kepentingan — mahasiswa, dosen wali, dosen pembimbing, operator, dan administrator — berinteraksi dan berkolaborasi dalam satu ekosistem digital yang konsisten, menghilangkan fragmentasi data yang terjadi ketika pengelolaan dilakukan melalui berbagai alat yang terpisah.
+w14:paraId="3691779C" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Kedua, mekanisme validasi berlapis pada modul pendaftaran magang memastikan integritas data dan kepatuhan terhadap alur proses bisnis yang telah ditetapkan. Pembatasan akses berdasarkan status rekomendasi, periode aktif, dan deteksi duplikasi mencegah terjadinya anomali data yang kerap muncul pada pengelolaan manual. Ketiga, fitur pembangkitan dokumen PDF secara otomatis langsung dari sistem menghilangkan kebutuhan pembuatan dokumen secara manual yang rentan terhadap kesalahan format dan inkonsistensi. Keempat, antarmuka yang responsif memastikan sistem dapat diakses dengan nyaman dari perangkat mobile, yang sangat relevan mengingat mahasiswa sering kali mengisi logbook dari lokasi instansi magang menggunakan perangkat ponsel.
+w14:paraId="05A65AC4" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">4.4.4Keterbatasan Sistem
+w14:paraId="59F4C26E" w14:textId="46E91766" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Meskipun sistem SIDUL telah berhasil memenuhi seluruh kebutuhan fungsional yang ditetapkan, terdapat beberapa keterbatasan yang diidentifikasi selama proses implementasi dan evaluasi. Pertama, sistem belum menyediakan mekanisme notifikasi secara real-time berbasis push notification atau email otomatis. Ketika terdapat perubahan status penting seperti persetujuan rekomendasi oleh dosen wali atau persetujuan laporan oleh dosen pembimbing, pengguna harus secara aktif memeriksa dasboard untuk mengetahui pembaruan tersebut. Implementasi sistem notifikasi otomatis dapat menjadi prioritas pengembangan pada iterasi berikutnya.
+w14:paraId="1DD3DCC4" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">Kedua, pengaturan periode magang saat ini bersifat global, di mana satu periode berlaku untuk seluruh mahasiswa program studi tanpa pembedaan berdasarkan angkatan atau kelompok tertentu. Fleksibilitas pengaturan periode per kelompok mahasiswa dapat meningkatkan kemampuan adaptasi sistem terhadap kebutuhan administratif yang lebih beragam. Ketiga, fitur logbook harian saat ini belum mendukung pengunggahan berkas lampiran seperti foto dokumentasi kegiatan, yang dapat meningkatkan kelengkapan dan kualitas dokumentasi kegiatan magang. Ketiga keterbatasan ini dapat menjadi arah pengembangan lanjutan sistem SIDUL untuk meningkatkan fungsionalitas dan kemampuan adaptasinya terhadap kebutuhan pengelolaan magang yang terus berkembang.
+w14:paraId="63C906C5" w14:textId="77777777" w:rsidR="00FA0CBD" w:rsidRPr="009E53EA" w:rsidRDefault="00FA0CBD" w:rsidP="00FA0CBD">
+w14:paraId="71094FD1" w14:textId="77777777" w:rsidR="00D95E0B" w:rsidRPr="009E53EA" w:rsidRDefault="00D95E0B"/>

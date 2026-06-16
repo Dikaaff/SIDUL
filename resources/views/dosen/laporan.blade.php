@@ -125,11 +125,11 @@
             @csrf
             <div class="mb-6">
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Catatan Pembimbing / Revisi</label>
-                <textarea name="feedback" rows="3" class="textarea textarea-bordered w-full rounded-2xl bg-white border-gray-200 text-sm" placeholder="Tulis catatan..." required></textarea>
+                <textarea name="feedback" rows="3" class="textarea textarea-bordered w-full rounded-2xl bg-white border-gray-200 text-sm" placeholder="Tulis catatan..."></textarea>
             </div>
             <div class="flex gap-3">
-                <button type="submit" name="status" value="revisi" class="btn flex-1 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase text-[10px] h-12 shadow-lg shadow-red-100">Berikan Revisi</button>
-                <button type="submit" name="status" value="approved" class="btn flex-1 bg-green-500 hover:bg-green-600 text-white border-none rounded-2xl font-black uppercase text-[10px] h-12 shadow-lg shadow-green-100">Setujui Laporan</button>
+                <button type="submit" name="status" value="revisi" onclick="toggleFeedbackRequired('revisi')" class="btn flex-1 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl font-black uppercase text-[10px] h-12 shadow-lg shadow-red-100">Berikan Revisi</button>
+                <button type="submit" name="status" value="approved" onclick="toggleFeedbackRequired('approved')" class="btn flex-1 bg-green-500 hover:bg-green-600 text-white border-none rounded-2xl font-black uppercase text-[10px] h-12 shadow-lg shadow-green-100">Setujui Laporan</button>
             </div>
         </form>
     </div>
@@ -153,6 +153,10 @@
             b.classList.add('bg-white', 'text-gray-400', 'border', 'border-gray-100');
         });
         document.getElementById('view-btn-' + babKey).classList.add('bg-amber-400', 'text-white');
+    }
+
+    function toggleFeedbackRequired(status) {
+        document.querySelector('textarea[name="feedback"]').required = (status === 'revisi');
     }
 
     document.querySelectorAll('.btn-review').forEach(btn => {

@@ -12,7 +12,7 @@ class OperatorService
     # fungsi untuk mengambil statistik dashboard operator
     public function getDashboardStats(): array
     {
-        $pendingPendaftaran = Mahasiswa::where('status_magang', 'Approve')
+        $pendingPendaftaran = Mahasiswa::where('status_daftar', 'Approve')
             ->whereDoesntHave('pesertaMagang')->count();
 
         return [

@@ -41,10 +41,10 @@
                     <div class="flex items-start justify-between mb-6">
                         <div class="flex items-center gap-4">
                             <div class="w-14 h-14 rounded-2xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-lg shadow-inner group-hover:rotate-3 transition-transform">
-                                {{ strtoupper(substr($u->name, 0, 2)) }}
+                                {{ strtoupper(substr($u->display_name, 0, 2)) }}
                             </div>
                             <div class="min-w-0">
-                                <h4 class="font-black text-gray-800 text-sm tracking-tight truncate leading-tight">{{ $u->name }}</h4>
+                                <h4 class="font-black text-gray-800 text-sm tracking-tight truncate leading-tight">{{ $u->display_name }}</h4>
                                 <div class="text-[10px] font-bold text-gray-400 mt-1 flex items-center gap-2">
                                     <span class="uppercase tracking-widest">{{ $u->username }}</span>
                                 </div>
@@ -64,7 +64,7 @@
                             <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest italic">Active Access</span>
                         </div>
                         
-                        <button type="button" aria-label="Hapus pengguna" onclick="confirmDelete('{{ $u->id }}', '{{ addslashes($u->name) }}')" class="p-2.5 rounded-2xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all active:scale-95 group/btn">
+                        <button type="button" aria-label="Hapus pengguna" onclick="confirmDelete('{{ $u->id }}', '{{ addslashes($u->display_name) }}')" class="p-2.5 rounded-2xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all active:scale-95 group/btn">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover/btn:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         </button>
                     </div>

@@ -70,7 +70,7 @@ class DosenController extends Controller
     {
         $request->validate([
             'status'   => 'required|in:revisi,approved',
-            'feedback' => 'required|string',
+            'feedback' => $request->status === 'revisi' ? 'required|string' : 'nullable|string',
         ]);
 
         $this->dosenService->approveLaporan($magang, $request->status, $request->feedback);

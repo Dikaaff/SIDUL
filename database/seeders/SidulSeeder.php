@@ -14,7 +14,6 @@ class SidulSeeder extends Seeder
         DB::table('users')->updateOrInsert(
             ['username' => 'admin'],
             [
-                'name' => 'Super Administrator',
                 'password' => Hash::make('password123'),
                 'role' => 'admin',
                 'created_at' => now(),
@@ -32,7 +31,6 @@ class SidulSeeder extends Seeder
             DB::table('users')->updateOrInsert(
                 ['username' => $d['nik']],
                 [
-                    'name' => $d['nama'],
                     'password' => Hash::make('password123'),
                     'role' => 'dosen',
                     'created_at' => now(),
@@ -57,7 +55,6 @@ class SidulSeeder extends Seeder
         DB::table('users')->updateOrInsert(
             ['username' => 'operator'],
             [
-                'name' => 'Admin Operator',
                 'password' => Hash::make('password123'),
                 'role' => 'operator',
                 'created_at' => now(),
@@ -76,7 +73,6 @@ class SidulSeeder extends Seeder
             DB::table('users')->updateOrInsert(
                 ['username' => $m['nim']],
                 [
-                    'name' => $m['nama'],
                     'password' => Hash::make('password123'),
                     'role' => 'mahasiswa',
                     'created_at' => now(),
@@ -90,7 +86,6 @@ class SidulSeeder extends Seeder
                 [
                     'user_id' => $uId,
                     'nama' => $m['nama'],
-                    'konsentrasi' => $m['konsentrasi'],
                     'dosen_wali_id' => $dosenIds[0],
                     'created_at' => now(),
                 ]

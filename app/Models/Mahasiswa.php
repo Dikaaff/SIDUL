@@ -13,8 +13,7 @@ class Mahasiswa extends Model
         'user_id',
         'nim',
         'nama',
-        'konsentrasi',
-        'status_magang',
+        'status_daftar',
         'dosen_wali_id',
     ];
 

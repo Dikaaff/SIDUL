@@ -146,7 +146,7 @@ if (app()->environment('local')) {
             'perusahaan'          => 'PT Test Selenium',
             'alamat'              => 'Jl. Testing No. 1',
             'tipe_magang'         => 'Mandiri',
-            'konsentrasi'         => $mhs->konsentrasi ?? 'Web Development',
+            'konsentrasi'         => 'Web Development',
             'tanggal_mulai'       => now()->toDateString(),
             'tanggal_selesai'     => now()->addMonths(3)->toDateString(),
         ]);

@@ -17,14 +17,14 @@
             {{-- daisyui: btn + avatar --}}
             <label tabindex="0" class="btn btn-ghost btn-circle avatar ring ring-transparent hover:ring-primary/30 transition-all cursor-pointer">
                 <div class="w-10 rounded-full border border-gray-100">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'User') }}&background=6B21A8&color=fff&rounded=true&bold=true" alt="User Avatar" />
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->display_name ?? 'User') }}&background=6B21A8&color=fff&rounded=true&bold=true" alt="User Avatar" />
                 </div>
             </label>
             {{-- dropdown menu (non-daisyui, full tailwind) --}}
             <ul tabindex="0" class="mt-3 z-[1] p-3 shadow-xl dropdown-content bg-base-100 rounded-box w-64 border border-base-200 animate-in fade-in slide-in-from-top-2 duration-200">
                 <li class="px-2 pb-2 list-none">
                     <span class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Signed in as</span>
-                    <span class="block text-sm font-black text-gray-800 truncate">{{ Auth::user()?->name ?? 'Guest' }}</span>
+                    <span class="block text-sm font-black text-gray-800 truncate">{{ Auth::user()?->display_name ?? 'Guest' }}</span>
                     <span class="block text-[10px] font-bold text-gray-400 truncate">{{ Auth::user()?->username }}</span>
                 </li>
                 <div class="h-px bg-gray-100 my-2"></div>

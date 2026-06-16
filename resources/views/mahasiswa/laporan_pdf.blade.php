@@ -299,8 +299,8 @@
         <div class="info-text">NIM  : {{ $mahasiswa->nim }}</div>
 
         <div class="identity">
-            @if($mahasiswa->konsentrasi)
-                <div>Program Keahlian {{ $mahasiswa->konsentrasi }}</div>
+            @if($magang->konsentrasi)
+                <div>Program Keahlian {{ $magang->konsentrasi }}</div>
             @endif
         </div>
 
