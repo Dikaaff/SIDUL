@@ -29,6 +29,24 @@ class MahasiswaTest extends TestCase
         $this->mahasiswa = $this->mahasiswaUser->mahasiswa;
         $this->dosenUser = User::where('username', '19876001')->first();
 
+        $extraNims = ['23.01.5010', '23.01.5017', '23.01.5039'];
+        $extraNames = ['Anggota Satu', 'Anggota Dua', 'Anggota Tiga'];
+        foreach ($extraNims as $i => $nim) {
+            $user = User::create([
+                'username' => $nim,
+                'name'     => $extraNames[$i],
+                'password' => 'password123',
+                'role'     => 'mahasiswa',
+            ]);
+            Mahasiswa::create([
+                'user_id'       => $user->id,
+                'nim'           => $nim,
+                'nama'          => $extraNames[$i],
+                'konsentrasi'   => 'Web Development',
+                'dosen_wali_id' => $this->dosenUser->dosen->id,
+            ]);
+        }
+
         Setting::set('is_periode_open', '1');
     }
 
@@ -390,6 +408,7 @@ class MahasiswaTest extends TestCase
             'judul'     => 'Laporan Magang di PT Test',
             'bab1'      => 'Pendahuluan laporan magang.',
             'bab2'      => 'Tinjauan pustaka.',
+            'action'    => 'submit',
         ]);
 
         $response->assertRedirect();
@@ -413,6 +432,7 @@ class MahasiswaTest extends TestCase
             'magang_id' => $magang->id,
             'judul'     => 'Laporan Gagal',
             'bab1'      => 'Test.',
+            'action'    => 'submit',
         ]);
 
         $response->assertRedirect();
@@ -438,6 +458,7 @@ class MahasiswaTest extends TestCase
             'judul'     => 'Draft Revisi',
             'bab1'      => 'Bab 1 revisi',
             'bab2'      => 'Bab 2 baru',
+            'action'    => 'submit',
         ]);
 
         $response->assertRedirect();
@@ -469,6 +490,7 @@ class MahasiswaTest extends TestCase
             'magang_id' => $magang->id,
             'judul'     => 'Laporan Edit',
             'bab1'      => 'Edit setelah approve',
+            'action'    => 'submit',
         ]);
 
         $response->assertRedirect();
@@ -482,8 +504,9 @@ class MahasiswaTest extends TestCase
         $this->actingAs($this->mahasiswaUser);
 
         $response = $this->post('/mahasiswa/laporan', [
-            'judul' => 'Laporan Tanpa Magang',
-            'bab1'  => 'Test.',
+            'judul'  => 'Laporan Tanpa Magang',
+            'bab1'   => 'Test.',
+            'action' => 'submit',
         ]);
 
         $response->assertSessionHasErrors('magang_id');
@@ -498,6 +521,7 @@ class MahasiswaTest extends TestCase
         $response = $this->post('/mahasiswa/laporan', [
             'magang_id' => $magang->id,
             'judul'     => '',
+            'action'    => 'submit',
         ]);
 
         $response->assertSessionHasErrors('judul');
@@ -717,6 +741,7 @@ class MahasiswaTest extends TestCase
             'judul'     => 'Laporan Magang PT State Flow',
             'bab1'      => 'Pendahuluan',
             'bab2'      => 'Pembahasan',
+            'action'    => 'submit',
         ]);
         $this->assertDatabaseHas('laporans', [
             'magang_id' => $magang->id,
