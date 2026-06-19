@@ -10,6 +10,7 @@
 @endsection
 
 @section('content')
+<div id="operator-plotting-container">
 <div class="grid grid-cols-1 gap-8 font-sans">
     
     {{-- Bagian: Perlu Penugasan --}}
@@ -19,7 +20,7 @@
                 <div class="w-2 h-8 bg-[#6B21A8] rounded-full"></div>
                 <h3 class="font-black text-gray-800 text-lg tracking-tight">Perlu Penugasan Dosen</h3>
             </div>
-            <span class="px-3 py-1 bg-purple-50 text-[#6B21A8] text-[10px] font-black rounded-2xl border border-purple-100 uppercase tracking-widest">{{ $belumAssign->count() }} Mahasiswa</span>
+            <span class="px-3 py-1 bg-purple-50 text-[#6B21A8] text-[10px] font-black rounded-2xl border border-purple-100 uppercase tracking-widest">{{ $belumAssign->total() }} Mahasiswa</span>
         </div>
 
         <div class="overflow-x-auto">
@@ -38,7 +39,7 @@
                     @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
                     <tr class="hover:bg-gray-50 transition-all group">
                         <td class="pl-8 py-6 text-[10px] font-black text-gray-600 italic">
-                            {{ $index + 1 }}
+                            {{ $belumAssign->firstItem() + $index }}
                         </td>
                         <td>
                             <div class="flex items-center gap-3">
@@ -83,6 +84,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="px-8 py-4 border-t border-gray-100 bg-gray-50/30 flex items-center justify-center" id="belum-assign-pagination">
+            {{ $belumAssign->links('vendor.pagination.sidul') }}
+        </div>
     </x-card>
 
     {{-- Bagian: Riwayat Plotting Terbaru --}}
@@ -111,7 +115,7 @@
                     @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
                     <tr class="hover:bg-gray-50 transition-all">
                         <td class="pl-8 py-4 text-[10px] font-black text-gray-600 italic">
-                            {{ $index + 1 }}
+                            {{ $sudahAssign->firstItem() + $index }}
                         </td>
                         <td>
                             <span class="px-2 py-1 rounded-2xl bg-gray-900 text-white font-black text-[9px] border border-gray-800 shadow-sm tracking-widest">{{ $magang->kode_magang }}</span>
@@ -147,8 +151,43 @@
                 </tbody>
             </table>
         </div>
+        <div class="px-8 py-4 border-t border-gray-100 bg-gray-50/30 flex items-center justify-center" id="sudah-assign-pagination">
+            {{ $sudahAssign->links('vendor.pagination.sidul') }}
+        </div>
     </x-card>
 
 </div>
+</div>
+
+@push('scripts')
+<script>
+(function() {
+    var container = document.getElementById('operator-plotting-container');
+    if (!container) return;
+
+    function loadPage(url) {
+        if (!container) return;
+        fetch(url)
+            .then(function(r) { return r.text(); })
+            .then(function(html) {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var nc = doc.getElementById('operator-plotting-container');
+                if (nc) container.innerHTML = nc.innerHTML;
+                history.pushState({ plot: url }, '', url);
+            })
+            .catch(function() { window.location.href = url; });
+    }
+
+    container.addEventListener('click', function(e) {
+        var link = e.target.closest('#belum-assign-pagination a, #sudah-assign-pagination a');
+        if (link) { e.preventDefault(); loadPage(link.href); }
+    });
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.plot) loadPage(e.state.plot);
+    });
+})();
+</script>
+@endpush
 
 @endsection

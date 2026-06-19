@@ -213,100 +213,138 @@
         </div>
         
         <div class="px-8 py-5 border-t border-gray-100 bg-gray-50/30 flex items-center justify-between">
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em]">Menampilkan {{ $magangs->count() }} hasil pemantauan</p>
+            <p id="operator-monitor-info" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em]">Menampilkan 0 hasil pemantauan</p>
+            <div id="operator-monitor-pagination" class="flex items-center gap-1.5"></div>
         </div>
     </x-card>
 
 </div>
 
+@push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('realTimeSearch');
-    const statusFilter = document.getElementById('statusFilter');
+(function() {
+    var searchInput = document.getElementById('realTimeSearch');
+    var statusFilter = document.getElementById('statusFilter');
+    var table = document.getElementById('monitoringTable');
+    var info = document.getElementById('operator-monitor-info');
+    var pagContainer = document.getElementById('operator-monitor-pagination');
 
-    // fungsi untuk menyaring data monitoring berdasarkan kata kunci pencarian dan status yang dipilih
-    function applyFilters() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const statusTerm = statusFilter.value.toLowerCase();
-        const table = document.getElementById('monitoringTable');
-        const rows = table.querySelectorAll('tbody tr');
+    var itemsPerPage = 5;
+    var currentPage = 1;
+    var allRows = [];
+    var filteredRows = [];
 
-        rows.forEach(row => {
-            if (row.querySelector('td[colspan]')) return; // Skip empty row
-
-            const text = row.innerText.toLowerCase();
-            const statusBadge = row.querySelector('.status-badge');
-            const status = statusBadge ? statusBadge.innerText.toLowerCase() : '';
-            
-            const matchesSearch = text.includes(searchTerm);
-            const matchesStatus = statusTerm === '' || status.trim() === statusTerm.trim();
-
-            if (matchesSearch && matchesStatus) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+    function collectRows() {
+        allRows = [];
+        if (!table) return;
+        var rows = table.querySelectorAll('tbody tr');
+        rows.forEach(function(row) {
+            if (row.querySelector('td[colspan]')) return;
+            allRows.push(row);
         });
     }
 
+    function filterRows() {
+        var searchTerm = (searchInput ? searchInput.value : '').toLowerCase();
+        var statusTerm = (statusFilter ? statusFilter.value : '').toLowerCase();
+        filteredRows = allRows.filter(function(row) {
+            var text = row.innerText.toLowerCase();
+            var sb = row.querySelector('.status-badge');
+            var st = sb ? sb.innerText.toLowerCase() : '';
+            var ms = text.includes(searchTerm);
+            var mst = statusTerm === '' || st.trim() === statusTerm.trim();
+            return ms && mst;
+        });
+    }
+
+    function render() {
+        filterRows();
+        if (filteredRows.length === 0) {
+            allRows.forEach(function(r) { r.style.display = 'none'; });
+            if (info) info.innerText = 'Menampilkan 0 hasil pemantauan';
+            if (pagContainer) pagContainer.innerHTML = '';
+            return;
+        }
+        var totalPages = Math.ceil(filteredRows.length / itemsPerPage) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        var start = (currentPage - 1) * itemsPerPage;
+        var end = start + itemsPerPage;
+        var pageRows = filteredRows.slice(start, end);
+
+        allRows.forEach(function(r) { r.style.display = 'none'; });
+        pageRows.forEach(function(r) { r.style.display = ''; });
+
+        if (info) {
+            var s = start + 1;
+            var e = end;
+            if (e > filteredRows.length) e = filteredRows.length;
+            info.innerText = 'Menampilkan ' + s + '-' + e + ' dari ' + filteredRows.length + ' hasil pemantauan';
+        }
+
+        if (pagContainer) {
+            pagContainer.innerHTML = '';
+            if (totalPages > 1) {
+                for (var i = 1; i <= totalPages; i++) {
+                    var btn = document.createElement('button');
+                    var isActive = i === currentPage;
+                    btn.className = 'btn btn-sm h-9 min-w-[2.25rem] rounded-2xl px-3 font-black text-xs transition-all active:scale-95 ' + (isActive ? 'bg-[#6B21A8] text-white shadow-lg shadow-purple-200 cursor-default' : 'bg-white border border-gray-100 text-gray-600 hover:text-[#6B21A8] hover:bg-gray-50 shadow-sm hover:shadow-md hover:shadow-purple-200/30 cursor-pointer');
+                    btn.innerText = i;
+                    if (!isActive) {
+                        btn.onclick = function(p) { return function() { currentPage = p; render(); }; }(i);
+                    }
+                    pagContainer.appendChild(btn);
+                }
+            }
+        }
+    }
+
+    function applyFilters() {
+        currentPage = 1;
+        render();
+    }
+
     window.resetFilters = function() {
-        searchInput.value = '';
-        statusFilter.value = '';
+        if (searchInput) searchInput.value = '';
+        if (statusFilter) statusFilter.value = '';
         applyFilters();
     };
 
     window.exportToExcel = function() {
-        const table = document.getElementById('monitoringTable');
-        const rows = table.querySelectorAll('tr');
-        let csv = [];
-        
-        // Header Khusus yang Rapi
+        var rows = table.querySelectorAll('tbody tr');
+        var csv = [];
         csv.push(["No", "Nama Mahasiswa", "NIM", "Perusahaan", "Dosen Pembimbing", "ID Magang", "Status", "Progress"].join(","));
-
-        const dataRows = table.querySelectorAll('tbody tr');
-        dataRows.forEach((tr, index) => {
+        var idx = 0;
+        rows.forEach(function(tr) {
             if (tr.style.display === 'none' || tr.querySelector('td[colspan]')) return;
-
-            const cells = tr.querySelectorAll('td');
-            const no = index + 1;
-            const nameEls = cells[1].querySelectorAll('.font-black');
-            const nimEls = cells[1].querySelectorAll('.text-\\[10px\\]');
-            const nama = Array.from(nameEls).map(el => el.innerText.trim()).filter(t => t && t !== 'Ketua').join(', ');
-            const nim = Array.from(nimEls).map(el => el.innerText.trim()).join(', ');
-            const perusahaan = cells[2].querySelector('.font-bold').innerText.trim();
-            const pembimbing = cells[3].innerText.replace(/(\r\n|\n|\r)/gm, " ").trim();
-            const idMagang = cells[4].innerText.trim();
-            const status = cells[5].innerText.trim();
-            const progress = cells[6].querySelector('.text-\\[9px\\]').innerText.trim();
-
-            const rowData = [
-                `"${no}"`,
-                `"${nama}"`,
-                `"${nim}"`,
-                `"${perusahaan}"`,
-                `"${pembimbing}"`,
-                `"${idMagang}"`,
-                `"${status}"`,
-                `"${progress}"`
-            ];
-            csv.push(rowData.join(","));
+            idx++;
+            var cells = tr.querySelectorAll('td');
+            var nameEls = cells[1].querySelectorAll('.font-black');
+            var nimEls = cells[1].querySelectorAll('.text-\\[10px\\]');
+            var nama = Array.from(nameEls).map(function(el) { return el.innerText.trim(); }).filter(function(t) { return t && t !== 'Ketua'; }).join(', ');
+            var nim = Array.from(nimEls).map(function(el) { return el.innerText.trim(); }).join(', ');
+            var perusahaan = cells[2].querySelector('.font-bold').innerText.trim();
+            var pembimbing = cells[3].innerText.replace(/(\r\n|\n|\r)/gm, " ").trim();
+            var idMagang = cells[4].innerText.trim();
+            var status = cells[5].innerText.trim();
+            var progress = cells[6].querySelector('.text-\\[9px\\]').innerText.trim();
+            csv.push(['"' + idx + '"', '"' + nama + '"', '"' + nim + '"', '"' + perusahaan + '"', '"' + pembimbing + '"', '"' + idMagang + '"', '"' + status + '"', '"' + progress + '"'].join(","));
         });
-        
-        const csvContent = "\uFEFF" + csv.join("\n"); // Add BOM for Excel UTF-8 support
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        const url = URL.createObjectURL(blob);
-        
-        link.setAttribute("href", url);
-        link.setAttribute("download", "Monitoring_Magang_" + new Date().toISOString().slice(0,10) + ".csv");
-        link.style.visibility = 'hidden';
+        var csvContent = "\uFEFF" + csv.join("\n");
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        var link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "Monitoring_Magang_" + new Date().toISOString().slice(0,10) + ".csv";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
 
-    searchInput.addEventListener('input', applyFilters);
-    statusFilter.addEventListener('change', applyFilters);
-});
+    collectRows();
+    render();
+
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+})();
 </script>
+@endpush
 @endsection

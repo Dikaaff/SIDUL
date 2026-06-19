@@ -123,7 +123,7 @@ class MahasiswaController extends Controller
             return redirect()->route('mahasiswa.dashboard')->with('error', 'Fitur Logbook hanya tersedia setelah pendaftaran Anda disetujui.');
         }
 
-        $logbooks = $this->mahasiswaService->getLogbooks($user);
+        $logbooks = $this->mahasiswaService->getLogbooks($user, perPage: 5);
         return view('mahasiswa.logbook', [
             'logbooks'     => $logbooks,
             'isPeriodeOpen' => PeriodeService::isOpen(),

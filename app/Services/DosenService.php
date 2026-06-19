@@ -10,17 +10,17 @@ use App\Models\User;
 class DosenService
 {
     # fungsi untuk mengambil data mahasiswa wali
-    public function getMhsWali(User $user)
+    public function getMhsWali(User $user, int $perPage = 5)
     {
         $dosen = $user->dosen;
-        return $dosen ? $dosen->mahasiswaWali()->with('user')->get() : collect();
+        return $dosen ? $dosen->mahasiswaWali()->with('user')->paginate($perPage) : collect();
     }
 
     # fungsi untuk mengambil data mahasiswa bimbingan
-    public function getMhsBimbingan(User $user, array $with = [], ?int $limit = null)
+    public function getMhsBimbingan(User $user, array $with = [], ?int $limit = null, ?int $perPage = null)
     {
         $dosen = $user->dosen;
-        if (!$dosen) return collect();
+        if (!$dosen) return $perPage ? new \Illuminate\Pagination\LengthAwarePaginator([], 0, $perPage) : collect();
 
         $query = $dosen->bimbinganMagang()->with(array_merge([
             'peserta.mahasiswa', 'laporan'
@@ -30,7 +30,7 @@ class DosenService
             $query->take($limit);
         }
 
-        return $query->get();
+        return $perPage ? $query->paginate($perPage) : $query->get();
     }
 
     # fungsi untuk mengambil data dashboard dosen

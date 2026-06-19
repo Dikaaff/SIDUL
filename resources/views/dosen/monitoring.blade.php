@@ -107,7 +107,7 @@
             class="text-xs font-semibold text-gray-400 uppercase tracking-wider">
         </p>
 
-        <div class="join rounded-2xl overflow-hidden shadow-sm"
+        <div class="flex items-center gap-1.5"
             id="paginationBtns">
         </div>
 
@@ -157,7 +157,7 @@ const students = {!! json_encode($mhsBimbingan->map(function($magang) {
 })->toArray()) !!};
 
 let currentPage = 1;
-const itemsPerPage = 6;
+const itemsPerPage = 5;
 let filteredStudents = [...students];
 
 function progressColor(p) {
@@ -361,11 +361,13 @@ function updatePagination() {
 
             const btn = document.createElement('button');
 
+            const isActive = currentPage === i;
+
             btn.className =
-                `px-5 h-11 text-sm font-bold transition ${
-                    currentPage === i
-                    ? 'bg-[#F49E0A] text-white'
-                    : 'bg-white text-gray-500 hover:bg-gray-100'
+                `px-4 h-9 text-xs font-black uppercase tracking-wider transition-all rounded-2xl ${
+                    isActive
+                    ? 'bg-[#6B21A8] text-white shadow-lg shadow-purple-200'
+                    : 'bg-white text-gray-500 hover:text-[#6B21A8] hover:bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md hover:shadow-purple-200/30'
                 }`;
 
             btn.innerText = i;
@@ -375,11 +377,6 @@ function updatePagination() {
                 currentPage = i;
 
                 renderGrid();
-
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
             };
 
             container.appendChild(btn);

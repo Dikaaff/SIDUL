@@ -50,20 +50,20 @@ class OperatorService
     }
 
     # fungsi untuk mengambil data magang yang belum ditugaskan
-    public function getBelumAssign()
+    public function getBelumAssign(?int $perPage = null)
     {
-        return Magang::with(['peserta.mahasiswa'])
-            ->where('status_magang', 'Pending')
-            ->get();
+        $query = Magang::with(['peserta.mahasiswa'])
+            ->where('status_magang', 'Pending');
+        return $perPage ? $query->paginate($perPage) : $query->get();
     }
 
     # fungsi untuk mengambil data magang yang sudah ditugaskan
-    public function getSudahAssign()
+    public function getSudahAssign(?int $perPage = null)
     {
-        return Magang::with(['peserta.mahasiswa', 'pembimbing'])
+        $query = Magang::with(['peserta.mahasiswa', 'pembimbing'])
             ->where('status_magang', 'Aktif')
-            ->latest()
-            ->get();
+            ->latest();
+        return $perPage ? $query->paginate($perPage) : $query->get();
     }
 
     # fungsi untuk mengambil daftar dosen
@@ -98,11 +98,11 @@ class OperatorService
     }
 
     # fungsi untuk mengambil data magang yang sudah memiliki laporan
-    public function getLaporanMagang()
+    public function getLaporanMagang(?int $perPage = null)
     {
-        return Magang::with(['peserta.mahasiswa', 'laporan'])
+        $query = Magang::with(['peserta.mahasiswa', 'laporan'])
             ->whereHas('laporan')
-            ->latest()
-            ->get();
+            ->latest();
+        return $perPage ? $query->paginate($perPage) : $query->get();
     }
 }

@@ -24,9 +24,9 @@ class DosenController extends Controller
     }
 
     # fungsi untuk menampilkan halaman rekomendasi mahasiswa
-    public function rekomendasi()
+    public function rekomendasi(Request $request)
     {
-        $mhsWali = $this->dosenService->getMhsWali(Auth::user());
+        $mhsWali = $this->dosenService->getMhsWali(Auth::user(), 5)->withQueryString();
         return view('dosen.rekomendasi', compact('mhsWali'));
     }
 
@@ -61,7 +61,7 @@ class DosenController extends Controller
     # fungsi untuk menampilkan laporan mahasiswa bimbingan
     public function laporan()
     {
-        $mhsBimbingan = $this->dosenService->getMhsBimbingan(Auth::user());
+        $mhsBimbingan = $this->dosenService->getMhsBimbingan(Auth::user(), perPage: 5);
         return view('dosen.laporan', compact('mhsBimbingan'));
     }
 

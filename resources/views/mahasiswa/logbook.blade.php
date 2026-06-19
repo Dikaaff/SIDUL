@@ -42,6 +42,7 @@
     @endif
 
     <x-card padding="none" border class="overflow-hidden">
+        <div id="logbook-container">
         <div class="overflow-x-auto">
             <table class="table w-full">
                 <thead>
@@ -51,13 +52,13 @@
                         <th class="text-center pr-10 w-40">Detail</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="logbook-tbody">
                     @forelse($logbooks as $log)
                     <tr class="hover:bg-gray-50/50 transition-all border-b border-gray-50 group">
                         <td class="py-6 pl-10">
                             <div class="flex flex-col">
                                 <span class="font-black text-gray-800 text-sm italic">{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}</span>
-                                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Hari Ke-{{ $logbooks->count() - $loop->index }}</span>
+                                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Hari Ke-{{ $logbooks->firstItem() + $loop->index }}</span>
                             </div>
                         </td>
                         <td>
@@ -76,6 +77,10 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        <div class="px-10 py-5 border-t border-gray-100 bg-gray-50/30" id="logbook-pagination">
+            {{ $logbooks->links('vendor.pagination.sidul') }}
+        </div>
         </div>
     </x-card>
 </div>
@@ -110,12 +115,43 @@
 
 @push('scripts')
 <script>
-    // fungsi untuk menampilkan detail logbook pada modal berdasarkan tanggal dan deskripsi
     function showLogDetail(date, desc) {
-        // Update the title dynamically since x-modal renders it server-side
         document.querySelector('#log_detail_modal h3').innerText = date.toUpperCase();
         document.getElementById('detailDesc').innerText = desc;
         document.getElementById('log_detail_modal').showModal();
     }
+
+    function loadLogbookPage(url) {
+        var container = document.getElementById('logbook-container');
+        if (!container) return;
+        fetch(url)
+            .then(function(res) { return res.text(); })
+            .then(function(html) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                var newContent = doc.getElementById('logbook-container');
+                if (newContent) {
+                    container.innerHTML = newContent.innerHTML;
+                }
+                history.pushState({ logbookPage: url }, '', url);
+            })
+            .catch(function() {
+                window.location.href = url;
+            });
+    }
+
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('#logbook-pagination a');
+        if (link) {
+            e.preventDefault();
+            loadLogbookPage(link.href);
+        }
+    });
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.logbookPage) {
+            loadLogbookPage(e.state.logbookPage);
+        }
+    });
 </script>
 @endpush

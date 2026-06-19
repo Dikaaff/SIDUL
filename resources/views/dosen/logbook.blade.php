@@ -19,7 +19,10 @@
                 <h3 class="font-bold text-gray-800 text-xs uppercase tracking-widest">Daftar Bimbingan</h3>
                 <span class="badge badge-primary font-bold text-[10px] py-3 px-3">{{ $mhsBimbingan->count() }}</span>
             </div>
-            <div class="p-4 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" id="studentSelector">
+            <div class="px-4 pb-3">
+                <input id="searchStudent" class="input input-sm w-full bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold focus:ring-4 focus:ring-[#6B21A8]/10 focus:bg-white transition-all" placeholder="Cari nama atau NIM..." />
+            </div>
+            <div class="p-4 pt-0 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" id="studentSelector">
                 {{-- Diisi via JS --}}
             </div>
         </x-card>
@@ -52,6 +55,8 @@
                             {{-- Diisi via JS --}}
                         </tbody>
                     </table>
+                    <div id="logPagination" class="flex items-center justify-end px-10 py-5 border-t border-gray-100 bg-gray-50/30">
+                    </div>
                 </div>
             </div>
         </x-card>
@@ -95,12 +100,27 @@ const mockLogs = @json($mhsBimbingan->mapWithKeys(function($magang) {
 }));
 
 let currentStudentId = students.length > 0 ? students[0].id : null;
+let currentLogPage = 1;
+const logsPerPage = 5;
 
-// fungsi untuk menampilkan daftar mahasiswa pada panel pemilih mahasiswa
+function getFilteredStudents() {
+    var q = document.getElementById('searchStudent');
+    if (!q || !q.value) return students;
+    var filter = q.value.toLowerCase();
+    return students.filter(function(s) {
+        return s.name.toLowerCase().includes(filter) || s.nim.toLowerCase().includes(filter);
+    });
+}
+
 function renderStudents() {
+    var filtered = getFilteredStudents();
     const container = document.getElementById('studentSelector');
     container.innerHTML = '';
-    students.forEach(s => {
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="p-6 text-center"><p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Tidak ditemukan</p></div>';
+        return;
+    }
+    filtered.forEach(s => {
         const isActive = s.id === currentStudentId;
         const colors = [ 'bg-purple-100 text-[#6B21A8]', 'bg-orange-100 text-[#F49E0A]', 'bg-blue-100 text-blue-600' ];
         const avatarStyle = colors[s.id % colors.length];
@@ -117,9 +137,9 @@ function renderStudents() {
     });
 }
 
-// fungsi untuk memilih mahasiswa dan menampilkan logbook yang sesuai
 function selectStudent(id) {
     currentStudentId = id;
+    currentLogPage = 1;
     const student = students.find(s => s.id === id);
     if(student) {
         document.getElementById('activeStudentName').innerText = student.name;
@@ -130,7 +150,6 @@ function selectStudent(id) {
     }
 }
 
-// fungsi untuk menampilkan daftar logbook dari mahasiswa yang sedang dipilih
 function renderLogs() {
     const logs = mockLogs[currentStudentId] || [];
     const allLogsTableBody = document.getElementById('allLogsTableBody');
@@ -138,10 +157,17 @@ function renderLogs() {
     
     if(logs.length === 0) {
         allLogsTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-20 text-[10px] font-black text-gray-300 uppercase italic tracking-widest">Belum ada aktivitas yang dicatat</td></tr>';
+        renderLogPagination(0);
         return;
     }
+
+    const totalPages = Math.ceil(logs.length / logsPerPage) || 1;
+    const start = (currentLogPage - 1) * logsPerPage;
+    const end = start + logsPerPage;
+    const pageLogs = logs.slice(start, end);
     
-    logs.forEach((l, idx) => {
+    pageLogs.forEach((l, idx) => {
+        const globalIdx = start + idx;
         allLogsTableBody.innerHTML += `
             <tr class="hover:bg-gray-50/50 transition-all group">
                 <td class="font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] py-6 pl-10 border-b border-gray-50">${l.date}</td>
@@ -149,14 +175,51 @@ function renderLogs() {
                     <div class="max-w-md truncate group-hover:text-gray-900 transition-colors">${l.desc}</div>
                 </td>
                 <td class="text-right pr-10 border-b border-gray-50">
-                    <button onclick="showDetail(${currentStudentId}, ${idx})" class="btn btn-ghost btn-sm text-[#6B21A8] font-black uppercase text-[9px] tracking-widest hover:bg-purple-50 rounded-2xl">Lihat Detail →</button>
+                    <button onclick="showDetail(${currentStudentId}, ${globalIdx})" class="btn btn-ghost btn-sm text-[#6B21A8] font-black uppercase text-[9px] tracking-widest hover:bg-purple-50 rounded-2xl">Lihat Detail →</button>
                 </td>
             </tr>
         `;
     });
+    
+    renderLogPagination(logs.length);
 }
 
-// fungsi untuk menampilkan detail logbook pada modal berdasarkan indeks log yang dipilih
+function renderLogPagination(total) {
+    const container = document.getElementById('logPagination');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (total === 0) return;
+
+    const totalPages = Math.ceil(total / logsPerPage) || 1;
+    if (totalPages <= 1) return;
+
+    const info = document.createElement('span');
+    info.className = 'text-[11px] font-bold text-gray-400 tracking-wide mr-3';
+    const start = (currentLogPage - 1) * logsPerPage + 1;
+    const end = Math.min(currentLogPage * logsPerPage, total);
+    info.innerText = `${start}-${end} dari ${total}`;
+    container.appendChild(info);
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        const isActive = i === currentLogPage;
+        btn.className = `btn btn-sm h-9 min-w-[2.25rem] rounded-2xl px-3 font-black text-xs transition-all active:scale-95 ${
+            isActive
+            ? 'bg-[#6B21A8] text-white shadow-lg shadow-purple-200 cursor-default'
+            : 'bg-white border border-gray-100 text-gray-600 hover:text-[#6B21A8] hover:bg-gray-50 shadow-sm hover:shadow-md hover:shadow-purple-200/30 cursor-pointer'
+        }`;
+        btn.innerText = i;
+        if (!isActive) {
+            btn.onclick = () => {
+                currentLogPage = i;
+                renderLogs();
+            };
+        }
+        container.appendChild(btn);
+    }
+}
+
 function showDetail(studentId, logIndex) {
     const log = mockLogs[studentId][logIndex];
     document.querySelector('#log_detail_modal h3').innerText = log.date.toUpperCase();
@@ -164,7 +227,8 @@ function showDetail(studentId, logIndex) {
     document.getElementById('log_detail_modal').showModal();
 }
 
-// Init
 if(currentStudentId) selectStudent(currentStudentId);
+
+document.getElementById('searchStudent')?.addEventListener('input', renderStudents);
 </script>
 @endpush

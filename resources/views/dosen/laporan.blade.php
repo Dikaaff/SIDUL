@@ -24,6 +24,7 @@
     </div>
 
     {{-- Scrollable Wrapper for Mobile --}}
+    <div id="laporan-container">
     <div class="w-full overflow-x-auto pb-4 custom-scrollbar">
         <div class="min-w-[850px] lg:min-w-full">
             {{-- Column Headers --}}
@@ -34,7 +35,7 @@
                 <div class="col-span-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] text-right">Aksi</div>
             </div>
 
-            <div class="divide-y divide-gray-50">
+            <div class="divide-y divide-gray-50" id="laporan-list">
         @forelse($mhsBimbingan as $magang)
             @php 
                 $laporan = $magang->laporan && $magang->laporan->status !== 'draft' ? $magang->laporan : null;
@@ -94,6 +95,11 @@
             </div>
         @endforelse
         </div>
+
+        <div class="px-8 py-5" id="laporan-pagination">
+            {{ $mhsBimbingan->links('vendor.pagination.sidul') }}
+        </div>
+    </div>
     </div>
 </x-card>
 
@@ -144,7 +150,6 @@
 <script>
     let currentBabs = {};
 
-    // fungsi untuk mengganti tampilan konten laporan berdasarkan bab yang dipilih
     function switchView(babKey) {
         const content = document.getElementById('modalContent');
         content.innerHTML = atob(currentBabs[babKey] || '');
@@ -159,22 +164,71 @@
         document.querySelector('textarea[name="feedback"]').required = (status === 'revisi');
     }
 
-    document.querySelectorAll('.btn-review').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const id = this.dataset.id;
-            const judul = this.dataset.judul;
-            currentBabs = {
-                bab1: this.dataset.bab1,
-                bab2: this.dataset.bab2,
-                bab3: this.dataset.bab3,
-                bab4: this.dataset.bab4
-            };
-            
-            document.getElementById('modalTitle').innerText = judul;
-            document.getElementById('approvalForm').action = `/dosen/laporan/${id}/approve`;
-            switchView('bab1');
-            document.getElementById('reviewModal').showModal();
+    function bindLaporanEvents() {
+        document.querySelectorAll('.btn-review').forEach(btn => {
+            btn.removeEventListener('click', reviewHandler);
+            btn.addEventListener('click', reviewHandler);
         });
+        document.querySelectorAll('#laporan-pagination a').forEach(link => {
+            link.removeEventListener('click', laporanPagHandler);
+            link.addEventListener('click', laporanPagHandler);
+        });
+    }
+
+    function reviewHandler() {
+        const id = this.dataset.id;
+        const judul = this.dataset.judul;
+        currentBabs = {
+            bab1: this.dataset.bab1,
+            bab2: this.dataset.bab2,
+            bab3: this.dataset.bab3,
+            bab4: this.dataset.bab4
+        };
+        document.getElementById('modalTitle').innerText = judul;
+        document.getElementById('approvalForm').action = `/dosen/laporan/${id}/approve`;
+        switchView('bab1');
+        document.getElementById('reviewModal').showModal();
+    }
+
+    function laporanPagHandler(e) {
+        e.preventDefault();
+        var container = document.getElementById('laporan-container');
+        if (!container) return;
+        fetch(this.href)
+            .then(function(res) { return res.text(); })
+            .then(function(html) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                var newContent = doc.getElementById('laporan-container');
+                if (newContent) {
+                    container.innerHTML = newContent.innerHTML;
+                }
+                history.pushState({ laporanPage: this.href }, '', this.href);
+                bindLaporanEvents();
+            }.bind(this))
+            .catch(function() {
+                window.location.href = this.href;
+            }.bind(this));
+    }
+
+    bindLaporanEvents();
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.laporanPage) {
+            var container = document.getElementById('laporan-container');
+            if (!container) return;
+            fetch(e.state.laporanPage)
+                .then(function(res) { return res.text(); })
+                .then(function(html) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(html, 'text/html');
+                    var newContent = doc.getElementById('laporan-container');
+                    if (newContent) {
+                        container.innerHTML = newContent.innerHTML;
+                    }
+                    bindLaporanEvents();
+                });
+        }
     });
 </script>
 @endpush

@@ -10,6 +10,7 @@
 @endsection
 
 @section('content')
+<div id="operator-laporan-container">
 <x-card padding="none" border class="overflow-hidden font-sans">
     <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/10">
         <h3 class="font-black text-gray-800 text-lg tracking-tight flex items-center gap-3">
@@ -35,7 +36,7 @@
                 @if($mhs)
                 <tr class="hover:bg-gray-50 transition-all group">
                     <td class="pl-8 py-6 text-[10px] font-black text-gray-400 italic">
-                        {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                        {{ $magangs->firstItem() + $index }}
                     </td>
                     <td>
                         <div class="flex flex-col">
@@ -89,5 +90,40 @@
             </tbody>
         </table>
     </div>
+    <div class="px-8 py-5 border-t border-gray-100 bg-gray-50/30" id="operator-laporan-pagination">
+        {{ $magangs->links('vendor.pagination.sidul') }}
+    </div>
 </x-card>
+</div>
+
+@push('scripts')
+<script>
+(function() {
+    var container = document.getElementById('operator-laporan-container');
+    if (!container) return;
+
+    function loadPage(url) {
+        if (!container) return;
+        fetch(url)
+            .then(function(r) { return r.text(); })
+            .then(function(html) {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var nc = doc.getElementById('operator-laporan-container');
+                if (nc) container.innerHTML = nc.innerHTML;
+                history.pushState({ lop: url }, '', url);
+            })
+            .catch(function() { window.location.href = url; });
+    }
+
+    container.addEventListener('click', function(e) {
+        var link = e.target.closest('#operator-laporan-pagination a');
+        if (link) { e.preventDefault(); loadPage(link.href); }
+    });
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.lop) loadPage(e.state.lop);
+    });
+})();
+</script>
+@endpush
 @endsection

@@ -131,11 +131,12 @@ class MahasiswaService
     }
 
     # fungsi untuk mengambil data logbook user
-    public function getLogbooks(User $user)
+    public function getLogbooks(User $user, ?int $perPage = null)
     {
         $magang = $this->getMagang($user);
-        if (!$magang) return collect();
-        return Logbook::where('magang_id', $magang->id)->latest()->get();
+        if (!$magang) return $perPage ? new \Illuminate\Pagination\LengthAwarePaginator([], 0, $perPage) : collect();
+        $query = Logbook::where('magang_id', $magang->id)->latest();
+        return $perPage ? $query->paginate($perPage) : $query->get();
     }
 
     # fungsi untuk menyimpan draft laporan magang

@@ -194,6 +194,7 @@
     </x-card>
 
     {{-- Riwayat Diproses --}}
+    <div id="edit-riwayat-container">
     <x-card padding="none" border>
         <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -263,11 +264,43 @@
                     </tbody>
                 </table>
             </div>
-            <div class="px-8 py-4 border-t border-gray-100 bg-gray-50/30">
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Menampilkan 20 riwayat terakhir</p>
+            <div class="px-8 py-4 border-t border-gray-100 bg-gray-50/30" id="edit-riwayat-pagination">
+                {{ $riwayat->links('vendor.pagination.sidul') }}
             </div>
         @endif
     </x-card>
+    </div>
+
+@push('scripts')
+<script>
+(function() {
+    var container = document.getElementById('edit-riwayat-container');
+    if (!container) return;
+
+    function loadPage(url) {
+        if (!container) return;
+        fetch(url)
+            .then(function(r) { return r.text(); })
+            .then(function(html) {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var nc = doc.getElementById('edit-riwayat-container');
+                if (nc) container.innerHTML = nc.innerHTML;
+                history.pushState({ er: url }, '', url);
+            })
+            .catch(function() { window.location.href = url; });
+    }
+
+    container.addEventListener('click', function(e) {
+        var link = e.target.closest('#edit-riwayat-pagination a');
+        if (link) { e.preventDefault(); loadPage(link.href); }
+    });
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.er) loadPage(e.state.er);
+    });
+})();
+</script>
+@endpush
 
 </div>
 @endsection

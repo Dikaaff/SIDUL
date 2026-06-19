@@ -23,6 +23,7 @@
         </x-card>
 
         <!-- Responsive Container for the list -->
+        <div id="rekomendasi-container">
         <div class="overflow-x-auto pb-4 -mx-2 px-2 lg:mx-0 lg:px-0 custom-scrollbar">
             <div class="min-w-[850px] md:min-w-full">
                 <!-- Compact List Header -->
@@ -93,8 +94,13 @@
                         <p class="text-sm mt-1">Saat ini belum ada mahasiswa yang mengajukan persetujuan akun.</p>
                     </x-card>
                     @endforelse
+
+                    <div class="mt-6 w-full" id="pagination-wrapper">
+                        {{ $mhsWali->links('vendor.pagination.sidul') }}
+                    </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 
@@ -199,32 +205,84 @@
             }, 800);
         }
 
-        // Register event handlers
-        var searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('keyup', filterByNIM);
-        }
-
-        var approveForms = document.querySelectorAll('form.approve-form');
-        for (var i = 0; i < approveForms.length; i++) {
-            approveForms[i].addEventListener('submit', handleDelayedSubmit);
-        }
-
-        var rejectBtns = document.querySelectorAll('.reject-btn');
-        for (var i = 0; i < rejectBtns.length; i++) {
-            (function(btn) {
-                btn.addEventListener('click', function() {
-                    var id = btn.getAttribute('data-id');
-                    var name = btn.getAttribute('data-name');
-                    openRejectModal(id, name);
+        // fungsi untuk memuat halaman pagination via AJAX tanpa scroll
+        function loadPage(url) {
+            var container = document.getElementById('rekomendasi-container');
+            if (!container) return;
+            fetch(url)
+                .then(function(res) { return res.text(); })
+                .then(function(html) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(html, 'text/html');
+                    var newContent = doc.getElementById('rekomendasi-container');
+                    if (newContent) {
+                        container.innerHTML = newContent.innerHTML;
+                    }
+                    history.pushState({ page: url }, '', url);
+                    bindEvents();
+                })
+                .catch(function() {
+                    window.location.href = url;
                 });
-            })(rejectBtns[i]);
         }
 
-        var rejectForm = document.getElementById('reject_form');
-        if (rejectForm) {
-            rejectForm.addEventListener('submit', handleDelayedSubmit);
+        // fungsi untuk mengikat ulang event handler setelah konten diganti
+        function bindEvents() {
+            var searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.removeEventListener('keyup', filterByNIM);
+                searchInput.addEventListener('keyup', filterByNIM);
+            }
+
+            var pagLinks = document.querySelectorAll('#pagination-wrapper a');
+            for (var i = 0; i < pagLinks.length; i++) {
+                (function(link) {
+                    link.removeEventListener('click', pagHandler);
+                    link.addEventListener('click', pagHandler);
+                })(pagLinks[i]);
+            }
+
+            var approveForms = document.querySelectorAll('form.approve-form');
+            for (var i = 0; i < approveForms.length; i++) {
+                approveForms[i].removeEventListener('submit', handleDelayedSubmit);
+                approveForms[i].addEventListener('submit', handleDelayedSubmit);
+            }
+
+            var rejectBtns = document.querySelectorAll('.reject-btn');
+            for (var i = 0; i < rejectBtns.length; i++) {
+                (function(btn) {
+                    btn.removeEventListener('click', rejectHandler);
+                    btn.addEventListener('click', rejectHandler);
+                })(rejectBtns[i]);
+            }
+
+            var rejectForm = document.getElementById('reject_form');
+            if (rejectForm) {
+                rejectForm.removeEventListener('submit', handleDelayedSubmit);
+                rejectForm.addEventListener('submit', handleDelayedSubmit);
+            }
         }
+
+        function pagHandler(e) {
+            e.preventDefault();
+            loadPage(this.href);
+        }
+
+        function rejectHandler() {
+            var id = this.getAttribute('data-id');
+            var name = this.getAttribute('data-name');
+            openRejectModal(id, name);
+        }
+
+        // Register event handlers awal
+        bindEvents();
+
+        // tangani tombol back/forward browser
+        window.addEventListener('popstate', function(e) {
+            if (e.state && e.state.page) {
+                loadPage(e.state.page);
+            }
+        });
     })();
 </script>
 @endpush

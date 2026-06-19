@@ -44,8 +44,8 @@ class OperatorController extends Controller
     public function dosenPembimbing()
     {
         return view('operator.dosen_pembimbing', [
-            'belumAssign' => $this->operatorService->getBelumAssign(),
-            'sudahAssign' => $this->operatorService->getSudahAssign(),
+            'belumAssign' => $this->operatorService->getBelumAssign(perPage: 5),
+            'sudahAssign' => $this->operatorService->getSudahAssign(perPage: 5),
             'dosens'      => $this->operatorService->getDosens(),
         ]);
     }
@@ -72,7 +72,7 @@ class OperatorController extends Controller
     # fungsi untuk menampilkan halaman laporan magang
     public function laporan()
     {
-        $magangs = $this->operatorService->getLaporanMagang();
+        $magangs = $this->operatorService->getLaporanMagang(perPage: 5);
         return view('operator.laporan', compact('magangs'));
     }
 
@@ -83,8 +83,7 @@ class OperatorController extends Controller
         $riwayat = EditRequest::with(['mahasiswa.user', 'user', 'processor'])
             ->whereIn('status', ['approved', 'rejected'])
             ->latest()
-            ->take(20)
-            ->get();
+            ->paginate(5);
         return view('operator.edit_requests', compact('permintaan', 'riwayat'));
     }
 
