@@ -9,25 +9,43 @@
 />
 @endsection
 
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/dashboard/operator" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
+    <li>Validasi Laporan</li>
+  </ul>
+</div>
+@endsection
+
 @section('content')
 <div id="operator-laporan-container">
 <x-card padding="none" border class="overflow-hidden font-sans">
-    <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/10">
+    <form method="GET" action="{{ url()->current() }}">
+    <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <h3 class="font-black text-gray-800 text-lg tracking-tight flex items-center gap-3">
             <span class="w-2 h-8 bg-[#6B21A8] rounded-full"></span>
             Pantauan Laporan Masuk
         </h3>
+        <x-search-input
+            id="searchInput"
+            name="search"
+            placeholder="Cari nama atau NIM..."
+            value="{{ request('search') }}"
+            class="w-full md:w-64"
+        />
     </div>
+    </form>
     
     <div class="overflow-x-auto custom-scrollbar">
-        <table class="table w-full border-collapse">
+        <table class="table w-full">
             <thead>
-                <tr class="text-gray-900 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/10 border-b border-gray-100">
-                    <th class="pl-8 py-6 w-16">No</th>
+                <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                    <th class="pl-8 py-5 w-16">No</th>
                     <th class="min-w-[200px]">Mahasiswa</th>
                     <th class="min-w-[200px]">Subjek Laporan</th>
                     <th class="min-w-[150px]">Status Laporan</th>
-                    <th class="min-w-[150px] text-center pr-8">Waktu Unggah</th>
+                    <th class="min-w-[150px] text-center py-5 pr-8">Waktu Unggah</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -35,13 +53,13 @@
                 @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
                 @if($mhs)
                 <tr class="hover:bg-gray-50 transition-all group">
-                    <td class="pl-8 py-6 text-[10px] font-black text-gray-400 italic">
+                    <td class="pl-8 py-5 text-[10px] font-medium text-gray-400">
                         {{ $magangs->firstItem() + $index }}
                     </td>
                     <td>
                         <div class="flex flex-col">
-                            <span class="font-black text-gray-800 text-sm tracking-tight leading-tight">{{ $mhs->nama }}</span>
-                            <span class="text-[10px] font-bold text-gray-400 mt-1 tracking-widest uppercase">{{ $magang->nim }}</span>
+                            <span class="font-semibold text-gray-800 text-sm tracking-tight leading-tight">{{ $mhs->nama }}</span>
+                            <span class="text-[10px] font-bold text-gray-400 mt-1 tracking-widest uppercase">{{ $mhs->nim ?? '-' }}</span>
                         </div>
                     </td>
                     <td>
@@ -91,7 +109,7 @@
         </table>
     </div>
     <div class="px-8 py-5 border-t border-gray-100 bg-gray-50/30" id="operator-laporan-pagination">
-        {{ $magangs->links('vendor.pagination.sidul') }}
+        {{ $magangs->appends(request()->query())->links('vendor.pagination.sidul') }}
     </div>
 </x-card>
 </div>
@@ -111,14 +129,28 @@
                 var nc = doc.getElementById('operator-laporan-container');
                 if (nc) container.innerHTML = nc.innerHTML;
                 history.pushState({ lop: url }, '', url);
+                bindSearch();
             })
             .catch(function() { window.location.href = url; });
+    }
+
+    function bindSearch() {
+        var s = document.getElementById('searchInput');
+        if (s) {
+            var t;
+            s.addEventListener('input', function() {
+                clearTimeout(t);
+                t = setTimeout(function() { s.form.submit(); }, 400);
+            });
+        }
     }
 
     container.addEventListener('click', function(e) {
         var link = e.target.closest('#operator-laporan-pagination a');
         if (link) { e.preventDefault(); loadPage(link.href); }
     });
+
+    bindSearch();
 
     window.addEventListener('popstate', function(e) {
         if (e.state && e.state.lop) loadPage(e.state.lop);

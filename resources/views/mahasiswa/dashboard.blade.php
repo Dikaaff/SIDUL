@@ -68,7 +68,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                 </div>
                 <span class="text-3xl font-black text-gray-800 tracking-tighter">{{ $logbookCount ?? 0 }}</span>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Logbook Terisi</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-widest mt-1">Logbook Terisi</span>
             </x-card>
 
             <x-card padding="none" border class="p-6 flex flex-col items-center text-center group hover:shadow-md transition-all">
@@ -78,7 +78,7 @@
                 <span class="text-[10px] font-black {{ $laporan ? 'text-blue-600 bg-blue-50 border-blue-100' : 'text-gray-300 bg-gray-50 border-gray-100' }} px-4 py-2 rounded-2xl mb-1 uppercase tracking-widest border">
                     {{ $laporan ? 'TERUNGGAH' : 'BELUM ADA' }}
                 </span>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Laporan Akhir</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-widest mt-1">Laporan Akhir</span>
             </x-card>
 
             <x-card padding="none" border class="p-6 flex flex-col items-center text-center group hover:shadow-md transition-all">
@@ -101,7 +101,7 @@
                         @endphp
                     {{ $progress }}%
                 </span>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Total Progres</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-widest mt-1">Total Progres</span>
             </x-card>
         </div>
 
@@ -113,10 +113,12 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                     </div>
                     <h3 class="text-2xl font-black text-gray-800 mb-4">Belum Ada Pendaftaran</h3>
-                    <p class="text-gray-500 mb-8 font-medium">Segera lengkapi data magang Anda untuk memulai proses verifikasi.</p>
+                    <p class="text-gray-500 mb-8">Segera lengkapi data magang Anda untuk memulai proses verifikasi.</p>
                     @if($mahasiswa->status_daftar === 'Approve')
-                        <a href="{{ route('mahasiswa.pendaftaran') }}" class="btn bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl px-8 h-14 font-bold uppercase tracking-widest text-xs">
-                            Daftar Magang Sekarang
+                        <a href="{{ route('mahasiswa.pendaftaran') }}">
+                            <x-button variant="primary" size="lg">
+                                Daftar Magang Sekarang
+                            </x-button>
                         </a>
                     @elseif($mahasiswa->status_daftar === 'Rejected')
                         <div class="bg-red-50 text-red-700 p-6 rounded-2xl border border-red-100 flex flex-col items-center gap-3">
@@ -124,7 +126,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                             </div>
                             <h4 class="font-black uppercase tracking-widest text-xs">Rekomendasi Ditolak ⚠️</h4>
-                            <p class="text-sm font-bold opacity-80 italic text-center">Mohon maaf, pengajuan rekomendasi Anda ditolak. Silahkan konsultasi ke dosen wali untuk informasi lebih lanjut.</p>
+                            <p class="text-sm font-medium opacity-80 text-center">Mohon maaf, pengajuan rekomendasi Anda ditolak. Silakan konsultasi ke dosen wali untuk informasi lebih lanjut.</p>
                         </div>
                     @else
                         <div class="bg-orange-50 text-orange-700 p-6 rounded-2xl border border-orange-100 flex flex-col items-center gap-3">
@@ -132,7 +134,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             </div>
                             <h4 class="font-black uppercase tracking-widest text-[10px]">Sedang Diproses</h4>
-                            <p class="text-sm font-bold opacity-80 italic">Menunggu Rekomendasi Dosen Wali</p>
+                            <p class="text-sm font-medium opacity-80">Menunggu Rekomendasi Dosen Wali</p>
                         </div>
                     @endif
                 </div>
@@ -147,13 +149,17 @@
                             <h3 class="text-3xl font-black text-gray-800 mb-2">{{ $pendaftaran->perusahaan }}</h3>
                             <p class="text-gray-500 font-bold mb-8 italic">{{ $pendaftaran->alamat }}</p>
                             <div class="flex gap-2 justify-center md:justify-start">
-                                <a href="{{ route('mahasiswa.logbook') }}" class="btn h-11 px-6 bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-100 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-                                    Logbook
+                                <a href="{{ route('mahasiswa.logbook') }}">
+                                    <x-button variant="primary" class="gap-2 hover:scale-105 shadow-lg shadow-amber-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                                        Logbook
+                                    </x-button>
                                 </a>
-                                <a href="{{ route('mahasiswa.laporan') }}" class="btn h-11 px-6 bg-[#422AD5]/10 hover:bg-[#422AD5]/20 text-[#422AD5] border border-[#422AD5]/20 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                                    Laporan
+                                <a href="{{ route('mahasiswa.laporan') }}">
+                                    <x-button variant="ghost" class="!bg-[#422AD5]/10 hover:!bg-[#422AD5]/20 !text-[#422AD5] border !border-[#422AD5]/20 gap-2 hover:scale-105">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                        Laporan
+                                    </x-button>
                                 </a>
                             </div>
                         </div>
@@ -172,7 +178,7 @@
                     <h3 class="font-bold text-gray-800 text-lg mb-6">Status Magang</h3>
                     <div class="space-y-6">
                         <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Status Saat Ini</p>
+                            <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-2">Status Saat Ini</p>
                             @if(!$pendaftaran)
                                 <div class="badge badge-lg bg-gray-100 text-gray-500 border-none font-bold py-4 px-6 rounded-2xl uppercase tracking-widest text-[10px]">No Data</div>
                             @else
@@ -191,20 +197,23 @@
                         </div>
  
                         <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Dosen Pembimbing</p>
+                            <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-2">Dosen Pembimbing</p>
                             <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-2xl border border-gray-100">
                                 <div class="w-8 h-8 rounded-2xl bg-white flex items-center justify-center text-[#6B21A8] shadow-sm">
                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                                 </div>
-                                <span class="font-bold text-gray-700 text-xs truncate">
+                                <span class="font-semibold text-gray-700 text-xs truncate">
                                     {{ $pendaftaran->pembimbing->nama ?? 'Menunggu Plotting' }}
                                 </span>
                             </div>
                         </div>
  
                         @if($pendaftaran && in_array($pendaftaran->status_magang, ['Pending', 'Aktif', 'Selesai']))
-                        <a href="{{ route('mahasiswa.surat_pengantar') }}" target="_blank" class="btn bg-[#422AD5] hover:bg-[#311eb3] text-white border-none w-full rounded-2xl h-14 font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#422AD5]/20">
-                             Cetak Surat Pengantar
+                        <a href="{{ route('mahasiswa.surat_pengantar') }}" target="_blank">
+                            <x-button variant="ghost" size="lg" :full="true" class="!bg-[#422AD5] hover:!bg-[#311eb3] !text-white !shadow-lg !shadow-[#422AD5]/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                Cetak Surat Pengantar
+                            </x-button>
                         </a>
                         @endif
                     </div>
@@ -220,7 +229,11 @@
             <div class="relative z-10">
                 <h3 class="text-xl font-bold mb-2 italic uppercase">Panduan Magang 📖</h3>
                 <p class="text-white/80 text-[10px] font-bold mb-6 italic">Pelajari prosedur magang terbaru & format laporan.</p>
-                <a href="https://d3ti.amikom.ac.id/page/magang" class="btn bg-white hover:bg-gray-50 text-[#F49E0A] border-none w-full rounded-2xl h-12 text-[10px] font-black uppercase tracking-widest italic shadow-sm">Lihat</a>
+                <a href="https://d3ti.amikom.ac.id/page/magang">
+                    <x-button variant="secondary" :full="true" class="text-[#F49E0A] italic shadow-sm">
+                        Lihat
+                    </x-button>
+                </a>
             </div>
         </x-card>
     </div>

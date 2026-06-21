@@ -29,28 +29,20 @@
                 <p class="text-[14px] lg:text-[15px] font-medium text-gray-400 leading-relaxed max-w-xs mx-auto lg:mx-0">Masuk ke Portal Akademik Magang Terpadu Universitas Amikom Yogyakarta.</p>
             </div>
 
-            <!-- Floating Toast Notification (Kanan Atas) -->
-            <div class="fixed top-6 right-6 z-[100] flex flex-col gap-3 w-full max-w-xs pointer-events-none">
-                @if ($errors->any())
-                    {{-- daisyui: alert --}}
-                    <div class="alert bg-white/95 backdrop-blur-md border-l-4 border-red-500 shadow-2xl rounded-2xl p-4 flex items-center gap-4 animate-in slide-in-from-right fade-in duration-500 pointer-events-auto">
-                        <div class="bg-red-100 p-2 rounded-2xl text-red-600 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                        </div>
-                        <span class="text-xs font-bold text-gray-800">{{ $errors->first() }}</span>
+            <!-- Floating Validation Error -->
+            @if ($errors->any())
+            <div class="fixed top-8 right-8 z-[9999] max-w-xs pointer-events-auto">
+                <div class="bg-white/95 backdrop-blur-md border-l-4 border-red-500 shadow-2xl rounded-2xl p-5 flex items-center gap-4 animate-in fade-in slide-in-from-right-8 duration-300">
+                    <div class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center shadow-lg shadow-red-500/10 text-red-600 shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     </div>
-                @endif
-
-                @if (session('success'))
-                    {{-- daisyui: alert --}}
-                    <div class="alert bg-white/95 backdrop-blur-md border-l-4 border-green-500 shadow-2xl rounded-2xl p-4 flex items-center gap-4 animate-in slide-in-from-right fade-in duration-500 pointer-events-auto">
-                        <div class="bg-green-100 p-2 rounded-2xl text-green-600 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                        </div>
-                        <span class="text-xs font-bold text-gray-800">{{ session('success') }}</span>
+                    <div>
+                        <p class="font-black text-sm uppercase tracking-widest leading-tight text-gray-800">Terjadi Kesalahan!</p>
+                        <p class="text-xs text-gray-500 font-bold mt-0.5">{{ $errors->first() }}</p>
                     </div>
-                @endif
+                </div>
             </div>
+            @endif
             
             <form action="{{ route('login.post') }}" method="POST" class="space-y-4 lg:space-y-6">
                 @csrf
@@ -95,10 +87,10 @@
                     </label>
                 </div>
                 
-                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-white rounded-2xl py-4 px-8 font-black uppercase tracking-widest text-[13px] transition-all duration-300 shadow-lg shadow-amber-900/20 active:scale-95 flex items-center justify-center gap-2">
+                <x-button type="submit" variant="primary" size="lg" full>
                     <span>Masuk ke SIDUL</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                </button>
+                </x-button>
             </form>
             
             <div class="mt-6 lg:mt-10 text-center">
@@ -117,18 +109,6 @@
 
 @push('scripts')
 <script>
-    // Auto-hide login toasts after 2 seconds
-    document.addEventListener('DOMContentLoaded', () => {
-        const toasts = document.querySelectorAll('.alert');
-        toasts.forEach(toast => {
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-x-full');
-                toast.classList.add('transition-all', 'duration-500');
-                setTimeout(() => toast.remove(), 500);
-            }, 2000);
-        });
-    });
-
     const togglePassword = document.querySelector('#togglePassword');
     const password = document.querySelector('#password');
 

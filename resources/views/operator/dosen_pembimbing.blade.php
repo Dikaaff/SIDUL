@@ -9,6 +9,15 @@
 />
 @endsection
 
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/dashboard/operator" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
+    <li>Plotting Dosen</li>
+  </ul>
+</div>
+@endsection
+
 @section('content')
 <div id="operator-plotting-container">
 <div class="grid grid-cols-1 gap-8 font-sans">
@@ -26,29 +35,30 @@
         <div class="overflow-x-auto">
             <table class="table w-full">
                 <thead>
-                    <tr class="text-gray-900 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/10">
-                        <th class="pl-8 py-4 w-12">No</th>
+                    <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                        <th class="pl-8 py-5 w-12">No</th>
                         <th>Mahasiswa & NIM</th>
                         <th>Perusahaan</th>
                         <th>Plotting Dosen</th>
-                        <th class="pr-8 text-right">Aksi</th>
+                        <th class="pr-8 py-5 text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($belumAssign as $index => $magang)
                     @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
                     <tr class="hover:bg-gray-50 transition-all group">
-                        <td class="pl-8 py-6 text-[10px] font-black text-gray-600 italic">
+                        <td class="pl-8 py-5 text-[10px] font-black text-gray-600 italic">
                             {{ $belumAssign->firstItem() + $index }}
                         </td>
                         <td>
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-2xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-xs">
-                                    {{ strtoupper(substr($mhs->nama ?? 'M', 0, 2)) }}
+                                    @php $nameParts = explode(' ', $mhs->nama ?? 'MH'); $initials = count($nameParts) > 1 ? strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1)) : strtoupper(substr($nameParts[0], 0, 2)); @endphp
+                                    {{ $initials }}
                                 </div>
                                 <div>
-                                    <div class="font-black text-gray-800 text-sm tracking-tight">{{ $mhs->nama ?? '-' }}</div>
-                                    <div class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $magang->nim }}</div>
+                                    <div class="font-semibold text-gray-800 text-sm tracking-tight">{{ $mhs->nama ?? '-' }}</div>
+                                    <div class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $mhs->nim ?? '-' }}</div>
                                 </div>
                             </div>
                         </td>
@@ -65,7 +75,7 @@
                             </form>
                         </td>
                         <td class="pr-8 text-right">
-                            <button form="assign-form-{{ $magang->id }}" type="submit" class="btn btn-sm min-h-0 h-9 rounded-2xl bg-amber-500 hover:bg-amber-600 border-none text-white font-black text-[10px] uppercase tracking-wider px-6 shadow-sm shadow-amber-200 transition-all active:scale-95">Simpan Plotting</button>
+                            <x-button form="assign-form-{{ $magang->id }}" type="submit" variant="primary" size="sm" class="shadow-sm shadow-amber-200 px-6">Simpan Plotting</x-button>
                         </td>
                     </tr>
                     @empty
@@ -76,7 +86,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 </div>
                                 <h4 class="text-lg font-black text-gray-400 italic">Antrean Plotting Kosong</h4>
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic font-bold">Semua mahasiswa yang terverifikasi sudah memiliki pembimbing</p>
+                                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic font-bold">Semua mahasiswa yang terverifikasi sudah memiliki pembimbing</p>
                             </div>
                         </td>
                     </tr>
@@ -100,29 +110,29 @@
         <div class="overflow-x-auto">
             <table class="table w-full">
                 <thead>
-                    <tr class="text-gray-900 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/10">
-                        <th class="pl-8 py-4 w-12">No</th>
+                    <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                        <th class="pl-8 py-5 w-12">No</th>
                         <th>ID Magang</th>
                         <th>Mahasiswa</th>
                         <th>Perusahaan</th>
                         <th>Dosen Pembimbing</th>
                         <th>Status</th>
-                        <th class="pr-8 text-right">Aksi</th>
+                        <th class="pr-8 py-5 text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 text-sm">
                     @forelse($sudahAssign as $index => $magang)
                     @php $mhs = $magang->peserta->first()?->mahasiswa; @endphp
                     <tr class="hover:bg-gray-50 transition-all">
-                        <td class="pl-8 py-4 text-[10px] font-black text-gray-600 italic">
+                        <td class="pl-8 py-5 text-[10px] font-black text-gray-600 italic">
                             {{ $sudahAssign->firstItem() + $index }}
                         </td>
                         <td>
                             <span class="px-2 py-1 rounded-2xl bg-gray-900 text-white font-black text-[9px] border border-gray-800 shadow-sm tracking-widest">{{ $magang->kode_magang }}</span>
                         </td>
                         <td>
-                            <div class="font-black text-gray-800 text-sm tracking-tight">{{ $mhs->nama ?? '-' }}</div>
-                            <div class="text-[10px] font-bold text-gray-900 tracking-widest">{{ $magang->nim }}</div>
+                            <div class="font-semibold text-gray-800 text-sm tracking-tight">{{ $mhs->nama ?? '-' }}</div>
+                            <div class="text-[10px] font-bold text-gray-900 tracking-widest">{{ $mhs->nim ?? '-' }}</div>
                         </td>
                         <td class="text-xs font-medium text-black">{{ $magang->perusahaan }}</td>
                         <td>
@@ -130,20 +140,22 @@
                                 <span class="text-sm font-black text-[#6B21A8]">{{ $magang->pembimbing->nama ?? '-' }}</span>
                             </div>
                         </td>
-                        <td class="pr-8 text-right flex items-center justify-end gap-2">
+                        <td class="pr-8 text-right">
+                            <div class="flex items-center justify-end gap-2">
                              <span class="px-3 py-1.5 rounded-2xl bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">Plotting Aktif</span>
                              <form action="{{ route('operator.magang.destroy', $magang->id) }}" method="POST" onsubmit="return confirm('Hapus data magang ini?')">
                                  @csrf
                                  @method('DELETE')
-                                 <button type="submit" aria-label="Hapus plotting" class="btn btn-ghost btn-xs text-red-500 hover:bg-red-50 rounded-2xl p-1">
-                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                 </button>
+                                 <x-button type="submit" variant="ghost" size="sm" aria-label="Hapus plotting" class="!text-red-500 hover:!bg-red-50 p-1">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                 </x-button>
                              </form>
+                             </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="py-12 text-center">
+                        <td colspan="7" class="py-12 text-center">
                             <p class="text-[10px] font-black text-gray-600 uppercase tracking-widest">Belum ada riwayat plotting</p>
                         </td>
                     </tr>

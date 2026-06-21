@@ -19,6 +19,15 @@
 </x-page-header>
 @endsection
 
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/dashboard/dosen" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
+    <li>Dashboard</li>
+  </ul>
+</div>
+@endsection
+
 @section('content')
 <div class="px-2 space-y-10 pb-20">
     <!-- Stat Cards -->
@@ -44,75 +53,85 @@
             <div class="flex items-center justify-between mb-2 px-2">
                 <div>
                     <h3 class="text-2xl font-black text-gray-800 tracking-tighter italic">Progres Aktivitas Terbaru</h3>
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-0.5 italic">Menampilkan 5 aktivitas aktif</p>
+                    <p class="text-[10px] font-medium text-gray-400 mt-0.5">Menampilkan 5 aktivitas aktif</p>
                 </div>
                 <a href="{{ route('dosen.monitoring') }}" class="text-[10px] font-black uppercase tracking-widest text-[#6B21A8] hover:underline italic">Lihat Semua</a>
             </div>
 
-            <div class="space-y-4">
-                @forelse($mhsBimbinganList as $magang)
-                @php
-                    $progress = 0;
-                    if($magang) $progress += 20; // Registered: 20%
-                    if($magang->logbooks_count > 0) $progress += 40; // Logbooks: 40% (Total 60%)
-                    
-                    if($magang->laporan) {
-                        if($magang->laporan->status === 'approved') {
-                            $progress += 40; // Approved: +40% (Total 100%)
-                        } else {
-                            $progress += 10; // Uploaded: +10% (Total 70%)
-                        }
-                    }
+            <div class="overflow-x-auto custom-scrollbar rounded-2xl border border-gray-100 shadow-sm">
+                <table class="table w-full">
+                    <thead>
+                        <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                            <th class="pl-8 py-5 w-16">No</th>
+                            <th class="min-w-[200px]">Mahasiswa</th>
+                            <th class="min-w-[140px]">Konsentrasi</th>
+                            <th class="min-w-[160px]">Progress</th>
+                            <th class="pr-8 text-right w-20">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($mhsBimbinganList as $index => $magang)
+                        @php
+                            $progress = 0;
+                            if($magang) $progress += 20;
+                            if($magang->logbooks_count > 0) $progress += 40;
+                            if($magang->laporan) {
+                                if($magang->laporan->status === 'approved') {
+                                    $progress += 40;
+                                } else {
+                                    $progress += 10;
+                                }
+                            }
+                            if($magang->status_magang === 'Selesai') $progress = 100;
 
-                    if($magang->status_magang === 'Selesai') $progress = 100;
+                            $barColor = match(true) {
+                                $progress <= 20 => 'bg-[#F49E0A]',
+                                $progress <= 60 => 'bg-blue-500',
+                                default => 'bg-[#6B21A8]',
+                            };
 
-                    $barColor = match(true) {
-                        $progress <= 20 => 'bg-[#F49E0A]',
-                        $progress <= 60 => 'bg-blue-500',
-                        default => 'bg-[#6B21A8]',
-                    };
-                @endphp
-                <x-card padding="large" border class="group hover:bg-gray-50/80 transition-all duration-300 !shadow-2xl !shadow-gray-100/50 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
-                    <div class="flex items-center gap-4 md:gap-6">
-                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-2xl bg-purple-50 text-[#6B21A8] flex items-center justify-center font-black text-lg md:text-xl shadow-inner group-hover:rotate-6 transition-transform shrink-0">
-                            @php
-                                $nameParts = explode(' ', $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa');
-                                $initials = count($nameParts) > 1 
-                                    ? strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1))
-                                    : strtoupper(substr($nameParts[0], 0, 2));
-                            @endphp
-                            {{ $initials }}
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <h4 class="font-black text-gray-900 text-lg md:text-xl leading-tight tracking-tighter italic group-hover:text-[#6B21A8] transition-colors truncate">{{ $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa' }}</h4>
-                            <div class="flex items-center gap-2 md:gap-3 mt-1">
-                                <span class="text-[9px] md:text-[10px] text-gray-400 font-black tracking-widest uppercase italic truncate">{{ $magang->nim }}</span>
-                                <span class="w-1 h-1 rounded-full bg-gray-300 shrink-0"></span>
-                                <span class="text-[9px] md:text-[10px] text-[#6B21A8] font-black tracking-widest uppercase italic truncate">{{ $magang->konsentrasi }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between md:justify-end gap-6 md:gap-10 mt-2 md:mt-0">
-                        {{-- Responsive Progress --}}
-                        <div class="flex-1 md:w-48">
-                            <div class="flex items-center justify-between mb-1.5 md:mb-2 px-1">
-                                <span class="text-[8px] md:text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] italic">Progress</span>
-                                <span class="text-[10px] md:text-[11px] font-black text-gray-800 italic">{{ $progress }}%</span>
-                            </div>
-                            <div class="relative h-1.5 md:h-2 w-full bg-gray-100 rounded-full overflow-hidden shadow-inner">
-                                <div class="absolute top-0 left-0 h-full {{ $barColor }} rounded-full transition-all duration-1000 ease-out" style="width: {{ $progress }}%"></div>
-                            </div>
-                        </div>
-
-                        <button onclick="showStudentDetail('{{ addslashes($magang->peserta->first()->mahasiswa->nama ?? '') }}', '{{ $magang->nim }}', '{{ addslashes($magang->perusahaan) }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" aria-label="Lihat detail mahasiswa" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl md:rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 hover:text-[#6B21A8] hover:bg-white hover:shadow-lg transition-all border border-transparent hover:border-purple-100 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        </button>
-                    </div>
-                </x-card>
-                @empty
-                <x-empty-state title="Belum Ada Bimbingan" subtitle="Daftar bimbingan Anda akan muncul di sini."/>
-                @endforelse
+                            $nameParts = explode(' ', $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa');
+                            $initials = count($nameParts) > 1
+                                ? strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1))
+                                : strtoupper(substr($nameParts[0], 0, 2));
+                        @endphp
+                        <tr class="hover:bg-gray-50 transition-all group">
+                            <td class="pl-8 py-5 text-[10px] font-medium text-gray-400">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</td>
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-2xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-[8px] shadow-inner group-hover:rotate-3 transition-transform shrink-0">{{ $initials }}</div>
+                                    <div class="flex flex-col min-w-0">
+                                        <span class="font-semibold text-gray-800 text-sm tracking-tight leading-tight truncate">{{ $magang->peserta->first()->mahasiswa->nama ?? 'Mahasiswa' }}</span>
+                                        <span class="text-[10px] font-medium text-gray-400 tracking-widest uppercase">{{ $magang->peserta->first()?->mahasiswa->nim }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-[10px] font-semibold text-[#6B21A8] uppercase tracking-widest">{{ $magang->konsentrasi }}</span>
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-3 max-w-[140px]">
+                                    <div class="flex-1 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                                        <div class="h-full {{ $barColor }} rounded-full transition-all duration-1000" style="width: {{ $progress }}%"></div>
+                                    </div>
+                                    <span class="text-[10px] font-black text-gray-800 italic whitespace-nowrap">{{ $progress }}%</span>
+                                </div>
+                            </td>
+                            <td class="pr-8 text-right">
+                                <x-button variant="ghost" size="sm" aria-label="Lihat detail mahasiswa" onclick="showStudentDetail('{{ addslashes($magang->peserta->first()->mahasiswa->nama ?? '') }}', '{{ $magang->peserta->first()?->mahasiswa->nim }}', '{{ addslashes($magang->perusahaan) }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="!w-9 !h-9 !p-0 text-gray-300 hover:!text-[#6B21A8] hover:!bg-purple-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                </x-button>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="py-20 text-center">
+                                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic">Belum ada bimbingan</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -155,7 +174,7 @@
 
                     @if($pendingRekomendasiCount == 0 && $pendingLaporanCount == 0)
                     <x-card padding="none" border class="p-10 bg-gray-50/50 text-center border-dashed">
-                        <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic leading-relaxed">Semua tugas bimbingan<br>telah selesai diproses ✨</p>
+                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic leading-relaxed">Semua tugas bimbingan<br>telah selesai diproses ✨</p>
                     </x-card>
                     @endif
                 </div>
@@ -185,7 +204,7 @@
     <div class="modal-box bg-white max-w-2xl rounded-2xl p-0 overflow-hidden border-none shadow-2xl">
         <div class="bg-[#6B21A8] p-10 pb-16 relative overflow-hidden">
             <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <button onclick="document.getElementById('student_detail_modal').close()" class="btn btn-sm btn-circle btn-ghost absolute right-6 top-6 text-white hover:bg-white/10 border-none">✕</button>
+            <x-button variant="ghost" size="sm" onclick="document.getElementById('student_detail_modal').close()" class="absolute right-6 top-6 !text-white hover:!bg-white/10 !rounded-full !w-9 !h-9 !p-0">✕</x-button>
             <div class="flex items-center gap-8 relative z-10">
                 <div id="modal_avatar" class="w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-4xl font-black text-white shadow-2xl italic">
                     AS
@@ -201,21 +220,21 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div class="space-y-6">
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 italic">Perusahaan Magang</p>
+                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-2 italic">Perusahaan Magang</p>
                         <p id="modal_company" class="font-black text-gray-800 italic text-lg leading-tight">PT. Teknologi Maju Persada</p>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 italic">Program Studi</p>
+                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-2 italic">Program Studi</p>
                         <p id="modal_field" class="font-bold text-gray-600 text-sm italic uppercase tracking-wider">Software Development</p>
                     </div>
                 </div>
                 <div class="space-y-6">
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 italic">Status Saat Ini</p>
+                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-2 italic">Status Saat Ini</p>
                         <span id="modal_status" class="bg-emerald-50 text-emerald-600 border-emerald-100 px-4 py-2 rounded-2xl font-black text-[9px] uppercase tracking-widest italic border-2 inline-block">Aktif Magang</span>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 italic">Pencapaian Progres</p>
+                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-2 italic">Pencapaian Progres</p>
                         <div class="flex items-center gap-4">
                             <span id="modal_progress_text" class="text-3xl font-black text-gray-800 italic tracking-tighter">85%</span>
                             <progress id="modal_progress_bar" class="progress [&::-webkit-progress-value]:bg-[#6B21A8] h-3 flex-1 bg-gray-100 rounded-full" value="85" max="100"></progress>
@@ -225,8 +244,8 @@
             </div>
 
             <div class="mt-12 pt-8 border-t border-gray-100 flex gap-4">
-                <button onclick="document.getElementById('student_detail_modal').close()" class="btn bg-gray-50 hover:bg-gray-100 border-none flex-1 h-14 font-black uppercase tracking-widest text-[10px] text-gray-400 rounded-2xl transition-all italic">Tutup Jendela</button>
-                <a id="modal_logbook_btn" href="{{ route('dosen.logbook') }}" class="btn bg-amber-500 hover:bg-amber-400 border-none text-white flex-[1.5] h-14 font-black uppercase tracking-widest text-[10px] shadow-xl shadow-purple-100 rounded-2xl transition-all italic">Lihat Detail Logbook</a>
+                <x-button variant="secondary" size="lg" onclick="document.getElementById('student_detail_modal').close()" class="flex-1 italic">Tutup Jendela</x-button>
+                <x-button variant="primary" size="lg" id="modal_logbook_btn" onclick="window.location.href='{{ route('dosen.logbook') }}'" class="flex-[1.5] italic !shadow-xl !shadow-purple-100">Lihat Detail Logbook</x-button>
             </div>
         </div>
     </div>
@@ -242,7 +261,7 @@ function showStudentDetail(name, nim, company, progress, field, status) {
     document.getElementById('modal_nim').innerText = nim + ' • ' + (field || 'PROGRAM STUDI');
     document.getElementById('modal_field').innerText = field || 'N/A';
     document.getElementById('modal_status').innerText = status.toUpperCase();
-    document.getElementById('modal_avatar').innerText = name.split(' ').map(n => n[0]).join('').toUpperCase();
+    var parts = name.split(' '); document.getElementById('modal_avatar').innerText = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : name.substring(0, 2).toUpperCase();
 
     document.getElementById('student_detail_modal').showModal();
 }

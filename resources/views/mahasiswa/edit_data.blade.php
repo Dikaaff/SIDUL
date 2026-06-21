@@ -39,32 +39,6 @@
                 </div>
             </div>
 
-            {{-- Session Success Banner --}}
-            @if(session('success'))
-            <div class="bg-green-50 border-2 border-green-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </div>
-                <div>
-                    <h4 class="font-black text-green-800 text-sm uppercase tracking-wider">Berhasil!</h4>
-                    <p class="text-xs font-medium text-green-700 mt-1">{{ session('success') }}</p>
-                </div>
-            </div>
-            @endif
-
-            {{-- Session Error Banner --}}
-            @if(session('error'))
-            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                </div>
-                <div>
-                    <h4 class="font-black text-red-800 text-sm uppercase tracking-wider">Gagal!</h4>
-                    <p class="text-xs font-medium text-red-700 mt-1">{{ session('error') }}</p>
-                </div>
-            </div>
-            @endif
-
             {{-- Validation Errors --}}
             @if($errors->any())
             <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
@@ -93,7 +67,7 @@
                     </div>
                 </div>
             @else
-                <form action="{{ route('mahasiswa.edit_data.store') }}" method="POST" id="editForm">
+                <form action="{{ route('mahasiswa.edit_data.store') }}" method="POST" id="editForm" data-no-loading>
                     @csrf
                     
                     <div class="space-y-6">
@@ -161,16 +135,16 @@
                                 @if($maxAdditionalAnggota > 0)
                                 <div class="flex items-center gap-3 anggota-row">
                                     <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10" placeholder="NIM Anggota 1" required>
-                                    <button type="button" aria-label="Hapus anggota" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded-2xl bg-red-50 text-red-500 border border-red-100 hover:bg-red-100 hidden">
+                                    <x-button type="button" variant="ghost" aria-label="Hapus anggota" onclick="hapusAnggota(this)" class="h-11 w-11 !bg-red-50 !text-red-500 border !border-red-100 hover:!bg-red-100 hidden">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                                    </button>
+                                    </x-button>
                                 </div>
                                 @endif
                             </div>
                             @if($maxAdditionalAnggota > 0)
-                            <button type="button" onclick="tambahAnggota()" class="btn h-10 px-4 bg-gray-50 border border-gray-100 rounded-2xl text-[9px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-100">
+                            <x-button type="button" variant="secondary" size="sm" onclick="tambahAnggota()" class="bg-gray-50 border-gray-100 text-gray-500 hover:bg-gray-100">
                                 + Tambah Anggota
-                            </button>
+                            </x-button>
                             @endif
                         </div>
 
@@ -180,12 +154,14 @@
                         </div>
 
                         <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                            <a href="{{ route('mahasiswa.dashboard') }}" class="btn h-12 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest border-2 border-gray-100 text-gray-500 hover:bg-gray-50">
-                                Batal
+                            <a href="{{ route('mahasiswa.dashboard') }}">
+                                <x-button variant="secondary">
+                                    Batal
+                                </x-button>
                             </a>
-                            <button type="button" onclick="showConfirmModal()" class="btn h-12 px-8 bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-100 transition-all active:scale-95">
+                            <x-button variant="primary" onclick="showConfirmModal()">
                                 Ajukan Perubahan
-                            </button>
+                            </x-button>
                         </div>
                     </div>
                 </form>
@@ -224,14 +200,14 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div>
-                    <h3 class="font-black text-gray-800 text-sm uppercase tracking-wider">Riwayat Permintaan</h3>
+                    <h3 class="font-semibold text-gray-800 text-sm uppercase tracking-wider">Riwayat Permintaan</h3>
                     <p class="text-[10px] font-medium text-gray-400">Daftar pengajuan perubahan data Anda</p>
                 </div>
             </div>
 
             @if($riwayat->isEmpty())
                 <div class="text-center py-10">
-                    <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Belum ada riwayat permintaan</p>
+                    <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic">Belum ada riwayat permintaan</p>
                 </div>
             @else
                 <div class="space-y-3 max-h-[400px] overflow-y-auto">
@@ -287,28 +263,28 @@
 
         <div class="bg-gray-50 rounded-2xl p-5 space-y-3">
             <div class="flex justify-between items-center">
-                <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Field</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Field</span>
                 <span id="confirmField" class="text-sm font-bold text-gray-800">-</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Nilai Lama</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Nilai Lama</span>
                 <span id="confirmOld" class="text-sm font-bold text-gray-500">-</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Nilai Baru</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Nilai Baru</span>
                 <span id="confirmNew" class="text-sm font-bold text-[#6B21A8]">-</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Alasan</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Alasan</span>
                 <span id="confirmAlasan" class="text-sm font-bold text-gray-700 text-right max-w-[200px]">-</span>
             </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4 pt-2">
-            <form method="dialog">
-                <x-button type="submit" variant="outline" size="lg" :full="true">Batal</x-button>
+            <form method="dialog" data-no-loading>
+                <x-button type="submit" variant="ghost" size="lg" :full="true">Batal</x-button>
             </form>
-            <x-button variant="primary" size="lg" :full="true" onclick="document.getElementById('editForm').submit()">
+            <x-button variant="primary" size="lg" :full="true" onclick="submitEditForm(this)">
                 Ya, Ajukan!
             </x-button>
         </div>
@@ -442,7 +418,7 @@ function tambahAnggota() {
     row.className = 'flex items-center gap-3 anggota-row mt-3';
     row.innerHTML = `
         <input type="text" name="nim_anggota[]" class="input input-md flex-1 bg-gray-50 border-gray-100 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-[#6B21A8]/10" placeholder="NIM Anggota ${anggotaCount}" required>
-        <button type="button" aria-label="Hapus anggota" onclick="hapusAnggota(this)" class="btn h-11 w-11 rounded-2xl bg-red-50 text-red-500 border border-red-100 hover:bg-red-100">
+        <button type="button" aria-label="Hapus anggota" onclick="hapusAnggota(this)" class="btn h-11 w-11 bg-red-50 text-red-500 border border-red-100 hover:bg-red-100 font-black uppercase tracking-widest rounded-2xl transition-all active:scale-95">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
     `;
@@ -454,6 +430,15 @@ function hapusAnggota(btn) {
     if (document.querySelectorAll('.anggota-row').length <= 1) return;
     row.remove();
     anggotaCount--;
+}
+
+function submitEditForm(btn) {
+    btn.disabled = true;
+    var s = document.createElement('span');
+    s.className = 'spinner-loading';
+    s.innerHTML = '<svg class="animate-spin h-4 w-4 mr-2 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>';
+    btn.prepend(s);
+    document.getElementById('editForm').submit();
 }
 </script>
 @endpush

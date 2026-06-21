@@ -11,6 +11,15 @@
 />
 @endsection
 
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/dashboard/operator" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
+    <li>Permintaan Edit Data</li>
+  </ul>
+</div>
+@endsection
+
 @section('content')
 <div class="space-y-8 font-sans">
 
@@ -29,7 +38,7 @@
                 <div class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
-                <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Tidak ada permintaan pending</p>
+                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic">Tidak ada permintaan pending</p>
             </div>
         @else
             <div class="divide-y divide-gray-100">
@@ -39,11 +48,12 @@
                     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                         <div class="flex items-start gap-5 flex-1 min-w-0">
                             <div class="w-12 h-12 rounded-2xl bg-purple-50 text-[#6B21A8] font-black flex items-center justify-center text-sm shrink-0">
-                                {{ strtoupper(substr($item->mahasiswa->nama ?? '--', 0, 2)) }}
+                                @php $nameParts = explode(' ', $item->mahasiswa->nama ?? '--'); $initials = count($nameParts) > 1 ? strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1)) : strtoupper(substr($nameParts[0], 0, 2)); @endphp
+                                {{ $initials }}
                             </div>
                             <div class="flex-1 min-w-0 space-y-1">
                                 <div class="flex items-center gap-3 flex-wrap">
-                                    <h4 class="font-black text-gray-800 text-sm">{{ $item->mahasiswa->nama ?? 'Unknown' }}</h4>
+                                    <h4 class="font-semibold text-gray-800 text-sm">{{ $item->mahasiswa->nama ?? 'Unknown' }}</h4>
                                     <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{{ $item->mahasiswa->nim ?? '-' }}</span>
                                     @if($item->target_type === 'magang')
                                         <span class="badge bg-blue-50 text-blue-600 border-none text-[7px] font-black uppercase tracking-widest px-2 py-1">Data Perusahaan</span>
@@ -94,12 +104,12 @@
                         </div>
 
                         <div class="flex gap-2 shrink-0">
-                            <button onclick="openModalApprove{{ $item->id }}()" class="btn h-11 px-5 bg-green-500 hover:bg-green-600 text-white border-none rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-green-100">
+                            <x-button onclick="openModalApprove{{ $item->id }}()" variant="success">
                                 Setujui
-                            </button>
-                            <button onclick="openModalReject{{ $item->id }}()" class="btn h-11 px-5 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-red-100">
+                            </x-button>
+                            <x-button onclick="openModalReject{{ $item->id }}()" variant="danger">
                                 Tolak
-                            </button>
+                            </x-button>
                         </div>
                     </div>
                 </div>
@@ -142,19 +152,15 @@
                                 <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded-2xl text-sm font-bold" placeholder="Tambahkan catatan jika perlu..."></textarea>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-6">
-                                <button type="button" onclick="closeModalApprove{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded-2xl text-[10px] font-black uppercase tracking-widest w-full">
-                                    Batal
-                                </button>
-                                <button type="submit" class="btn h-14 px-8 bg-green-500 hover:bg-green-600 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest w-full shadow-lg transition-all active:scale-95 shadow-green-100">
-                                    Ya, Setujui
-                                </button>
+                                <x-button type="button" variant="ghost" size="lg" :full="true" onclick="closeModalApprove{{ $item->id }}()">Batal</x-button>
+                                <x-button type="submit" variant="success" size="lg" :full="true">Ya, Setujui</x-button>
                             </div>
                         </form>
                     </div>
                 </x-modal>
 
                 {{-- Modal Reject --}}
-                <x-modal id="reject_{{ $item->id }}" title="Tolak Perubahan Data" subtitle="VERIFIKASI OPERATOR" color="dark" size="md">
+                <x-modal id="reject_{{ $item->id }}" title="Tolak Perubahan Data" subtitle="VERIFIKASI OPERATOR" color="red" size="md">
                     <div class="space-y-6">
                         <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-5">
                             <div class="flex items-start gap-4">
@@ -178,12 +184,8 @@
                                 <textarea name="catatan" rows="2" class="textarea w-full bg-gray-50 border-gray-100 rounded-2xl text-sm font-bold" placeholder="Berikan alasan penolakan..." required></textarea>
                             </div>
                             <div class="grid grid-cols-2 gap-4 mt-6">
-                                <button type="button" onclick="closeModalReject{{ $item->id }}()" class="btn h-14 px-8 bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50 rounded-2xl text-[10px] font-black uppercase tracking-widest w-full">
-                                    Batal
-                                </button>
-                                <button type="submit" class="btn h-14 px-8 bg-red-500 hover:bg-red-600 text-white border-none rounded-2xl text-[10px] font-black uppercase tracking-widest w-full shadow-lg transition-all active:scale-95">
-                                    Ya, Tolak
-                                </button>
+                                <x-button type="button" variant="ghost" size="lg" :full="true" onclick="closeModalReject{{ $item->id }}()">Batal</x-button>
+                                <x-button type="submit" variant="danger" size="lg" :full="true">Ya, Tolak</x-button>
                             </div>
                         </form>
                     </div>
@@ -205,26 +207,26 @@
 
         @if($riwayat->isEmpty())
             <div class="p-12 text-center">
-                <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Belum ada riwayat</p>
+                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic">Belum ada riwayat</p>
             </div>
         @else
             <div class="overflow-x-auto">
-                <table class="table w-full border-collapse">
+                <table class="table w-full">
                     <thead>
-                        <tr class="text-gray-400 text-[9px] font-black uppercase tracking-widest bg-gray-50/30 border-b border-gray-100">
-                            <th class="pl-8 py-4">Mahasiswa</th>
+                        <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                            <th class="pl-8 py-5">Mahasiswa</th>
                             <th>Field</th>
                             <th>Nilai Lama</th>
                             <th>Nilai Baru</th>
                             <th>Status</th>
-                            <th class="pr-8">Diproses</th>
+                            <th class="pr-8 py-5">Diproses</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @foreach($riwayat as $item)
                         @php $label = $item->field === 'anggota_kelompok' ? 'Anggota Kelompok' : EditRequestService::getFieldLabel($item->field); @endphp
                         <tr class="hover:bg-gray-50 transition-all">
-                            <td class="pl-8 py-4">
+                            <td class="pl-8 py-5">
                                 <div class="font-bold text-gray-800 text-sm">{{ $item->mahasiswa->nama ?? '-' }}</div>
                                 <div class="text-[10px] text-gray-400">{{ $item->mahasiswa->nim ?? '-' }}</div>
                             </td>
@@ -253,7 +255,7 @@
                                 @endif
                             </td>
                             <td class="pr-8">
-                                <div class="text-[10px] font-bold text-gray-500">{{ $item->processor->name ?? '-' }}</div>
+                                <div class="text-[10px] font-bold text-gray-500">{{ $item->processor->display_name ?? '-' }}</div>
                                 <div class="text-[9px] text-gray-400">{{ $item->processed_at ? $item->processed_at->format('d M Y, H:i') : '-' }}</div>
                                 @if($item->catatan_operator)
                                     <div class="text-[9px] text-gray-400 italic mt-1">"{{ $item->catatan_operator }}"</div>

@@ -46,7 +46,7 @@
     </div>
 
     <!-- Mobile Sidebar Overlay -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300 cursor-pointer"></div>
 
     <script>
         // fungsi untuk membuka atau menutup sidebar pada tampilan mobile
@@ -115,9 +115,9 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            @if(session('success')) showToast('success', "{{ session('success') }}"); @endif
-            @if(session('error')) showToast('error', "{{ session('error') }}"); @endif
-            @if(session('info')) showToast('info', "{{ session('info') }}"); @endif
+            @if(session('success')) showToast('success', @json(session('success'))); @endif
+            @if(session('error')) showToast('error', @json(session('error'))); @endif
+            @if(session('info')) showToast('info', @json(session('info'))); @endif
         });
     </script>
 
@@ -154,6 +154,29 @@
 
     
     <script>
+    // Mencegah submit ganda — disable tombol + spinner
+    document.addEventListener('submit', function(e) {
+        const form = e.target;
+        if (form.dataset.noLoading !== undefined) return;
+        const btn = e.submitter || form.querySelector('button[type="submit"]');
+        if (btn && btn.dataset.noLoading === undefined) {
+            // Clone name/value sebelum disable biar tetap terkirim
+            if (btn.name) {
+                const h = document.createElement('input');
+                h.type = 'hidden';
+                h.name = btn.name;
+                h.value = btn.value;
+                form.appendChild(h);
+            }
+            btn.disabled = true;
+            if (!btn.querySelector('.spinner-loading')) {
+                const s = document.createElement('span');
+                s.className = 'spinner-loading';
+                s.innerHTML = '<svg class="animate-spin h-4 w-4 mr-2 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>';
+                btn.prepend(s);
+            }
+        }
+    });
     // Memaksa halaman memuat ulang jika diakses dari Cache Back/Forward
     window.addEventListener('pageshow', function(event) {
         if (event.persisted) {

@@ -44,7 +44,7 @@
                 </x-sidebar-link>
 
                 {{-- daisyui: menu-title --}}
-                <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
+                <li class="menu-title mt-4 px-2 text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mb-1">
                     DOSEN WALI
                 </li>
                 <x-sidebar-link href="/dosen/rekomendasi" :active="request()->is('dosen/rekomendasi')">
@@ -55,7 +55,7 @@
                 </x-sidebar-link>
 
                 {{-- daisyui: menu-title --}}
-                <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
+                <li class="menu-title mt-4 px-2 text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mb-1">
                     PEMBIMBING
                 </li>
                 <x-sidebar-link href="/dosen/monitoring" :active="request()->is('dosen/monitoring')">
@@ -109,7 +109,7 @@
                 </x-sidebar-link>
 
                 {{-- daisyui: menu-title --}}
-                <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
+                <li class="menu-title mt-4 px-2 text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mb-1">
                     LAYANAN MAHASISWA
                 </li>
                 <x-sidebar-link href="/operator/edit-requests" :active="request()->is('operator/edit-requests')">
@@ -149,7 +149,7 @@
                 </x-sidebar-link>
 
                 {{-- daisyui: menu-title --}}
-                <li class="menu-title mt-4 px-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
+                <li class="menu-title mt-4 px-2 text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mb-1">
                     PENGATURAN
                 </li>
                 <x-sidebar-link href="/mahasiswa/edit-data" :active="request()->is('mahasiswa/edit-data')">
@@ -166,11 +166,10 @@
     <div class="p-6 border-t border-gray-100 sticky bottom-0 bg-white">
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            {{-- daisyui: btn --}}
-            <button class="btn btn-ghost w-full justify-start gap-3 text-red-500 hover:bg-red-50 hover:text-red-600 rounded-2xl font-bold transition-all duration-300">
+            <x-button type="submit" variant="link" size="sm" full class="!text-red-500 hover:!text-red-700 !justify-start gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                 Logout
-            </button>
+            </x-button>
         </form>
     </div>
 </nav>

@@ -8,23 +8,34 @@
     subtitle="Catat aktivitas harian dan progres pekerjaan magang Anda."
 >
     <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto relative z-10">
-        <a href="{{ route('mahasiswa.logbook.pdf') }}" class="btn bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 rounded-2xl font-bold uppercase tracking-widest text-[10px] h-14 flex items-center justify-center gap-2 backdrop-blur-md">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-            Cetak Logbook
+        <a href="{{ route('mahasiswa.logbook.pdf') }}">
+            <x-button variant="ghost" size="lg" class="bg-white/10 hover:!bg-white/20 !text-white border border-white/20 backdrop-blur-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                Cetak Logbook
+            </x-button>
         </a>
         @if($isPeriodeOpen)
-        <x-button variant="amber" size="lg" onclick="document.getElementById('logbook_modal').showModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
+        <x-button variant="amber" size="lg" onclick="document.getElementById('logbook_modal').showModal()" class="!shadow-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
             Isi Logbook Hari Ini
         </x-button>
         @else
         <x-button variant="disabled" size="lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
             Periode Tutup
         </x-button>
         @endif
     </div>
 </x-page-header>
+@endsection
+
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/mahasiswa/dashboard" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
+    <li>Logbook Harian</li>
+  </ul>
+</div>
 @endsection
 
 @section('content')
@@ -47,33 +58,32 @@
             <table class="table w-full">
                 <thead>
                     <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
-                        <th class="py-6 pl-10">Tanggal</th>
+                        <th class="py-5 pl-8 w-16">No</th>
+                        <th>Tanggal</th>
                         <th>Aktivitas & Kegiatan</th>
-                        <th class="text-center pr-10 w-40">Detail</th>
+                        <th class="text-center py-5 pr-8 w-40">Detail</th>
                     </tr>
                 </thead>
-                <tbody id="logbook-tbody">
+                <tbody id="logbook-tbody" class="divide-y divide-gray-100">
                     @forelse($logbooks as $log)
-                    <tr class="hover:bg-gray-50/50 transition-all border-b border-gray-50 group">
-                        <td class="py-6 pl-10">
-                            <div class="flex flex-col">
-                                <span class="font-black text-gray-800 text-sm italic">{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}</span>
-                                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Hari Ke-{{ $logbooks->firstItem() + $loop->index }}</span>
-                            </div>
+                    <tr class="hover:bg-gray-50 transition-all group">
+                        <td class="pl-8 py-5 text-[10px] font-medium text-gray-400 italic">{{ $logbooks->firstItem() + $loop->index }}</td>
+                        <td class="py-5">
+                            <span class="font-semibold text-gray-800 text-sm italic">{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}</span>
                         </td>
                         <td>
                             <p class="text-sm font-bold text-gray-700 leading-relaxed italic truncate max-w-xl group-hover:text-gray-900 transition-colors">
                                 {{ $log->kegiatan }}
                             </p>
                         </td>
-                        <td class="text-center pr-10">
-                            <button onclick="showLogDetail('{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}', '{{ e($log->kegiatan) }}')" class="btn btn-ghost btn-sm text-[#422AD5] font-black uppercase text-[9px] tracking-widest rounded-2xl hover:bg-[#422AD5]/10">
+                        <td class="text-center pr-8">
+                            <x-button variant="ghost" size="sm" onclick="showLogDetail('{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}', '{{ e($log->kegiatan) }}')" class="text-[#422AD5] hover:bg-[#422AD5]/10">
                                 Lihat Detail
-                            </button>
+                            </x-button>
                         </td>
                     </tr>
                     @empty
-                    <x-empty-state colspan="3" title="Belum Ada Catatan Logbook" subtitle="Silakan mulai isi logbook harian Anda."/>
+                    <x-empty-state colspan="4" title="Belum Ada Catatan Logbook" subtitle="Silakan mulai isi logbook harian Anda."/>
                     @endforelse
                 </tbody>
             </table>

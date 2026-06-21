@@ -2,7 +2,7 @@
     'id',
     'title'    => null,
     'subtitle' => null,
-    'color'    => 'default',  {{-- default | purple | dark --}}
+    'color'    => 'default',  {{-- default | purple | dark | red --}}
     'size'     => '2xl',      {{-- sm | md | lg | xl | 2xl | 5xl --}}
 ])
 
@@ -35,7 +35,7 @@ $maxWidth = match($size) {
                         @endif
                     </div>
                     {{-- daisyui: btn --}}
-                    <form method="dialog">
+                    <form method="dialog" data-no-loading>
                         <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white ml-4">✕</button>
                     </form>
                 </div>
@@ -56,11 +56,31 @@ $maxWidth = match($size) {
                     <h3 class="text-2xl font-black italic tracking-tighter uppercase">{{ $title }}</h3>
                 </div>
                 {{-- daisyui: btn --}}
-                <form method="dialog" class="relative z-10">
+                <form method="dialog" class="relative z-10" data-no-loading>
                     <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white">✕</button>
                 </form>
             </div>
             <div class="p-10 -mt-8 bg-white rounded-2xl relative z-20 space-y-8">
+                {{ $slot }}
+            </div>
+
+        {{-- ===== RED HEADER (for delete/reject) ===== --}}
+        @elseif($color === 'red' && $title)
+            <div class="bg-red-600 p-8 text-white relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                <div class="flex items-start justify-between relative z-10">
+                    <div>
+                        <h3 class="font-black text-2xl italic tracking-tighter">{{ $title }}</h3>
+                        @if($subtitle)
+                            <p class="text-white/70 text-[10px] font-black uppercase tracking-widest mt-1 italic">{{ $subtitle }}</p>
+                        @endif
+                    </div>
+                    <form method="dialog" data-no-loading>
+                        <button class="btn btn-sm btn-circle btn-ghost bg-white/10 hover:bg-white/20 border-none text-white ml-4">✕</button>
+                    </form>
+                </div>
+            </div>
+            <div class="p-10 -mt-6 bg-white rounded-2xl relative z-20 space-y-6">
                 {{ $slot }}
             </div>
 
@@ -75,7 +95,7 @@ $maxWidth = match($size) {
                         @endif
                     </div>
                     {{-- daisyui: btn --}}
-                    <form method="dialog">
+                    <form method="dialog" data-no-loading>
                         <button class="btn btn-circle btn-ghost btn-sm">✕</button>
                     </form>
                 </div>
@@ -95,7 +115,7 @@ $maxWidth = match($size) {
     </div>
     {{-- Close on backdrop click --}}
     {{-- daisyui: modal-backdrop --}}
-    <form method="dialog" class="modal-backdrop">
+    <form method="dialog" class="modal-backdrop" data-no-loading>
         <button>close</button>
     </form>
 </dialog>

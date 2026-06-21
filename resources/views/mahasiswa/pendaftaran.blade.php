@@ -29,34 +29,8 @@
 @endphp
 <div class="max-w-5xl mx-auto pb-10">
     <x-card padding="large">
-        <form action="{{ route('mahasiswa.pendaftaran.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8" id="formPendaftaran">
+        <form action="{{ route('mahasiswa.pendaftaran.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8" id="formPendaftaran" data-no-loading>
             @csrf
-
-            {{-- Session Success Banner --}}
-            @if(session('success'))
-            <div class="bg-green-50 border-2 border-green-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </div>
-                <div>
-                    <h4 class="font-black text-green-800 text-sm uppercase tracking-wider">Berhasil!</h4>
-                    <p class="text-xs font-medium text-green-700 mt-1">{{ session('success') }}</p>
-                </div>
-            </div>
-            @endif
-
-            {{-- Session Error Banner --}}
-            @if(session('error'))
-            <div class="bg-red-50 border-2 border-red-200 p-5 rounded-2xl flex items-start gap-4 mb-6">
-                <div class="w-10 h-10 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                </div>
-                <div>
-                    <h4 class="font-black text-red-800 text-sm uppercase tracking-wider">Gagal!</h4>
-                    <p class="text-xs font-medium text-red-700 mt-1">{{ session('error') }}</p>
-                </div>
-            </div>
-            @endif
 
             {{-- Validation Errors --}}
             @if($errors->any())
@@ -177,7 +151,7 @@
                     <x-input label="Nama Perusahaan" name="perusahaan" value="{{ $magang->perusahaan ?? '' }}" placeholder="Contoh: PT. Sumber Maju Jaya" required :readonly="$isLocked" />
 
                     <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1 italic">Alamat Lengkap Perusahaan <span class="text-red-500">*</span></label>
+                        <label class="block text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-2 ml-1 italic">Alamat Lengkap Perusahaan <span class="text-red-500">*</span></label>
                         <textarea name="alamat" placeholder="Jl. Sudirman No. 123, Jakarta Raya..." class="w-full bg-gray-50 border border-gray-100 rounded-2xl py-4 px-6 text-sm font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#6B21A8]/5 outline-none transition-all min-h-[120px]" required {{ $isLocked ? 'readonly' : '' }}>{{ $magang->alamat ?? '' }}</textarea>
                     </div>
                 </div>
@@ -191,14 +165,14 @@
             <!-- CTA Navigation -->
             <div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-10 border-t border-gray-50">
                 @if(!$isLocked)
-                <button type="reset" class="w-full sm:w-auto px-8 py-4 bg-white-500 hover:bg-gray-200 text-gray border-none rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all italic" id="btnReset">
+                <x-button type="reset" variant="secondary" size="lg" id="btnReset" class="hover:bg-gray-200">
                     Reset Data
-                </button>
-                <button type="submit" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white rounded-2xl py-4 px-10 font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-purple-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" id="btnSubmit">
+                </x-button>
+                <x-button type="submit" variant="primary" size="lg" id="btnSubmit" class="shadow-purple-200 w-full sm:w-auto gap-3">
                     <span id="btnText">{{ $magang ? 'Update Pendaftaran' : 'Kirim Pendaftaran' }}</span>
                     <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     <span id="btnLoading" class="loading loading-spinner hidden"></span>
-                </button>
+                </x-button>
                 @else
                 <div class="flex items-center gap-3 bg-green-50 text-green-600 px-8 py-4 rounded-2xl border border-green-100 font-black uppercase tracking-widest text-[10px]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
@@ -211,26 +185,21 @@
 </div>
 
 <!-- Confirmation Modal -->
-<dialog id="confirmModal" class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box bg-white rounded-2xl p-8 text-center">
-    <div class="w-16 h-16 mx-auto bg-amber-50 rounded-2xl flex items-center justify-center mb-6">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+<x-modal id="confirmModal" title="Konfirmasi Pendaftaran" color="purple" size="md">
+    <div class="text-center space-y-6">
+        <div class="w-20 h-20 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+        </div>
+        <h3 class="text-xl font-black text-gray-800">Apakah data anda sudah benar?</h3>
+        <p class="text-sm font-medium text-gray-400">Pastikan semua data yang anda masukkan sudah sesuai sebelum dikirim.</p>
+        <div class="grid grid-cols-2 gap-4 pt-2">
+            <form method="dialog" data-no-loading>
+                <x-button type="submit" variant="ghost" size="lg" :full="true">Tidak</x-button>
+            </form>
+            <x-button variant="primary" size="lg" :full="true" id="btnConfirmYa">Ya, Kirim</x-button>
+        </div>
     </div>
-    <h3 class="font-black text-gray-800 text-lg mb-2">Apakah data anda sudah benar?</h3>
-    <p class="text-sm text-gray-400 font-bold mb-8">Pastikan semua data yang anda masukkan sudah sesuai sebelum dikirim.</p>
-    <div class="flex gap-3 justify-center">
-      <button type="button" onclick="document.getElementById('confirmModal').close()" class="btn px-8 bg-gray-100 hover:bg-gray-200 text-gray-600 border-none rounded-2xl font-black uppercase tracking-widest text-[10px] h-12">
-        Tidak
-      </button>
-      <button type="button" id="btnConfirmYa" class="btn px-8 bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl font-black uppercase tracking-widest text-[10px] h-12 shadow-lg shadow-amber-100">
-        Ya, Kirim
-      </button>
-    </div>
-  </div>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+</x-modal>
 
 <script>
     // fungsi untuk menampilkan atau menyembunyikan formulir kelompok berdasarkan pilihan pendaftaran

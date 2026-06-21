@@ -1,6 +1,6 @@
 @props([
     'type'    => 'button',
-    'variant' => 'primary',   {{-- primary | amber | green | red | blue | ghost | outline | white --}}
+    'variant' => 'primary',   {{-- primary | success | danger | secondary | info | link | ghost | disabled --}}
     'size'    => 'md',        {{-- sm | md | lg --}}
     'full'    => false,
     'loading' => false,
@@ -8,15 +8,14 @@
 
 @php
 $variantClass = match($variant) {
-    'primary'  => 'bg-amber-400 hover:bg-amber-500 text-white border-none shadow-lg shadow-amber-100',
-    'amber'    => 'bg-amber-400 hover:bg-amber-500 text-white border-none shadow-lg shadow-amber-100',
-    'green'    => 'bg-green-500 hover:bg-green-600 text-white border-none shadow-lg shadow-green-100',
-    'red'      => 'bg-red-500 hover:bg-red-600 text-white border-none shadow-lg shadow-red-100',
-    'blue'     => 'bg-blue-500 hover:bg-blue-600 text-white border-none shadow-lg shadow-blue-100',
-    'ghost'    => 'btn-ghost text-gray-400 hover:bg-gray-100 border-none',
-    'outline'  => 'bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50',
-    'white'    => 'bg-white hover:bg-gray-50 text-amber-500 border-none shadow-sm',
-    default    => 'bg-gray-100 text-gray-400 border-none cursor-not-allowed',
+    'primary', 'amber'                                           => 'bg-amber-400 hover:bg-amber-500 text-white border-none shadow-lg shadow-amber-100',
+    'success', 'green'                                           => 'bg-green-500 hover:bg-green-600 text-white border-none shadow-lg shadow-green-100',
+    'danger', 'red'                                              => 'bg-red-500 hover:bg-red-600 text-white border-none shadow-lg shadow-red-100',
+    'info', 'blue'                                               => 'bg-blue-500 hover:bg-blue-600 text-white border-none shadow-lg shadow-blue-100',
+    'link'                                                       => 'bg-transparent border-none text-gray-500 hover:text-gray-700 hover:underline shadow-none',
+    'secondary', 'outline', 'white'                              => 'bg-white border-2 border-gray-100 text-gray-700 hover:bg-gray-50',
+    'ghost'                                                      => 'btn-ghost text-gray-400 hover:bg-gray-100 border-none',
+    default                                                      => 'bg-gray-100 text-gray-400 border-none cursor-not-allowed',
 };  
 
 $sizeClass = match($size) {

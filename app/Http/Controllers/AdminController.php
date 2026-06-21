@@ -28,7 +28,7 @@ class AdminController extends Controller
     public function users()
     {
         // Mengambil daftar Dosen dan Operator
-        $users = User::whereIn('role', ['dosen', 'operator'])->orderBy('role')->latest()->get();
+        $users = User::whereIn('role', ['dosen', 'operator'])->orderBy('role')->latest()->paginate(10);
         return view('admin.users', compact('users'));
     }
 
@@ -57,6 +57,39 @@ class AdminController extends Controller
         }
 
         return back()->with('success', 'Akun ' . ucfirst($request->role) . ' berhasil ditambahkan!');
+    }
+
+    # fungsi untuk mengupdate data user
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $id,
+            'role'     => 'required|in:dosen,operator',
+            'password' => 'nullable|string|min:8',
+        ]);
+
+        $user->update([
+            'username' => $request->username,
+            'role'     => $request->role,
+        ]);
+
+        if ($request->password) {
+            $user->update(['password' => Hash::make($request->password)]);
+        }
+
+        if ($request->role === 'dosen') {
+            Dosen::updateOrCreate(
+                ['user_id' => $user->id],
+                ['nik' => $request->username, 'nama' => $request->name]
+            );
+        } else {
+            Dosen::where('user_id', $user->id)->delete();
+        }
+
+        return back()->with('success', 'Akun ' . ucfirst($request->role) . ' berhasil diperbarui!');
     }
 
     # fungsi untuk menghapus data user

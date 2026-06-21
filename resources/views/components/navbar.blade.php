@@ -29,7 +29,7 @@
                 </li>
                 <div class="h-px bg-gray-100 my-2"></div>
                 <li class="list-none">
-                    <form action="/logout" method="POST">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="w-full flex items-center gap-3 px-3 py-3 hover:bg-red-50 focus:bg-red-50 active:bg-red-50 text-red-500 transition-colors rounded-2xl outline-none">
                             <div class="w-8 h-8 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-white shadow-sm text-red-400 shrink-0">

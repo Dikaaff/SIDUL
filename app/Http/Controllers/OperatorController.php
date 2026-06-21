@@ -44,8 +44,8 @@ class OperatorController extends Controller
     public function dosenPembimbing()
     {
         return view('operator.dosen_pembimbing', [
-            'belumAssign' => $this->operatorService->getBelumAssign(perPage: 5),
-            'sudahAssign' => $this->operatorService->getSudahAssign(perPage: 5),
+            'belumAssign' => $this->operatorService->getBelumAssign(perPage: 10),
+            'sudahAssign' => $this->operatorService->getSudahAssign(perPage: 10),
             'dosens'      => $this->operatorService->getDosens(),
         ]);
     }
@@ -65,14 +65,15 @@ class OperatorController extends Controller
     # fungsi untuk menampilkan halaman monitoring magang
     public function monitoring(Request $request)
     {
-        $magangs = $this->operatorService->monitoring($request->only(['search', 'status']));
+        $magangs = $this->operatorService->monitoring($request->only(['search', 'status']), perPage: 10);
         return view('operator.monitoring', compact('magangs'));
     }
 
     # fungsi untuk menampilkan halaman laporan magang
-    public function laporan()
+    public function laporan(Request $request)
     {
-        $magangs = $this->operatorService->getLaporanMagang(perPage: 5);
+        $search = $request->input('search');
+        $magangs = $this->operatorService->getLaporanMagang(perPage: 10, search: $search);
         return view('operator.laporan', compact('magangs'));
     }
 
@@ -83,7 +84,7 @@ class OperatorController extends Controller
         $riwayat = EditRequest::with(['mahasiswa.user', 'user', 'processor'])
             ->whereIn('status', ['approved', 'rejected'])
             ->latest()
-            ->paginate(5);
+            ->paginate(10);
         return view('operator.edit_requests', compact('permintaan', 'riwayat'));
     }
 

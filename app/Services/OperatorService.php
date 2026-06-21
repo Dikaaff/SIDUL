@@ -73,7 +73,7 @@ class OperatorService
     }
 
     # fungsi untuk memfilter data monitoring magang
-    public function monitoring(array $filters = [])
+    public function monitoring(array $filters = [], ?int $perPage = null)
     {
         $query = Magang::with(['peserta.mahasiswa', 'pembimbing', 'laporan'])
             ->withCount('logbooks');
@@ -94,15 +94,23 @@ class OperatorService
             $query->where('status_magang', $filters['status']);
         }
 
-        return $query->latest()->get();
+        return $perPage ? $query->latest()->paginate($perPage) : $query->latest()->get();
     }
 
     # fungsi untuk mengambil data magang yang sudah memiliki laporan
-    public function getLaporanMagang(?int $perPage = null)
+    public function getLaporanMagang(?int $perPage = null, ?string $search = null)
     {
         $query = Magang::with(['peserta.mahasiswa', 'laporan'])
             ->whereHas('laporan')
             ->latest();
+
+        if ($search) {
+            $query->whereHas('peserta.mahasiswa', function ($q) use ($search) {
+                $q->where('nama', 'LIKE', "%{$search}%")
+                  ->orWhere('nim', 'LIKE', "%{$search}%");
+            });
+        }
+
         return $perPage ? $query->paginate($perPage) : $query->get();
     }
 }

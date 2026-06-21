@@ -83,6 +83,8 @@ class SidulSeeder extends Seeder
             ['nim' => '23.01.5020', 'nama' => 'Satria Wirawan', 'konsentrasi' => 'Game Development'],
             ['nim' => '23.01.5021', 'nama' => 'Tania Febriani', 'konsentrasi' => 'Cyber Security'],
             ['nim' => '23.01.5022', 'nama' => 'Yoga Pratama', 'konsentrasi' => 'Artificial Intelligence'],
+            ['nim' => '23.01.5090', 'nama' => 'kakka'],
+            ['nim' => '23.01.5091', 'nama' => 'Yoga akksa'],
         ];
 
         foreach ($mhs as $m) {

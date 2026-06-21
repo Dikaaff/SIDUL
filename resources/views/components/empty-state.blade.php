@@ -5,11 +5,6 @@
     'colspan'  => null,   {{-- set if used inside a <table> --}}
 ])
 
-@php $content = <<<'HTML'
-    <div class="flex flex-col items-center py-24 px-8 text-center">
-        <div class="w-20 h-20 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 mb-5 border-2 border-dashed border-gray-200">
-HTML; @endphp
-
 @if($colspan)
 <tr>
     <td colspan="{{ $colspan }}" class="p-0">
@@ -25,8 +20,8 @@ HTML; @endphp
             </svg>
         @endif
     </div>
-    <h4 class="text-lg font-black text-gray-400 italic">{{ $title }}</h4>
-    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2">{{ $subtitle }}</p>
+    <h4 class="text-lg font-semibold text-gray-400">{{ $title }}</h4>
+    <p class="text-sm font-medium text-gray-400 mt-1">{{ $subtitle }}</p>
 </div>
 
 @if($colspan)

@@ -9,6 +9,15 @@
 />
 @endsection
 
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/dashboard/dosen" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
+    <li>Review Logbook</li>
+  </ul>
+</div>
+@endsection
+
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
     
@@ -20,7 +29,7 @@
                 <span class="badge badge-primary font-bold text-[10px] py-3 px-3">{{ $mhsBimbingan->count() }}</span>
             </div>
             <div class="px-4 pb-3">
-                <input id="searchStudent" class="input input-sm w-full bg-gray-50 border-gray-100 rounded-2xl text-xs font-bold focus:ring-4 focus:ring-[#6B21A8]/10 focus:bg-white transition-all" placeholder="Cari nama atau NIM..." />
+                <x-search-input id="searchStudent" name="searchStudent" placeholder="Cari nama atau NIM..." class="w-full" />
             </div>
             <div class="p-4 pt-0 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" id="studentSelector">
                 {{-- Diisi via JS --}}
@@ -43,15 +52,15 @@
 
             <div class="p-0 overflow-x-auto custom-scrollbar">
                 <div class="min-w-[800px] md:min-w-full">
-                    <table class="table table-lg w-full">
+                    <table class="table w-full">
                         <thead>
-                            <tr class="text-gray-400 font-extrabold text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
-                                <th class="py-6 pl-10">Tanggal</th>
+                            <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
+                                <th class="py-5 pl-8">Tanggal</th>
                                 <th>Aktivitas / Kegiatan</th>
-                                <th class="text-right pr-10">Aksi</th>
+                                <th class="text-right pr-8">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="allLogsTableBody" class="divide-y divide-gray-50">
+                        <tbody id="allLogsTableBody" class="divide-y divide-gray-100">
                             {{-- Diisi via JS --}}
                         </tbody>
                     </table>
@@ -99,9 +108,15 @@ const mockLogs = @json($mhsBimbingan->mapWithKeys(function($magang) {
     ];
 }));
 
+function getInitials(name) {
+    var parts = name.split(' ');
+    if (parts.length > 1) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return name.substring(0, 2).toUpperCase();
+}
+
 let currentStudentId = students.length > 0 ? students[0].id : null;
 let currentLogPage = 1;
-const logsPerPage = 5;
+const logsPerPage = 10;
 
 function getFilteredStudents() {
     var q = document.getElementById('searchStudent');
@@ -117,7 +132,7 @@ function renderStudents() {
     const container = document.getElementById('studentSelector');
     container.innerHTML = '';
     if (filtered.length === 0) {
-        container.innerHTML = '<div class="p-6 text-center"><p class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Tidak ditemukan</p></div>';
+        container.innerHTML = '<div class="p-6 text-center"><p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic">Tidak ditemukan</p></div>';
         return;
     }
     filtered.forEach(s => {
@@ -127,7 +142,7 @@ function renderStudents() {
 
         container.innerHTML += `
             <div onclick="selectStudent(${s.id})" class="p-5 rounded-2xl flex items-center gap-4 cursor-pointer transition-all border-2 ${isActive ? 'bg-purple-50 border-[#6B21A8] shadow-lg shadow-purple-100' : 'bg-white border-transparent hover:border-gray-100 hover:bg-gray-50 group'}">
-                <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xs group-hover:rotate-6 transition-all shrink-0">${s.name[0]}</div>
+                <div class="w-12 h-12 rounded-2xl ${avatarStyle} flex items-center justify-center font-black text-xs group-hover:rotate-6 transition-all shrink-0">${getInitials(s.name)}</div>
                 <div class="overflow-hidden">
                     <p class="text-sm font-bold text-gray-900 truncate tracking-tight ${isActive ? 'text-[#6B21A8]' : ''}">${s.name}</p>
                     <p class="text-[9px] font-medium text-gray-400 tracking-wide mt-1 uppercase">${s.nim}</p>
@@ -156,7 +171,7 @@ function renderLogs() {
     allLogsTableBody.innerHTML = '';
     
     if(logs.length === 0) {
-        allLogsTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-20 text-[10px] font-black text-gray-300 uppercase italic tracking-widest">Belum ada aktivitas yang dicatat</td></tr>';
+        allLogsTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-20 text-[10px] font-medium text-gray-400 uppercase italic tracking-widest">Belum ada aktivitas yang dicatat</td></tr>';
         renderLogPagination(0);
         return;
     }
@@ -169,13 +184,13 @@ function renderLogs() {
     pageLogs.forEach((l, idx) => {
         const globalIdx = start + idx;
         allLogsTableBody.innerHTML += `
-            <tr class="hover:bg-gray-50/50 transition-all group">
-                <td class="font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] py-6 pl-10 border-b border-gray-50">${l.date}</td>
-                <td class="font-bold text-sm text-gray-700 italic border-b border-gray-50">
+            <tr class="hover:bg-gray-50 transition-all group">
+                <td class="font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] py-5 pl-8">${l.date}</td>
+                <td class="font-bold text-sm text-gray-700 italic">
                     <div class="max-w-md truncate group-hover:text-gray-900 transition-colors">${l.desc}</div>
                 </td>
-                <td class="text-right pr-10 border-b border-gray-50">
-                    <button onclick="showDetail(${currentStudentId}, ${globalIdx})" class="btn btn-ghost btn-sm text-[#6B21A8] font-black uppercase text-[9px] tracking-widest hover:bg-purple-50 rounded-2xl">Lihat Detail →</button>
+                <td class="text-right pr-8">
+                    <button onclick="showDetail(${currentStudentId}, ${globalIdx})" class="btn btn-ghost border-none h-9 px-4 text-[10px] font-black uppercase tracking-widest rounded-2xl transition-all active:scale-95 !text-[#6B21A8] hover:!bg-purple-50">Lihat Detail →</button>
                 </td>
             </tr>
         `;

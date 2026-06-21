@@ -18,7 +18,7 @@
             @endphp
             <div class="w-2.5 h-2.5 rounded-full {{ $statusClass }}"></div>
             @if($laporan && $laporan->status === 'approved')
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             @endif
             <span class="text-[10px] font-bold uppercase tracking-widest text-white/90">
                 Status: {{ $laporan ? ucfirst($laporan->status) : 'New Document' }}
@@ -26,6 +26,15 @@
         </div>
     </div>
 </x-page-header>
+@endsection
+
+@section('breadcrumbs')
+<div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
+  <ul>
+    <li><a href="/mahasiswa/dashboard" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
+    <li>Laporan Akhir</li>
+  </ul>
+</div>
 @endsection
 
 @section('content')
@@ -58,21 +67,21 @@
                     </div>
                 </div>
             </div>
-            <button type="button" onclick="document.getElementById('judulInput').focus()" class="btn bg-orange-500 hover:bg-orange-600 border-none text-white px-8 h-14 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-orange-200 shrink-0">
+            <x-button variant="primary" size="lg" onclick="document.getElementById('judulInput').focus()" class="bg-orange-500 hover:bg-orange-600 shadow-xl shadow-orange-200 shrink-0">
                 Mulai Revisi Sekarang
-            </button>
+            </x-button>
         </div>
     </div>
     @endif
 
     <form action="{{ $laporan && $laporan->status === 'approved' ? '#' : route('mahasiswa.laporan.store') }}" method="POST" id="docForm" {{ $laporan && $laporan->status === 'approved' ? 'onsubmit="return false;"' : '' }}>
         @csrf
-        <input type="hidden" name="magang_id" value="{{ Auth::user()->mahasiswa->pesertaMagang->magang->id }}">
+        <input type="hidden" name="magang_id" value="{{ Auth::user()?->mahasiswa?->pesertaMagang?->magang?->id }}">
 
         <div class="flex flex-col gap-8">
             <!-- Judul Section -->
             <x-card padding="large" border class="transition-all hover:shadow-md">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 ml-1 italic">Judul Laporan</label>
+                <label class="block text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mb-3 ml-1 italic">Judul Laporan</label>
                 <input type="text" name="judul" id="judulInput" value="{{ old('judul', $laporan->judul ?? '') }}"
                     placeholder="Contoh: LAPORAN AKHIR MAGANG PT. GOJEK INDONESIA..."
                     class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 text-xl font-black text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#6B21A8]/5 transition-all outline-none placeholder:text-gray-300"
@@ -115,33 +124,35 @@
 
                    <div class="flex flex-wrap gap-4 w-full md:w-auto">
                     @if($laporan)
-                    <a href="{{ route('mahasiswa.laporan.pdf') }}" class="btn h-14 px-8 bg-[#422AD5] hover:bg-[#311eb3] text-white border-none rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#422AD5]/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                        Cetak PDF
+                    <a href="{{ route('mahasiswa.laporan.pdf') }}">
+                        <x-button variant="ghost" size="lg" class="!bg-[#422AD5] hover:!bg-[#311eb3] !text-white !shadow-lg !shadow-[#422AD5]/20 gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            Cetak PDF
+                        </x-button>
                     </a>
                     @endif
 
                     @if($laporan && $laporan->status === 'approved')
                     <div class="h-14 px-10 bg-green-50 text-green-600 rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center gap-3 border border-green-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                         Laporan Disetujui ✓
                     </div>
                     @elseif(!$isPeriodeOpen)
-                    <button type="button" class="btn h-14 px-10 bg-gray-100 text-gray-400 border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] flex-1 md:flex-none cursor-not-allowed" disabled>
+                    <x-button variant="disabled" size="lg" class="flex-1 md:flex-none">
                         Periode Berakhir
-                    </button>
+                    </x-button>
                     @else
-                        <button type="submit" name="action" value="save" class="btn h-14 px-8 bg-gray-200 hover:bg-gray-300 text-gray-700 border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all">
+                        <x-button type="submit" variant="ghost" size="lg" name="action" value="save" class="!bg-gray-200 hover:!bg-gray-300 !text-gray-700">
                             Simpan Draft
-                        </button>
+                        </x-button>
                         @if($laporan && $laporan->status === 'review')
-                        <button type="button" class="btn h-14 px-8 bg-blue-100 text-blue-500 border border-blue-200 rounded-2xl font-bold uppercase tracking-widest text-[10px] cursor-default">
+                        <x-button variant="ghost" size="lg" class="!bg-blue-100 !text-blue-600 !border-blue-200 cursor-default pointer-events-none hover:!bg-blue-100">
                             Sedang Direview
-                        </button>
+                        </x-button>
                         @else
-                        <button type="submit" name="action" value="submit" class="btn h-14 px-8 bg-amber-400 hover:bg-amber-500 text-white border-none rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-2xl shadow-amber-100 transition-all">
+                        <x-button type="submit" variant="primary" size="lg" name="action" value="submit">
                             {{ $laporan && $laporan->status === 'revisi' ? 'Kirim Ulang Revisi' : 'Kirim Laporan' }}
-                        </button>
+                        </x-button>
                         @endif
                     @endif
                   </div>
@@ -187,6 +198,13 @@
                 @endif
             })
             .catch(error => { console.error(error); });
+    });
+
+    // Sync CKEditor content ke textarea sebelum form dikirim
+    document.getElementById('docForm')?.addEventListener('submit', function() {
+        for (const [name, editor] of Object.entries(editors)) {
+            editor.updateSourceElement();
+        }
     });
 </script>
 @endpush
