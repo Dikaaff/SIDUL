@@ -100,7 +100,7 @@ class MahasiswaService
     # fungsi untuk mengecek status magang aktif
     public function isMagangAktif(Magang $magang): bool
     {
-        return in_array($magang->status_magang, ['Aktif', 'berjalan', 'Approve', 'Selesai']);
+        return in_array($magang->status_magang, ['Aktif', 'Selesai']);
     }
 
     # fungsi untuk menyimpan logbook harian
@@ -119,6 +119,10 @@ class MahasiswaService
 
         if (!$this->isMagangAktif($magang)) {
             return ServiceResult::error('Logbook hanya tersedia untuk magang aktif.');
+        }
+
+        if ($magang->laporan && $magang->laporan->status === 'approved') {
+            return ServiceResult::error('Logbook tidak dapat ditambahkan karena laporan sudah disetujui.');
         }
 
         Logbook::create([

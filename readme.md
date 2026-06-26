@@ -140,8 +140,8 @@ php artisan key:generate
 # php artisan migrate:fresh --seed
 
 # 6. Setup database & data uji
-touch database/database.sqlite   # Windows: type nul > database/database.sqlite
-php artisan migrate:fresh --seed
+# touch database/database.sqlite   # Windows: type nul > database/database.sqlite
+# php artisan migrate:fresh --seed
 
 # 7. Jalankan dev server (butuh 2 terminal)
 # Terminal 1: Backend
