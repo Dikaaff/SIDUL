@@ -13,12 +13,14 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, string $role): Response
     {
         if (!Auth::check()) {
+            //jika user belum login, redirect ke halaman login
             return redirect()->route('login');
         }
 
         $user = Auth::user();
         
         if ($user->role !== $role) {
+            //jika role tidak sesuai, redirect ke role yang sesuai
             return match($user->role) {
                 'admin'    => redirect()->route('admin.dashboard'),
                 'dosen'    => redirect()->route('dosen.dashboard'),

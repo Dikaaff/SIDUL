@@ -10,6 +10,7 @@ use App\Models\User;
 
 class EditRequestService
 {
+    # fungsi untuk mengambil daftar field yang dapat diedit
     public function getEditableFields(bool $hasMagang = false, ?Magang $magang = null, ?Mahasiswa $mahasiswa = null): array
     {
         $fields = [
@@ -30,6 +31,7 @@ class EditRequestService
         return $fields;
     }
 
+    # fungsi untuk menentukan target tabel dari field yang akan diedit
     public static function getFieldTarget(string $field): string
     {
         return match($field) {
@@ -39,6 +41,7 @@ class EditRequestService
         };
     }
 
+    # fungsi untuk mengambil nilai saat ini dari field yang akan diedit
     public function getCurrentValues(Mahasiswa $mahasiswa, ?Magang $magang = null): array
     {
         $values = [
@@ -58,6 +61,7 @@ class EditRequestService
         return $values;
     }
 
+    # fungsi untuk mengecek apakah mahasiswa memiliki permintaan edit yang pending
     public function hasPendingRequest(Mahasiswa $mahasiswa): bool
     {
         return EditRequest::where('mahasiswa_id', $mahasiswa->id)
@@ -65,6 +69,7 @@ class EditRequestService
             ->exists();
     }
 
+    # fungsi untuk mengambil daftar permintaan edit yang pending untuk operator
     public function getPendingRequestsForOperator()
     {
         return EditRequest::with(['mahasiswa.user', 'user', 'mahasiswa.pesertaMagang.magang'])
@@ -73,6 +78,7 @@ class EditRequestService
             ->get();
     }
 
+    # fungsi untuk mengambil riwayat permintaan edit milik mahasiswa
     public function getHistoryForMahasiswa(Mahasiswa $mahasiswa)
     {
         return EditRequest::where('mahasiswa_id', $mahasiswa->id)
@@ -81,6 +87,7 @@ class EditRequestService
             ->get();
     }
 
+    # fungsi untuk mengajukan permintaan edit data
     public function ajukan(User $user, array $data): ServiceResult
     {
         $mahasiswa = $user->mahasiswa;
@@ -152,6 +159,7 @@ class EditRequestService
         return ServiceResult::ok("Permintaan edit {$label} berhasil dikirim. Silakan tunggu konfirmasi dari Operator.");
     }
 
+    # fungsi untuk mengajukan perubahan anggota kelompok
     private function ajukanAnggotaKelompok(Mahasiswa $mahasiswa, User $user, Magang $magang, array $data): ServiceResult
     {
         \Log::info('ajukanAnggotaKelompok called', ['data' => $data, 'mahasiswa_id' => $mahasiswa->id]);
@@ -221,6 +229,7 @@ class EditRequestService
         return ServiceResult::ok('Permintaan perubahan anggota kelompok berhasil dikirim. Silakan tunggu konfirmasi dari Operator.');
     }
 
+    # fungsi untuk menyetujui permintaan edit data
     public function approve(EditRequest $editRequest, User $operator, ?string $catatan = null): ServiceResult
     {
         if ($editRequest->status !== 'pending') {
@@ -280,6 +289,7 @@ class EditRequestService
         return ServiceResult::ok("Data {$label} mahasiswa {$nama} berhasil diperbarui.");
     }
 
+    # fungsi untuk menyetujui perubahan anggota kelompok
     private function approveAnggotaKelompok(EditRequest $editRequest, User $operator, ?string $catatan = null): ServiceResult
     {
         $magang = Magang::find($editRequest->target_id);
@@ -317,6 +327,7 @@ class EditRequestService
         return ServiceResult::ok("Anggota kelompok magang {$nama} berhasil diperbarui.");
     }
 
+    # fungsi untuk menolak permintaan edit data
     public function reject(EditRequest $editRequest, User $operator, ?string $catatan = null): ServiceResult
     {
         if ($editRequest->status !== 'pending') {
@@ -333,11 +344,13 @@ class EditRequestService
         return ServiceResult::ok('Permintaan edit data berhasil ditolak.');
     }
 
+    # fungsi untuk mengambil jumlah permintaan edit yang pending
     public function getPendingCount(): int
     {
         return EditRequest::where('status', 'pending')->count();
     }
 
+    # fungsi untuk mengambil label dari nama field
     public static function getFieldLabel(string $field): string
     {
         return match($field) {

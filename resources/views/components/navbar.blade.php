@@ -1,4 +1,5 @@
 {{-- daisyui: navbar --}}
+{{-- AKSES: BG NAVBAR — ganti bg-base-100/90 untuk warna navbar (jangan sentuh backdrop-blur/border) --}}
 <div class="navbar bg-base-100/90 backdrop-blur sticky top-0 z-40 border-b border-base-200 lg:px-8">
     <div class="flex-none lg:hidden">
         {{-- daisyui: btn --}}

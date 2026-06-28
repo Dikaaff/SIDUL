@@ -14,7 +14,7 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-{{-- daisyui: bg-base-200 + text-base-content --}}
+{{-- AKSES: BG LOGIN — ubah bg-base-200 untuk ganti background halaman login (jangan sentuh kelas lain) --}}
 <body class="bg-base-200 font-sans antialiased text-base-content min-h-screen flex items-center justify-center p-4 lg:p-8">
     
     @yield('content')
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    {{-- Fullscreen Loading Overlay --}}
+    {{-- AKSES: BG OVERLAY loading — ganti bg-white untuk warna overlay loading --}}
     <div id="loadingOverlay" class="fixed inset-0 z-[99999] bg-white flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none">
         <div class="text-center">
             <svg class="animate-spin h-10 w-10 text-[#6B21A8] mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

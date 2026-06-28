@@ -36,5 +36,16 @@ class PesertaMagangSeeder extends Seeder
                 ]);
             }
         }
+
+        $remainingMhs = $approvedMhs->slice(10);
+        $availableMagangs = $magangs->slice(5);
+        foreach ($remainingMhs as $i => $mhs) {
+            if (!isset($availableMagangs[$i])) break;
+            PesertaMagang::factory()->create([
+                'magang_id' => $availableMagangs[$i]->id,
+                'mahasiswa_id' => $mhs->id,
+                'is_ketua' => true,
+            ]);
+        }
     }
 }
