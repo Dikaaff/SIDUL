@@ -100,7 +100,7 @@
     </div>
 </div>
 
-<!-- Background Elements for Auth Layout -->
+{{-- AKSES: BG LOGIN - background ungu di belakang form login. GANTI bg-[#6B21A8] untuk warna lain (AMAN, ini murni background) --}}
 <div class="fixed inset-0 z-0 bg-[#6B21A8] pointer-events-none">
     <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-white/10 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
     <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>

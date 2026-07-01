@@ -6,8 +6,14 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* ════════════════════════════════════════════════════ */
+/* CATATAN WARNA:                                      */
+/* --color-primary & --color-secondary juga dipakai    */
+/* tombol dan elemen UI lain.                           */
+/* Jika hanya ingin ganti BACKGROUND login/dashboard,   */
+/* cari komentar "AKSES: BG" di file layout/*.blade.php */
+/* ════════════════════════════════════════════════════ */
 @theme {
-    /* Custom Brand Colors for SIDUL */
     --color-primary: #6B21A8;
     --color-secondary: #F49E0A;
     --color-base-100: #F9FAFB;

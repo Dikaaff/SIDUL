@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Dosen;
 use App\Models\Magang;
+use App\Models\Mahasiswa;
 use Illuminate\Database\Seeder;
 
 class MagangSeeder extends Seeder
@@ -56,6 +57,22 @@ class MagangSeeder extends Seeder
                 'alamat' => $item['alamat'],
                 'konsentrasi' => $item['konsentrasi'],
                 'dosen_pembimbing_id' => $connectedDosens[$i]->id,
+                'status_magang' => 'Aktif',
+            ]);
+        }
+
+        $approvedMhs = Mahasiswa::where('status_daftar', 'Approve')->orderBy('id')->get()->slice(10);
+        $dosenIds = $connectedDosens->pluck('id')->toArray();
+
+        foreach ($approvedMhs as $j => $mhs) {
+            $kode = "SIDUL-{$tahun}-" . str_pad(6 + $j, 3, '0', STR_PAD_LEFT);
+
+            Magang::factory()->create([
+                'kode_magang' => $kode,
+                'tipe_magang' => 'individu',
+                'perusahaan' => $mhs->nama . ' - Individual Project',
+                'konsentrasi' => ['Web Development', 'Networking', '2D Animation'][$j % 3],
+                'dosen_pembimbing_id' => $dosenIds[$j % 5],
                 'status_magang' => 'Aktif',
             ]);
         }

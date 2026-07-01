@@ -15,10 +15,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-{{-- daisyui: text-base-content --}}
+{{-- AKSES: BG DASHBOARD — ganti bg-[#F9FAFB] untuk warna latar semua halaman dashboard (selain login) --}}
 <body class="bg-[#F9FAFB] font-sans antialiased text-base-content min-h-screen">
     <div class="flex">
         <!-- Sidebar container -->
+        {{-- AKSES: BG SIDEBAR — ganti bg-white untuk warna sidebar (jangan sentuh border/kelas lain) --}}
         <aside id="sidebar" class="fixed inset-y-0 left-0 w-80 bg-white border-r border-gray-100 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
             @include('components.sidebar')
         </aside>
@@ -46,6 +47,7 @@
     </div>
 
     <!-- Mobile Sidebar Overlay -->
+    {{-- AKSES: BG OVERLAY sidebar mobile — ganti bg-black/50 untuk warna overlay --}}
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300 cursor-pointer"></div>
 
     <script>

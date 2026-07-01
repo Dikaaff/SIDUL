@@ -1,5 +1,7 @@
+{{-- AKSES: BG SIDEBAR — ganti bg-white untuk warna sidebar (jangan ubah kelas lain) --}}
 <nav class="w-80 h-full bg-white flex flex-col relative overflow-hidden">
     <!-- Logo -->
+    {{-- AKSES: BG HEADER SIDEBAR — ganti bg-white (jangan sentuh border/kelas lain) --}}
     <div class="h-16 flex items-center px-6 border-b border-gray-100 gap-3 sticky top-0 bg-white z-10">
         <span class="text-2xl font-black text-[#6B21A8] tracking-tighter uppercase">
             SIDUL
@@ -162,7 +164,7 @@
         </ul>
     </div>
 
-    <!-- Bottom Action -->
+    {{-- AKSES: BG FOOTER SIDEBAR — ganti bg-white untuk warna footer (jangan sentuh border/kelas lain) --}}
     <div class="p-6 border-t border-gray-100 sticky bottom-0 bg-white">
         <form action="{{ route('logout') }}" method="POST">
             @csrf

@@ -78,7 +78,7 @@
                                         <span class="italic text-[9px]">Direkomendasikan</span>
                                     </x-button>
                                 @elseif($mhs->status_daftar === 'Rejected')
-                                    <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
+                                    <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form" data-no-loading>
                                         @csrf
                                         <x-button type="submit" variant="ghost" size="sm" class="!text-red-600 hover:!bg-red-50 gap-2">
                                             <div class="w-7 h-7 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center shadow-inner">
@@ -92,7 +92,7 @@
                                         <x-button type="button" variant="danger" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="reject-btn px-4 text-[9px]">
 Tolak
                                         </x-button>
-                                        <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
+                                        <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form" data-no-loading>
                                             @csrf
                                             <x-button type="submit" variant="success" class="px-6 text-[9px] group hover:scale-105">
 Setujui
@@ -132,13 +132,13 @@ Setujui
                         @if($mhs->status_daftar === 'Approve')
                             <span class="text-[9px] font-black text-green-600 italic">✓ Direkomendasikan</span>
                         @elseif($mhs->status_daftar === 'Rejected')
-                            <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
+                            <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form" data-no-loading>
                                 @csrf
                                 <x-button type="submit" variant="ghost" size="sm" class="!text-red-600 hover:!bg-red-50">Setujui Mahasiswa?</x-button>
                             </form>
                         @else
                             <x-button type="button" variant="danger" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="reject-btn px-4 text-[9px]">Tolak</x-button>
-                            <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
+                            <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form" data-no-loading>
                                 @csrf
                                 <x-button type="submit" variant="success" class="px-6 text-[9px]">Setujui</x-button>
                             </form>
@@ -198,7 +198,7 @@ Setujui
             <form method="dialog" data-no-loading>
                 <x-button type="submit" variant="ghost" size="lg" :full="true">Batal</x-button>
             </form>
-            <form id="reject_form" method="POST" action="">
+            <form id="reject_form" method="POST" action="" data-no-loading>
                 @csrf
                 <x-button type="submit" variant="danger" size="lg" :full="true">Ya, Tolak Sekarang</x-button>
             </form>
@@ -220,11 +220,10 @@ Setujui
         var form = e.target;
         var btn = form.querySelector('button[type="submit"]');
         if (btn) {
-            btn.classList.add('loading');
             btn.setAttribute('disabled', 'true');
             btn.innerHTML = '<span class="loading loading-spinner loading-xs"></span> Memproses...';
         }
-        setTimeout(function() { form.submit(); }, 800);
+        setTimeout(function() { form.submit(); }, 200);
     }
 
     function bindEvents() {

@@ -16,8 +16,17 @@ class MahasiswaSeeder extends Seeder
         foreach (UserSeeder::$mahasiswa as $i => $mhs) {
             $user = User::where('username', $mhs['nim'])->first();
 
-            $status = $i < 10 ? 'Pending' : 'Approve';
-            $dosenWali = $connectedDosens[$i % 5];
+            if ($i >= 30) {
+                $offset = $i - 30;
+                $dosenWali = $connectedDosens[intdiv($offset, 20) % count($connectedDosens)];
+                $status = ($offset % 20) < 10 ? 'Pending' : 'Approve';
+            } elseif ($i >= 20) {
+                $status = 'Pending';
+                $dosenWali = $connectedDosens[4];
+            } else {
+                $status = $i < 10 ? 'Pending' : 'Approve';
+                $dosenWali = $connectedDosens[$i % 5];
+            }
 
             Mahasiswa::factory()->create([
                 'user_id' => $user->id,

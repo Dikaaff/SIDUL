@@ -51,16 +51,24 @@ class LaporanSeeder extends Seeder
         ];
 
         foreach ($magangs as $i => $magang) {
-            Laporan::factory()->create([
-                'magang_id' => $magang->id,
-                'judul' => $laporanData[$i]['judul'],
-                'bab1' => $laporanData[$i]['bab1'],
-                'bab2' => $laporanData[$i]['bab2'],
-                'bab3' => $laporanData[$i]['bab3'],
-                'bab4' => $laporanData[$i]['bab4'],
-                'status' => 'review',
-                'catatan_dosen' => null,
-            ]);
+            if ($i < count($laporanData)) {
+                Laporan::factory()->create([
+                    'magang_id' => $magang->id,
+                    'judul' => $laporanData[$i]['judul'],
+                    'bab1' => $laporanData[$i]['bab1'],
+                    'bab2' => $laporanData[$i]['bab2'],
+                    'bab3' => $laporanData[$i]['bab3'],
+                    'bab4' => $laporanData[$i]['bab4'],
+                    'status' => 'review',
+                    'catatan_dosen' => null,
+                ]);
+            } else {
+                Laporan::factory()->create([
+                    'magang_id' => $magang->id,
+                    'status' => 'review',
+                    'catatan_dosen' => null,
+                ]);
+            }
         }
     }
 }
