@@ -99,16 +99,27 @@
                 </td>
                 <td class="pr-8 text-right">
                     @if($laporan)
-                        <x-button type="button" variant="primary" size="sm"
-                            class="btn-review h-9 px-5 text-[9px]"
-                            data-id="{{ $magang->id }}"
-                            data-judul="{{ addslashes($laporan->judul) }}"
-                            data-bab1="{{ base64_encode($laporan->bab1) }}"
-                            data-bab2="{{ base64_encode($laporan->bab2) }}"
-                            data-bab3="{{ base64_encode($laporan->bab3) }}"
-                            data-bab4="{{ base64_encode($laporan->bab4) }}">
-                            Review
-                        </x-button>
+                        <div class="flex items-center gap-2 justify-end">
+                            @if($laporan->status === 'approved')
+                            <a href="{{ route('dosen.laporan.pdf', $magang->id) }}">
+                                <x-button variant="ghost" size="sm" class="h-9 px-4 text-[9px] !text-gray-400 hover:!text-[#6B21A8] hover:!bg-purple-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3v4a1 1 0 001 1h4" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6" /></svg>
+                                    PDF
+                                </x-button>
+                            </a>
+                            @endif
+                            <x-button type="button" variant="primary" size="sm"
+                                class="btn-review h-9 px-5 text-[9px]"
+                                data-id="{{ $magang->id }}"
+                                data-judul="{{ addslashes($laporan->judul) }}"
+                                data-bab1="{{ base64_encode($laporan->bab1) }}"
+                                data-bab2="{{ base64_encode($laporan->bab2) }}"
+                                data-bab3="{{ base64_encode($laporan->bab3) }}"
+                                data-bab4="{{ base64_encode($laporan->bab4) }}"
+                                data-pdf-url="{{ $laporan->status === 'approved' ? route('dosen.laporan.pdf', $magang->id) : '' }}">
+                                Review
+                            </x-button>
+                        </div>
                     @else
                         <x-button variant="disabled" size="sm" class="h-9 px-5 text-[9px]">Review</x-button>
                     @endif
@@ -162,16 +173,27 @@
                 @endif
             </div>
             @if($laporan)
-                <x-button type="button" variant="primary" size="sm"
-                    class="btn-review w-full h-10 text-[10px]"
-                    data-id="{{ $magang->id }}"
-                    data-judul="{{ addslashes($laporan->judul) }}"
-                    data-bab1="{{ base64_encode($laporan->bab1) }}"
-                    data-bab2="{{ base64_encode($laporan->bab2) }}"
-                    data-bab3="{{ base64_encode($laporan->bab3) }}"
-                    data-bab4="{{ base64_encode($laporan->bab4) }}">
-                    Review
-                </x-button>
+                <div class="flex gap-2">
+                    @if($laporan->status === 'approved')
+                    <a href="{{ route('dosen.laporan.pdf', $magang->id) }}" class="flex-1">
+                        <x-button variant="ghost" size="sm" class="w-full h-10 text-[10px] !text-gray-400 hover:!text-[#6B21A8] hover:!bg-purple-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3v4a1 1 0 001 1h4" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6" /></svg>
+                            PDF
+                        </x-button>
+                    </a>
+                    @endif
+                    <x-button type="button" variant="primary" size="sm"
+                        class="btn-review flex-1 h-10 text-[10px]"
+                        data-id="{{ $magang->id }}"
+                        data-judul="{{ addslashes($laporan->judul) }}"
+                        data-bab1="{{ base64_encode($laporan->bab1) }}"
+                        data-bab2="{{ base64_encode($laporan->bab2) }}"
+                        data-bab3="{{ base64_encode($laporan->bab3) }}"
+                        data-bab4="{{ base64_encode($laporan->bab4) }}"
+                        data-pdf-url="{{ $laporan->status === 'approved' ? route('dosen.laporan.pdf', $magang->id) : '' }}">
+                        Review
+                    </x-button>
+                </div>
             @else
                 <x-button variant="disabled" size="sm" class="w-full h-10 text-[10px]">Review</x-button>
             @endif
@@ -195,6 +217,10 @@
     <div class="p-8 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
         <div>
             <h3 class="font-black text-xl text-gray-800 italic" id="modalTitle">Judul Laporan</h3>
+            <div class="flex items-center gap-2 mt-2" id="modalPdfLink" style="display:none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3v4a1 1 0 001 1h4" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6" /></svg>
+                <a id="modalPdfBtn" href="#" target="_blank" class="text-[10px] font-bold text-[#6B21A8] hover:text-purple-700 underline transition-colors">Cetak PDF Laporan</a>
+            </div>
         </div>
         <form method="dialog" data-no-loading>
             <button class="btn btn-circle btn-ghost btn-sm">✕</button>
@@ -281,6 +307,15 @@
         };
         document.getElementById('modalTitle').innerText = judul;
         document.getElementById('approvalForm').action = `/dosen/laporan/${id}/approve`;
+        // Toggle PDF button
+        const pdfUrl = this.dataset.pdfUrl;
+        const pdfContainer = document.getElementById('modalPdfLink');
+        if (pdfUrl) {
+            document.getElementById('modalPdfBtn').href = pdfUrl;
+            pdfContainer.style.display = 'flex';
+        } else {
+            pdfContainer.style.display = 'none';
+        }
         switchView('bab1');
         document.getElementById('reviewModal').showModal();
     }

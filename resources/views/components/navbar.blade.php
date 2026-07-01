@@ -8,7 +8,7 @@
     </div>
     <div class="flex-1 px-2 mx-2">
         <a class="text-xl font-bold lg:hidden text-[#6B21A8]">SIDUL</a>
-        <h1 class="text-xl font-semibold hidden lg:block text-base-content/80">@yield('title', 'Dashboard')</h1>
+        <h1 class="text-xl font-semibold hidden lg:block text-base-content/80">@yield('title', 'Dasbor')</h1>
     </div>
     <div class="flex-none gap-4">
         <!-- User Profile Dropdown -->
@@ -35,7 +35,7 @@
                             <div class="w-8 h-8 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-white shadow-sm text-red-400 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                             </div>
-                            <span class="font-black uppercase tracking-widest text-[11px]">Logout</span>
+                            <span class="font-black uppercase tracking-widest text-[11px]">Keluar</span>
                         </button>
                     </form>
                 </li>

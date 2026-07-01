@@ -38,7 +38,7 @@
                 <div class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
-                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic">Tidak ada permintaan pending</p>
+                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic">Tidak ada permintaan menunggu</p>
             </div>
         @else
             <div class="divide-y divide-gray-100">

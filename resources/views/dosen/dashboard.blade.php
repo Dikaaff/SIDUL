@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Dosen - SIDUL')
+@section('title', 'Dasbor Dosen - SIDUL')
 
 @section('header')
 <x-page-header 
@@ -23,7 +23,7 @@
 <div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
   <ul>
     <li><a href="/dashboard/dosen" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
-    <li>Dashboard</li>
+    <li>Dasbor</li>
   </ul>
 </div>
 @endsection
@@ -118,9 +118,18 @@
                                 </div>
                             </td>
                             <td class="pr-8 text-right">
-                                <x-button variant="ghost" size="sm" aria-label="Lihat detail mahasiswa" onclick="showStudentDetail('{{ addslashes($magang->peserta->first()->mahasiswa->nama ?? '') }}', '{{ $magang->peserta->first()?->mahasiswa->nim }}', '{{ addslashes($magang->perusahaan) }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="!w-9 !h-9 !p-0 text-gray-300 hover:!text-[#6B21A8] hover:!bg-purple-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                </x-button>
+                                <div class="flex items-center justify-end gap-1">
+                                    <a href="{{ route('dosen.logbook.pdf', $magang->id) }}"
+                                       class="btn btn-ghost border-none !w-9 !h-9 !p-0 text-gray-300 hover:!text-[#6B21A8] hover:!bg-purple-50 inline-flex items-center justify-center rounded-2xl transition-all"
+                                       aria-label="Cetak PDF logbook"
+                                       title="Cetak PDF Logbook"
+                                       target="_blank">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3v4a1 1 0 001 1h4" /></svg>
+                                    </a>
+                                    <x-button variant="ghost" size="sm" aria-label="Lihat detail mahasiswa" onclick="showStudentDetail('{{ addslashes($magang->peserta->first()->mahasiswa->nama ?? '') }}', '{{ $magang->peserta->first()?->mahasiswa->nim }}', '{{ addslashes($magang->perusahaan) }}', {{ $progress }}, '{{ $magang->konsentrasi }}', '{{ $magang->status_magang }}')" class="!w-9 !h-9 !p-0 text-gray-300 hover:!text-[#6B21A8] hover:!bg-purple-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    </x-button>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -138,7 +147,7 @@
         <!-- Sidebar: Notifications & Actions -->
         <div class="lg:col-span-4 space-y-10">
             <div class="space-y-6">
-                <h3 class="text-2xl font-black text-gray-800 tracking-tighter italic px-2">Aktivitas Penting 🔔</h3>
+                <h3 class="text-2xl font-black text-gray-800 tracking-tighter italic px-2">Aktivitas Penting ðŸ””</h3>
                 
                 <div class="space-y-4">
                     @if($pendingRekomendasiCount > 0)
@@ -174,7 +183,7 @@
 
                     @if($pendingRekomendasiCount == 0 && $pendingLaporanCount == 0)
                     <x-card padding="none" border class="p-10 bg-gray-50/50 text-center border-dashed">
-                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic leading-relaxed">Semua tugas bimbingan<br>telah selesai diproses ✨</p>
+                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest italic leading-relaxed">Semua tugas bimbingan<br>telah selesai diproses âœ¨</p>
                     </x-card>
                     @endif
                 </div>
@@ -183,7 +192,7 @@
             <!-- Quick Links -->
             <x-card padding="none" shadow="none" border="false" class="p-10 bg-[#F49E0A] text-white relative !shadow-2xl !shadow-amber-900/30">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-                <h4 class="text-xl font-black tracking-tighter italic mb-4 relative z-10">Pusat Layanan 🚀</h4>
+                <h4 class="text-xl font-black tracking-tighter italic mb-4 relative z-10">Pusat Layanan ðŸš€</h4>
                 <div class="space-y-3 relative z-10">
                     <a href="{{ route('dosen.logbook') }}" class="flex items-center justify-between p-4 bg-white/10 hover:bg-white/20 rounded-2xl border border-white/10 transition-all group">
                         <span class="text-xs font-black uppercase tracking-widest italic">Monitoring Logbook</span>
@@ -204,14 +213,14 @@
     <div class="modal-box bg-white max-w-2xl rounded-2xl p-0 overflow-hidden border-none shadow-2xl">
         <div class="bg-[#6B21A8] p-10 pb-16 relative overflow-hidden">
             <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <x-button variant="ghost" size="sm" onclick="document.getElementById('student_detail_modal').close()" class="absolute right-6 top-6 !text-white hover:!bg-white/10 !rounded-full !w-9 !h-9 !p-0">✕</x-button>
+            <x-button variant="ghost" size="sm" onclick="document.getElementById('student_detail_modal').close()" class="absolute right-6 top-6 !text-white hover:!bg-white/10 !rounded-full !w-9 !h-9 !p-0">âœ•</x-button>
             <div class="flex items-center gap-8 relative z-10">
                 <div id="modal_avatar" class="w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-4xl font-black text-white shadow-2xl italic">
                     AS
                 </div>
                 <div class="text-white">
                     <h3 id="modal_name" class="text-3xl font-black tracking-tighter italic">Andi Saputra</h3>
-                    <p id="modal_nim" class="text-white/70 font-black tracking-[0.2em] text-[10px] uppercase mt-2 italic">210401001 • TEKNIK INFORMATIKA</p>
+                    <p id="modal_nim" class="text-white/70 font-black tracking-[0.2em] text-[10px] uppercase mt-2 italic">210401001 â€¢ TEKNIK INFORMATIKA</p>
                 </div>
             </div>
         </div>
@@ -258,7 +267,7 @@ function showStudentDetail(name, nim, company, progress, field, status) {
     document.getElementById('modal_company').innerText = company || 'Belum Menentukan Instansi';
     document.getElementById('modal_progress_text').innerText = progress + '%';
     document.getElementById('modal_progress_bar').value = progress;
-    document.getElementById('modal_nim').innerText = nim + ' • ' + (field || 'PROGRAM STUDI');
+    document.getElementById('modal_nim').innerText = nim + ' â€¢ ' + (field || 'PROGRAM STUDI');
     document.getElementById('modal_field').innerText = field || 'N/A';
     document.getElementById('modal_status').innerText = status.toUpperCase();
     var parts = name.split(' '); document.getElementById('modal_avatar').innerText = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : name.substring(0, 2).toUpperCase();

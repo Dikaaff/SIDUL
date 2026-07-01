@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Admin')
+@section('title', 'Dasbor Admin')
 
 @section('header')
 <x-page-header 
@@ -20,7 +20,7 @@
 <div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
   <ul>
     <li><a href="/dashboard/admin" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li> 
-    <li>Admin Dashboard</li>
+    <li>Dasbor Admin</li>
   </ul>
 </div>
 @endsection
@@ -63,7 +63,7 @@
              <svg xmlns="http://www.w3.org/2000/svg" class="h-40 w-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
         </div>
         <div class="relative z-10">
-            <h3 class="text-xl font-bold mb-2 italic uppercase tracking-tighter">Status Layanan Normal 🟢</h3>
+            <h3 class="text-xl font-bold mb-2 italic uppercase tracking-tighter">Status Layanan Normal ðŸŸ¢</h3>
             <p class="text-white/90 text-[11px] leading-relaxed font-bold mb-6 italic opacity-80">Server web dan database beroperasi tanpa adanya kendala atau penumpukan antrean verifikasi.</p>
             <a href="/admin/users" class="inline-block w-full sm:w-auto text-center bg-white hover:bg-gray-50 text-[#F49E0A] px-6 py-3.5 rounded-2xl font-black uppercase tracking-widest transition-colors text-[10px] shadow-sm italic relative z-20">
                 Kelola Staf Sekarang

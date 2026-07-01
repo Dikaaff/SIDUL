@@ -35,7 +35,7 @@
                 <div class="flex gap-3">
                     <select id="statusFilter" name="status" class="select select-md bg-gray-50 border-gray-100 rounded-2xl text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-[#6B21A8]/10 transition-all w-full md:w-[180px]" onchange="this.form.submit()">
                         <option value="">Semua Status</option>
-                        <option value="Pending" {{ request('status') === 'Pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="Pending" {{ request('status') === 'Pending' ? 'selected' : '' }}>Menunggu</option>
                         <option value="Aktif" {{ request('status') === 'Aktif' ? 'selected' : '' }}>Aktif</option>
                         <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
                         <option value="Ditolak" {{ request('status') === 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
@@ -46,7 +46,7 @@
         <div class="flex gap-3">
              <x-button type="button" id="exportBtn" onclick="exportToExcel()" variant="success" class="flex-1 md:flex-none gap-2">
                 <svg id="exportIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                <span id="exportText">Export Excel</span>
+                <span id="exportText">Ekspor Excel</span>
              </x-button>
         </div>
     </x-card>
@@ -274,7 +274,7 @@ function exportToExcel() {
     document.body.removeChild(link);
     btn.disabled = false;
     icon.classList.remove('hidden');
-    txt.innerText = 'Export Excel';
+    txt.innerText = 'Ekspor Excel';
     }, 100);
 }
 

@@ -33,7 +33,7 @@
                 <select id="statusFilter" class="select select-md bg-gray-50 border-gray-100 rounded-2xl text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-[#6B21A8]/10 transition-all w-full md:w-[180px]">
                     <option value="">Semua Status</option>
                     <option value="Aktif">Aktif</option>
-                    <option value="Pending">Pending</option>
+                    <option value="Pending">Menunggu</option>
                     <option value="Selesai">Selesai</option>
                     <option value="Ditolak">Ditolak</option>
                 </select>
@@ -103,7 +103,7 @@
                         </td>
                         <td>
                             <div class="px-3 py-1.5 bg-[#6B21A8] text-white rounded-2xl text-[9px] font-black tracking-[0.1em] inline-block shadow-lg shadow-purple-200 border border-purple-800 group-hover:scale-105 transition-transform">
-                                {{ $magang->kode_magang ?? 'UNASSIGNED' }}
+                                {{ $magang->kode_magang ?? '-' }}
                             </div>
                         </td>
                         <td>

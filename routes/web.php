@@ -58,7 +58,9 @@ Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('/dashboard/dosen', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
     Route::get('/dosen/monitoring', [DosenController::class, 'monitoring'])->name('dosen.monitoring');
     Route::get('/dosen/logbook', [DosenController::class, 'logbook'])->name('dosen.logbook');
+    Route::get('/dosen/logbook/{magang}/pdf', [DosenController::class, 'cetakLogbookPdf'])->name('dosen.logbook.pdf');
     Route::get('/dosen/laporan', [DosenController::class, 'laporan'])->name('dosen.laporan');
+    Route::get('/dosen/laporan/{magang}/pdf', [DosenController::class, 'cetakLaporanPdf'])->name('dosen.laporan.pdf');
     Route::post('/dosen/laporan/{magang}/approve', [DosenController::class, 'approveLaporan'])->name('dosen.laporan.approve');
     Route::get('/dosen/rekomendasi', [DosenController::class, 'rekomendasi'])->name('dosen.rekomendasi');
     Route::post('/dosen/rekomendasi/{mahasiswa}/approve', [DosenController::class, 'rekomendasikan'])->name('dosen.rekomendasi.approve');

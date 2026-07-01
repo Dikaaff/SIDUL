@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Operator')
+@section('title', 'Dasbor Operator')
 
 @section('header')
 <x-page-header 
-    title="Dashboard Operator 🚀" 
+    title="Dasbor Operator 🚀" 
     subtitle="Selamat datang. Berikut ringkasan sistem magang yang perlu Anda tindaklanjuti hari ini." 
 />
 @endsection
@@ -13,7 +13,7 @@
 <div class="text-sm breadcrumbs text-gray-400 font-bold italic px-2">
   <ul>
     <li><a href="/dashboard/operator" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
-    <li>Dashboard</li>
+    <li>Dasbor</li>
   </ul>
 </div>
 @endsection
@@ -112,7 +112,7 @@
                     <div class="w-2 h-8 bg-[#F49E0A] rounded-full"></div>
                     <h3 class="font-black text-gray-800 text-lg tracking-tight">Antrean Plotting (Baru Daftar)</h3>
                 </div>
-                <a href="{{ route('operator.dosen_pembimbing') }}" class="text-[10px] font-black text-[#6B21A8] hover:underline uppercase tracking-widest">Lihat Semua →</a>
+                <a href="{{ route('operator.dosen_pembimbing') }}" class="text-[10px] font-black text-[#6B21A8] hover:underline uppercase tracking-widest">Lihat Semua â†’</a>
             </div>
 
             <div class="overflow-x-auto custom-scrollbar">
@@ -142,7 +142,7 @@
                             </td>
                             <td class="pr-8 text-right">
                                 <a href="{{ route('operator.dosen_pembimbing') }}">
-                                    <x-button variant="ghost" size="sm" class="!text-[#6B21A8] text-[9px]">Plotting →</x-button>
+                                    <x-button variant="ghost" size="sm" class="!text-[#6B21A8] text-[9px]">Plotting â†’</x-button>
                                 </a>
                             </td>
                         </tr>

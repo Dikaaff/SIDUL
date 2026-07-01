@@ -84,18 +84,18 @@
                                             <div class="w-7 h-7 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center shadow-inner">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                                             </div>
-                                            <span class="italic text-[9px]">Ubah ke Approve?</span>
+                                            <span class="italic text-[9px]">Setujui Mahasiswa?</span>
                                         </x-button>
                                     </form>
                                 @else
                                     <div class="flex items-center justify-end gap-2">
                                         <x-button type="button" variant="danger" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="reject-btn px-4 text-[9px]">
-                                            Reject
+Tolak
                                         </x-button>
                                         <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                             @csrf
                                             <x-button type="submit" variant="success" class="px-6 text-[9px] group hover:scale-105">
-                                                Approve
+Setujui
                                             </x-button>
                                         </form>
                                     </div>
@@ -134,13 +134,13 @@
                         @elseif($mhs->status_daftar === 'Rejected')
                             <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                 @csrf
-                                <x-button type="submit" variant="ghost" size="sm" class="!text-red-600 hover:!bg-red-50">Ubah ke Approve?</x-button>
+                                <x-button type="submit" variant="ghost" size="sm" class="!text-red-600 hover:!bg-red-50">Setujui Mahasiswa?</x-button>
                             </form>
                         @else
-                            <x-button type="button" variant="danger" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="reject-btn px-4 text-[9px]">Reject</x-button>
+                            <x-button type="button" variant="danger" data-id="{{ $mhs->id }}" data-name="{{ $mhs->nama }}" class="reject-btn px-4 text-[9px]">Tolak</x-button>
                             <form action="{{ route('dosen.rekomendasi.approve', $mhs->id) }}" method="POST" class="inline approve-form">
                                 @csrf
-                                <x-button type="submit" variant="success" class="px-6 text-[9px]">Approve</x-button>
+                                <x-button type="submit" variant="success" class="px-6 text-[9px]">Setujui</x-button>
                             </form>
                         @endif
                     </div>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="flex gap-4 items-center">
                     <div class="w-8 h-8 rounded-2xl bg-white/20 border border-white/20 flex items-center justify-center text-xs font-black italic shadow-xl backdrop-blur-md text-white shrink-0">2</div>
-                    <p class="text-[10px] font-bold leading-relaxed uppercase tracking-wider text-white">Klik tombol APPROVE.</p>
+                    <p class="text-[10px] font-bold leading-relaxed uppercase tracking-wider text-white">Klik tombol SETUJUI.</p>
                 </div>
             </div>
         </x-card>
@@ -222,7 +222,7 @@
         if (btn) {
             btn.classList.add('loading');
             btn.setAttribute('disabled', 'true');
-            btn.innerHTML = '<span class="loading loading-spinner loading-xs"></span> PROCESSING...';
+            btn.innerHTML = '<span class="loading loading-spinner loading-xs"></span> Memproses...';
         }
         setTimeout(function() { form.submit(); }, 800);
     }

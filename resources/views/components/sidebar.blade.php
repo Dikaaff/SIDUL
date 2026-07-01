@@ -25,7 +25,7 @@
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     </x-slot>
-                    Dashboard Admin
+                    Dasbor Admin
                 </x-sidebar-link>
                 
                 <x-sidebar-link href="/admin/users" :active="request()->is('admin/users')">
@@ -40,7 +40,7 @@
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     </x-slot>
-                    Dashboard Dosen
+                    Dasbor Dosen
                 </x-sidebar-link>
 
                 {{-- daisyui: menu-title --}}
@@ -84,7 +84,7 @@
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     </x-slot>
-                    Dashboard
+                    Dasbor
                 </x-sidebar-link>
                 
                 <x-sidebar-link href="/operator/dosen-pembimbing" :active="request()->is('operator/dosen-pembimbing')">
@@ -124,7 +124,7 @@
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     </x-slot>
-                    Dashboard
+                    Dasbor
                 </x-sidebar-link>
 
                 <x-sidebar-link href="/mahasiswa/pendaftaran" :active="request()->is('mahasiswa/pendaftaran')">
@@ -156,7 +156,7 @@
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                     </x-slot>
-                    Edit Data Profil
+                    Ubah Data Profil
                 </x-sidebar-link>
             @endif
         </ul>
@@ -168,7 +168,7 @@
             @csrf
             <x-button type="submit" variant="link" size="sm" full class="!text-red-500 hover:!text-red-700 !justify-start gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                Logout
+                Keluar
             </x-button>
         </form>
     </div>

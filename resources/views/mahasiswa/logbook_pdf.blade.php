@@ -62,7 +62,7 @@
 <body>
     <div class="header">
         <h1>LOGBOOK AKTIVITAS MAGANG</h1>
-        <p>Program Studi Teknik Informatika - Universitas SIDUL</p>
+        <p>Program Studi Teknik Informatika - Universitas Amikom Yogyakarta</p>
     </div>
 
     <table class="info-table">

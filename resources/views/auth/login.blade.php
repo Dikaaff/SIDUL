@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Login Mahasiswa - SIDUL')
+@section('title', 'Masuk Mahasiswa - SIDUL')
 
 @section('content')
 <div class="flex flex-col lg:flex-row w-full max-w-5xl bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 min-h-[500px] md:min-h-[650px] relative z-10 m-4">
@@ -48,7 +48,7 @@
                 @csrf
                 <!-- Username/NIM/NIK Field -->
                 <div>
-                    <label for="username" class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">NIM / NIK / Username</label>
+                    <label for="username" class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">NIM / NIK / Nama Pengguna</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#6B21A8] transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
@@ -63,7 +63,7 @@
                 <!-- Password Field -->
                 <div>
                     <div class="mb-2">
-                        <label for="password" class="text-xs font-bold text-gray-700 uppercase tracking-wider">Password</label>
+                        <label for="password" class="text-xs font-bold text-gray-700 uppercase tracking-wider">Kata Sandi</label>
                     </div>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#6B21A8] transition-colors">

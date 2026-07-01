@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\Magang;
 use App\Services\DosenService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,6 +60,27 @@ class DosenController extends Controller
         return view('dosen.logbook', compact('mhsBimbingan'));
     }
 
+    # fungsi untuk mencetak PDF logbook mahasiswa bimbingan
+    public function cetakLogbookPdf(Magang $magang)
+    {
+        $mahasiswa = $magang->peserta->first()?->mahasiswa;
+
+        if (!$mahasiswa) {
+            return back()->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+
+        $logbooks = $magang->logbooks()->oldest()->get();
+
+        if ($logbooks->isEmpty()) {
+            return back()->with('error', 'Belum ada data logbook untuk dicetak.');
+        }
+
+        $pdf = Pdf::loadView('mahasiswa.logbook_pdf', compact('mahasiswa', 'magang', 'logbooks'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('Logbook_Magang_' . $mahasiswa->nim . '.pdf');
+    }
+
     # fungsi untuk menampilkan laporan mahasiswa bimbingan
     public function laporan(Request $request)
     {
@@ -78,5 +100,26 @@ class DosenController extends Controller
         $this->dosenService->approveLaporan($magang, $request->status, $request->feedback);
 
         return back()->with('success', 'Review laporan berhasil disimpan.');
+    }
+
+    # fungsi untuk mencetak PDF laporan mahasiswa yang sudah disetujui
+    public function cetakLaporanPdf(Magang $magang)
+    {
+        $laporan = $magang->laporan;
+
+        if (!$laporan || $laporan->status !== 'approved') {
+            return back()->with('error', 'Laporan belum disetujui.');
+        }
+
+        $mahasiswa = $magang->peserta->first()?->mahasiswa;
+
+        if (!$mahasiswa) {
+            return back()->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+
+        $pdf = Pdf::loadView('mahasiswa.laporan_pdf', compact('mahasiswa', 'magang', 'laporan'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('Laporan_Akhir_' . $mahasiswa->nim . '.pdf');
     }
 }

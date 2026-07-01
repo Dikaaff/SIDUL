@@ -166,10 +166,10 @@
             <div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-10 border-t border-gray-50">
                 @if(!$isLocked)
                 <x-button type="reset" variant="secondary" size="lg" id="btnReset" class="hover:bg-gray-200">
-                    Reset Data
+                    Atur Ulang
                 </x-button>
                 <x-button type="submit" variant="primary" size="lg" id="btnSubmit" class="shadow-purple-200 w-full sm:w-auto gap-3">
-                    <span id="btnText">{{ $magang ? 'Update Pendaftaran' : 'Kirim Pendaftaran' }}</span>
+                    <span id="btnText">{{ $magang ? 'Perbarui Pendaftaran' : 'Kirim Pendaftaran' }}</span>
                     <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     <span id="btnLoading" class="loading loading-spinner hidden"></span>
                 </x-button>

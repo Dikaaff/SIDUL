@@ -116,7 +116,7 @@ $maxWidth = match($size) {
     {{-- Close on backdrop click --}}
     {{-- daisyui: modal-backdrop --}}
     <form method="dialog" class="modal-backdrop" data-no-loading>
-        <button>close</button>
+        <button>Tutup</button>
     </form>
 </dialog>
 

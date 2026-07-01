@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Mahasiswa')
+@section('title', 'Dasbor Mahasiswa')
 
 @section('header')
 <x-page-header
@@ -23,7 +23,7 @@
     <div class="text-sm breadcrumbs text-gray-400 font-bold italic">
         <ul>
             <li><a href="/dashboard" class="hover:text-[#6B21A8] transition-colors">SIDUL</a></li>
-            <li>Dashboard Utama</li>
+            <li>Dasbor</li>
         </ul>
     </div>
     @if(!$isPeriodeOpen)

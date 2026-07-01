@@ -4,7 +4,7 @@
 
 @section('header')
 <x-page-header 
-    title="Manajemen Staf 👑" 
+    title="Manajemen Staf 🔑" 
     subtitle="Kelola data akses untuk Operator dan Dosen Pembimbing."
 >
     <x-button onclick="openModalAddUserModal()" variant="primary" size="sm" class="!shadow-none">
@@ -33,7 +33,7 @@
                     <tr class="text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] bg-gray-50/50 border-b border-gray-100">
                         <th class="pl-8 py-5 w-16">No</th>
                         <th class="min-w-[220px]">Nama</th>
-                        <th class="min-w-[160px]">Username / NIK</th>
+                        <th class="min-w-[160px]">Nama Pengguna / NIK</th>
                         <th class="min-w-[120px]">Role</th>
                         <th class="pr-8 text-right w-20">Aksi</th>
                     </tr>
@@ -144,11 +144,11 @@
                 <input type="text" name="name" class="input input-bordered w-full rounded-2xl bg-gray-50 border-gray-100 focus:border-[#6B21A8]/30 font-bold text-sm h-14" placeholder="Contoh: Dr. Budi Santoso, S.T., M.T." required>
             </div>
             <div>
-                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Username / NIK</label>
+                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Nama Pengguna / NIK</label>
                 <input type="text" name="username" class="input input-bordered w-full rounded-2xl bg-gray-50 border-gray-100 focus:border-[#6B21A8]/30 font-bold text-sm h-14" placeholder="Masukkan NIK atau Username" required>
             </div>
             <div>
-                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Password Baru</label>
+                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Kata Sandi Baru</label>
                 <input type="password" name="password" minlength="8" class="input input-bordered w-full rounded-2xl bg-gray-50 border-gray-100 focus:border-[#6B21A8]/30 font-bold text-sm h-14" placeholder="Minimal 8 karakter" required>
             </div>
             <div class="grid grid-cols-2 gap-4 pt-6 border-t border-gray-50 mt-8">
@@ -160,7 +160,7 @@
 </x-modal>
 
 <!-- Modal Edit User -->
-<x-modal id="edit_user_modal" title="Edit Akun" color="purple" size="md">
+<x-modal id="edit_user_modal" title="Ubah Akun" color="purple" size="md">
     <form id="editUserForm" method="POST" class="space-y-6">
         @csrf
         @method('PUT')
@@ -177,7 +177,7 @@
                 <input type="text" name="name" id="editName" class="input input-bordered w-full rounded-2xl bg-gray-50 border-gray-100 focus:border-[#6B21A8]/30 font-bold text-sm h-14" placeholder="Contoh: Dr. Budi Santoso, S.T., M.T." required>
             </div>
             <div>
-                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Username / NIK</label>
+                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Nama Pengguna / NIK</label>
                 <input type="text" name="username" id="editUsername" class="input input-bordered w-full rounded-2xl bg-gray-50 border-gray-100 focus:border-[#6B21A8]/30 font-bold text-sm h-14" placeholder="Masukkan NIK atau Username" required>
             </div>
             <div>

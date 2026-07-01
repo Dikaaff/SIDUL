@@ -48,6 +48,12 @@
                         <p id="activeStudentNim" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">NIM: -</p>
                     </div>
                 </div>
+                <a id="pdfDownloadBtn" href="#" target="_blank"
+                   class="btn btn-ghost border-2 border-gray-200 hover:border-[#6B21A8] hover:!text-[#6B21A8] hover:!bg-purple-50 h-11 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all inline-flex items-center gap-2 shrink-0"
+                   style="display:none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3v4a1 1 0 001 1h4" /></svg>
+                    Cetak PDF
+                </a>
             </div>
 
             <div class="p-0 overflow-x-auto custom-scrollbar">
@@ -160,6 +166,15 @@ function selectStudent(id) {
         document.getElementById('activeStudentName').innerText = student.name;
         document.getElementById('activeStudentNim').innerText = 'NIM: ' + student.nim;
         document.getElementById('activeAvatar').innerText = student.name[0];
+        // Toggle PDF download button
+        const logs = mockLogs[id] || [];
+        const pdfBtn = document.getElementById('pdfDownloadBtn');
+        if (logs.length > 0) {
+            pdfBtn.href = '/dosen/logbook/' + id + '/pdf';
+            pdfBtn.style.display = 'inline-flex';
+        } else {
+            pdfBtn.style.display = 'none';
+        }
         renderStudents();
         renderLogs();
     }

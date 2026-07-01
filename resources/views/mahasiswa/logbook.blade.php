@@ -61,7 +61,7 @@
                         <th class="py-5 pl-8 w-16">No</th>
                         <th>Tanggal</th>
                         <th>Aktivitas & Kegiatan</th>
-                        <th class="text-center py-5 pr-8 w-40">Detail</th>
+                        <th class="text-center py-5 pr-8 w-40">Rincian</th>
                     </tr>
                 </thead>
                 <tbody id="logbook-tbody" class="divide-y divide-gray-100">
@@ -78,7 +78,7 @@
                         </td>
                         <td class="text-center pr-8">
                             <x-button variant="ghost" size="sm" onclick="showLogDetail('{{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}', '{{ e($log->kegiatan) }}')" class="text-[#422AD5] hover:bg-[#422AD5]/10">
-                                Lihat Detail
+                                Lihat Rincian
                             </x-button>
                         </td>
                     </tr>

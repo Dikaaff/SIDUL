@@ -307,7 +307,7 @@
         <div class="univ-info">
             <div>PROGRAM STUDI TEKNIK INFORMATIKA</div>
             <div>FAKULTAS ILMU KOMPUTER</div>
-            <div>UNIVERSITAS SIDUL</div>
+            <div>UNIVERSITAS AMIKOM YOGYAKARTA</div>
             <div class="year">{{ date('Y') }}</div>
         </div>
     </div>
@@ -360,7 +360,7 @@
 
         <div class="mengetahui">Mengetahui,</div>
         <div class="mengetahui" style="margin-top:0.3cm;">Ketua Program Studi Teknik Informatika</div>
-        <div class="mengetahui" style="margin-top:0.3cm; font-style:italic;">Universitas SIDUL</div>
+        <div class="mengetahui" style="margin-top:0.3cm; font-style:italic;">Universitas Amikom Yogyakarta</div>
         <div class="ketua-prodi">
             @if($mahasiswa->dosenWali)
                 {{ $mahasiswa->dosenWali->nama }}

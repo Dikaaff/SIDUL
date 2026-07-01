@@ -9,8 +9,14 @@
         in_array($statusLower, ['berjalan', 'proses']) => 'bg-blue-100 text-blue-700 border-blue-200',
         default => 'bg-gray-100 text-gray-700 border-gray-200',
     };
+    $labelMap = [
+        'Pending' => 'Menunggu',
+        'Approve' => 'Disetujui',
+        'Rejected' => 'Ditolak',
+    ];
+    $displayLabel = $labelMap[$status] ?? $status;
 @endphp
 
 <span class="px-3 py-1 rounded-2xl text-[10px] font-black uppercase tracking-[0.1em] border {{ $colorClass }} {{ $attributes->get('class') }}">
-    {{ $status }}
+    {{ $displayLabel }}
 </span>
